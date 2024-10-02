@@ -144,5 +144,6 @@
     <!-- End Newsletter banner section -->
 
 </main>
+
 @section('content')
 @endsection
