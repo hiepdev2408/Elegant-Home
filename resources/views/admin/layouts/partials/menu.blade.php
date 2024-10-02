@@ -431,9 +431,8 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="{{route('admin.users.index')}}" class="menu-link">
 
-                    <a href="app-user-list.html" class="menu-link">
+                    <a href="{{route('admin.users.index')}}" class="menu-link">
 
                         <div data-i18n="List">List</div>
                     </a>

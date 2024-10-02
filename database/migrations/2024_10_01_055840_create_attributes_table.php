@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Variant::class)->constrained();
             $table->string('name');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

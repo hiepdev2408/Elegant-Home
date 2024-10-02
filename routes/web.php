@@ -22,8 +22,7 @@ Route::prefix('admin')->as('admin.')->group(function() {
         return view('admin.dashboard');
     });
     Route::resource('users', UserController::class);
-
+});
 Route::get('admin', function () {
     return view('admin.dashboard');
-
 });
