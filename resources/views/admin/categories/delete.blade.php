@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @section('title')
-    Danh sách Loại Tin
+    Danh sách thùng rác
 @endsection
 
 @section('content')
@@ -9,8 +9,8 @@
             <div class="col-md-10">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="text-center">Danh Sách Danh Mục</h3>
-                        <a href="{{ route('categories.delete') }}" class="btn btn-dark float-end">Thùng rác</a>
+                        <h3 class="text-center">Danh Sách Thùng Rácc</h3>
+                        <a href="{{ route('categories.index') }}" class="btn btn-dark float-end">Quay lại</a>
                         <a href="{{ route('categories.create') }}" class="btn btn-success float-end">Thêm danh mục mới</a>
                     </div>
 
@@ -50,16 +50,22 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <a href="{{ route('categories.edit', $category->id) }}"
-                                                    class="btn btn-primary btn-sm">Sửa</a>
 
-                                                    <form action="{{ route('categories.destroy', $category->id) }}"
-                                                        method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không?')">Xóa</button>
-                                                    </form>
+
+                                                <form action="{{ route('categories.restore', $category->id) }}"
+                                                    method="POST" class="d-inline">
+                                                    @csrf
+
+                                                    <button type="submit" class="btn btn-success btn-sm"
+                                                        onclick="return confirm('Bạn có chắc chắn muốn khôi phục danh mục này không?')">Khôi Phục</button>
+                                                </form>
+                                                <form action="{{ route('categories.forceDelete', $category->id) }}"
+                                                    method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không?')">Xóa Vĩnh Viễn</button>
+                                                </form>
                                             </td>
                                         </tr>
 
@@ -77,15 +83,19 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('categories.edit', $child->id) }}"
-                                                            class="btn btn-primary btn-sm">Sửa</a>
+                                                        <form action="{{ route('categories.restore', $child->id) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
 
-                                                        <form action="{{ route('categories.destroy', $child->id) }}"
+                                                            <button type="submit" class="btn btn-success btn-sm"
+                                                                onclick="return confirm('Bạn có chắc chắn muốn khôi phục danh mục này không?')">Khôi Phục</button>
+                                                        </form>
+                                                        <form action="{{ route('categories.forceDelete', $child->id) }}"
                                                             method="POST" class="d-inline">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger btn-sm"
-                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục con này không?')">Xóa</button>
+                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không?')">Xóa Vĩnh Viễn</button>
                                                         </form>
                                                     </td>
                                                 </tr>

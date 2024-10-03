@@ -21,6 +21,18 @@ trait TraitCRUD
 
         return view('admin.' . $this->model->getTable() . '.' . __FUNCTION__, compact('data'));
     }
+    public function delete()
+    {
+        $data = $this->model
+            ->when(!empty($this->relations), function (Builder $query) {
+                $query->with($this->relations);
+            })
+            ->onlyTrashed()
+            ->latest()->paginate(10);
+
+        return view('admin.' . $this->model->getTable() . '.' . __FUNCTION__, compact('data'));
+    }
+
     public function create()
     {
 
@@ -99,6 +111,16 @@ trait TraitCRUD
     public function destroy($id)
     {
         $this->model->findOrFail($id)->delete();
-        return redirect()->route($this->model->getTable() . '.index')->with('success', __('Xóa dữ liệu thành công'));
+        return redirect()->back()->with('success', __('Xóa dữ liệu thành công'));
+    }
+    public function restore($id)
+    {
+        $this->model->withTrashed()->findOrFail($id)->restore();
+        return redirect()->back()->with('success', __('Khôi phục dữ liệu thành công'));
+    }
+    public function forceDelete($id)
+    {
+        $this->model->withTrashed()->findOrFail($id)->forceDelete();
+        return redirect()->back()->with('success', __('Xóa vĩnh viễn dữ liệu thành công'));
     }
 }
