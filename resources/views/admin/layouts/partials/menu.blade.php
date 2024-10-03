@@ -449,15 +449,8 @@
                 <div data-i18n="Users">Users</div>
             </a>
             <ul class="menu-sub">
-<<<<<<< HEAD
                 <li class="menu-item">
-
                     <a href="{{route('users.index')}}" class="menu-link">
-
-=======
-                <li class="menu-item">users
-                    <a href="{{route('users.index')}}" class="menu-link">
->>>>>>> 1598c29d1e3f3ed1c1f72e820c94bc7a976bcf26
                         <div data-i18n="List">List</div>
                     </a>
                 </li>
