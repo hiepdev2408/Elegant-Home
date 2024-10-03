@@ -60,7 +60,7 @@ Danh sách Loại Tin
                                 data-bs-placement="top"
                                 data-bs-title="Show"
                                 class="btn btn-info btn-sm me-1"
-                                href="{{ route('admin.users.show', $item) }}">
+                                href="{{ route('users.show', $item) }}">
                                 <i class="mdi mdi-eye"></i>
                             </a>
                             <a
@@ -68,11 +68,11 @@ Danh sách Loại Tin
                                 data-bs-placement="top"
                                 data-bs-title="Update"
                                 class="btn btn-warning btn-sm me-1"
-                                href="{{ route('admin.users.edit', $item) }}">
+                                href="{{ route('users.edit', $item) }}">
                                 <i class="mdi mdi-pencil"></i>
                             </a>
 
-                            <form action="{{ route('admin.users.destroy', $item) }}" method="POST" class="d-inline">
+                            <form action="{{ route('users.destroy', $item) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('delete')
                                 <button
