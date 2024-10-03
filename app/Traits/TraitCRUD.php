@@ -21,6 +21,18 @@ trait TraitCRUD
 
         return view('admin.' . $this->model->getTable() . '.' . __FUNCTION__, compact('data'));
     }
+    public function delete()
+    {
+        $data = $this->model
+            ->when(!empty($this->relations), function (Builder $query) {
+                $query->with($this->relations);
+            })
+            ->onlyTrashed()
+            ->latest()->paginate(10);
+
+        return view('admin.' . $this->model->getTable() . '.' . __FUNCTION__, compact('data'));
+    }
+
     public function create()
     {
 
@@ -37,7 +49,7 @@ trait TraitCRUD
         $data = $request->all();
 
 
-        $data['is_active'] = $request->has('is_active') ? 1 : 0;// Xử lý lại...
+        $data['is_active'] = $request->has('is_active') ? 1 : 0; // Xử lý lại...
 
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'image_')) {
@@ -79,12 +91,19 @@ trait TraitCRUD
     }
     public function update(Request $request, $id)
     {
-         $data = $request->all();
-        $data['is_active'] = $request->has('is_active') ? 1 : 0;
+        $data = $request->all();
+        $dataID = $this->model->findOrFail($id);
 
         foreach ($data as $key => $value) {
-            if (Str::startsWith($key, 'image_') && $request->hasFile($key)) {
-                $data[$key] = Storage::put($this->model->getTable(),$request->file($key));
+            if (Str::startsWith($key, 'is_')) {
+                $data[$key] = isset($value[$key]) ? 1 : 0;
+            }
+            if (Str::startsWith($key, 'image_')) {
+                $data[$key] = $dataID->$key;
+                if ($request->hasFile($key)) {
+                    Storage::delete($dataID[$key]);
+                    $data[$key] = Storage::put($this->model->getTable(), $request->file($key));
+                }
             }
         }
 
@@ -95,6 +114,16 @@ trait TraitCRUD
     public function destroy($id)
     {
         $this->model->findOrFail($id)->delete();
-        return redirect()->route($this->model->getTable() . '.index')->with('success', __('Xóa dữ liệu thành công'));
+        return redirect()->back()->with('success', __('Xóa dữ liệu thành công'));
+    }
+    public function restore($id)
+    {
+        $this->model->withTrashed()->findOrFail($id)->restore();
+        return redirect()->back()->with('success', __('Khôi phục dữ liệu thành công'));
+    }
+    public function forceDelete($id)
+    {
+        $this->model->withTrashed()->findOrFail($id)->forceDelete();
+        return redirect()->back()->with('success', __('Xóa vĩnh viễn dữ liệu thành công'));
     }
 }
