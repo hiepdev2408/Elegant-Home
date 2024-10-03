@@ -225,6 +225,25 @@
                 </li>
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <div data-i18n="Categories">Categories</div>
+                    </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item">
+                            <a href="{{ route('categories.index')}}" class="menu-link">
+                                <div data-i18n="Category List">Category List</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="{{ route('categories.create')}}" class="menu-link">
+                                <div data-i18n="Add Category">Add Category</div>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li class="menu-item">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <div data-i18n="Products">Products</div>
                     </a>
                     <ul class="menu-sub">
@@ -431,7 +450,9 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
+
                     <a href="{{route('admin.users.index')}}" class="menu-link">
+
                         <div data-i18n="List">List</div>
                     </a>
                 </li>
