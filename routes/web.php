@@ -5,12 +5,12 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')
-    
+    // ->as('admin.')
     ->group(function () {
         Route::get('/', function () {
             return view(view: 'admin.dashboard');
         });
-      Route::resource('users', UserController::class);
+        Route::resource('users', UserController::class);
 
         Route::prefix('categories')
             ->name('categories.')
@@ -30,9 +30,16 @@ Route::prefix('admin')
                 Route::delete('/delete/{category}', [CategoryController::class, 'destroy'])
                     ->name('destroy');
             });
+        Route::get('index', function (){
+            return view('admin.products.index');
+        })->name('product.index');
     });
 Route::get('/', function () {
     return view('client.home');
 });
+Route::get('/login', function () {
+    return view('client.auth.login');
+})->name('login');
+
 
 

@@ -38,7 +38,7 @@ trait TraitCRUD
         // $data['is_active'] = $request->has('is_active');
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
-                $data[$key] ??= 0 ;
+                $data[$key] ??= 0;
             }
             if (Str::startsWith($key, 'image_')) {
                 $data[$key] = Storage::put($this->model->getTable(),$request->file($key));
@@ -81,7 +81,7 @@ trait TraitCRUD
         $data = $request->all();
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
-                $data[$key] = isset($value[$key]) ? 1 : 0;
+                $data[$key] ??= 0;
             }
              if (Str::startsWith($key, 'image_')) {
                 $data[$key] = Storage::put($this->model->getTable(),$request->file($key));
