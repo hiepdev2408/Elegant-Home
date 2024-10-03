@@ -96,7 +96,7 @@ trait TraitCRUD
 
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
-                $data[$key] = isset($value[$key]) ? 1 : 0;
+                $data[$key] ??= 0;
             }
             if (Str::startsWith($key, 'image_')) {
                 $data[$key] = $dataID->$key;
