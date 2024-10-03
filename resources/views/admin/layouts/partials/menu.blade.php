@@ -248,7 +248,7 @@
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a href="app-ecommerce-product-list.html" class="menu-link">
+                            <a href="{{ route('product.index') }}" class="menu-link">
                                 <div data-i18n="Product List">Product List</div>
                             </a>
                         </li>
@@ -449,10 +449,9 @@
                 <div data-i18n="Users">Users</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item">users
 
-                    <a href="{{route('admin.users.index')}}" class="menu-link">
-
+                    <a href="{{route('users.index')}}" class="menu-link">
                         <div data-i18n="List">List</div>
                     </a>
                 </li>

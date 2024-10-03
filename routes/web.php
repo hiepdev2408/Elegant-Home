@@ -10,7 +10,7 @@ Route::prefix('admin')
         Route::get('/', function () {
             return view(view: 'admin.dashboard');
         });
-      Route::resource('users', UserController::class);
+        Route::resource('users', UserController::class);
 
         Route::prefix('categories')
             ->name('categories.')
@@ -38,12 +38,11 @@ Route::prefix('admin')
                 Route::delete('/delete/{category}', [CategoryController::class, 'destroy'])
                     ->name('destroy');
             });
+        Route::get('index', function (){
+            return view('admin.products.index');
+        })->name('product.index');
     });
 Route::get('/', function () {
     return view('client.home');
 });
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 010fe414820a173c97f3019b03c173ba7a07400e
