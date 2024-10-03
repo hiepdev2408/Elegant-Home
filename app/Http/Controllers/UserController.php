@@ -16,6 +16,7 @@ class UserController extends Controller
         //
         $data = User::query()->get();
         return view('admin.users.index', compact('data'));
+        // resources/views/admin/users/index.blade.php
     }
 
     /**

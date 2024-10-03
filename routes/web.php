@@ -38,7 +38,12 @@ Route::prefix('admin')
                 Route::delete('/delete/{category}', [CategoryController::class, 'destroy'])
                     ->name('destroy');
             });
+        Route::get('index', function (){
+            return view('admin.products.index');
+        })->name('product.index');
     });
 Route::get('/', function () {
     return view('client.home');
 });
+
+
