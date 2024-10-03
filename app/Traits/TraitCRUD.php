@@ -38,10 +38,10 @@ trait TraitCRUD
         // $data['is_active'] = $request->has('is_active');
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
-                $data[$key] ??= 0 ;
+                $data[$key] ??= 0;
             }
             if (Str::startsWith($key, 'image_')) {
-                $data[$key] = Storage::put($this->model->getTable(),$request->file($key));
+                $data[$key] = Storage::put($this->model->getTable(), $request->file($key));
             }
         }
         $this->model->create($data);
@@ -79,12 +79,18 @@ trait TraitCRUD
     public function update(Request $request, $id)
     {
         $data = $request->all();
+        $dataID = $this->model->findOrFail($id);
+
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
                 $data[$key] = isset($value[$key]) ? 1 : 0;
             }
-             if (Str::startsWith($key, 'image_')) {
-                $data[$key] = Storage::put($this->model->getTable(),$request->file($key));
+            if (Str::startsWith($key, 'image_')) {
+                $data[$key] = $dataID->$key;
+                if ($request->hasFile($key)) {
+                    Storage::delete($dataID[$key]);
+                    $data[$key] = Storage::put($this->model->getTable(), $request->file($key));
+                }
             }
         }
         $this->model->findOrFail($id)->update($data);
