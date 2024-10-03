@@ -1,21 +1,8 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-
-
 
 Route::prefix('admin')
 
@@ -23,6 +10,7 @@ Route::prefix('admin')
         Route::get('/', function () {
             return view(view: 'admin.dashboard');
         });
+      Route::resource('users', UserController::class);
 
         Route::prefix('categories')
             ->name('categories.')
@@ -54,3 +42,8 @@ Route::prefix('admin')
 Route::get('/', function () {
     return view('client.home');
 });
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 010fe414820a173c97f3019b03c173ba7a07400e
