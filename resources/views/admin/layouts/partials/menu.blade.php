@@ -449,7 +449,7 @@
                 <div data-i18n="Users">Users</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">users
+                <li class="menu-item">
                     <a href="{{route('users.index')}}" class="menu-link">
                         <div data-i18n="List">List</div>
                     </a>

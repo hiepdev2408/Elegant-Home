@@ -5,7 +5,6 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')
-
     ->group(function () {
         Route::get('/', function () {
             return view(view: 'admin.dashboard');
@@ -29,8 +28,6 @@ Route::prefix('admin')
                     ->name('edit');
                 Route::put('/update/{category}', [CategoryController::class, 'update'])
                     ->name('update');
-
-
                 Route::post('/delete/{category}', [CategoryController::class, 'restore'])
                     ->name('restore');
                 Route::delete('/forceDelete/{category}', [CategoryController::class, 'forceDelete'])
@@ -45,5 +42,3 @@ Route::prefix('admin')
 Route::get('/', function () {
     return view('client.home');
 });
-
-
