@@ -5,7 +5,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')
-    // ->as('admin.')
+
     ->group(function () {
         Route::get('/', function () {
             return view(view: 'admin.dashboard');
@@ -17,6 +17,8 @@ Route::prefix('admin')
             ->group(function () {
                 Route::get('/', [CategoryController::class, 'index'])
                     ->name('index');
+                Route::get('/delete', [CategoryController::class, 'delete'])
+                    ->name('delete');
                 Route::get('/create', [CategoryController::class, 'create'])
                     ->name('create');
                 Route::post('/store', [CategoryController::class, 'store'])
@@ -27,6 +29,12 @@ Route::prefix('admin')
                     ->name('edit');
                 Route::put('/update/{category}', [CategoryController::class, 'update'])
                     ->name('update');
+
+
+                Route::post('/delete/{category}', [CategoryController::class, 'restore'])
+                    ->name('restore');
+                Route::delete('/forceDelete/{category}', [CategoryController::class, 'forceDelete'])
+                    ->name('forceDelete');
                 Route::delete('/delete/{category}', [CategoryController::class, 'destroy'])
                     ->name('destroy');
             });
@@ -37,9 +45,4 @@ Route::prefix('admin')
 Route::get('/', function () {
     return view('client.home');
 });
-Route::get('/login', function () {
-    return view('client.auth.login');
-})->name('login');
-
-
 
