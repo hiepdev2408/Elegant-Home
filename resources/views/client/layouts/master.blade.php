@@ -23,8 +23,10 @@
     <!-- Start header area -->
     @include('client.layouts.partials.header')
     <!-- End header area -->
+    <div class="container">
+        @yield('content')
+    </div>
 
-    @yield('content')
 
     <!-- Start footer section -->
     @include('client.layouts.partials.footer')
