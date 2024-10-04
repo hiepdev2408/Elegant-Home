@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('client.home');
+});
+Route::group(['prefix'=>'account'],function(){
+    Route::get('/login',[AccountController::class,'login'])->name('login');
+    Route::post('/login_check',[AccountController::class,'check_login'])->name('login.submit');
+
+    Route::get('/register',[AccountController::class,'register'])->name('register');
+    Route::post('/register_check',[AccountController::class,'check_register'])->name('register.submit');
+
+    Route::get('/veryfy_account/{email}',[AccountController::class,'veryfy'])->name('veryfy');
+
+
 });
 
 Route::get('admin', function () {

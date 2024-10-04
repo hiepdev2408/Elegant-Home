@@ -145,7 +145,7 @@
                                                     class="header__mega--sub__menu--title" href="404.html">404
                                                     Page</a></li>
                                             <li class="header__mega--sub__menu_li"><a
-                                                    class="header__mega--sub__menu--title" href="login.html">Login
+                                                    class="header__mega--sub__menu--title" href="{{route('register')}}">register
                                                     Page</a></li>
                                             <li class="header__mega--sub__menu_li"><a
                                                     class="header__mega--sub__menu--title" href="faq.html">Faq
