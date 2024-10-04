@@ -1,6 +1,5 @@
 @extends('client.layouts.master')
 @section('title')
-
 @endsection
 @section('content')
 
@@ -43,8 +42,6 @@
                                 <label>
                                     <a class="account__login--btn success__btn" href="{{route('register')}}">Đăng ký</a>
                                 </label>
-
-
                         </div>
                     </div>
                 </div>

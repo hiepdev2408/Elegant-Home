@@ -15,8 +15,8 @@
             </div>
         @endif
         <div class="card-header d-flex justify-content-end align-items-center mb-3">
-            <a class="btn btn-primary" href="{{ route('admin.categories.create') }}"><i
-                    class="mdi mdi-plus me-0 me-sm-1"></i>Thêm Loại Tin</a>
+            {{-- <a class="btn btn-primary" href="{{ route('admin.categories.create') }}"><i
+                    class="mdi mdi-plus me-0 me-sm-1"></i>Thêm Loại Tin</a> --}}
         </div>
         <div class="card">
             <div class="card-body">
@@ -33,7 +33,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($categories as $item)
+                        {{-- @foreach ($categories as $item)
                             <tr>
                                 <td>{{ $item['id'] }}</td>
                                 <td>{{ $item['name'] }}</td>
@@ -67,7 +67,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>
