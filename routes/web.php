@@ -37,7 +37,7 @@ Route::prefix('admin')
                 Route::delete('/delete/{category}', [CategoryController::class, 'destroy'])
                     ->name('destroy');
             });
-        Route::get('index', function (){
+        Route::get('index', function () {
             return view('admin.products.index');
         })->name('product.index');
     });
@@ -45,19 +45,16 @@ Route::get('/', function () {
     return view('client.home');
 });
 
-Route::group(['prefix'=>'account'],function(){
-    Route::get('/login',[AccountController::class,'login'])->name('login');
-    Route::post('/login_check',[AccountController::class,'check_login'])->name('login.submit');
+Route::group(['prefix' => 'account'], function () {
+    Route::get('/login', [AccountController::class, 'login'])->name('login');
+    Route::post('/login_check', [AccountController::class, 'check_login'])->name('login.submit');
 
-    Route::get('/register',[AccountController::class,'register'])->name('register');
-    Route::post('/register_check',[AccountController::class,'check_register'])->name('register.submit');
+    Route::get('/register', [AccountController::class, 'register'])->name('register');
+    Route::post('/register_check', [AccountController::class, 'check_register'])->name('register.submit');
 
-    Route::get('/veryfy_account/{email}',[AccountController::class,'veryfy'])->name('veryfy');
-
-
+    Route::get('/veryfy_account/{email}', [AccountController::class, 'veryfy'])->name('veryfy');
 });
 
 Route::get('admin', function () {
     return view('admin.dashboard');
 });
-

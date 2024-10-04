@@ -233,7 +233,7 @@
                             </a>
                         </li>
                         <li class="header__account--items">
-                            <a class="header__account--btn" href="my-account.html">
+                            <a class="header__account--btn" href="{{route('login')}}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="26.51" height="23.443"
                                     viewBox="0 0 512 512">
                                     <path
