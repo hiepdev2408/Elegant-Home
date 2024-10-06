@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Mail\VerifyAccount;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Mail;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Mail;
+
 
 class AccountController extends Controller
 {
