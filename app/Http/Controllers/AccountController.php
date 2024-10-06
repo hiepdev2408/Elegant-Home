@@ -6,6 +6,7 @@ use App\Mail\VerifyAccount;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Mail;
+use Illuminate\Support\Facades\Password;
 
 class AccountController extends Controller
 {
@@ -84,4 +85,51 @@ class AccountController extends Controller
         User::where('email', $email)->update(['email_verified_at' => date('Y-m-d')]);
         return redirect()->route('login')->with('Xác nhận đăng ký thành công');
     }
+
+     public function showForgotPasswordForm()
+     {
+         return view('client.auth.passwords.email');
+     }
+ 
+     public function sendResetLinkEmail(Request $request)
+     {
+         $request->validate(['email' => 'required|email']);
+ 
+         $status = Password::sendResetLink($request->only('email'));
+ 
+         return $status == Password::RESET_LINK_SENT
+             ? back()->with('status', __($status))
+             : back()->withErrors(['email' => __($status)]);
+     }
+
+
+    public function showResetForm($token)
+    {
+        return view('client.auth.passwords.reset')->with(['token' => $token]);
+    }
+
+  
+    public function reset(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8',
+            'token' => 'required'
+        ],[
+            'password.min' => 'Mật khẩu phải tối thiểu 8 ký tự',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->password = bcrypt($password);
+                $user->save();
+            }
+        );
+
+        return $status == Password::PASSWORD_RESET
+            ? redirect()->route('login')->with('status', 'Đổi mật khẩu thành công')
+            : back()->withErrors(['email' => __($status)]);
+    }
+
 }

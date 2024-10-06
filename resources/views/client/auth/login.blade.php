@@ -21,6 +21,9 @@
                             @if (session('messageError'))
                                 <h4 class="text-danger">{{ session('messageError') }}</h4>
                             @endif
+                            @if (session('status'))
+                            <h4 class="text-danger">{{ session('status') }}</h4>
+                        @endif
                             <div class="account__login--inner">
 
                                 <label>
@@ -37,7 +40,25 @@
                                         <span style="color: red">{{ $message }}</span>
                                     @enderror
                                 </label>
-
+                                <div class="row">
+                                    
+                                        <div class="col-md-6 offset-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="remember" id="remember"
+                                                    {{ old('remember') ? 'checked' : '' }}>
+        
+                                                <label class="form-check-label" for="remember">
+                                                    {{ __('Remember Me') }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                   
+                                   
+                                        <div class="col-md-6 offset-md-4">
+                                        <a href="{{route('password.request')}}">Quên mật khẩu</a>
+                                        </div>
+                                  
+                                </div><br>
                                 <label>
                                     <button class="account__login--btn primary__btn mb-10" type="submit">Đăng Nhập</button>
                                 </label>
