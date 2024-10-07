@@ -47,15 +47,16 @@ trait TraitCRUD
     public function store(Request $request)
     {
         $data = $request->all();
-        // $data['is_active'] = $request->has('is_active');
+
+
+        $data['is_active'] = $request->has('is_active') ? 1 : 0; // Xử lý lại...
+
         foreach ($data as $key => $value) {
-            if (Str::startsWith($key, 'is_')) {
-                $data[$key] ??= 0;
-            }
             if (Str::startsWith($key, 'image_')) {
                 $data[$key] = Storage::put($this->model->getTable(), $request->file($key));
             }
         }
+
         $this->model->create($data);
         return redirect()->route($this->model->getTable() . '.index')->with('success', __('Thêm dữ liệu thành công'));
     }
@@ -95,7 +96,7 @@ trait TraitCRUD
 
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
-                $data[$key] = isset($value[$key]) ? 1 : 0;
+                $data[$key] ??= 0;
             }
             if (Str::startsWith($key, 'image_')) {
                 $data[$key] = $dataID->$key;
@@ -105,6 +106,8 @@ trait TraitCRUD
                 }
             }
         }
+
+
         $this->model->findOrFail($id)->update($data);
         return redirect()->route($this->model->getTable() . '.index')->with('success', __('Cập nhật dữ liệu thành công'));
     }

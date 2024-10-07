@@ -16,6 +16,7 @@ class UserController extends Controller
         //
         $data = User::query()->get();
         return view('admin.users.index', compact('data'));
+        // resources/views/admin/users/index.blade.php
     }
 
     /**
@@ -39,7 +40,8 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('admin.users.show', compact('user'));
     }
 
     /**
