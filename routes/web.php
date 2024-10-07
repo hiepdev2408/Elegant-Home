@@ -46,8 +46,6 @@ Route::get('/', function () {
     return view('client.home');
 });
 
-
-
 Route::group(['prefix' => 'account'], function () {
     Route::get('/login', [AccountController::class, 'login'])->name('login');
     Route::post('/login_check', [AccountController::class, 'check_login'])->name('login.submit');
