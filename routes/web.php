@@ -42,8 +42,3 @@ Route::prefix('admin')
 Route::get('/', function () {
     return view('client.home');
 });
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 010fe414820a173c97f3019b03c173ba7a07400e
