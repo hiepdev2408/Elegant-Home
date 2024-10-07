@@ -232,6 +232,7 @@
                                 <span class="visually-hidden">Search</span>
                             </a>
                         </li>
+                        @if (empty(Auth::check()))
                         <li class="header__account--items">
                             <a class="header__account--btn" href="{{route('login')}}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="26.51" height="23.443"
@@ -248,6 +249,28 @@
                                 <span class="visually-hidden">My Account</span>
                             </a>
                         </li>
+                        @else
+                        <li class="header__menu--items">
+                            <a class="header__menu--link " href="#">{{ Auth::user()->name }}<span
+                                    class="menu__plus--icon">+</span></a>
+                            <ul class="header__sub--menu">
+                                <li class="header__sub--menu__items"><a href="about.html"
+                                        class="header__sub--menu__link">About Us</a></li>
+                                <li class="header__sub--menu__items"><a href="contact.html"
+                                        class="header__sub--menu__link">Contact Us</a></li>
+                                <li class="header__sub--menu__items"><a href="cart.html"
+                                        class="header__sub--menu__link">Cart Page</a></li>
+                                <li class="header__sub--menu__items"><a href="portfolio.html"
+                                        class="header__sub--menu__link">Portfolio Page</a></li>
+                                <li class="header__sub--menu__items"><a href="wishlist.html"
+                                        class="header__sub--menu__link">Wishlist Page</a></li>
+                                <li class="header__sub--menu__items"><a href="login.html"
+                                        class="header__sub--menu__link">Login Page</a></li>
+                                <li class="header__sub--menu__items"><a href="404.html"
+                                        class="header__sub--menu__link">Error Page</a></li>
+                            </ul>
+                        </li>
+                        @endif
                         <li class="header__account--items d-md-none">
                             <a class="header__account--btn" href="wishlist.html">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24.526" height="21.82"
