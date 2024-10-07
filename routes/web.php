@@ -42,3 +42,4 @@ Route::prefix('admin')
 Route::get('/', function () {
     return view('client.home');
 });
+
