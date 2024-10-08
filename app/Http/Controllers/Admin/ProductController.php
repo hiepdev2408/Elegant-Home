@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +13,6 @@ class UserController extends Controller
     public function index()
     {
         //
-        $data = User::query()->get();
-        return view('admin.users.index', compact('data'));
-        // resources/views/admin/users/index.blade.php
     }
 
     /**
@@ -40,8 +36,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::findOrFail($id);
-        return view('admin.users.show', compact('user'));
+        //
     }
 
     /**

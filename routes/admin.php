@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\AccountController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\UserController;
+
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\UserController;
 
 use Illuminate\Support\Facades\Route;
 
