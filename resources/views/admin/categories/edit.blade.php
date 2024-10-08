@@ -13,7 +13,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('categories.update',$dataID->id) }}" method="POST">
+                        <form action="{{ route('categories.update', $dataID->id) }}" method="POST">
                             @csrf
                             @method('PUT')
 
@@ -21,7 +21,7 @@
                             <div class="mb-3">
                                 <label for="name" class="form-label">Tên danh mục</label>
                                 <input type="text" name="name" id="name" class="form-control"
-                                    placeholder="Nhập tên danh mục" value="{{$dataID->name}}" required>
+                                    placeholder="Nhập tên danh mục" value="{{ $dataID->name }}" required>
                             </div>
 
                             <!-- Danh mục cha -->
@@ -30,22 +30,18 @@
                                 <select name="parent_id" id="parent_id" class="form-select">
                                     <option value="">Chọn danh mục cha (nếu có)</option>
                                     @foreach ($data as $parent)
-                                        <option @selected($dataID->parent_id == $parent->id) value="{{ $parent->id }}">{{ $parent->name }}</option>
+                                        <option @selected($dataID->parent_id == $parent->id) value="{{ $parent->id }}">{{ $parent->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
 
                             <!-- Trạng thái kích hoạt -->
                             <div class="mb-3 form-check">
-<<<<<<< HEAD
-                            <input type="checkbox" name="is_active" id="is_active" class="form-check-input" value="1" @checked($dataID->is_active)>
-                            <label for="is_active" class="form-check-label">Kích hoạt danh mục</label>
-=======
+                                <input type="hidden" name="is_active" value="0">
                                 <input type="checkbox" name="is_active" id="is_active" class="form-check-input"
-                                @checked($dataID->is_active)
-                                    value="1" >
-                                <label for="is_active" class="form-check-label">Không kích hoạt danh mục</label>
->>>>>>> 1598c29d1e3f3ed1c1f72e820c94bc7a976bcf26
+                                    @checked($dataID->is_active) value="1">
+                                <label for="is_active" class="form-check-label">Kích hoạt danh mục</label>
                             </div>
 
                             <!-- Nút submit -->
