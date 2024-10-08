@@ -212,7 +212,7 @@
                                 </ul>
                             </li>
                             <li class="header__menu--items">
-                                <a class="header__menu--link" href="contact.html">Contact </a>
+                                <a class="header__menu--link" href="{{route('contact')}}">Contact </a>
                             </li>
                         </ul>
                     </nav>
@@ -421,7 +421,7 @@
                         </ul>
                     </li>
                     <li class="offcanvas__menu_li"><a class="offcanvas__menu_item" href="about.html">About</a></li>
-                    <li class="offcanvas__menu_li"><a class="offcanvas__menu_item" href="contact.html">Contact</a>
+                    <li class="offcanvas__menu_li"><a class="offcanvas__menu_item" href="{{route('contact')}}">Contact</a>
                     </li>
                 </ul>
                 <div class="offcanvas__account--items">

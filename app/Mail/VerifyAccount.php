@@ -39,7 +39,7 @@ class VerifyAccount extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'client.auth.passwords.email',
+            view: 'client.auth.verify',
         );
     }
 

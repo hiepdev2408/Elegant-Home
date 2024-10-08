@@ -1,12 +1,10 @@
-@extends('client.layouts.master')
+<h3>
+    {{ $account->name }}
+    <p>
+        Bạn vừa đăng ký tài khoản bên shop elegant-home của chúng tôi
+    </p>
+    <p>
+        <a href="{{ route('veryfy', $account->email) }}">Nhấn vào đây để xác nhận tài khoản</a>
+    </p>
+</h3>
 
-@section('content')
-<h3>hi:{{$account->name}}</h3>
-<p>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum necessitatibus sequi, saepe eaque delectus illum nulla sint neque corporis vel minus non hic tenetur quas distinctio numquam quod itaque illo.
-</p>
-<p>
-    <a href="">Nhấn để xác nhận tài khoản</a>
-</p>
-
-@endsection
