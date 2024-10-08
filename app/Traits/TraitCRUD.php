@@ -48,11 +48,11 @@ trait TraitCRUD
     {
         $data = $request->all();
 
-
-        $data['is_active'] = $request->has('is_active') ? 1 : 0; // Xử lý lại...
-
+        // dd($data);
         foreach ($data as $key => $value) {
-            if (Str::startsWith($key, 'image_')) {
+            if (Str::startsWith($key, 'is_')) {
+                $data[$key] = $request->input($key);
+            } elseif(Str::startsWith($key, 'img_') && $request->hasFile($key)){
                 $data[$key] = Storage::put($this->model->getTable(), $request->file($key));
             }
         }
@@ -96,9 +96,9 @@ trait TraitCRUD
 
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
-                $data[$key] ??= 0;
+                $data[$key] = $request->input($key);
             }
-            if (Str::startsWith($key, 'image_')) {
+            elseif(Str::startsWith($key, 'image_')) {
                 $data[$key] = $dataID->$key;
                 if ($request->hasFile($key)) {
                     Storage::delete($dataID[$key]);
