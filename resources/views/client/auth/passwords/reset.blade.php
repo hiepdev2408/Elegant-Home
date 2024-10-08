@@ -23,6 +23,9 @@
                             @endif
                             
                             <div class="account__login--inner">
+                                <label>
+                                    <input type="hidden" name="token" value="{{ $token }}">
+                                </label>
 
                                 <label>
                                     <input class="account__login--input" name="email" placeholder="Địa chỉ email"

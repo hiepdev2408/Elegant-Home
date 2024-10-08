@@ -13,9 +13,7 @@ class CategoryController extends Controller
     protected $relations = [
         'parent'
     ];
+
     public function __construct( protected Category $model){}
-
-
-
 
 }
