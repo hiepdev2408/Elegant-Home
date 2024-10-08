@@ -279,17 +279,17 @@
                 </li>
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <div data-i18n="Order">Order</div>
+                        <div data-i18n="Attribute"></div>
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a href="app-ecommerce-order-list.html" class="menu-link">
-                                <div data-i18n="Order List">Order List</div>
+                            <a href="{{ route('attributes.index') }}" class="menu-link">
+                                <div data-i18n="Danh sách thuộc tính">Danh sách thuộc tính</div>
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="app-ecommerce-order-details.html" class="menu-link">
-                                <div data-i18n="Order Details">Order Details</div>
+                            <a href="{{ route('attributes.create') }}" class="menu-link">
+                                <div data-i18n="Thêm thuộc tính">Thêm thuộc tính</div>
                             </a>
                         </li>
                     </ul>
