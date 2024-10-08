@@ -48,11 +48,11 @@ trait TraitCRUD
     {
         $data = $request->all();
 
-
-        $data['is_active'] = $request->has('is_active') ? 1 : 0; // Xử lý lại...
-
+        // dd($data);
         foreach ($data as $key => $value) {
-            if (Str::startsWith($key, 'image_')) {
+            if (Str::startsWith($key, 'is_')) {
+                $data[$key] = $request->input($key);
+            } elseif (Str::startsWith($key, 'img_') && $request->hasFile($key)) {
                 $data[$key] = Storage::put($this->model->getTable(), $request->file($key));
             }
         }
@@ -96,12 +96,11 @@ trait TraitCRUD
 
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
-                $data[$key] ??= 0;
-            }
-            if (Str::startsWith($key, 'image_')) {
+                $data[$key] = $request->input($key);
+            } elseif (Str::startsWith($key, 'img_')) {
                 $data[$key] = $dataID->$key;
                 if ($request->hasFile($key)) {
-                    Storage::delete($dataID[$key]);
+                    Storage::delete($dataID->$key);
                     $data[$key] = Storage::put($this->model->getTable(), $request->file($key));
                 }
             }
@@ -123,7 +122,13 @@ trait TraitCRUD
     }
     public function forceDelete($id)
     {
-        $this->model->withTrashed()->findOrFail($id)->forceDelete();
+
+        $dataID = $this->model->withTrashed()->findOrFail($id);
+
+        if (Storage::exists($dataID->img_path)) {
+            Storage::delete($dataID->img_path);
+        }
+        $dataID->forceDelete();
         return redirect()->back()->with('success', __('Xóa vĩnh viễn dữ liệu thành công'));
     }
 }

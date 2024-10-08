@@ -11,15 +11,15 @@ class Attribute extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'variant_id',
+        'category_id',
         'name',
     ];
 
-    public function variant(){
-        return $this->belongsTo(Variant::class);
+    public function category(){
+        return $this->belongsTo(Category::class);
     }
 
-    public function products(){
-        return $this->belongsToMany(Product::class);
+    public function values(){
+        return $this->hasMany(AttributeValue::class);
     }
 }

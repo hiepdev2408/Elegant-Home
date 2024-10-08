@@ -18,6 +18,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    const TYPE_ADMIN = 'admin';
+    const TYPE_MEMBER = 'member';
+
     protected $fillable = [
         'name',
         'email',
@@ -62,5 +65,9 @@ class User extends Authenticatable
 
     public function ward(){
         return $this->belongsTo(Ward::class, 'ward_id', 'code');
+    }
+
+    public function blogs(){
+        return $this->hasMany(Blog::class);
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('galleries', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(Product::class)->constrained();
-            $table->string('img_path')->nullable();
-            $table->softDeletes();
-            $table->timestamps();
+        Schema::create('product_variant_attribute_value', function (Blueprint $table) {
+            $table->foreignId('product_variant_id')->constrained();
+            $table->foreignId('attribute_value_id')->constrained();
+
+            $table->primary(['product_variant_id', 'attribute_value_id']);
         });
     }
 
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('galleries');
+        Schema::dropIfExists('product_variant_attribute_value');
     }
 };
