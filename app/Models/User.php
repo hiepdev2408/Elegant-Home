@@ -66,4 +66,8 @@ class User extends Authenticatable
     public function ward(){
         return $this->belongsTo(Ward::class, 'ward_id', 'code');
     }
+
+    public function blogs(){
+        return $this->hasMany(Blog::class);
+    }
 }
