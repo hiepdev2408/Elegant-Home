@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,16 @@ Route::post('/password/email', [AccountController::class, 'sendResetLinkEmail'])
 
 Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
 Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
+});
+
+
+
+
+
+
+Route::group(['prefix'=>'contact'],function(){
+Route::get('/contact',[ContactController::class,'contact'])->name('contact');
+Route::post('/contact_check',[ContactController::class,'contact_check'])->name('contact_check');
 });
 
 Route::get('admin', function () {
