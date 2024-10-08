@@ -23,7 +23,7 @@
     <!-- Start header area -->
     @include('client.layouts.partials.header')
     <!-- End header area -->
-    <div class="container">
+    <div class="container-fluid">
         @yield('content')
     </div>
 
