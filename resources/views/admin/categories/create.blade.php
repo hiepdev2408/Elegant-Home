@@ -1,3 +1,4 @@
+
 @extends('admin.layouts.master')
 @section('title')
     Thêm danh mục
@@ -49,6 +50,7 @@
                     </div>
                 </div>
             </div>
+           
         </div>
     </div>
 @endsection

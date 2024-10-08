@@ -1,11 +1,8 @@
 <?php
-
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
-
 use Illuminate\Support\Facades\Route;
-
 
 Route::get('/', function () {
     return view('client.home');

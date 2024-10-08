@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UserController;
 
@@ -37,6 +38,32 @@ Route::prefix('admin')
                 Route::delete('/forceDelete/{category}', [CategoryController::class, 'forceDelete'])
                     ->name('forceDelete');
                 Route::delete('/delete/{category}', [CategoryController::class, 'destroy'])
+                    ->name('destroy');
+            });
+
+        Route::prefix('blogs')
+            ->name('blogs.')
+            ->group(function () {
+                Route::get('/', [BlogController::class, 'index'])
+                    ->name('index');
+                Route::get('/delete', [BlogController::class, 'delete'])
+                    ->name('delete');
+                Route::get('/create', [BlogController::class, 'create'])
+                    ->name('create');
+                Route::post('/store', [BlogController::class, 'store'])
+                    ->name('store');
+                Route::get('/show/{blog}', [BlogController::class, 'show'])
+                    ->name('show');
+                Route::get('/edit/{blog}', [BlogController::class, 'edit'])
+                    ->name('edit');
+                Route::put('/update/{blog}', [BlogController::class, 'update'])
+                    ->name('update');
+
+                Route::post('/delete/{blog}', [BlogController::class, 'restore'])
+                    ->name('restore');
+                Route::delete('/forceDelete/{blog}', [BlogController::class, 'forceDelete'])
+                    ->name('forceDelete');
+                Route::delete('/delete/{blog}', [BlogController::class, 'destroy'])
                     ->name('destroy');
             });
         Route::get('index', function () {
