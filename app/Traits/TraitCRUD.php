@@ -49,12 +49,8 @@ trait TraitCRUD
     {
         $data = $request->all();
 
-<<<<<<< HEAD
-        $data['is_active'] = $request->has('is_active') ? 1 : 0; 
-
-=======
+        $data['is_active'] = $request->has('is_active') ? 1 : 0;
         // dd($data);
->>>>>>> 2e2e29cd9e71539570aca192687385728de467a4
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
                 $data[$key] = $request->input($key);

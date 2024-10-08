@@ -2,6 +2,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,11 +20,11 @@ Route::group(['prefix' => 'account'], function () {
     Route::get('/veryfy_account/{email}', [AccountController::class, 'veryfy'])->name('veryfy');
 
     Route::get('/password/forgot', [AccountController::class, 'showForgotPasswordForm'])->name('password.request');
-Route::post('/password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::post('/password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
 
 
-Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
-Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
+    Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
 });
 
 
@@ -31,10 +32,13 @@ Route::post('/password/reset', [AccountController::class, 'reset'])->name('passw
 
 
 
-Route::group(['prefix'=>'contact'],function(){
-Route::get('/contact',[ContactController::class,'contact'])->name('contact');
-Route::post('/contact_check',[ContactController::class,'contact_check'])->name('contact_check');
+Route::group(['prefix' => 'contact'], function () {
+    Route::get('/contact', [ContactFormController::class, 'contact'])->name('contact');
+    Route::post('/contact', [ContactFormController::class, 'submit'])->name('contact.submit');
 });
+
+
+
 
 Route::get('admin', function () {
     return view('admin.dashboard');
