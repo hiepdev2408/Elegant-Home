@@ -37,9 +37,10 @@
 
                             <!-- Trạng thái kích hoạt -->
                             <div class="mb-3 form-check">
+                                
                                 <input type="checkbox" name="is_active" id="is_active" class="form-check-input"
                                 @checked($dataID->is_active)
-                                    value="1" >
+                                    value="1">
                                 <label for="is_active" class="form-check-label">Kích hoạt danh mục</label>
                             </div>
 
