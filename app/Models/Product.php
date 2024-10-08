@@ -13,7 +13,6 @@ class Product extends Model
     protected $fillable = [
         'name',
         'slug',
-        'sku',
         'img_thumbnail',
         'price_regular',
         'price_sale',
@@ -42,7 +41,7 @@ class Product extends Model
         return $this->hasMany(Gallery::class);
     }
 
-    public function attributes(){
-        return $this->belongsToMany(Attribute::class);
+    public function variants(){
+        return $this->hasMany(ProductVariant::class);
     }
 }
