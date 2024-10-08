@@ -12,7 +12,7 @@ class Gallery extends Model
 
     protected $fillable = [
         'product_id',
-        'image_path',
+        'img_path',
     ];
 
     public function product(){
