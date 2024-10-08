@@ -218,24 +218,19 @@
                 <div data-i18n="eCommerce">eCommerce</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item active">
-                    <a href="app-ecommerce-dashboard.html" class="menu-link">
-                        <div data-i18n="Dashboard">Dashboard</div>
-                    </a>
-                </li>
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <div data-i18n="Categories">Categories</div>
+                        <div data-i18n="Danh mục">Danh mục</div>
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item">
                             <a href="{{ route('categories.index') }}" class="menu-link">
-                                <div data-i18n="Category List">Category List</div>
+                                <div data-i18n="Danh sách danh mục">Danh sách danh mục</div>
                             </a>
                         </li>
                         <li class="menu-item">
                             <a href="{{ route('categories.create') }}" class="menu-link">
-                                <div data-i18n="Add Category">Add Category</div>
+                                <div data-i18n="Thêm danh mục">Thêm danh mục</div>
                             </a>
                         </li>
 
@@ -266,17 +261,35 @@
                 </li>
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <div data-i18n="Order">Order</div>
+                        <div data-i18n="Blog">Bài viết</div>
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a href="app-ecommerce-order-list.html" class="menu-link">
-                                <div data-i18n="Order List">Order List</div>
+                            <a href="{{ route('blogs.index') }}" class="menu-link">
+                                <div data-i18n="Danh sách bài viết">Danh sách bài viết</div>
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="app-ecommerce-order-details.html" class="menu-link">
-                                <div data-i18n="Order Details">Order Details</div>
+                            <a href="{{ route('blogs.create') }}" class="menu-link">
+                                <div data-i18n="Thêm bài viết">Thêm bài viết</div>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <div data-i18n="Attribute"></div>
+                    </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item">
+                            <a href="{{ route('attributes.index') }}" class="menu-link">
+                                <div data-i18n="Danh sách thuộc tính">Danh sách thuộc tính</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="{{ route('attributes.create') }}" class="menu-link">
+                                <div data-i18n="Thêm thuộc tính">Thêm thuộc tính</div>
                             </a>
                         </li>
                     </ul>
@@ -451,7 +464,7 @@
             <ul class="menu-sub">
                 <li class="menu-item">
 
-                    <a href="{{route('users.index')}}" class="menu-link">
+                    <a href="{{ route('users.index') }}" class="menu-link">
 
                         <div data-i18n="List">List</div>
                     </a>

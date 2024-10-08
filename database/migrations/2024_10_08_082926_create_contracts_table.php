@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('galleries', function (Blueprint $table) {
+        Schema::create('contracts', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Product::class)->constrained();
-            $table->string('img_path')->nullable();
-            $table->softDeletes();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('phone_number');
+            $table->string('email');
+            $table->text('message');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('galleries');
+        Schema::dropIfExists('contracts');
     }
 };
