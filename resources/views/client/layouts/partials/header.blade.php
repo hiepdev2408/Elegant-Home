@@ -250,12 +250,12 @@
                             </a>
                         </li>
                         @else
+
                         <li class="header__menu--items">
                             <a class="header__menu--link " href="#">{{ Auth::user()->name }}<span
                                     class="menu__plus--icon">+</span></a>
                             <ul class="header__sub--menu">
-                                <li class="header__sub--menu__items"><a href="about.html"
-                                        class="header__sub--menu__link">About Us</a></li>
+                                <li class="header__sub--menu__items"><a href="{{ route('profile.show') }}" class="btn btn-primary">xem trang thông tin cá nhân</a></li>
                                 <li class="header__sub--menu__items"><a href="contact.html"
                                         class="header__sub--menu__link">Contact Us</a></li>
                                 <li class="header__sub--menu__items"><a href="cart.html"
@@ -267,10 +267,12 @@
                                 <li class="header__sub--menu__items"><a href="login.html"
                                         class="header__sub--menu__link">Login Page</a></li>
                                 <li class="header__sub--menu__items"><a href="404.html"
-                                        class="header__sub--menu__link">Error Page</a></li>
+                                        class="header__sub--menu__link">Đăng xuất</a></li>
                             </ul>
                         </li>
+
                         @endif
+
                         <li class="header__account--items d-md-none">
                             <a class="header__account--btn" href="wishlist.html">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24.526" height="21.82"
