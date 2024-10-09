@@ -1,53 +1,86 @@
 @extends('admin.layouts.master')
 @section('title')
-Thêm danh mục
+    Thêm danh mục
 @endsection
 
 @section('content')
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="text-center">Thêm Danh Mục Mới</h3>
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="py-3 mb-4">
+            <span class="text-muted fw-light">Danh Mục /</span><span> Thêm mới danh mục</span>
+        </h4>
+        <form action="{{ route('categories.store') }}" method="POST">
+            @csrf
+
+            <div class="app-ecommerce">
+                <!-- Add Product -->
+                <div
+                    class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
+                    <div class="d-flex flex-column justify-content-center">
+                        <h4 class="mb-1 mt-3">Thêm danh mục mới</h4>
+                        <p>Danh mục được đặt trên cửa hàng của bạn</p>
+                    </div>
+                    <div class="d-flex align-content-center flex-wrap gap-3">
+                        {{-- <button class="btn btn-outline-secondary">Hủy</button> --}}
+                        <button type="reset" class="btn btn-outline-primary">Nhập Lại</button>
+                        <button type="submit" class="btn btn-primary">
+                            Xuất bản
+                        </button>
+                    </div>
                 </div>
 
-                <div class="card-body">
-                    <form action="{{ route('categories.store') }}" method="POST">
-                        @csrf
-
-                        <!-- Tên danh mục -->
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Tên danh mục</label>
-                            <input type="text" name="name" id="name" class="form-control"
-                                placeholder="Nhập tên danh mục" required>
+                <div class="row">
+                    <!-- First column-->
+                    <div class="col-12 col-lg-8">
+                        <!-- Product Information -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="card-tile mb-0">Thông tin danh mục</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-floating form-floating-outline mb-4">
+                                    <select name="parent_id" id="parent_id" class="form-select">
+                                        <option value="">Chọn danh mục cha (nếu có)</option>
+                                        @foreach ($data as $parent)
+                                            <option value="{{ $parent->id }}">{{ $parent->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <label for="ecommerce-product-name">Danh mục cha</label>
+                                </div>
+                                <div class="form-floating form-floating-outline">
+                                    <input type="text" class="form-control" placeholder="Tên danh mục" name="name"
+                                        id="name" />
+                                    <label for="ecommerce-product-name">Tên danh mục</label>
+                                </div>
+                            </div>
                         </div>
-
-                        <!-- Danh mục cha -->
-                        <div class="mb-3">
-                            <label for="parent_id" class="form-label">Danh mục cha</label>
-                            <select name="parent_id" id="parent_id" class="form-select">
-                                <option value="">Chọn danh mục cha (nếu có)</option>
-                                @foreach ($data as $parent)
-                                <option value="{{ $parent->id }}">{{ $parent->name }}</option>
-                                @endforeach
-                            </select>
+                        <!-- /Product Information -->
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <!-- Product Information -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="card-tile mb-0">Trang Thái Danh Mục</h5>
+                            </div>
+                            <div class="card-body">
+                                <label class="switch switch-success">
+                                    <input type="hidden" name="is_active" value="0">
+                                    <input type="checkbox" name="is_active" class="switch-input" value="1" checked />
+                                    <span class="switch-toggle-slider">
+                                        <span class="switch-on"></span>
+                                        <span class="switch-off"></span>
+                                    </span>
+                                    <span class="switch-label">Kích Hoạt</span>
+                                </label>
+                            </div>
                         </div>
-
-                        <!-- Trạng thái kích hoạt -->
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" name="is_active" id="is_active" class="form-check-input" value="1" checked>
-                            <label for="is_active" class="form-check-label">Kích hoạt danh mục</label>
-                        </div>
-
-                        <!-- Nút submit -->
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary btn-block">Tạo danh mục</button>
-                        </div>
-                    </form>
+                        <!-- /Product Information -->
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
-</div>
+@endsection
+
+@section('script-libs')
+    <script src="{{ asset('themes') }}/admin/js/app-ecommerce-product-add.js"></script>
 @endsection

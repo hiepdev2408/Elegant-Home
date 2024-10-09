@@ -71,25 +71,16 @@
                 <div class="main__logo">
                     <h1 class="main__logo--title"><a class="main__logo--link" href="index.html"><img
                                 class="main__logo--img" src="{{ asset('themes') }}/client/img/logo/nav-log.webp"
-                                alt="logo-img"></a></h1>
+                                alt="logo-img" height="31px"></a></h1>
                 </div>
                 <div class="header__menu d-none d-lg-block">
                     <nav class="header__menu--navigation">
                         <ul class="d-flex">
                             <li class="header__menu--items">
-                                <a class="header__menu--link" href="index.html">Home <span
-                                        class="menu__plus--icon">+</span></a>
-                                <ul class="header__sub--menu">
-                                    <li class="header__sub--menu__items"><a href="index.html"
-                                            class="header__sub--menu__link">Home One</a></li>
-                                    <li class="header__sub--menu__items"><a href="index-2.html"
-                                            class="header__sub--menu__link">Home Two</a></li>
-                                    <li class="header__sub--menu__items"><a href="index-3.html"
-                                            class="header__sub--menu__link">Home Three</a></li>
-                                </ul>
+                                <a class="header__menu--link" href="/">Trang chủ </a>
                             </li>
                             <li class="header__menu--items mega__menu--items">
-                                <a class="header__menu--link" href="shop.html">Shop <span
+                                <a class="header__menu--link" href="shop.html">Sản phẩm <span
                                         class="menu__plus--icon">+</span></a>
                                 <ul class="header__mega--menu d-flex">
                                     <li class="header__mega--menu__li">
@@ -145,7 +136,8 @@
                                                     class="header__mega--sub__menu--title" href="404.html">404
                                                     Page</a></li>
                                             <li class="header__mega--sub__menu_li"><a
-                                                    class="header__mega--sub__menu--title" href="{{route('register')}}">register
+                                                    class="header__mega--sub__menu--title"
+                                                    href="{{ route('register') }}">register
                                                     Page</a></li>
                                             <li class="header__mega--sub__menu_li"><a
                                                     class="header__mega--sub__menu--title" href="faq.html">Faq
@@ -174,9 +166,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="header__menu--items">
-                                <a class="header__menu--link" href="about.html">About US </a>
-                            </li>
+
                             <li class="header__menu--items">
                                 <a class="header__menu--link" href="blog.html">Blog <span
                                         class="menu__plus--icon">+</span> </a>
@@ -192,27 +182,10 @@
                                 </ul>
                             </li>
                             <li class="header__menu--items">
-                                <a class="header__menu--link " href="#">Pages <span
-                                        class="menu__plus--icon">+</span></a>
-                                <ul class="header__sub--menu">
-                                    <li class="header__sub--menu__items"><a href="about.html"
-                                            class="header__sub--menu__link">About Us</a></li>
-                                    <li class="header__sub--menu__items"><a href="contact.html"
-                                            class="header__sub--menu__link">Contact Us</a></li>
-                                    <li class="header__sub--menu__items"><a href="cart.html"
-                                            class="header__sub--menu__link">Cart Page</a></li>
-                                    <li class="header__sub--menu__items"><a href="portfolio.html"
-                                            class="header__sub--menu__link">Portfolio Page</a></li>
-                                    <li class="header__sub--menu__items"><a href="wishlist.html"
-                                            class="header__sub--menu__link">Wishlist Page</a></li>
-                                    <li class="header__sub--menu__items"><a href="login.html"
-                                            class="header__sub--menu__link">Login Page</a></li>
-                                    <li class="header__sub--menu__items"><a href="404.html"
-                                            class="header__sub--menu__link">Error Page</a></li>
-                                </ul>
+                                <a class="header__menu--link" href="about.html">Về chúng tôi </a>
                             </li>
                             <li class="header__menu--items">
-                                <a class="header__menu--link" href="contact.html">Contact </a>
+                                <a class="header__menu--link" href="{{ route('contact') }}">Liên hệ </a>
                             </li>
                         </ul>
                     </nav>
@@ -233,43 +206,43 @@
                             </a>
                         </li>
                         @if (empty(Auth::check()))
-                        <li class="header__account--items">
-                            <a class="header__account--btn" href="{{route('login')}}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="26.51" height="23.443"
-                                    viewBox="0 0 512 512">
-                                    <path
-                                        d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z"
-                                        fill="none" stroke="currentColor" stroke-linecap="round"
-                                        stroke-linejoin="round" stroke-width="32" />
-                                    <path
-                                        d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z"
-                                        fill="none" stroke="currentColor" stroke-miterlimit="10"
-                                        stroke-width="32" />
-                                </svg>
-                                <span class="visually-hidden">My Account</span>
-                            </a>
-                        </li>
+                            <li class="header__account--items">
+                                <a class="header__account--btn" href="{{ route('login') }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="26.51" height="23.443"
+                                        viewBox="0 0 512 512">
+                                        <path
+                                            d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z"
+                                            fill="none" stroke="currentColor" stroke-linecap="round"
+                                            stroke-linejoin="round" stroke-width="32" />
+                                        <path
+                                            d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z"
+                                            fill="none" stroke="currentColor" stroke-miterlimit="10"
+                                            stroke-width="32" />
+                                    </svg>
+                                    <span class="visually-hidden">My Account</span>
+                                </a>
+                            </li>
                         @else
-                        <li class="header__menu--items">
-                            <a class="header__menu--link " href="#">{{ Auth::user()->name }}<span
-                                    class="menu__plus--icon">+</span></a>
-                            <ul class="header__sub--menu">
-                                <li class="header__sub--menu__items"><a href="about.html"
-                                        class="header__sub--menu__link">About Us</a></li>
-                                <li class="header__sub--menu__items"><a href="contact.html"
-                                        class="header__sub--menu__link">Contact Us</a></li>
-                                <li class="header__sub--menu__items"><a href="cart.html"
-                                        class="header__sub--menu__link">Cart Page</a></li>
-                                <li class="header__sub--menu__items"><a href="portfolio.html"
-                                        class="header__sub--menu__link">Portfolio Page</a></li>
-                                <li class="header__sub--menu__items"><a href="wishlist.html"
-                                        class="header__sub--menu__link">Wishlist Page</a></li>
-                                <li class="header__sub--menu__items"><a href="login.html"
-                                        class="header__sub--menu__link">Login Page</a></li>
-                                <li class="header__sub--menu__items"><a href="404.html"
-                                        class="header__sub--menu__link">Error Page</a></li>
-                            </ul>
-                        </li>
+                            <li class="header__menu--items">
+                                <a class="header__menu--link " href="#">{{ Auth::user()->name }}<span
+                                        class="menu__plus--icon">+</span></a>
+                                <ul class="header__sub--menu">
+                                    <li class="header__sub--menu__items"><a href="about.html"
+                                            class="header__sub--menu__link">About Us</a></li>
+                                    <li class="header__sub--menu__items"><a href="contact.html"
+                                            class="header__sub--menu__link">Contact Us</a></li>
+                                    <li class="header__sub--menu__items"><a href="cart.html"
+                                            class="header__sub--menu__link">Cart Page</a></li>
+                                    <li class="header__sub--menu__items"><a href="portfolio.html"
+                                            class="header__sub--menu__link">Portfolio Page</a></li>
+                                    <li class="header__sub--menu__items"><a href="wishlist.html"
+                                            class="header__sub--menu__link">Wishlist Page</a></li>
+                                    <li class="header__sub--menu__items"><a href="login.html"
+                                            class="header__sub--menu__link">Login Page</a></li>
+                                    <li class="header__sub--menu__items"><a href="404.html"
+                                            class="header__sub--menu__link">Error Page</a></li>
+                                </ul>
+                            </li>
                         @endif
                         <li class="header__account--items d-md-none">
                             <a class="header__account--btn" href="wishlist.html">
@@ -421,7 +394,8 @@
                         </ul>
                     </li>
                     <li class="offcanvas__menu_li"><a class="offcanvas__menu_item" href="about.html">About</a></li>
-                    <li class="offcanvas__menu_li"><a class="offcanvas__menu_item" href="contact.html">Contact</a>
+                    <li class="offcanvas__menu_li"><a class="offcanvas__menu_item"
+                            href="{{ route('contact') }}">Contact</a>
                     </li>
                 </ul>
                 <div class="offcanvas__account--items">

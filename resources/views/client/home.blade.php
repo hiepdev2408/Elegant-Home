@@ -1,4 +1,7 @@
 @extends('client.layouts.master')
+@section('title')
+    Trang Chủ
+@endsection
 @section('content')
     <main class="main__content_wrapper">
         <!-- Start slider section -->
@@ -12,13 +15,12 @@
                                     <div class="row row-cols-1">
                                         <div class="col">
                                             <div class="slider__content">
-                                                <p class="slider__content--desc desc1 text-white mb-15">Discover our best
-                                                    furniture collection from home</p>
-                                                <h2 class="slider__content--maintitle text-white h1">Stylish Furniture <br>
-                                                    Bring Beauti</h2>
-                                                <p class="slider__content--desc text-white mb-35 d-sm-2-none">Great
-                                                    furniture can bring beauty at your home, So buy our popular <br>
-                                                    and stylish furniture. Now you get up to 100 % discount now.</p>
+                                                <p class="slider__content--desc desc1 text-white mb-15">Khám phá bộ sưu tập đồ nội thất tốt nhất của chúng tôi
+                                                   từ nhà</p>
+                                                <h2 class="slider__content--maintitle text-white h1">Đồ nội thất phong cách <br>
+                                                    Mang đến vẻ đẹp</h2>
+                                                <p class="slider__content--desc text-white mb-35 d-sm-2-none">Đồ nội thất tuyệt vời có thể mang lại vẻ đẹp cho ngôi nhà của bạn, vì vậy hãy mua sản phẩm phổ biến của chúng tôi <br>
+                                                    và đồ nội thất thời trang. Bây giờ bạn được giảm giá tới 100%.</p>
                                                 <a class="slider__content--btn primary__btn" href="shop.html">Start to
                                                     Buying</a>
                                             </div>
@@ -35,13 +37,11 @@
                                     <div class="row">
                                         <div class="col-lg-6 offset-lg-6">
                                             <div class="slider__content text-center">
-                                                <p class="slider__content--desc desc1 right text-white mb-15">Discover our
-                                                    best furniture collection from home</p>
-                                                <h2 class="slider__content--maintitle text-white h1">Stylish Furniture <br>
-                                                    Bring Beauti</h2>
-                                                <p class="slider__content--desc text-white mb-35 d-sm-2-none">Great
-                                                    furniture can bring beauty at your home, So buy our popular <br>
-                                                    and stylish furniture. Now you get up to 100 % discount now.</p>
+                                                <p class="slider__content--desc desc1 right text-white mb-15">Khám phá bộ sưu tập đồ nội thất tốt nhất của chúng tôi từ nhà</p>
+                                                <h2 class="slider__content--maintitle text-white h1">Nội thất thời trang <br>
+                                                    Mang lại vẻ đẹp</h2>
+                                                <p class="slider__content--desc text-white mb-35 d-sm-2-none">Đồ nội thất tuyệt vời có thể mang lại vẻ đẹp cho ngôi nhà của bạn, vì vậy hãy mua sản phẩm phổ biến của chúng tôi <br>
+                                                    và đồ nội thất thời trang. Bây giờ bạn được giảm giá tới 100% ngay bây giờ.</p>
                                                 <a class="slider__content--btn primary__btn" href="shop.html">Start to
                                                     Buying</a>
                                             </div>
@@ -58,13 +58,11 @@
                                     <div class="row row-cols-1">
                                         <div class="col">
                                             <div class="slider__content">
-                                                <p class="slider__content--desc desc1 text-white mb-15">Discover our best
-                                                    furniture collection from home</p>
-                                                <h2 class="slider__content--maintitle text-white h1">Stylish Furniture <br>
-                                                    Bring Beauti</h2>
-                                                <p class="slider__content--desc text-white mb-35 d-sm-2-none">Great
-                                                    furniture can bring beauty at your home, So buy our popular <br>
-                                                    and stylish furniture. Now you get up to 100 % discount now.</p>
+                                                <p class="slider__content--desc desc1 text-white mb-15">Khám phá bộ sưu tập đồ nội thất tốt nhất của chúng tôi từ nhà</p>
+                                                <h2 class="slider__content--maintitle text-white h1">Nội thất thời trang <br>
+                                                    Mang lại vẻ đẹp</h2>
+                                                <p class="slider__content--desc text-white mb-35 d-sm-2-none">Đồ nội thất tuyệt vời có thể mang lại vẻ đẹp cho ngôi nhà của bạn, vì vậy hãy mua sản phẩm phổ biến của chúng tôi <br>
+                                                    và đồ nội thất thời trang. Bây giờ bạn được giảm giá tới 100%.</p>
                                                 <a class="slider__content--btn primary__btn" href="shop.html">Start to
                                                     Buying</a>
                                             </div>

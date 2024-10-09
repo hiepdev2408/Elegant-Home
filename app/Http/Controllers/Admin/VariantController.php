@@ -11,7 +11,7 @@ class VariantController extends Controller
 {
     use TraitCRUD;
 
-    public function __construct( protected Variant $model){
+    public function __construct(){
 
     }
 }
