@@ -15,8 +15,7 @@
     <meta name="keywords"
         content="dashboard, material, material design, bootstrap 5 dashboard, bootstrap 5 design, bootstrap 5">
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon"
-        href="https://demos.themeselection.com/materio-aspnet-core-mvc-admin-template/assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('themes') }}/admin/img/logo/logo.png" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/">
