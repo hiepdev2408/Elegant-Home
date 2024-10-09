@@ -47,7 +47,7 @@ trait TraitCRUD
     public function store(Request $request)
     {
         $data = $request->all();
-
+      
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
                 $data[$key] = $request->input($key);
