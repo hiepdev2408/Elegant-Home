@@ -42,6 +42,15 @@
                 <div data-i18n="Trò chuyện">Trò chuyện</div>
             </a>
         </li>
+
+        <li class="menu-item">
+            <a href="{{ route('contact.index') }}" class="menu-link">
+                <i class='menu-icon tf-icons mdi mdi-card-account-phone'></i>
+                <div data-i18n="Liên Hệ">Liên Hệ</div>
+                <div class="badge bg-danger rounded-pill ms-auto">{{ $countContact }}</div>
+            </a>
+        </li>
+
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons mdi mdi-notebook-outline'></i>

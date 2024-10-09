@@ -19,9 +19,9 @@
             <p>Bạn nhận được 1 liên hệ mới từ website của bạn</p>
         </div>
         <table class="content">
-            <p><span class="label">Tên:</span> {{ $formData['firstname'] }}</p>
-            <p><span class="label">Họ:</span> {{ $formData['lastname'] }}</p>
-            <p><span class="label">Số điện thoại:</span> {{ $formData['number'] }}</p>
+            <p><span class="label">Tên:</span> {{ $formData['first_name'] }}</p>
+            <p><span class="label">Họ:</span> {{ $formData['last_name'] }}</p>
+            <p><span class="label">Số điện thoại:</span> {{ $formData['phone_number'] }}</p>
             <p><span class="label">Email:</span> {{ $formData['email'] }}</p>
             <p><span class="label">Tin nhắn:</span></p>
             <p>{{ $formData['message'] }}</p>
