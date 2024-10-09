@@ -2,6 +2,8 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,8 +27,14 @@ Route::get('/profile', [ProfileController::class, 'show'])->middleware('auth')->
 Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile/update/{id}', [ProfileController::class,'update'])->name('profile.update');
 
-Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
-Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
+    Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
+});
+
+Route::group(['prefix' => 'contact'], function () {
+    Route::get('/contact', [ContactFormController::class, 'contact'])->name('contact');
+    Route::post('/contact', [ContactFormController::class, 'submit'])->name('contact.submit');
+
 });
 
 Route::get('admin', function () {

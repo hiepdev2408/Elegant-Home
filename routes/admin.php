@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UserController;
@@ -66,7 +66,26 @@ Route::prefix('admin')
                 Route::delete('/delete/{blog}', [BlogController::class, 'destroy'])
                     ->name('destroy');
             });
+        Route::prefix('attributes')
+            ->as('attributes.')
+            ->group(function () {
+                Route::get('/', [AttributeController::class, 'index'])->name('index');
+                Route::get('create', [AttributeController::class, 'create'])->name('create');
+                Route::post('store', [AttributeController::class, 'store'])->name('store');
+                Route::get('edit/{id}', [AttributeController::class, 'edit'])->name('edit');
+                Route::put('update/{id}', [AttributeController::class, 'update'])->name('update');
+                Route::delete('destroy/{id}', [AttributeController::class, 'destroy'])->name('destroy');
+
+                Route::get('listDestroy', [AttributeController::class, 'delete'])->name('delete');
+                // Hiển thị danh sách xóa
+        
+                Route::post('restore/{id}', [AttributeController::class, 'restore'])->name('restore');
+                Route::delete('forceDelete/{id}', [AttributeController::class, 'forceDelete'])->name('forceDelete');
+            });
         Route::get('index', function () {
             return view('admin.products.index');
         })->name('product.index');
+        Route::get('/chat', function () {
+            return view('admin.chat.index');
+        })->name('chat');
     });
