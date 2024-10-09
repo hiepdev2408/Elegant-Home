@@ -27,18 +27,11 @@ Route::group(['prefix' => 'account'], function () {
     Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
 });
 
-
-
-
-
-
 Route::group(['prefix' => 'contact'], function () {
     Route::get('/contact', [ContactFormController::class, 'contact'])->name('contact');
     Route::post('/contact', [ContactFormController::class, 'submit'])->name('contact.submit');
+
 });
-
-
-
 
 Route::get('admin', function () {
     return view('admin.dashboard');

@@ -40,7 +40,6 @@ trait TraitCRUD
             ->when(!empty($this->relations), function (Builder $query) {
                 $query->with($this->relations);
             })
-
             ->get();
 
         return view('admin.' . $this->model->getTable() . '.' . __FUNCTION__, compact('data'));
@@ -48,9 +47,7 @@ trait TraitCRUD
     public function store(Request $request)
     {
         $data = $request->all();
-
-        $data['is_active'] = $request->has('is_active') ? 1 : 0;
-        // dd($data);
+      
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
                 $data[$key] = $request->input($key);
