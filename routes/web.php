@@ -26,11 +26,6 @@ Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'
 Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
 });
 
-
-
-
-
-
 Route::group(['prefix'=>'contact'],function(){
 Route::get('/contact',[ContactController::class,'contact'])->name('contact');
 Route::post('/contact_check',[ContactController::class,'contact_check'])->name('contact_check');
