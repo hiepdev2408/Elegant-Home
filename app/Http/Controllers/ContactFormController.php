@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ContactFormMail;
+use App\Models\Contract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class ContactFormController extends Controller
 {
+    public function index()
+    {
+        $data = Contract::query()->get();
+        return view('admin.contacts.index', compact('data'));
+    }
     public function contact()
     {
         return view('client.emails.contact');
@@ -17,22 +23,29 @@ class ContactFormController extends Controller
         // dd($request->all());
 
         $validatedData = $request->validate([
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'number' => 'required|string|max:15',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:15',
             'email' => 'required|email|max:255',
             'message' => 'required|string',
         ], [
-            'firstname.required' => 'Vui lòng nhập tên.',
-            'lastname.required' => 'Vui lòng nhập họ.',
-            'number.required' => 'Vui lòng nhập số điện thoại.',
+            'first_name.required' => 'Vui lòng nhập tên.',
+            'last_name.required' => 'Vui lòng nhập họ.',
+            'phone_number.required' => 'Vui lòng nhập số điện thoại.',
             'email.required' => 'Vui lòng nhập địa chỉ email.',
             'message.required' => 'Vui lòng nhập tin nhắn.',
         ]);
-
+        Contract::query()->create($validatedData);
         // gửi tới mail quản trị
         Mail::to('nguyenduong0782004@gmail.com')->send(new ContactFormMail($validatedData));
 
         return redirect()->back()->with('success', 'Tin nhắn của bạn đã được gửi thành công!');
+    }
+
+    public function destroy(string $id)
+    {
+        $data = Contract::query()->findOrFail($id);
+        $data->delete();
+        return back()->with('success', 'Xóa thành công');
     }
 }

@@ -3,16 +3,16 @@
 use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
-
+use App\Http\Controllers\ContactFormController;
+use App\Mail\ContactFormMail;
 use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('admin')
     ->group(function () {
-        Route::get('/', function () {
-            return view(view: 'admin.dashboard');
-        });
+        Route::get('/', [DashboardController::class, 'dashboard']);
         Route::resource('users', UserController::class);
 
         Route::prefix('categories')
@@ -82,6 +82,15 @@ Route::prefix('admin')
                 Route::post('restore/{id}', [AttributeController::class, 'restore'])->name('restore');
                 Route::delete('forceDelete/{id}', [AttributeController::class, 'forceDelete'])->name('forceDelete');
             });
+
+        // Contact
+        Route::prefix('contact')
+            ->as('contact.')
+            ->group(function () {
+            Route::get('/', [ContactFormController::class, 'index'])->name('index');
+            Route::delete('destroy/{id}', [ContactFormController::class, 'destroy'])->name('destroy');
+        });
+
         Route::get('index', function () {
             return view('admin.products.index');
         })->name('product.index');
