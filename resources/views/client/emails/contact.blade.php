@@ -180,10 +180,10 @@
                                         <div class="contact__form--list mb-20">
                                             <label class="contact__form--label" for="input1">Tên <span
                                                     class="contact__form--label__star">*</span></label>
-                                            <input class="contact__form--input" name="firstname" id="input1"
+                                            <input class="contact__form--input" name="first_name" id="input1"
                                                 placeholder="Tên của bạn" type="text">
-                                            @if ($errors->has('firstname'))
-                                                <small class="text-danger">{{ $errors->first('firstname') }}</small>
+                                            @if ($errors->has('first_name'))
+                                                <small class="text-danger">{{ $errors->first('first_name') }}</small>
                                             @endif
                                         </div>
                                     </div>
@@ -191,10 +191,10 @@
                                         <div class="contact__form--list mb-20">
                                             <label class="contact__form--label" for="input2">Họ <span
                                                     class="contact__form--label__star">*</span></label>
-                                            <input class="contact__form--input" name="lastname" id="input2"
+                                            <input class="contact__form--input" name="last_name" id="input2"
                                                 placeholder="Họ của bạn" type="text">
-                                            @if ($errors->has('lastname'))
-                                                <small class="text-danger">{{ $errors->first('lastname') }}</small>
+                                            @if ($errors->has('last_name'))
+                                                <small class="text-danger">{{ $errors->first('last_name') }}</small>
                                             @endif
                                         </div>
                                     </div>
@@ -202,10 +202,10 @@
                                         <div class="contact__form--list mb-20">
                                             <label class="contact__form--label" for="input3">Số điện thoại <span
                                                     class="contact__form--label__star">*</span></label>
-                                            <input class="contact__form--input" name="number" id="input3"
+                                            <input class="contact__form--input" name="phone_number" id="input3"
                                                 placeholder="Số điện thoại" type="text">
-                                            @if ($errors->has('number'))
-                                                <small class="text-danger">{{ $errors->first('number') }}</small>
+                                            @if ($errors->has('phone_number'))
+                                                <small class="text-danger">{{ $errors->first('phone_number') }}</small>
                                             @endif
                                         </div>
                                     </div>
