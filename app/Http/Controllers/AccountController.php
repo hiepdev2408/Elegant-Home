@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\VerifyAccount;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Mail;
 
@@ -91,13 +92,13 @@ class AccountController extends Controller
      {
          return view('client.auth.passwords.email');
      }
- 
+
      public function sendResetLinkEmail(Request $request)
      {
          $request->validate(['email' => 'required|email']);
- 
+
          $status = Password::sendResetLink($request->only('email'));
- 
+
          return $status == Password::RESET_LINK_SENT
              ? back()->with('status', __($status))
              : back()->withErrors(['email' => __($status)]);
@@ -109,7 +110,7 @@ class AccountController extends Controller
         return view('client.auth.passwords.reset')->with(['token' => $token]);
     }
 
-  
+
     public function reset(Request $request)
     {
         $request->validate([
@@ -131,6 +132,14 @@ class AccountController extends Controller
         return $status == Password::PASSWORD_RESET
             ? redirect()->route('login')->with('status', 'Đổi mật khẩu thành công')
             : back()->withErrors(['email' => __($status)]);
+    }
+    public function logout()
+    {
+        Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        return redirect('/')
+            ->with('success', 'Đăng xuất thành công!');
     }
 
 }

@@ -70,4 +70,12 @@ class User extends Authenticatable
     public function blogs(){
         return $this->hasMany(Blog::class);
     }
+    public function isAdmin()
+    {
+        return $this->type == self::TYPE_ADMIN;
+    }
+    public function isMember()
+    {
+        return $this->type == self::TYPE_MEMBER;
+    }
 }

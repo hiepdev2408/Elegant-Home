@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('admin')
+    ->middleware(['auth', 'admin'])
     ->group(function () {
         Route::get('/', function () {
             return view(view: 'admin.dashboard');
-        });
+        })->name('admin');
         Route::resource('users', UserController::class);
 
         Route::prefix('categories')

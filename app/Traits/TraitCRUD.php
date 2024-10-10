@@ -41,7 +41,6 @@ trait TraitCRUD
                 $query->with($this->relations);
             })
             ->get();
-
         return view('admin.' . $this->model->getTable() . '.' . __FUNCTION__, compact('data'));
     }
     public function store(Request $request)
@@ -67,7 +66,7 @@ trait TraitCRUD
                 $query->with($this->relations);
             })
             ->get();
-        $data = $this->model
+        $dataID = $this->model
             ->when(!empty($this->relations), function (Builder $query) {
                 $query->with($this->relations);
             })
