@@ -69,7 +69,7 @@
                     </a>
                 </div>
                 <div class="main__logo">
-                    <h1 class="main__logo--title"><a class="main__logo--link" href="index.html"><img
+                    <h1 class="main__logo--title"><a class="main__logo--link" href="{{ route('home') }}"><img
                                 class="main__logo--img" src="{{ asset('themes') }}/client/img/logo/nav-log.webp"
                                 alt="logo-img" height="31px"></a></h1>
                 </div>
@@ -227,7 +227,7 @@
                                 <a class="header__menu--link " href="#">{{ Auth::user()->name }}<span
                                         class="menu__plus--icon">+</span></a>
                                 <ul class="header__sub--menu">
-                                    <li class="header__sub--menu__items"><a href="about.html"
+                                    <li class="header__sub--menu__items"><a href="{{ route('profile.show') }}"
                                             class="header__sub--menu__link">Thông tin cá nhân</a></li>
                                     <li class="header__sub--menu__items"><a href="about.html"
                                             class="header__sub--menu__link">Đơn hàng</a></li>
