@@ -49,6 +49,7 @@
                                             onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết này không?')">Xóa Vĩnh Viễn</button>
                                     </form>
                                 </div>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

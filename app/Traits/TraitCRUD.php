@@ -46,8 +46,7 @@ trait TraitCRUD
     public function store(Request $request)
     {
         $data = $request->all();
-
-        // dd($data);
+      
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
                 $data[$key] = $request->input($key);
@@ -105,7 +104,6 @@ trait TraitCRUD
             }
         }
 
-
         $this->model->findOrFail($id)->update($data);
         return redirect()->route($this->model->getTable() . '.index')->with('success', __('Cập nhật dữ liệu thành công'));
     }
@@ -124,9 +122,9 @@ trait TraitCRUD
 
         $dataID = $this->model->withTrashed()->findOrFail($id);
 
-        if (Storage::exists($dataID->img_path)) {
-            Storage::delete($dataID->img_path);
-        }
+        // if (Storage::exists($dataID->img_path)) {
+        //     Storage::delete($dataID->img_path);
+        // }
         $dataID->forceDelete();
         return redirect()->back()->with('success', __('Xóa vĩnh viễn dữ liệu thành công'));
     }

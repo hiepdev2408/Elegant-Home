@@ -113,6 +113,7 @@ class AccountController extends Controller
 
     public function reset(Request $request)
     {
+       
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|confirmed|min:8',
@@ -120,6 +121,7 @@ class AccountController extends Controller
         ],[
             'password.min' => 'Mật khẩu phải tối thiểu 8 ký tự',
         ]);
+        
 
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
@@ -128,10 +130,13 @@ class AccountController extends Controller
                 $user->save();
             }
         );
+        
 
         return $status == Password::PASSWORD_RESET
             ? redirect()->route('login')->with('status', 'Đổi mật khẩu thành công')
             : back()->withErrors(['email' => __($status)]);
+
+            
     }
     public function logout()
     {
