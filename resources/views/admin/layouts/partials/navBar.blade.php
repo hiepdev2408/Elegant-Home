@@ -392,7 +392,7 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-0">John Doe</h6>
+                                    <h6 class="mb-0">{{ Auth::user()->name }}</h6>
                                     <small class="text-muted">Admin</small>
                                 </div>
                             </div>
@@ -403,7 +403,7 @@
                     </li>
                     <li>
                         <a class="dropdown-item" href="pages-profile-user.html">
-                            <i class="mdi mdi-account-outline me-1 mdi-20px"></i>
+
                             <span class="align-middle">My Profile</span>
                         </a>
                     </li>
@@ -413,16 +413,7 @@
                             <span class="align-middle">Settings</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="dropdown-item" href="pages-account-settings-billing.html">
-                            <span class="d-flex align-items-center align-middle">
-                                <i class="flex-shrink-0 mdi mdi-credit-card-outline me-1 mdi-20px"></i>
-                                <span class="flex-grow-1 align-middle ms-1">Billing</span>
-                                <span
-                                    class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                            </span>
-                        </a>
-                    </li>
+
                     <li>
                         <div class="dropdown-divider"></div>
                     </li>
@@ -442,7 +433,17 @@
                         <div class="dropdown-divider my-1"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="auth-login-cover.html" target="_blank">
+                        <a class="dropdown-item" href="{{ route('home') }}">
+                            <span class="d-flex align-items-center align-middle">
+                                <i class="mdi mdi-logout me-1 mdi-20px"></i>
+                                <span class="flex-grow-1 align-middle ms-1">Quay lại trang người dùng</span>
+                                <span
+                                    class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('logout') }}" target="_blank">
                             <i class="mdi mdi-logout me-1 mdi-20px"></i>
                             <span class="align-middle">Log Out</span>
                         </a>

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('client.home');
-});
+})->name('home');
 
 Route::group(['prefix' => 'account'], function () {
     Route::get('/login', [AccountController::class, 'login'])->name('login');
@@ -14,6 +14,10 @@ Route::group(['prefix' => 'account'], function () {
 
     Route::get('/register', [AccountController::class, 'register'])->name('register');
     Route::post('/register_check', [AccountController::class, 'check_register'])->name('register.submit');
+
+    //Logout
+    Route::get('/logout', [AccountController::class, 'logout'])->name('logout');
+
 
     Route::get('/veryfy_account/{email}', [AccountController::class, 'veryfy'])->name('veryfy');
 
@@ -34,6 +38,4 @@ Route::group(['prefix' => 'contact'], function () {
 
 });
 
-Route::get('admin', function () {
-    return view('admin.dashboard');
-});
+
