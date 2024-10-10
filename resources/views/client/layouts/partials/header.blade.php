@@ -223,25 +223,22 @@
                                 </a>
                             </li>
                         @else
-                        <li class="header__menu--items">
-                            <a class="header__menu--link " href="#">{{ Auth::user()->name }}<span
-                                    class="menu__plus--icon">+</span></a>
-                            <ul class="header__sub--menu">
-                                <li class="header__sub--menu__items"><a href="{{ route('profile.show') }}" class="btn btn-primary">xem trang thông tin cá nhân</a></li>
-                                <li class="header__sub--menu__items"><a href="contact.html"
-                                        class="header__sub--menu__link">Contact Us</a></li>
-                                <li class="header__sub--menu__items"><a href="cart.html"
-                                        class="header__sub--menu__link">Cart Page</a></li>
-                                <li class="header__sub--menu__items"><a href="portfolio.html"
-                                        class="header__sub--menu__link">Portfolio Page</a></li>
-                                <li class="header__sub--menu__items"><a href="wishlist.html"
-                                        class="header__sub--menu__link">Wishlist Page</a></li>
-                                <li class="header__sub--menu__items"><a href="login.html"
-                                        class="header__sub--menu__link">Login Page</a></li>
-                                <li class="header__sub--menu__items"><a href="404.html"
-                                        class="header__sub--menu__link">Đăng xuất</a></li>
-                            </ul>
-                        </li>
+                            <li class="header__menu--items">
+                                <a class="header__menu--link " href="#">{{ Auth::user()->name }}<span
+                                        class="menu__plus--icon">+</span></a>
+                                <ul class="header__sub--menu">
+                                    <li class="header__sub--menu__items"><a href="about.html"
+                                            class="header__sub--menu__link">Thông tin cá nhân</a></li>
+                                    <li class="header__sub--menu__items"><a href="about.html"
+                                            class="header__sub--menu__link">Đơn hàng</a></li>
+                                    @if (Auth::user()->isAdmin())
+                                        <li class="header__sub--menu__items"><a href="{{ route('admin') }}"
+                                                class="header__sub--menu__link">Trang quảng trị</a></li>
+                                    @endif
+                                    <li class="header__sub--menu__items"><a href="{{ route('logout') }}"
+                                            class="header__sub--menu__link">Đăng xuất</a></li>
+                                </ul>
+                            </li>
                         @endif
 
                         <li class="header__account--items d-md-none">
