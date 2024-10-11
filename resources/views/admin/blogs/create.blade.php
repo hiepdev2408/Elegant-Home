@@ -18,11 +18,11 @@
                 <input type="text" class="form-control" id="title" name="title" placeholder="Tiêu đề">
             </div>
 
-            <!-- Slug -->
+            {{-- <!-- Slug -->
             <div class="mb-3">
                 <label for="slug" class="form-label">Slug</label>
                 <input type="text" class="form-control" id="slug" name="slug" placeholder="Enter blog slug">
-            </div>
+            </div> --}}
 
             <!-- Image -->
             <div class="mb-3">
@@ -33,11 +33,17 @@
             <!-- Content -->
             <div class="mb-3">
                 <label for="content" class="form-label">Nội dung</label>
-                <textarea class="form-control" id="content" name="content" rows="5" placeholder="Nội dung"></textarea>
+                <textarea class="form-control" id="content" name="content" rows="15" placeholder="Nội dung"></textarea>
             </div>
 
             <!-- Submit button -->
             <button type="submit" class="btn btn-primary">Thêm bài viết</button>
         </form>
     </div>
+@endsection
+@section('script-libs')
+    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('content');
+    </script>
 @endsection
