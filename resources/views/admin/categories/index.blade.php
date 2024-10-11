@@ -32,7 +32,7 @@
                     style="width:100%">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>STT</th>
                             <th>Tên danh mục</th>
                             <th>Danh mục cha</th>
                             <th>Trạng thái</th>
@@ -40,39 +40,37 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data as $category)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $category->name }}</td>
-                                <td>
-                                    {{ $category->parent ? $category->parent->name : 'Không có' }}
-                                </td>
-                                <td>
-                                    <span class="badge {{ $category->is_active ? 'bg-success' : 'bg-danger' }}">
-                                        {{ $category->is_active ? 'Kích hoạt' : 'Không kích hoạt' }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="{{ route('categories.edit', $category->id) }}"
-                                        class="btn btn-primary btn-sm">Sửa</a>
+                        @php $stt = 1; @endphp
+                        @foreach ($data as  $category)
+                            @if (is_null($category->parent))
+                                <!-- Kiểm tra xem đây có phải danh mục cha không -->
+                                <tr>
+                                    <td>{{ $stt ++ }}</td>
+                                    <td>{{ $category->name }}</td>
+                                    <td>Không có</td>
+                                    <td>
+                                        <span class="badge {{ $category->is_active ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $category->is_active ? 'Kích hoạt' : 'Không kích hoạt' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('categories.edit', $category->id) }}"
+                                            class="btn btn-primary btn-sm">Sửa</a>
 
-                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
-                                        class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không?')">Xóa</button>
-                                    </form>
-                                </td>
-                            </tr>
-
-                            <!-- Danh sách danh mục con nếu có -->
-                            @if ($category->children)
+                                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không?')">Xóa</button>
+                                        </form>
+                                    </td>
+                                </tr>
                                 @foreach ($category->children as $child)
                                     <tr>
-                                        <td>—</td>
-                                        <td>{{ $child->name }}</td>
-                                        <td>{{ $category->name }}</td>
+                                        <td>--</td>
+                                        <td>{{ $child->name }}</td> <!-- Thêm dấu gạch ngang để phân biệt -->
+                                        <td>{{ $category->name }}</td> <!-- Tên danh mục cha -->
                                         <td>
                                             <span class="badge {{ $child->is_active ? 'bg-success' : 'bg-danger' }}">
                                                 {{ $child->is_active ? 'Kích hoạt' : 'Không kích hoạt' }}
@@ -127,10 +125,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
     <script>
-        new DataTable("#example", {
-            order: [
-                [0, 'desc']
-            ]
-        });
+        // new DataTable("#example", {
+        //     order: [
+        //         [1, 'asc']
+        //     ]
+        // });
     </script>
 @endsection
