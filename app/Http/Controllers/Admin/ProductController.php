@@ -108,7 +108,7 @@ class ProductController extends Controller
 
             },1);
 
-            return redirect()->route('products.index')->with('success', 'Thao tác thành công!');
+            return redirect()->route('products.index')->with('success', 'Thêm mới thành công!');
         } catch (\Exception $exception) {
             dd($exception->getMessage());
 
