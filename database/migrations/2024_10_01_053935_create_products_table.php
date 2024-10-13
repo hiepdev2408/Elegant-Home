@@ -16,11 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('img_thumbnail')->nullable();
-            $table->double('price_regular');
-            $table->double('price_sale')->nullable();
             $table->string('description')->nullable();
+            $table->text('user_manual')->nullable();
             $table->text('content')->nullable();
-            $table->string('material')->nullable();
             $table->unsignedBigInteger('view')->default(0);
 
             // Trạng thái sản phẩm
