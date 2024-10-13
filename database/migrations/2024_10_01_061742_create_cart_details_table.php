@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Cart;
+use App\Models\Combination;
 use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +17,7 @@ return new class extends Migration
         Schema::create('cart_details', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Cart::class)->constrained();
-            $table->foreignIdFor(Product::class)->constrained();
+            $table->foreignId('combination_id')->constrained();
             $table->unsignedBigInteger('quantity')->default(0);
             $table->timestamps();
         });

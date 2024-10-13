@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Elegant-Home</title>
+    <title>Elegant Home | @yield('title')</title>
     <meta name="description" content="Morden Bootstrap HTML5 Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('themes') }}/client/img/favicon.ico">
@@ -16,6 +16,7 @@
         rel="stylesheet">
     <!-- Custom Style CSS -->
     <link rel="stylesheet" href="{{ asset('themes') }}/client/css/style.css">
+
 </head>
 
 <body>

@@ -40,14 +40,16 @@ trait TraitCRUD
             ->when(!empty($this->relations), function (Builder $query) {
                 $query->with($this->relations);
             })
-
             ->get();
-
         return view('admin.' . $this->model->getTable() . '.' . __FUNCTION__, compact('data'));
     }
     public function store(Request $request)
     {
         $data = $request->all();
+        if (!isset($data['slug'])) {
+            $data['slug'] = Str::slug($request['title']);
+        }
+      
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
                 $data[$key] = $request->input($key);
@@ -66,12 +68,12 @@ trait TraitCRUD
                 $query->with($this->relations);
             })
             ->get();
-        $data = $this->model
+        $dataID = $this->model
             ->when(!empty($this->relations), function (Builder $query) {
                 $query->with($this->relations);
             })
             ->findOrFail($id);
-        return view('admin.' . $this->model->getTable() . '.' . __FUNCTION__, compact('data'));
+        return view('admin.' . $this->model->getTable() . '.' . __FUNCTION__, compact('data', 'dataID'));
     }
     public function edit($id)
     {
@@ -99,13 +101,26 @@ trait TraitCRUD
             } elseif (Str::startsWith($key, 'img_')) {
                 $data[$key] = $dataID->$key;
                 if ($request->hasFile($key)) {
-                    Storage::delete($dataID->$key);
+                    if ($dataID->$key && Storage::exists($dataID->$key)) {
+                        Storage::delete($dataID->$key);
+                    }
+
                     $data[$key] = Storage::put($this->model->getTable(), $request->file($key));
                 }
             }
         }
 
         $this->model->findOrFail($id)->update($data);
+
+        if (array_key_exists('is_active', $data)) {
+            // Nếu trường is_active tồn tại và được cập nhật thành false
+            if (!$data['is_active']) {
+                $dataID->children()->update(['is_active' => false]);
+            } else {
+                $dataID->children()->update(['is_active' => true]);
+            }
+        }
+
         return redirect()->route($this->model->getTable() . '.index')->with('success', __('Cập nhật dữ liệu thành công'));
     }
     public function destroy($id)
@@ -123,9 +138,9 @@ trait TraitCRUD
 
         $dataID = $this->model->withTrashed()->findOrFail($id);
 
-        // if (Storage::exists($dataID->img_path)) {
-        //     Storage::delete($dataID->img_path);
-        // }
+        if (!empty($dataID->img_path) && Storage::exists($dataID->img_path)) {
+            Storage::delete($dataID->img_path);
+        }
         $dataID->forceDelete();
         return redirect()->back()->with('success', __('Xóa vĩnh viễn dữ liệu thành công'));
     }

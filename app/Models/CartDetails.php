@@ -11,11 +11,15 @@ class CartDetails extends Model
 
     protected $fillable = [
         'cart_id',
-        'product_id',
+        'combination_id',
         'name',
     ];
 
     public function cart(){
         return $this->belongsTo(Cart::class);
+    }
+
+    public function combination(){
+        return $this->belongsTo(Combination::class);
     }
 }
