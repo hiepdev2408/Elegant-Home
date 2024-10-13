@@ -1,5 +1,6 @@
 @extends('client.layouts.master')
 @section('title')
+    Liên Hệ
 @endsection
 @section('content')
     <section class="breadcrumb__section breadcrumb__bg">
@@ -7,7 +8,7 @@
             <div class="row row-cols-1">
                 <div class="col">
                     <div class="breadcrumb__content">
-                        <h1 class="breadcrumb__content--title text-white mb-10">Liên hệ với chúng tôi</h1>
+                        <h1 class="breadcrumb__content--title text-white ">Liên hệ với chúng tôi</h1>
                         <ul class="breadcrumb__content--menu d-flex">
                             <li class="breadcrumb__content--menu__items"><a class="text-white" href="index.html">Trang chủ</a>
                             </li>
@@ -24,21 +25,18 @@
     <!-- Start contact section -->
     <section class="contact__section section--padding">
         <div class="container">
-            <div class="section__heading mb-40">
+            <div class="section__heading mb-20">
                 <h2 class="section__heading--maintitle contact__section--hrading mb-10">Liên hệ</h2>
                 <p class="contact__section--hrading__desc">Nếu bạn có thắc mắc gì xin hãy nhắn cho chúng tôi để nhận được
-                    phản hồi nhanh nhất <br> ELEGANT-HOME sẵn sàng lắng nghe bạn!</p>
+                    phản hồi nhanh nhất <br> ELEGANT HOME sẵn sàng lắng nghe bạn!</p>
             </div>
-            @if (session('success'))
-<h4 style="color: seagreen">{{ session('success') }}</h4>
-@endif
             <div class="main__contact--area">
                 <div class="row align-items-center row-md-reverse">
                     <div class="col-lg-5">
                         <div class="contact__info border-radius-10">
                             <div class="contact__info--items">
                                 <h3 class="contact__info--content__title text-white mb-15">Liên Hệ </h3>
-                                <div class="contact__info--items__inner d-flex">
+                                <div class="contact__info--items__inner d-flex align-items-center">
                                     <div class="contact__info--icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="31.568" height="31.128"
                                             viewBox="0 0 31.568 31.128">
@@ -48,15 +46,15 @@
                                         </svg>
                                     </div>
                                     <div class="contact__info--content">
-                                        <p class="contact__info--content__desc text-white">Thay đổi thiết kế thông qua một
-                                            phạm vi <br> <a href="tel:+01234-567890">0368309192</a> hoặc <a
+                                        <p class="contact__info--content__desc text-white">Thay đổi thiết kế<br> <a
+                                                href="tel:+01234-567890">0368309192</a> hoặc <a
                                                 href="tel:++01234-5688765">0942121812</a> </p>
                                     </div>
                                 </div>
                             </div>
                             <div class="contact__info--items">
                                 <h3 class="contact__info--content__title text-white mb-15">Địa chỉ Email</h3>
-                                <div class="contact__info--items__inner d-flex">
+                                <div class="contact__info--items__inner d-flex align-items-center">
                                     <div class="contact__info--icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="31.57" height="31.13"
                                             viewBox="0 0 31.57 31.13">
@@ -66,14 +64,15 @@
                                         </svg>
                                     </div>
                                     <div class="contact__info--content">
-                                        <p class="contact__info--content__desc text-white"> <br> <a
-                                                href="mailto:info@example.com">Elegant-home@gmail.com</a></p>
+                                        <p class="contact__info--content__desc text-white">
+                                            <a href="mailto:info@example.com">Elegant-home@gmail.com</a>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                             <div class="contact__info--items">
                                 <h3 class="contact__info--content__title text-white mb-15">Vị trí văn phòng</h3>
-                                <div class="contact__info--items__inner d-flex">
+                                <div class="contact__info--items__inner d-flex align-items-center">
                                     <div class="contact__info--icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="31.57" height="31.13"
                                             viewBox="0 0 31.57 31.13">
@@ -89,7 +88,7 @@
                                 </div>
                             </div>
                             <div class="contact__info--items">
-                                <h3 class="contact__info--content__title text-white mb-15">Theo dõi chúng tôi </h3>
+                                <h3 class="contact__info--content__title text-white mb-15">Follow Us</h3>
                                 <ul class="contact__info--social d-flex">
                                     <li class="contact__info--social__list">
                                         <a class="contact__info--social__icon" target="_blank"
@@ -142,42 +141,72 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-lg-7">
+                        <style>
+                            .alert {
+                                padding: 15px;
+                                margin: 20px 0;
+                                border: 1px solid transparent;
+                                border-radius: 4px;
+                            }
+
+                            .alert-success {
+                                color: #155724;
+                                background-color: #d4edda;
+                                border-color: #c3e6cb;
+                            }
+
+                            .fw-bold {
+                                font-weight: bold;
+                            }
+
+                            .text-danger {
+                                color: red;
+                                font-weight: bold;
+                            }
+                        </style>
+
+                        @if (session()->has('success'))
+                            <div class="alert alert-success fw-bold">
+                                {{ session()->get('success') }}
+                            </div>
+                        @endif
                         <div class="contact__form">
-                            <form class="contact__form--inner" action="{{ route('contact_check') }}" method="POST">
+                            <form class="contact__form--inner" action="{{ route('contact.submit') }}" method="POST">
                                 @csrf
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
                                         <div class="contact__form--list mb-20">
-                                            <label class="contact__form--label" for="input1">Tên đầu tiên <span
+                                            <label class="contact__form--label" for="input1">Tên <span
                                                     class="contact__form--label__star">*</span></label>
-                                            <input class="contact__form--input" name="first_name" id="input1"
-                                                placeholder="Viết tên của bạn" type="text">
-                                            @error('first_name')
-                                                <span style="color: red">{{ $message }}</span>
-                                            @enderror
+                                            <input class="contact__form--input" name="firstname" id="input1"
+                                                placeholder="Tên của bạn" type="text">
+                                            @if ($errors->has('firstname'))
+                                                <small class="text-danger">{{ $errors->first('firstname') }}</small>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <div class="contact__form--list mb-20">
                                             <label class="contact__form--label" for="input2">Họ <span
                                                     class="contact__form--label__star">*</span></label>
-                                            <input class="contact__form--input" name="last_name" id="input2"
+                                            <input class="contact__form--input" name="lastname" id="input2"
                                                 placeholder="Họ của bạn" type="text">
-                                            @error('last_name')
-                                                <span style="color: red">{{ $message }}</span>
-                                            @enderror
+                                            @if ($errors->has('lastname'))
+                                                <small class="text-danger">{{ $errors->first('lastname') }}</small>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <div class="contact__form--list mb-20">
                                             <label class="contact__form--label" for="input3">Số điện thoại <span
                                                     class="contact__form--label__star">*</span></label>
-                                            <input class="contact__form--input" name="phone_number" id="input3"
-                                                placeholder="Số điện thoại bạn " type="text">
-                                            @error('phone_number')
-                                                <span style="color: red">{{ $message }}</span>
-                                            @enderror
+                                            <input class="contact__form--input" name="number" id="input3"
+                                                placeholder="Số điện thoại" type="text">
+                                            @if ($errors->has('number'))
+                                                <small class="text-danger">{{ $errors->first('number') }}</small>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
@@ -185,33 +214,26 @@
                                             <label class="contact__form--label" for="input4">Email <span
                                                     class="contact__form--label__star">*</span></label>
                                             <input class="contact__form--input" name="email" id="input4"
-                                                placeholder="Email" type="text">
-                                            @error('email')
-                                                <span style="color: red">{{ $message }}</span>
-                                            @enderror
+                                                placeholder="Email" type="email">
+                                            @if ($errors->has('email'))
+                                                <small class="text-danger">{{ $errors->first('email') }}</small>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="contact__form--list mb-10">
                                             <label class="contact__form--label" for="input5">Viết tin nhắn của bạn <span
                                                     class="contact__form--label__star">*</span></label>
-                                            <textarea class="contact__form--textarea" name="message" id="input5" placeholder="Viết tin nhắn của bạn "></textarea>
-                                            @error('message')
-                                                <span style="color: red">{{ $message }}</span>
-                                            @enderror
+                                            <textarea class="contact__form--textarea" name="message" id="input5" placeholder="Viết tin nhắn của bạn"></textarea>
+                                            @if ($errors->has('message'))
+                                                <small class="text-danger">{{ $errors->first('message') }}</small>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
-                                <div class="account__login--remember position__relative mb-15">
-                                    <input class="checkout__checkbox--input" id="check2" type="checkbox">
-                                    <span class="checkout__checkbox--checkmark"></span>
-                                    <label class="checkout__checkbox--label login__remember--label" for="check2">
-                                        Chấp nhận Điều khoản & Điều kiện</label>
-                                </div>
-                                <button class="contact__form--btn primary__btn" type="submit">Liên Hệ</button>
+                                <button class="contact__form--btn primary__btn" type="submit">Gửi Tin Nhắn</button>
                                 <p class="form-messege"></p>
                             </form>
-
                         </div>
                     </div>
                 </div>
