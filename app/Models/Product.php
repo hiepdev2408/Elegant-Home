@@ -34,14 +34,14 @@ class Product extends Model
     ];
 
     public function categories(){
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class, 'product_category', 'product_id', 'category_id');
     }
 
     public function galleries(){
         return $this->hasMany(Gallery::class);
     }
 
-    public function variants(){
-        return $this->hasMany(ProductVariant::class);
+    public function productAttributes(){
+        return $this->hasMany(ProductAttribute::class);
     }
 }

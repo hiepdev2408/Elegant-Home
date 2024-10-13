@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ContactFormController;
 use App\Mail\ContactFormMail;
@@ -18,6 +19,18 @@ Route::prefix('admin')
         })->name('admin');
 
         Route::resource('users', UserController::class);
+
+        Route::prefix('products')
+            ->as('products.')
+            ->group(function(){
+                Route::get('/', [ProductController::class, 'index'])->name('index');
+                Route::get('create', [ProductController::class, 'create'])->name('create');
+                Route::post('store', [ProductController::class, 'store'])->name('store');
+                Route::get('show/{id}', [ProductController::class, 'show'])->name('show');
+                Route::get('edit/{id}', [ProductController::class, 'edit'])->name('edit');
+                Route::put('update/{id}', [ProductController::class, 'update'])->name('update');
+                Route::delete('destroy/{id}', [ProductController::class, 'destroy'])->name('destroy');
+            });
 
         Route::prefix('categories')
             ->name('categories.')
@@ -82,7 +95,7 @@ Route::prefix('admin')
 
                 Route::get('listDestroy', [AttributeController::class, 'delete'])->name('delete');
                 // Hiển thị danh sách xóa
-        
+
                 Route::post('restore/{id}', [AttributeController::class, 'restore'])->name('restore');
                 Route::delete('forceDelete/{id}', [AttributeController::class, 'forceDelete'])->name('forceDelete');
             });
@@ -95,9 +108,6 @@ Route::prefix('admin')
             Route::delete('destroy/{id}', [ContactFormController::class, 'destroy'])->name('destroy');
         });
 
-        Route::get('index', function () {
-            return view('admin.products.index');
-        })->name('product.index');
         Route::get('/chat', function () {
             return view('admin.chat.index');
         })->name('chat');
