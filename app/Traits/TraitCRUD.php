@@ -46,12 +46,10 @@ trait TraitCRUD
     public function store(Request $request)
     {
         $data = $request->all();
-
         if (!isset($data['slug'])) {
             $data['slug'] = Str::slug($request['title']);
         }
-
-
+      
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
                 $data[$key] = $request->input($key);
@@ -59,7 +57,7 @@ trait TraitCRUD
                 $data[$key] = Storage::put($this->model->getTable(), $request->file($key));
             }
         }
-
+      
         $this->model->create($data);
         return redirect()->route($this->model->getTable() . '.index')->with('success', __('Thêm dữ liệu thành công'));
     }
