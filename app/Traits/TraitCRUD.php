@@ -48,13 +48,6 @@ trait TraitCRUD
     public function store(Request $request)
     {
         $data = $request->all();
-
-<<<<<<< HEAD
-        $data['is_active'] = $request->has('is_active') ? 1 : 0; 
-
-=======
-        // dd($data);
->>>>>>> 2e2e29cd9e71539570aca192687385728de467a4
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
                 $data[$key] = $request->input($key);
@@ -62,7 +55,7 @@ trait TraitCRUD
                 $data[$key] = Storage::put($this->model->getTable(), $request->file($key));
             }
         }
-
+      
         $this->model->create($data);
         return redirect()->route($this->model->getTable() . '.index')->with('success', __('Thêm dữ liệu thành công'));
     }
