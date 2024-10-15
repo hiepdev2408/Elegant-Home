@@ -17,7 +17,7 @@ class Group extends Model
         'img_variant',
     ];
 
-    public function combinations(){
-        return $this->hasMany(Combination::class);
+    public function productAttributes(){
+        return $this->hasMany(ProductAttribute::class);
     }
 }

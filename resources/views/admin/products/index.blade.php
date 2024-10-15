@@ -21,99 +21,87 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Thông tin sản phẩm</th>
-                            <th>Image</th>
-                            <th></th>
-                            <th>Active</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Danh mục</th>
+                            <th>Hình ảnh chính</th>
+                            <th>Thuộc tính</th>
                             <th>Biến thể</th>
-                            <th>Action</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($products as $key => $product)
+                        @foreach ($products as $product)
                             <tr>
                                 <td>{{ $product->id }}</td>
                                 <td>{{ $product->name }}</td>
                                 <td>
+                                    @foreach ($product->categories as $category)
+                                        <span class="badge badge-primary">{{ $category->name }}</span>
+                                    @endforeach
+                                </td>
+                                <td>
                                     @if ($product->img_thumbnail)
-                                        <img class="rounded-2" src="{{ Storage::url($product->img_thumbnail) }}"
-                                            width="50px" height="50px">
+                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt="{{ $product->name }}"
+                                            style="width: 100px;">
+                                    @else
+                                        <span>Chưa có hình</span>
                                     @endif
                                 </td>
                                 <td>
-                                    <li>{!! $product->is_active
-                                        ? '<span class="badge bg-success">YES</span>'
-                                        : '<span class="badge bg-danger">NO</span>' !!}</li>
-                                    <li>{!! $product->is_good_deal
-                                        ? '<span class="badge bg-success">YES</span>'
-                                        : '<span class="badge bg-danger">NO</span>' !!}</li>
-                                    <li>{!! $product->is_new ? '<span class="badge bg-success">YES</span>' : '<span class="badge bg-danger">NO</span>' !!}</li>
-                                    <li>{!! $product->is_show_home
-                                        ? '<span class="badge bg-success">YES</span>'
-                                        : '<span class="badge bg-danger">NO</span>' !!}</li>
-                                </td>
-                                <td>
-                                    @php
-                                        $displayedSKUs = [];
-                                    @endphp
-
-                                    <ul class="product-attributes">
-                                        @foreach ($product->productAttributes as $productAttribute)
-                                            <li class="product-attribute-item">
-                                                <span
-                                                    class="attribute-name">{{ $productAttribute->attribute->name }}:</span>
-                                                @if ($productAttribute->attribute->name == 'Màu sắc')
-                                                    <div class="color-indicator"
-                                                        style="background: {{ $productAttribute->value }}; display: inline-block; width: 20px; height: 20px; margin-left: 5px;">
-                                                    </div>
+                                    @foreach ($product->productAttributes->groupBy('attribute_id') as $attributeGroup)
+                                        @foreach ($attributeGroup as $attribute)
+                                            <div class="product-attribute-item">
+                                                <span class="attribute-name">{{ $attribute->attribute->name }}:</span>
+                                                @if ($attribute->attribute->name == 'Màu sắc')
+                                                    <span class="color-indicator"
+                                                        style="background: {{ $attribute->value }};"></span>
                                                 @else
-                                                    <span class="attribute-value">{{ $productAttribute->value }}</span>
+                                                    <span class="attribute-value">{{ $attribute->value }}</span>
                                                 @endif
-
-                                                <div class="combinations">
-                                                    @foreach ($productAttribute->combinations as $combination)
-                                                        @if (!in_array($combination->group->SKU, $displayedSKUs))
-                                                            <div class="variant-info">
-                                                                <p><strong>SKU:</strong> {{ $combination->group->SKU }}</p>
-                                                                <p><strong>Giá:</strong> {{ $combination->group->price }}
-                                                                </p>
-                                                                <p><strong>Giá sale:</strong>
-                                                                    {{ $combination->group->price_sale }}</p>
-                                                                <p><strong>Tồn kho:</strong>
-                                                                    {{ $combination->group->stock }}</p>
-                                                            </div>
-                                                            @php
-                                                                // Thêm SKU vào danh sách đã hiển thị
-                                                                $displayedSKUs[] = $combination->group->SKU;
-                                                            @endphp
-                                                        @endif
-                                                    @endforeach
-                                                </div>
-                                            </li>
+                                            </div>
                                         @endforeach
-                                    </ul>
+                                    @endforeach
                                 </td>
                                 <td>
-                                    <div class="d-flex justify-content-center">
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Show"
-                                            class="btn btn-info btn-sm me-2"
-                                            href="{{ route('products.show', $product->id) }}"><i
-                                                class="mdi mdi-eye"></i></a>
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Update"
-                                            class="btn btn-warning btn-sm me-2"
-                                            href="{{ route('products.edit', $product->id) }}"><i
-                                                class="mdi mdi-pencil"></i></a>
-
-                                        <form action="{{ route('products.destroy', $product->id) }}" method="POST">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                data-bs-title="Delete" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn có muốn xóa không')">
-                                                <i class="mdi mdi-delete-circle"></i></button>
-
-                                        </form>
-                                    </div>
+                                    @if ($product->productAttributes->isNotEmpty())
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Giá trị</th>
+                                                    <th>SKU</th>
+                                                    <th>Tồn kho</th>
+                                                    <th>Giá</th>
+                                                    <th>Giá khuyến mãi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($product->productAttributes as $value => $attributes)
+                                                    <tr>
+                                                        <td>{{ $value }}</td>
+                                                        <td>{{ $attributes->group->SKU ?? 'N/A' }}</td>
+                                                        <td>{{ $attributes->group->stock ?? 'N/A' }}</td>
+                                                        <td>{{ number_format($attributes->group->price ?? 0, 0, ',', '.') }}
+                                                            VNĐ</td>
+                                                        <td>{{ number_format($attributes->group->price_sale ?? 0, 0, ',', '.') }}
+                                                            VNĐ</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <span class="text-muted">Không có biến thể</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Chỉnh
+                                        sửa</a>
+                                    <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -136,28 +124,17 @@
             display: flex;
             align-items: center;
             margin: 5px 0;
-        }
-
-        .attribute-name {
-            font-weight: bold;
-            /* Làm đậm tên thuộc tính */
-            margin-right: 10px;
-            /* Khoảng cách giữa tên thuộc tính và giá trị */
+            justify-content: space-between;
+            /* Căn giữa các phần tử */
         }
 
         .color-indicator {
-            width: 25px;
-            height: 25px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             border: 1px solid #ccc;
-            /* Thêm viền nhẹ cho hình tròn */
-            margin-left: 5px;
-            /* Khoảng cách giữa giá trị và hình tròn */
-        }
-
-        .attribute-value {
-            font-style: italic;
-            /* Chế độ nghiêng cho giá trị không phải màu */
+            margin-left: 10px;
+            /* Khoảng cách giữa tên thuộc tính và màu sắc */
         }
     </style>
 @endsection

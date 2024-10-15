@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Category;
-use App\Models\Combination;
 use App\Models\Gallery;
 use App\Models\Group;
 use App\Models\Product;
@@ -23,12 +22,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with([
-            'categories',                    // Danh mục của sản phẩm
-            'galleries',                     // Thư viện hình ảnh của sản phẩm
-            'productAttributes.attribute',   // Các thuộc tính của sản phẩm và tên thuộc tính
-            'productAttributes.combinations.group'  // Biến thể của sản phẩm và nhóm của biến thể
-        ])->latest('id')->get();
+        $products = Product::with(['categories','galleries','productAttributes.group'])->latest('id')->get();
 
         return view('admin.products.index', compact('products'));
     }
@@ -53,9 +47,7 @@ class ProductController extends Controller
         try {
             DB::transaction(function () use ($request){
 
-                // dd($request->all());
                 $data = $request->except(['product_attribute', 'group', 'product_galleries', 'categories']);
-                // dd($request->categories);
                 $data['is_active'] = isset($data['is_active']) ? 1 : 0;
                 $data['is_good_deal'] = isset($data['is_good_deal']) ? 1 : 0;
                 $data['is_new'] = isset($data['is_new']) ? 1 : 0;
@@ -87,25 +79,14 @@ class ProductController extends Controller
                         'img_variant' => Storage::put('group', $dataGroup['img_variant']),
                     ]);
 
-                    $productAttibutes = []; // Khởi tạo 1 mảng để chứa pro_attri
-
                     foreach ($request->product_attribute['attribute_id'][$key] as $proAttriIndex => $productAttributeValue) {
                         $valueProductAttribute = $request->product_attribute['value'][$key][$proAttriIndex];
 
                         $productAttribute = ProductAttribute::create([
                             'product_id' => $product->id,
                             'attribute_id' => $productAttributeValue,
-                            'value' => $valueProductAttribute,
-                        ]);
-                    }
-
-                    // Lấy id của $productAttibute chuyền vào mảng
-                    $productAttibutes[] = $productAttribute->id;
-
-                    foreach ($productAttibutes as $productAttibute) {
-                        Combination::query()->create([
                             'group_id' => $group->id,
-                            'product_attribute_id' => $productAttibute
+                            'value' => $valueProductAttribute,
                         ]);
                     }
                 }
@@ -134,7 +115,13 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $product = Product::query()->findOrFail($id);
+
+        $attribute = Attribute::query()->pluck('name', 'id')->all();
+        $category = Category::query()->pluck('name', 'id')->all();
+        $proCate = $product->categories()->pluck('id')->all();
+
+        return view('admin.products.edit', compact('product','category', 'attribute', 'proCate'));
     }
 
     /**
@@ -150,6 +137,28 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::query()->findOrFail($id);
+        try {
+            DB::transaction(function () use ($product){
+
+                foreach ($product->productAttributes as $productAttribute) {
+                    $group = $productAttribute->group;
+
+                    DB::delete($group);
+                }
+
+                dd(1);
+                $product->productAttributes()->delete();
+                $product->galleries()->delete();
+
+                $product->categories()->sync([]);
+
+                $product->delete();
+            });
+
+            return back()->with('success', 'Thao tác thành công!');
+        } catch (\Exception $exception) {
+
+        }
     }
 }
