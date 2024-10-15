@@ -38,7 +38,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-floating form-floating-outline mb-4">
-                                    <select name="parent_id" id="parent_id" class="form-select">
+                                    <select name="parent_id" id="parent_id" class="form-select" >
                                         <option value="">Chọn danh mục cha (nếu có)</option>
                                         @foreach ($data as $parent)
                                             <option value="{{ $parent->id }}">{{ $parent->name }}</option>
@@ -46,10 +46,14 @@
                                     </select>
                                     <label for="ecommerce-product-name">Danh mục cha</label>
                                 </div>
+
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" class="form-control" placeholder="Tên danh mục" name="name"
-                                        id="name" />
+                                        id="name" value="{{old('name')}}" />
                                     <label for="ecommerce-product-name">Tên danh mục</label>
+                                    @error('name')
+                                    <span class=" " style="color: red">{{ $message }}</span>
+                                @enderror
                                 </div>
                             </div>
                         </div>
