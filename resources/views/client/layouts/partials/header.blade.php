@@ -69,7 +69,7 @@
                     </a>
                 </div>
                 <div class="main__logo">
-                    <h1 class="main__logo--title"><a class="main__logo--link" href="index.html"><img
+                    <h1 class="main__logo--title"><a class="main__logo--link" href="{{ route('home') }}"><img
                                 class="main__logo--img" src="{{ asset('themes') }}/client/img/logo/nav-log.webp"
                                 alt="logo-img" height="31px"></a></h1>
                 </div>
@@ -227,23 +227,20 @@
                                 <a class="header__menu--link " href="#">{{ Auth::user()->name }}<span
                                         class="menu__plus--icon">+</span></a>
                                 <ul class="header__sub--menu">
+                                    <li class="header__sub--menu__items"><a href="{{ route('profile.show') }}"
+                                            class="header__sub--menu__link">Thông tin cá nhân</a></li>
                                     <li class="header__sub--menu__items"><a href="about.html"
-                                            class="header__sub--menu__link">About Us</a></li>
-                                    <li class="header__sub--menu__items"><a href="contact.html"
-                                            class="header__sub--menu__link">Contact Us</a></li>
-                                    <li class="header__sub--menu__items"><a href="cart.html"
-                                            class="header__sub--menu__link">Cart Page</a></li>
-                                    <li class="header__sub--menu__items"><a href="portfolio.html"
-                                            class="header__sub--menu__link">Portfolio Page</a></li>
-                                    <li class="header__sub--menu__items"><a href="wishlist.html"
-                                            class="header__sub--menu__link">Wishlist Page</a></li>
-                                    <li class="header__sub--menu__items"><a href="login.html"
-                                            class="header__sub--menu__link">Login Page</a></li>
-                                    <li class="header__sub--menu__items"><a href="404.html"
-                                            class="header__sub--menu__link">Error Page</a></li>
+                                            class="header__sub--menu__link">Đơn hàng</a></li>
+                                    @if (Auth::user()->isAdmin())
+                                        <li class="header__sub--menu__items"><a href="{{ route('admin') }}"
+                                                class="header__sub--menu__link">Trang quảng trị</a></li>
+                                    @endif
+                                    <li class="header__sub--menu__items"><a href="{{ route('logout') }}"
+                                            class="header__sub--menu__link">Đăng xuất</a></li>
                                 </ul>
                             </li>
                         @endif
+
                         <li class="header__account--items d-md-none">
                             <a class="header__account--btn" href="wishlist.html">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24.526" height="21.82"

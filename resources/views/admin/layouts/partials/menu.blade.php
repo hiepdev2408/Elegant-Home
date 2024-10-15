@@ -42,6 +42,15 @@
                 <div data-i18n="Trò chuyện">Trò chuyện</div>
             </a>
         </li>
+
+        <li class="menu-item">
+            <a href="{{ route('contact.index') }}" class="menu-link">
+                <i class='menu-icon tf-icons mdi mdi-card-account-phone'></i>
+                <div data-i18n="Liên Hệ">Liên Hệ</div>
+                <div class="badge bg-danger rounded-pill ms-auto">{{ $countContact }}</div>
+            </a>
+        </li>
+
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons mdi mdi-notebook-outline'></i>
@@ -88,22 +97,17 @@
 
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <div data-i18n="Products">Products</div>
+                        <div data-i18n="Products">Sản phẩm</div>
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a href="{{ route('product.index') }}" class="menu-link">
-                                <div data-i18n="Product List">Product List</div>
+                            <a href="{{ route('products.index') }}" class="menu-link">
+                                <div data-i18n="Danh sách sản phẩm">Danh sách sản phẩm</div>
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="app-ecommerce-product-add.html" class="menu-link">
-                                <div data-i18n="Add Product">Add Product</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="app-ecommerce-category-list.html" class="menu-link">
-                                <div data-i18n="Category List">Category List</div>
+                            <a href="{{ route('products.create') }}" class="menu-link">
+                                <div data-i18n="Thêm sản phẩm">Thêm sản phẩm</div>
                             </a>
                         </li>
                     </ul>

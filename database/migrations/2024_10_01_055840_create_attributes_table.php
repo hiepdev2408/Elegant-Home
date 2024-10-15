@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Category::class)->constrained();
             $table->string('name');
             $table->softDeletes();
             $table->timestamps();

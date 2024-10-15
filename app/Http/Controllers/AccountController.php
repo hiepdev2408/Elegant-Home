@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\VerifyAccount;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Mail;
 
@@ -136,6 +137,14 @@ class AccountController extends Controller
             : back()->withErrors(['email' => __($status)]);
 
 
+    }
+    public function logout()
+    {
+        Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        return redirect('/')
+            ->with('success', 'Đăng xuất thành công!');
     }
 
 }

@@ -30,12 +30,16 @@
                             <td>{{ $value->slug }}</td>
                             <td>{{ $value->user->name }}</td>
                             <td>
-                                <img src="{{ asset('storage/'.$value->img_path) }}" alt="" width="100px">
+                                <img src="{{ asset('storage/' . $value->img_path) }}" alt="" width="100px">
                             </td>
                             <td>{{ $value->created_at }}</td>
                             <td>
                                 <div class="d-flex justify-content-center">
 
+                                    <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Show"
+                                        class="btn btn-info btn-sm me-1" href="{{ route('blogs.show', $value) }}">
+                                        <i class="mdi mdi-eye"></i>
+                                    </a>
                                     <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Update"
                                         class="btn btn-warning btn-sm me-1" href="{{ route('blogs.edit', $value) }}">
                                         <i class="mdi mdi-pencil"></i>
