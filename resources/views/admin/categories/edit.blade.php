@@ -21,9 +21,11 @@
                             <div class="mb-3">
                                 <label for="name" class="form-label">Tên danh mục</label>
                                 <input type="text" name="name" id="name" class="form-control"
-                                    placeholder="Nhập tên danh mục" value="{{ $dataID->name }}" required>
+                                    placeholder="Nhập tên danh mục" value="{{ $dataID->name }}" >
                             </div>
-
+                            @error('name')
+                            <span class=" " style="color: red">{{ $message }}</span>
+                        @enderror
                             <!-- Danh mục cha -->
                             <div class="mb-3">
                                 <label for="parent_id" class="form-label">Danh mục cha</label>
