@@ -6,6 +6,7 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 
@@ -35,7 +36,6 @@ trait TraitCRUD
 
     public function create()
     {
-
         $data = $this->model
             ->when(!empty($this->relations), function (Builder $query) {
                 $query->with($this->relations);
@@ -45,6 +45,7 @@ trait TraitCRUD
     }
     public function store(Request $request)
     {
+
         $data = $request->all();
 
         if (!isset($data['slug'])) {

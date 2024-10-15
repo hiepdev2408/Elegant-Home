@@ -23,9 +23,14 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::query()->with(['']);
+        $products = Product::with([
+            'categories',                    // Danh mục của sản phẩm
+            'galleries',                     // Thư viện hình ảnh của sản phẩm
+            'productAttributes.attribute',   // Các thuộc tính của sản phẩm và tên thuộc tính
+            'productAttributes.combinations.group'  // Biến thể của sản phẩm và nhóm của biến thể
+        ])->latest('id')->get();
 
-        return view('admin.products.index');
+        return view('admin.products.index', compact('products'));
     }
 
     /**

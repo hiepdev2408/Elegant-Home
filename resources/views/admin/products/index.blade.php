@@ -1,9 +1,4 @@
 @extends('admin.layouts.master')
-
-@section('title')
-    Danh sách Loại Tin
-@endsection
-
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
@@ -15,8 +10,8 @@
             </div>
         @endif
         <div class="card-header d-flex justify-content-end align-items-center mb-3">
-            {{-- <a class="btn btn-primary" href="{{ route('admin.categories.create') }}"><i
-                    class="mdi mdi-plus me-0 me-sm-1"></i>Thêm Loại Tin</a> --}}
+            <a class="btn btn-primary" href="{{ route('products.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Thêm sản
+                phẩm</a>
         </div>
         <div class="card">
             <div class="card-body">
@@ -26,36 +21,90 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
+                            <th>Thông tin sản phẩm</th>
                             <th>Image</th>
+                            <th></th>
                             <th>Active</th>
+                            <th>Biến thể</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach ($categories as $item)
+                        @foreach ($products as $key => $product)
                             <tr>
-                                <td>{{ $item['id'] }}</td>
-                                <td>{{ $item['name'] }}</td>
+                                <td>{{ $product->id }}</td>
+                                <td>{{ $product->name }}</td>
                                 <td>
-                                    <img class="rounded-2" src="{{ Storage::url($item->cover) }}" alt=""
-                                        width="50px" height="50px">
+                                    @if ($product->img_thumbnail)
+                                        <img class="rounded-2" src="{{ Storage::url($product->img_thumbnail) }}"
+                                            width="50px" height="50px">
+                                    @endif
                                 </td>
                                 <td>
-                                    {!! $item['is_active'] ? '<span class="badge bg-success">YES</span>' : '<span class="badge bg-danger">NO</span>' !!}
+                                    <li>{!! $product->is_active
+                                        ? '<span class="badge bg-success">YES</span>'
+                                        : '<span class="badge bg-danger">NO</span>' !!}</li>
+                                    <li>{!! $product->is_good_deal
+                                        ? '<span class="badge bg-success">YES</span>'
+                                        : '<span class="badge bg-danger">NO</span>' !!}</li>
+                                    <li>{!! $product->is_new ? '<span class="badge bg-success">YES</span>' : '<span class="badge bg-danger">NO</span>' !!}</li>
+                                    <li>{!! $product->is_show_home
+                                        ? '<span class="badge bg-success">YES</span>'
+                                        : '<span class="badge bg-danger">NO</span>' !!}</li>
+                                </td>
+                                <td>
+                                    @php
+                                        $displayedSKUs = [];
+                                    @endphp
+
+                                    <ul class="product-attributes">
+                                        @foreach ($product->productAttributes as $productAttribute)
+                                            <li class="product-attribute-item">
+                                                <span
+                                                    class="attribute-name">{{ $productAttribute->attribute->name }}:</span>
+                                                @if ($productAttribute->attribute->name == 'Màu sắc')
+                                                    <div class="color-indicator"
+                                                        style="background: {{ $productAttribute->value }}; display: inline-block; width: 20px; height: 20px; margin-left: 5px;">
+                                                    </div>
+                                                @else
+                                                    <span class="attribute-value">{{ $productAttribute->value }}</span>
+                                                @endif
+
+                                                <div class="combinations">
+                                                    @foreach ($productAttribute->combinations as $combination)
+                                                        @if (!in_array($combination->group->SKU, $displayedSKUs))
+                                                            <div class="variant-info">
+                                                                <p><strong>SKU:</strong> {{ $combination->group->SKU }}</p>
+                                                                <p><strong>Giá:</strong> {{ $combination->group->price }}
+                                                                </p>
+                                                                <p><strong>Giá sale:</strong>
+                                                                    {{ $combination->group->price_sale }}</p>
+                                                                <p><strong>Tồn kho:</strong>
+                                                                    {{ $combination->group->stock }}</p>
+                                                            </div>
+                                                            @php
+                                                                // Thêm SKU vào danh sách đã hiển thị
+                                                                $displayedSKUs[] = $combination->group->SKU;
+                                                            @endphp
+                                                        @endif
+                                                    @endforeach
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center">
                                         <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Show"
                                             class="btn btn-info btn-sm me-2"
-                                            href="{{ route('admin.categories.show', $item->id) }}"><i
+                                            href="{{ route('products.show', $product->id) }}"><i
                                                 class="mdi mdi-eye"></i></a>
                                         <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Update"
                                             class="btn btn-warning btn-sm me-2"
-                                            href="{{ route('admin.categories.edit', $item->id) }}"><i
+                                            href="{{ route('products.edit', $product->id) }}"><i
                                                 class="mdi mdi-pencil"></i></a>
 
-                                        <form action="{{ route('admin.categories.destroy', $item->id) }}" method="POST">
+                                        <form action="{{ route('products.destroy', $product->id) }}" method="POST">
                                             @csrf
                                             @method('delete')
                                             <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -67,7 +116,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach --}}
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -82,6 +131,35 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+    <style>
+        .product-attribute-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+
+        .attribute-name {
+            font-weight: bold;
+            /* Làm đậm tên thuộc tính */
+            margin-right: 10px;
+            /* Khoảng cách giữa tên thuộc tính và giá trị */
+        }
+
+        .color-indicator {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+            /* Thêm viền nhẹ cho hình tròn */
+            margin-left: 5px;
+            /* Khoảng cách giữa giá trị và hình tròn */
+        }
+
+        .attribute-value {
+            font-style: italic;
+            /* Chế độ nghiêng cho giá trị không phải màu */
+        }
+    </style>
 @endsection
 
 @section('script-libs')
