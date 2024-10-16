@@ -2,10 +2,10 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 
@@ -49,11 +49,6 @@ trait TraitCRUD
         // Thực hiện validate
         Validator::make($request->all(), $rules)->validate();
     }
-
-
-
-
-
     // end validate
     public function index()
     {
@@ -79,7 +74,6 @@ trait TraitCRUD
 
     public function create()
     {
-
         $data = $this->model
             ->when(!empty($this->relations), function (Builder $query) {
                 $query->with($this->relations);
@@ -89,18 +83,9 @@ trait TraitCRUD
     }
     public function store(Request $request)
     {
-
         $this->validateData($request);
 
         $data = $request->all();
-
-
-
-
-        $data['is_active'] = $request->has('is_active') ? 1 : 0;
-
-
-        // dd($data);
 
         if (!isset($data['slug'])) {
             $data['slug'] = Str::slug($request['title']);

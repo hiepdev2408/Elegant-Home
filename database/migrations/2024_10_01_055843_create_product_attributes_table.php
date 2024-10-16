@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Group;
 use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained();
             $table->foreignId('attribute_id')->constrained();
+            $table->foreignId('group_id')->constrained();
             $table->string('value');
             $table->timestamps();
         });

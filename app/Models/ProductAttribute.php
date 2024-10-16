@@ -12,6 +12,7 @@ class ProductAttribute extends Model
     protected $fillable = [
         'product_id',
         'attribute_id',
+        'group_id',
         'value',
     ];
 
@@ -23,7 +24,8 @@ class ProductAttribute extends Model
         return $this->belongsTo(Attribute::class);
     }
 
-    public function combinations(){
-        return $this->hasMany(Combination::class);
+    public function group(){
+        return $this->belongsTo(Group::class);
     }
+
 }

@@ -1,4 +1,6 @@
 @extends('admin.layouts.master')
+<<<<<<< HEAD
+=======
 
 @section('title')
     Danh sách sản phẩm
@@ -12,6 +14,7 @@
     active
 @endsection
 
+>>>>>>> 07f76b3bbae28867416dd541f777f9ba7e194c29
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
@@ -23,8 +26,8 @@
             </div>
         @endif
         <div class="card-header d-flex justify-content-end align-items-center mb-3">
-            {{-- <a class="btn btn-primary" href="{{ route('admin.categories.create') }}"><i
-                    class="mdi mdi-plus me-0 me-sm-1"></i>Thêm Loại Tin</a> --}}
+            <a class="btn btn-primary" href="{{ route('products.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Thêm sản
+                phẩm</a>
         </div>
         <div class="card">
             <div class="card-body">
@@ -34,48 +37,90 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
-                            <th>Image</th>
-                            <th>Active</th>
-                            <th>Action</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Danh mục</th>
+                            <th>Hình ảnh chính</th>
+                            <th>Thuộc tính</th>
+                            <th>Biến thể</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach ($categories as $item)
+                        @foreach ($products as $product)
                             <tr>
-                                <td>{{ $item['id'] }}</td>
-                                <td>{{ $item['name'] }}</td>
+                                <td>{{ $product->id }}</td>
+                                <td>{{ $product->name }}</td>
                                 <td>
-                                    <img class="rounded-2" src="{{ Storage::url($item->cover) }}" alt=""
-                                        width="50px" height="50px">
+                                    @foreach ($product->categories as $category)
+                                        <span class="badge badge-primary">{{ $category->name }}</span>
+                                    @endforeach
                                 </td>
                                 <td>
-                                    {!! $item['is_active'] ? '<span class="badge bg-success">YES</span>' : '<span class="badge bg-danger">NO</span>' !!}
+                                    @if ($product->img_thumbnail)
+                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt="{{ $product->name }}"
+                                            style="width: 100px;">
+                                    @else
+                                        <span>Chưa có hình</span>
+                                    @endif
                                 </td>
                                 <td>
-                                    <div class="d-flex justify-content-center">
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Show"
-                                            class="btn btn-info btn-sm me-2"
-                                            href="{{ route('admin.categories.show', $item->id) }}"><i
-                                                class="mdi mdi-eye"></i></a>
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Update"
-                                            class="btn btn-warning btn-sm me-2"
-                                            href="{{ route('admin.categories.edit', $item->id) }}"><i
-                                                class="mdi mdi-pencil"></i></a>
-
-                                        <form action="{{ route('admin.categories.destroy', $item->id) }}" method="POST">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                data-bs-title="Delete" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn có muốn xóa không')">
-                                                <i class="mdi mdi-delete-circle"></i></button>
-
-                                        </form>
-                                    </div>
+                                    @foreach ($product->productAttributes->groupBy('attribute_id') as $attributeGroup)
+                                        @foreach ($attributeGroup as $attribute)
+                                            <div class="product-attribute-item">
+                                                <span class="attribute-name">{{ $attribute->attribute->name }}:</span>
+                                                @if ($attribute->attribute->name == 'Màu sắc')
+                                                    <span class="color-indicator"
+                                                        style="background: {{ $attribute->value }};"></span>
+                                                @else
+                                                    <span class="attribute-value">{{ $attribute->value }}</span>
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @if ($product->productAttributes->isNotEmpty())
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Giá trị</th>
+                                                    <th>SKU</th>
+                                                    <th>Tồn kho</th>
+                                                    <th>Giá</th>
+                                                    <th>Giá khuyến mãi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($product->productAttributes as $value => $attributes)
+                                                    <tr>
+                                                        <td>{{ $value }}</td>
+                                                        <td>{{ $attributes->group->SKU ?? 'N/A' }}</td>
+                                                        <td>{{ $attributes->group->stock ?? 'N/A' }}</td>
+                                                        <td>{{ number_format($attributes->group->price ?? 0, 0, ',', '.') }}
+                                                            VNĐ</td>
+                                                        <td>{{ number_format($attributes->group->price_sale ?? 0, 0, ',', '.') }}
+                                                            VNĐ</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <span class="text-muted">Không có biến thể</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Chỉnh
+                                        sửa</a>
+                                    <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
+                                    </form>
                                 </td>
                             </tr>
-                        @endforeach --}}
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -90,6 +135,24 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+    <style>
+        .product-attribute-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            justify-content: space-between;
+            /* Căn giữa các phần tử */
+        }
+
+        .color-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+            margin-left: 10px;
+            /* Khoảng cách giữa tên thuộc tính và màu sắc */
+        }
+    </style>
 @endsection
 
 @section('script-libs')
