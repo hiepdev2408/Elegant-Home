@@ -17,6 +17,8 @@
     <!-- Custom Style CSS -->
     <link rel="stylesheet" href="{{ asset('themes') }}/client/css/style.css">
 
+    @yield('style-libs')
+
 </head>
 
 <body>
@@ -525,6 +527,8 @@
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                 stroke-width="48" d="M112 244l144-144 144 144M256 120v292" />
         </svg></button>
+
+    @yield('script-libs')
 
     <script src="{{ asset('themes') }}/client/js/plugins/swiper-bundle.min.js" defer="defer"></script>
     <script src="{{ asset('themes') }}/client/js/plugins/glightbox.min.js" defer="defer"></script>

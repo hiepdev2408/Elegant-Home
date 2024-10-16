@@ -1,5 +1,10 @@
 @extends('admin.layouts.master')
-
+@section('title')
+    Bảng điều khiển
+@endsection
+@section('menu-item-dashboard')
+    active
+@endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row gy-4">

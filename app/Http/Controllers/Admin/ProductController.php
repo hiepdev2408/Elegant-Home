@@ -144,11 +144,11 @@ class ProductController extends Controller
                 foreach ($product->productAttributes as $productAttribute) {
                     $group = $productAttribute->group;
 
-                    DB::delete($group);
+                    $productAttribute->delete();
+
+                    $group->delete();
                 }
 
-                dd(1);
-                $product->productAttributes()->delete();
                 $product->galleries()->delete();
 
                 $product->categories()->sync([]);
@@ -158,7 +158,9 @@ class ProductController extends Controller
 
             return back()->with('success', 'Thao tác thành công!');
         } catch (\Exception $exception) {
+            dd($exception->getMessage());
 
+            return back();
         }
     }
 }

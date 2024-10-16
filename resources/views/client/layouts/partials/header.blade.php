@@ -1,59 +1,4 @@
 <header class="header__section header__transparent">
-    <!-- Start Header topbar -->
-    <div class="header__topbar bg__primary">
-        <div class="container-fluid">
-            <div class="header__topbar--inner d-flex align-items-center justify-content-between">
-                <div class="header__shipping">
-                    <p class="header__shipping--text text-white">Get Up To 80% off In your first Offer!</p>
-                </div>
-                <div class="language__currency d-none d-lg-block">
-                    <ul class="d-flex align-items-center">
-                        <li class="language__currency--list">
-                            <a class="account__currency--link text-white" href="#">
-                                <img src="{{ asset('themes') }}/client/img/icon/usd-icon.webp" alt="currency">
-                                <span>Currency</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="11.797" height="9.05"
-                                    viewBox="0 0 9.797 6.05">
-                                    <path d="M14.646,8.59,10.9,12.329,7.151,8.59,6,9.741l4.9,4.9,4.9-4.9Z"
-                                        transform="translate(-6 -8.59)" fill="currentColor" opacity="0.7" />
-                                </svg>
-                            </a>
-                            <div class="dropdown__currency">
-                                <ul>
-                                    <li class="currency__items"><a class="currency__text" href="#">CAD</a></li>
-                                    <li class="currency__items"><a class="currency__text" href="#">CNY</a></li>
-                                    <li class="currency__items"><a class="currency__text" href="#">EUR</a></li>
-                                    <li class="currency__items"><a class="currency__text" href="#">GBP</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="language__currency--list">
-                            <a class="language__switcher text-white" href="#">
-                                <img class="language__switcher--icon__img"
-                                    src="{{ asset('themes') }}/client/img/icon/language-icon.webp" alt="currency">
-                                <span>Language</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="11.797" height="9.05"
-                                    viewBox="0 0 9.797 6.05">
-                                    <path d="M14.646,8.59,10.9,12.329,7.151,8.59,6,9.741l4.9,4.9,4.9-4.9Z"
-                                        transform="translate(-6 -8.59)" fill="currentColor" opacity="0.7" />
-                                </svg>
-                            </a>
-                            <div class="dropdown__language">
-                                <ul>
-                                    <li class="language__items"><a class="language__text" href="#">France</a></li>
-                                    <li class="language__items"><a class="language__text" href="#">Russia</a></li>
-                                    <li class="language__items"><a class="language__text" href="#">Spanish</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Start Header topbar -->
-
     <!-- Start main header -->
     <div class="main__header header__sticky">
         <div class="container-fluid">
@@ -191,7 +136,7 @@
                     </nav>
                 </div>
                 <div class="header__account">
-                    <ul class="d-flex">
+                    <ul class="d-flex justify-content-center align-items-center">
                         <li class="header__account--items  header__account--search__items d-md-none">
                             <a class="header__account--btn search__open--btn" href="javascript:void(0)">
                                 <svg class="header__search--button__svg" xmlns="http://www.w3.org/2000/svg"
@@ -223,11 +168,10 @@
                                 </a>
                             </li>
                         @else
-                            <li class="header__menu--items">
-                                <a class="header__menu--link " href="#">{{ Auth::user()->name }}<span
-                                        class="menu__plus--icon">+</span></a>
+                            <li class="header__menu--items" style="margin-right: 15px">
+                                <a class="header__menu--link ">{{ Auth::user()->name }}</a>
                                 <ul class="header__sub--menu">
-                                    <li class="header__sub--menu__items"><a href="{{ route('profile.show') }}"
+                                    <li class="header__sub--menu__items"><a href="{{ route('profile.user') }}"
                                             class="header__sub--menu__link">Thông tin cá nhân</a></li>
                                     <li class="header__sub--menu__items"><a href="about.html"
                                             class="header__sub--menu__link">Đơn hàng</a></li>

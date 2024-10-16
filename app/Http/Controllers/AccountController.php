@@ -28,10 +28,6 @@ class AccountController extends Controller
             'password.required' => 'Mật khẩu chưa nhập',
             'password.min' => 'Họ và tên cần trên 6 ký tự',
 
-
-
-
-
         ]);
         $data = request()->all('email', 'password');
         if (auth()->attempt($data)) {
