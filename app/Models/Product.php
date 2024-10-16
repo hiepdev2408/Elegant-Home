@@ -41,4 +41,7 @@ class Product extends Model
     public function productAttributes(){
         return $this->hasMany(ProductAttribute::class);
     }
+    // public function group(){
+    //     return $this->belongsTo(Group::class);
+    // }
 }

@@ -20,4 +20,7 @@ class Group extends Model
     public function productAttributes(){
         return $this->hasMany(ProductAttribute::class);
     }
+    // public function products(){
+    //     return $this->hasMany(Product::class);
+    // }
 }

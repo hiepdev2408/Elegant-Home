@@ -1,20 +1,4 @@
 @extends('admin.layouts.master')
-<<<<<<< HEAD
-=======
-
-@section('title')
-    Danh sách sản phẩm
-@endsection
-
-@section('menu-item-product')
-    open
-@endsection
-
-@section('menu-sub-index-product')
-    active
-@endsection
-
->>>>>>> 07f76b3bbae28867416dd541f777f9ba7e194c29
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
