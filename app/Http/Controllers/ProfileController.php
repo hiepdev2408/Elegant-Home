@@ -10,22 +10,27 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-    public function show()
+    public function profile()
     {
-        
-        $user = Auth::user(); 
-        return view('client.auth.show', compact('user'));
+        $user = Auth::user();
+        return view('client.auth.account.profile', compact('user'));
+    }
+
+    public function show($id)
+    {
+        $user = Auth::user();
+        return view('client.auth.account.show', compact('user'));
     }
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        return view('client.auth.edit', compact('user'));
+        return view('client.auth.account.edit', compact('user'));
     }
 
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        
+
         // $request->validate([
         //     'name' => 'required|string|max:255',
         //     'email' => 'required|string|email|max:255|unique:users,email,'.$id,
@@ -33,23 +38,23 @@ class ProfileController extends Controller
         //     'address' => 'nullable|string|max:255',
         //     'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         // ]);
-        
+
         $auth = $request->except('avatar');
-        
+
         $currentAvatar = 'user/' . $request->avatar;
 
-        if($request->hasFile('avatar')){
+        if ($request->hasFile('avatar')) {
             $auth['avatar'] = Storage::put('user', $request->file('avatar'));
         }
 
         $user->update($auth);
 
-        if($currentAvatar && Storage::exists($currentAvatar)){
+        if ($currentAvatar && Storage::exists($currentAvatar)) {
             Storage::delete($currentAvatar);
         }
 
         return redirect()->route('profile.edit', $id)->with('success', 'Thông tin đã được cập nhật!');
-    }    
+    }
 }
 
 

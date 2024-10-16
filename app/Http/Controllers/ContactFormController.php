@@ -37,7 +37,7 @@ class ContactFormController extends Controller
         ]);
         Contract::query()->create($validatedData);
         // gửi tới mail quản trị
-        Mail::to('nguyenduong0782004@gmail.com')->send(new ContactFormMail($validatedData));
+        Mail::to('hoanganhtq2020@gmail.com')->send(new ContactFormMail($validatedData));
 
         return redirect()->back()->with('success', 'Tin nhắn của bạn đã được gửi thành công!');
     }

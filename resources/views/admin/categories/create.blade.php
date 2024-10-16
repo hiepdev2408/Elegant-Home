@@ -2,6 +2,13 @@
 @section('title')
     Thêm danh mục
 @endsection
+@section('menu-item-categories')
+    open
+@endsection
+
+@section('menu-sub-create-categories')
+    active
+@endsection
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -20,8 +27,8 @@
                         <p>Danh mục được đặt trên cửa hàng của bạn</p>
                     </div>
                     <div class="d-flex align-content-center flex-wrap gap-3">
-                        {{-- <button class="btn btn-outline-secondary">Hủy</button> --}}
                         <button type="reset" class="btn btn-outline-primary">Nhập Lại</button>
+                        <a href="{{ route('categories.index') }}" class="btn btn-info">Quay Lại</a>
                         <button type="submit" class="btn btn-primary">
                             Xuất bản
                         </button>
@@ -46,10 +53,14 @@
                                     </select>
                                     <label for="ecommerce-product-name">Danh mục cha</label>
                                 </div>
+
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" class="form-control" placeholder="Tên danh mục" name="name"
-                                        id="name" />
+                                        id="name" value="{{ old('name') }}" />
                                     <label for="ecommerce-product-name">Tên danh mục</label>
+                                    @error('name')
+                                        <span class=" " style="color: red">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
