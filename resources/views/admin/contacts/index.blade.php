@@ -1,6 +1,10 @@
 @extends('admin.layouts.master')
 @section('title')
-    Danh sách Loại Tin
+    Danh sách liên hệ
+@endsection
+
+@section('menu-item-contact')
+    active
 @endsection
 
 @section('content')
