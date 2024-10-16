@@ -24,8 +24,12 @@ Route::group(['prefix' => 'account'], function () {
     Route::get('/password/forgot', [AccountController::class, 'showForgotPasswordForm'])->name('password.request');
     Route::post('/password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
 
-    Route::get('/profile', [ProfileController::class, 'show'])->middleware('auth')->name('profile.show');
+    Route::get('/profile', [ProfileController::class, 'profile'])->middleware('auth')->name('profile.user');
+
+    Route::get('/profile/show/{id}', [ProfileController::class, 'show'])->middleware('auth')->name('profile.show');
+
     Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
+
     Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
