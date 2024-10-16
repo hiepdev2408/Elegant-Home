@@ -8,8 +8,8 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Dashboard - eCommerce | Materio - Bootstrap Material Design Admin Template</title>
-
+    <title>Elegant Home | @yield('title')
+    </title>
 
     <meta name="description" content="Start your development with a Dashboard for Bootstrap 5" />
     <meta name="keywords"
