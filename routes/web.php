@@ -2,11 +2,14 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactFormController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('client.home');
-})->name('home');
+// Route::get('/', function () {
+//     return view('client.home');
+// })->name('home');
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::group(['prefix' => 'account'], function () {
     Route::get('/login', [AccountController::class, 'login'])->name('login');
