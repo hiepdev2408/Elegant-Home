@@ -2,6 +2,15 @@
 @section('title')
     Chi tiết bài viết
 @endsection
+
+@section('menu-item-post')
+    open
+@endsection
+
+@section('menu-sub-index-post')
+    active
+@endsection
+
 @section('content')
     <div class="container mt-5">
         <h4 class="py-3 mb-4">

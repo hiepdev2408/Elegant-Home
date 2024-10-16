@@ -1,7 +1,15 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách Loại Tin
+    Danh sách sản phẩm
+@endsection
+
+@section('menu-item-product')
+    open
+@endsection
+
+@section('menu-sub-index-product')
+    active
 @endsection
 
 @section('content')

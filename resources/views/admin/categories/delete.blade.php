@@ -2,6 +2,13 @@
 @section('title')
     Thùng rác
 @endsection
+@section('menu-item-categories')
+    open
+@endsection
+
+@section('menu-sub-delete-categories')
+    active
+@endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>

@@ -2,6 +2,13 @@
 @section('title')
     Thêm danh mục
 @endsection
+@section('menu-item-categories')
+    open
+@endsection
+
+@section('menu-sub-create-categories')
+    active
+@endsection
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
