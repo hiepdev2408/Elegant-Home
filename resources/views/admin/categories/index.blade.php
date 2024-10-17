@@ -1,8 +1,14 @@
 @extends('admin.layouts.master')
 @section('title')
-    Danh sách Loại Tin
+    Danh sách danh mục
+@endsection
+@section('menu-item-categories')
+    open
 @endsection
 
+@section('menu-sub-index-categories')
+    active
+@endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
@@ -18,7 +24,7 @@
             <a class="btn btn-primary me-2" href="{{ route('categories.create') }}">
                 <i class="mdi mdi-plus me-0 me-sm-1"></i>
                 Thêm mới danh mục</a>
-            <a href="{{ route('categories.delete') }}" class="btn btn-dark">Thùng rác</a>
+            <a href="{{ route('categories.delete') }}" class="btn btn-danger">Thùng rác</a>
         </div>
         <div class="card">
             <div class="card-body">
@@ -32,7 +38,7 @@
                     style="width:100%">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>STT</th>
                             <th>Tên danh mục</th>
                             <th>Danh mục cha</th>
                             <th>Trạng thái</th>
@@ -40,39 +46,37 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php $stt = 1; @endphp
                         @foreach ($data as $category)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $category->name }}</td>
-                                <td>
-                                    {{ $category->parent ? $category->parent->name : 'Không có' }}
-                                </td>
-                                <td>
-                                    <span class="badge {{ $category->is_active ? 'bg-success' : 'bg-danger' }}">
-                                        {{ $category->is_active ? 'Kích hoạt' : 'Không kích hoạt' }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="{{ route('categories.edit', $category->id) }}"
-                                        class="btn btn-primary btn-sm">Sửa</a>
+                            @if (is_null($category->parent))
+                                <!-- Kiểm tra xem đây có phải danh mục cha không -->
+                                <tr>
+                                    <td>{{ $stt++ }}</td>
+                                    <td>{{ $category->name }}</td>
+                                    <td>Không có</td>
+                                    <td>
+                                        <span class="badge {{ $category->is_active ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $category->is_active ? 'Kích hoạt' : 'Không kích hoạt' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('categories.edit', $category->id) }}"
+                                            class="btn btn-primary btn-sm">Sửa</a>
 
-                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
-                                        class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không?')">Xóa</button>
-                                    </form>
-                                </td>
-                            </tr>
-
-                            <!-- Danh sách danh mục con nếu có -->
-                            @if ($category->children)
+                                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không?')">Xóa</button>
+                                        </form>
+                                    </td>
+                                </tr>
                                 @foreach ($category->children as $child)
                                     <tr>
-                                        <td>—</td>
-                                        <td>{{ $child->name }}</td>
-                                        <td>{{ $category->name }}</td>
+                                        <td>--</td>
+                                        <td>{{ $child->name }}</td> <!-- Thêm dấu gạch ngang để phân biệt -->
+                                        <td>{{ $category->name }}</td> <!-- Tên danh mục cha -->
                                         <td>
                                             <span class="badge {{ $child->is_active ? 'bg-success' : 'bg-danger' }}">
                                                 {{ $child->is_active ? 'Kích hoạt' : 'Không kích hoạt' }}
@@ -129,7 +133,7 @@
     <script>
         new DataTable("#example", {
             order: [
-                [0, 'desc']
+                [1, 'asc']
             ]
         });
     </script>

@@ -4,21 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'name',
         'slug',
         'img_thumbnail',
-        'price_regular',
-        'price_sale',
         'description',
+        'user_manual',
         'content',
-        'material',
         'view',
         'is_active',
         'is_good_deal',
@@ -34,14 +31,14 @@ class Product extends Model
     ];
 
     public function categories(){
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class, 'product_category', 'product_id', 'category_id');
     }
 
     public function galleries(){
         return $this->hasMany(Gallery::class);
     }
 
-    public function variants(){
-        return $this->hasMany(ProductVariant::class);
+    public function productAttributes(){
+        return $this->hasMany(ProductAttribute::class);
     }
 }

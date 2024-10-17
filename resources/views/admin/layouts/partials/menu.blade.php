@@ -19,8 +19,8 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboards -->
-        <li class="menu-item">
-            <a href="/admin" class="menu-link ">
+        <li class="menu-item @yield('menu-item-dashboard')">
+            <a href="/admin" class="menu-link">
                 <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
                 <div data-i18n="Bảng điều khiển">Bảng điều khiển</div>
                 <div class="badge bg-danger rounded-pill ms-auto">5</div>
@@ -42,107 +42,100 @@
                 <div data-i18n="Trò chuyện">Trò chuyện</div>
             </a>
         </li>
-        <li class="menu-item">
+
+        <li class="menu-item @yield('menu-item-contact')">
+            <a href="{{ route('contact.index') }}" class="menu-link">
+                <i class='menu-icon tf-icons mdi mdi-card-account-mail-outline'></i>
+                <div data-i18n="Liên Hệ">Liên Hệ</div>
+                <div class="badge bg-danger rounded-pill ms-auto">{{ $countContact }}</div>
+            </a>
+        </li>
+
+        <li class="menu-item @yield('menu-item-categories')">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons mdi mdi-notebook-outline'></i>
                 <div data-i18n="Danh mục">Danh mục</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item @yield('menu-sub-create-categories')">
                     <a href="{{ route('categories.create') }}" class="menu-link">
                         <div data-i18n="Thêm danh mục">Thêm danh mục</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item @yield('menu-sub-index-categories')">
                     <a href="{{ route('categories.index') }}" class="menu-link">
                         <div data-i18n="Danh sách danh mục">Danh sách danh mục</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-delete-categories')">
+                    <a href="{{ route('categories.delete') }}" class="menu-link">
+                        <div data-i18n="Thùng rác">Thùng rác</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-item @yield('menu-item-product')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon tf-icons mdi mdi-atlassian'></i>
+                <div data-i18n="Sản phẩm">Sản phẩm</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item @yield('menu-sub-create-product')">
+                    <a href="{{ route('products.create') }}" class="menu-link">
+                        <div data-i18n="Thêm sản phẩm">Thêm sản phẩm</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-index-product')">
+                    <a href="{{ route('products.index') }}" class="menu-link">
+                        <div data-i18n="Danh sách sản phẩm">Danh sách sản phẩm</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item @yield('menu-item-post')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon tf-icons mdi mdi-post'></i>
+                <div data-i18n="Bài viết">Bài viết</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item @yield('menu-sub-create-post')">
+                    <a href="{{ route('blogs.create') }}" class="menu-link">
+                        <div data-i18n="Thêm bài viết">Thêm bài viết</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-index-post')">
+                    <a href="{{ route('blogs.index') }}" class="menu-link">
+                        <div data-i18n="Danh sách bài viết">Danh sách bài viết</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item @yield('menu-item-attribute')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon tf-icons mdi mdi-distribute-horizontal-center'></i>
+                <div data-i18n="Attribute">Attribute</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item @yield('menu-sub-create-attribute')">
+                    <a href="{{ route('attributes.create') }}" class="menu-link">
+                        <div data-i18n="Thêm thuộc tính">Thêm thuộc tính</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-index-attribute')">
+                    <a href="{{ route('attributes.index') }}" class="menu-link">
+                        <div data-i18n="Danh sách thuộc tính">Danh sách thuộc tính</div>
                     </a>
                 </li>
             </ul>
         </li>
         <!-- e-commerce-app menu start -->
-        <li class="menu-item active">
+        <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons mdi mdi-cart-outline'></i>
                 <div data-i18n="eCommerce">eCommerce</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <div data-i18n="Danh mục">Danh mục</div>
-                    </a>
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="{{ route('categories.index') }}" class="menu-link">
-                                <div data-i18n="Danh sách danh mục">Danh sách danh mục</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="{{ route('categories.create') }}" class="menu-link">
-                                <div data-i18n="Thêm danh mục">Thêm danh mục</div>
-                            </a>
-                        </li>
-
-                    </ul>
-                </li>
-
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <div data-i18n="Products">Products</div>
-                    </a>
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="{{ route('product.index') }}" class="menu-link">
-                                <div data-i18n="Product List">Product List</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="app-ecommerce-product-add.html" class="menu-link">
-                                <div data-i18n="Add Product">Add Product</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="app-ecommerce-category-list.html" class="menu-link">
-                                <div data-i18n="Category List">Category List</div>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <div data-i18n="Blog">Bài viết</div>
-                    </a>
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="{{ route('blogs.index') }}" class="menu-link">
-                                <div data-i18n="Danh sách bài viết">Danh sách bài viết</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="{{ route('blogs.create') }}" class="menu-link">
-                                <div data-i18n="Thêm bài viết">Thêm bài viết</div>
-                            </a>
-                        </li>
-
-                    </ul>
-                </li>
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <div data-i18n="Attribute"></div>
-                    </a>
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="{{ route('attributes.index') }}" class="menu-link">
-                                <div data-i18n="Danh sách thuộc tính">Danh sách thuộc tính</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="{{ route('attributes.create') }}" class="menu-link">
-                                <div data-i18n="Thêm thuộc tính">Thêm thuộc tính</div>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <div data-i18n="Customer">Customer</div>

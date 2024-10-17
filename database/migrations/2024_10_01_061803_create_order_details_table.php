@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Combination;
 use App\Models\Order;
 use App\Models\Orders;
 use App\Models\Product;
@@ -17,7 +18,7 @@ return new class extends Migration
         Schema::create('order_details', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Order::class)->constrained();
-            $table->foreignIdFor(Product::class)->constrained();
+            $table->foreignId('product_attribute_id')->constrained();
             $table->unsignedBigInteger('quantity');
             $table->unsignedBigInteger('price');
             $table->unsignedBigInteger('total_amount');
