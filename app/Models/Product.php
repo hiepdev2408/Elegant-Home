@@ -4,21 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'name',
         'slug',
         'img_thumbnail',
-        'price_regular',
-        'price_sale',
         'description',
+        'user_manual',
         'content',
-        'material',
         'view',
         'is_active',
         'is_good_deal',
@@ -44,4 +41,7 @@ class Product extends Model
     public function productAttributes(){
         return $this->hasMany(ProductAttribute::class);
     }
+    // public function group(){
+    //     return $this->belongsTo(Group::class);
+    // }
 }

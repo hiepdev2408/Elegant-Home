@@ -15,6 +15,8 @@ class CategoryController extends Controller
         'parent'
     ];
 
-    public function __construct( protected Category $model){}
+    public function __construct( protected Category $model ){
 
+    }
+  
 }

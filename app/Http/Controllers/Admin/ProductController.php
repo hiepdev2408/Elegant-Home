@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Category;
-use App\Models\Combination;
 use App\Models\Gallery;
 use App\Models\Group;
 use App\Models\Product;
@@ -23,9 +22,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::query()->with(['']);
+        $products = Product::with(['categories', 'galleries', 'productAttributes.group'])->latest('id')->get();
 
-        return view('admin.products.index');
+        return view('admin.products.index', compact('products'));
     }
 
     /**
@@ -46,11 +45,9 @@ class ProductController extends Controller
     {
         // dd($request->product_galleries);
         try {
-            DB::transaction(function () use ($request){
+            DB::transaction(function () use ($request) {
 
-                // dd($request->all());
                 $data = $request->except(['product_attribute', 'group', 'product_galleries', 'categories']);
-                // dd($request->categories);
                 $data['is_active'] = isset($data['is_active']) ? 1 : 0;
                 $data['is_good_deal'] = isset($data['is_good_deal']) ? 1 : 0;
                 $data['is_new'] = isset($data['is_new']) ? 1 : 0;
@@ -58,7 +55,7 @@ class ProductController extends Controller
                 $data['slug'] = Str::slug($data['name']);
 
                 // dd($data['img_thumbnail']);
-                if($request->hasFile('img_thumbnail')){
+                if ($request->hasFile('img_thumbnail')) {
                     $data['img_thumbnail'] = Storage::put('products', $request->file('img_thumbnail'));
                 }
 
@@ -82,31 +79,19 @@ class ProductController extends Controller
                         'img_variant' => Storage::put('group', $dataGroup['img_variant']),
                     ]);
 
-                    $productAttibutes = []; // Khởi tạo 1 mảng để chứa pro_attri
-
                     foreach ($request->product_attribute['attribute_id'][$key] as $proAttriIndex => $productAttributeValue) {
                         $valueProductAttribute = $request->product_attribute['value'][$key][$proAttriIndex];
 
                         $productAttribute = ProductAttribute::create([
                             'product_id' => $product->id,
                             'attribute_id' => $productAttributeValue,
-                            'value' => $valueProductAttribute,
-                        ]);
-                    }
-
-                    // Lấy id của $productAttibute chuyền vào mảng
-                    $productAttibutes[] = $productAttribute->id;
-
-                    foreach ($productAttibutes as $productAttibute) {
-                        Combination::query()->create([
                             'group_id' => $group->id,
-                            'product_attribute_id' => $productAttibute
+                            'value' => $valueProductAttribute,
                         ]);
                     }
                 }
                 $product->categories()->sync($request->categories);
-
-            },1);
+            }, 1);
 
             return redirect()->route('products.index')->with('success', 'Thêm mới thành công!');
         } catch (\Exception $exception) {
@@ -119,17 +104,20 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-
-    }
+    public function show(string $id) {}
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $product = Product::query()->findOrFail($id);
+
+        $attribute = Attribute::query()->pluck('name', 'id')->all();
+        $category = Category::query()->pluck('name', 'id')->all();
+        $proCate = $product->categories()->pluck('id')->all();
+
+        return view('admin.products.edit', compact('product', 'category', 'attribute', 'proCate'));
     }
 
     /**
@@ -145,6 +133,28 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::query()->findOrFail($id);
+        try {
+            DB::transaction(function () use ($product) {
+
+                $product->productAttributes()->delete();
+                foreach ($product->productAttributes as $productAttribute) {
+                    $group = $productAttribute->group;
+                    $group->delete();
+                }
+
+                $product->galleries()->delete();
+
+                $product->categories()->sync([]);
+
+                $product->delete();
+            });
+
+            return back()->with('success', 'Thao tác thành công!');
+        } catch (\Exception $exception) {
+            dd($exception->getMessage());
+
+            return back();
+        }
     }
 }

@@ -1,6 +1,16 @@
 @extends('admin.layouts.master')
 @section('title')
+    Danh sách bài viết
 @endsection
+
+@section('menu-item-post')
+    open
+@endsection
+
+@section('menu-sub-index-post')
+    active
+@endsection
+
 @section('content')
     <div class="card">
         <div class="card-header">

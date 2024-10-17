@@ -56,7 +56,6 @@
                     <label for="avatar">Ảnh Đại Diện:</label>
                     <input type="file" name="avatar" class="form-control-file" id="avatar">
                 </div>
-                </div>
                 <div class="lol">
                 <button type="submit" class="btn btn-primary ">Cập nhật</button>
                 <a href="{{ route('profile.show', $user->id) }}" class="btn btn-secondary">Quay lại</a>
