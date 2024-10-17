@@ -42,15 +42,14 @@
             <div class="mb-3">
                 <label for="image" class="form-label">Ảnh</label>
                 <input type="file" class="form-control" id="img_path" name="img_path">
-                <img src="{{ asset('storage/' . $dataID->img_path) }}" alt="" width="100px">
+                @if ($dataID->img_path)
+                    <img src="{{ Storage::url($dataID->img_path) }}" alt="" width="100px">
+                @endif
             </div>
-            @error('img_path')
-                <span class=" " style="color: red">{{ $message }}</span>
-            @enderror
             <!-- Content -->
             <div class="mb-3">
                 <label for="content" class="form-label">Nội dung</label>
-                <textarea class="form-control" id="content" name="content" rows="5" placeholder="Nội dung">{{ $dataID->content }}"</textarea>
+                <textarea class="form-control" id="content" name="content" rows="15" placeholder="Nội dung">{{ $dataID->content }}</textarea>
             </div>
             @error('content')
                 <span class=" " style="color: red">{{ $message }}</span>
@@ -59,4 +58,10 @@
             <button type="submit" class="btn btn-primary">Sửa bài viết</button>
         </form>
     </div>
+@endsection
+@section('script-libs')
+    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('content');
+    </script>
 @endsection

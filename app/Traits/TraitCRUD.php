@@ -24,7 +24,6 @@ trait TraitCRUD
                     'title' => 'required|string|max:255|min:4',
                     'content' => 'required|string',
                     'img_path' => 'required|image',
-                    'slug'=>'required|alpha_dash|unique:blogs,slug|max:255',
                 ];
                 break;
 

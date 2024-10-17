@@ -22,7 +22,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with(['categories','galleries','productAttributes.group'])->latest('id')->get();
+        $products = Product::with(['categories', 'galleries', 'productAttributes.group'])->latest('id')->get();
 
         return view('admin.products.index', compact('products'));
     }
@@ -45,7 +45,7 @@ class ProductController extends Controller
     {
         // dd($request->product_galleries);
         try {
-            DB::transaction(function () use ($request){
+            DB::transaction(function () use ($request) {
 
                 $data = $request->except(['product_attribute', 'group', 'product_galleries', 'categories']);
                 $data['is_active'] = isset($data['is_active']) ? 1 : 0;
@@ -55,7 +55,7 @@ class ProductController extends Controller
                 $data['slug'] = Str::slug($data['name']);
 
                 // dd($data['img_thumbnail']);
-                if($request->hasFile('img_thumbnail')){
+                if ($request->hasFile('img_thumbnail')) {
                     $data['img_thumbnail'] = Storage::put('products', $request->file('img_thumbnail'));
                 }
 
@@ -91,8 +91,7 @@ class ProductController extends Controller
                     }
                 }
                 $product->categories()->sync($request->categories);
-
-            },1);
+            }, 1);
 
             return redirect()->route('products.index')->with('success', 'Thêm mới thành công!');
         } catch (\Exception $exception) {
@@ -105,10 +104,7 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-
-    }
+    public function show(string $id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -121,7 +117,7 @@ class ProductController extends Controller
         $category = Category::query()->pluck('name', 'id')->all();
         $proCate = $product->categories()->pluck('id')->all();
 
-        return view('admin.products.edit', compact('product','category', 'attribute', 'proCate'));
+        return view('admin.products.edit', compact('product', 'category', 'attribute', 'proCate'));
     }
 
     /**
@@ -139,13 +135,11 @@ class ProductController extends Controller
     {
         $product = Product::query()->findOrFail($id);
         try {
-            DB::transaction(function () use ($product){
+            DB::transaction(function () use ($product) {
 
+                $product->productAttributes()->delete();
                 foreach ($product->productAttributes as $productAttribute) {
                     $group = $productAttribute->group;
-
-                    $productAttribute->delete();
-
                     $group->delete();
                 }
 
