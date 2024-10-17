@@ -9,8 +9,9 @@ Danh sách Loại Tin
 <div class="card">
     <div class="card-body">
         <div class="user-avatar-section text-center">
-            <img class="img-fluid rounded-circle mb-3" src="{{ asset('themes') }}/admin/assets/img/avatars/10.png" height="120" width="120" alt="User avatar" />
-            <h4 class="mb-1">{{ $user->name }}</h4>
+            @if($user->avatar)
+            <img src="{{ asset('storage/' . $user->avatar) }}" alt="Avatar" class="rounded-circle" style="width: 130px;">
+            @endif            <h4 class="mb-1">{{ $user->name }}</h4>
             <!-- <span class="badge bg-label-danger rounded-pill">Author</span> -->
         </div>
 
