@@ -46,6 +46,9 @@
                                     </select>
                                     <label for="ecommerce-product-name">Danh mục cha</label>
                                 </div>
+                                @if ($errors->has('name'))
+                                    <span style="color: red;">{{ $errors->first('name') }}</span>
+                                @endif
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" class="form-control" placeholder="Tên danh mục" name="name"
                                         id="name" />
