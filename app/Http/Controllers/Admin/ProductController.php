@@ -141,10 +141,12 @@ class ProductController extends Controller
         try {
             DB::transaction(function () use ($product){
 
+                $product->productAttributes()->delete();
+
                 foreach ($product->productAttributes as $productAttribute) {
                     $group = $productAttribute->group;
 
-                    $productAttribute->delete();
+                    
 
                     $group->delete();
                 }
