@@ -1,5 +1,7 @@
 <?php
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\HomeController;
@@ -34,6 +36,11 @@ Route::group(['prefix' => 'account'], function () {
     Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
 
     Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
+
+Route::get('/users',[UserController::class,'index'])->name('user.index');
+Route::get('/users', [UserController::class, 'show'])->middleware('users')->name('users.show');
+Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+Route::post('/users/update/{id}', [UserController::class,'update'])->name('users.update');
 
     Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
     Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
