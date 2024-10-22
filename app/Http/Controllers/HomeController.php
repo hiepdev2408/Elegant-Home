@@ -29,7 +29,7 @@ class HomeController extends Controller
         $categories = Category::with('products')->get();
 
         $products = Product::latest()->take(10)->get();
-        $blogs = Blog::with('user')->latest()->take(5)->get();
+        $blogs = Blog::with('user')->get();
 
         return view('client.home', compact('categories', 'products','blogs'));
     }

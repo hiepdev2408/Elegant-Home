@@ -43,7 +43,7 @@ Danh sách Loại Tin
                     <td>{{$item->email}}</td>
                     <td>{{$item->password}}</td>
                     <td>{{$item->phone}}</td>
-                    <td><img src="{{$item->avatar}}" width="50px" alt=""></td>
+                    <td><img src="{{ asset('storage/' . $item->avatar) }}" width="50px" alt=""></td>
                     <td>{{$item->address}}</td>
                     <td>{{$item->point}}</td>
                     <td>
@@ -67,7 +67,7 @@ Danh sách Loại Tin
 
                             <form action="{{ route('users.destroy', $item) }}" method="POST" class="d-inline">
                                 @csrf
-                                @method('delete')
+                                @method('DELETE')
                                 <button
                                     type="submit"
                                     data-bs-toggle="tooltip"
