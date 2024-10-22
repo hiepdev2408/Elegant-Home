@@ -52,4 +52,6 @@ Route::group(['prefix' => 'contact'], function () {
 
 });
 
+Route::get('categories/{category_id}/product/{id}/{slug}', [HomeController::class, 'detail'])->name('productDetail');
+
 

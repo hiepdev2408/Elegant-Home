@@ -36,7 +36,7 @@
                                 <td>{{ $product->name }}</td>
                                 <td>
                                     @foreach ($product->categories as $category)
-                                        <span class="badge badge-primary">{{ $category->name }}</span>
+                                    <span class="badge badge-primary text-dark">{{ $category->name }}</span>
                                     @endforeach
                                 </td>
                                 <td>
