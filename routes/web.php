@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CustomerController;
@@ -29,18 +30,23 @@ Route::group(['prefix' => 'account'], function () {
     Route::get('/password/forgot', [AccountController::class, 'showForgotPasswordForm'])->name('password.request');
     Route::post('/password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
 
-    Route::get('/profile', [ProfileController::class, 'profile'])->middleware('auth')->name('profile.user');
+    Route::get('/profile', [ProfileController::class, 'profile'])
+        // ->middleware('auth')
+        ->name('profile.user');
 
-    Route::get('/profile/show/{id}', [ProfileController::class, 'show'])->middleware('auth')->name('profile.show');
+    Route::get('/profile/show/{id}', [ProfileController::class, 'show'])
+        // ->middleware('auth')
+        ->name('profile.show');
 
-    Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
 
     Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
 
-Route::get('/users',[UserController::class,'index'])->name('user.index');
-Route::get('/users', [UserController::class, 'show'])->middleware('users')->name('users.show');
-Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-Route::post('/users/update/{id}', [UserController::class,'update'])->name('users.update');
+    Route::get('/users', [UserController::class, 'index'])->name('user.index');
+    Route::get('/users', [UserController::class, 'show'])->middleware('users')->name('users.show');
+    Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+    Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
 
     Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
     Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
@@ -49,9 +55,7 @@ Route::post('/users/update/{id}', [UserController::class,'update'])->name('users
 Route::group(['prefix' => 'contact'], function () {
     Route::get('/contact', [ContactFormController::class, 'contact'])->name('contact');
     Route::post('/contact', [ContactFormController::class, 'submit'])->name('contact.submit');
-
 });
 
+
 Route::get('categories/{category_id}/product/{id}/{slug}', [HomeController::class, 'detail'])->name('productDetail');
-
-

@@ -31,12 +31,13 @@
                     </thead>
                     <tbody>
                         @foreach ($products as $product)
+                            {{-- @dd($product->productAttributes) --}}
                             <tr>
                                 <td>{{ $product->id }}</td>
                                 <td>{{ $product->name }}</td>
                                 <td>
                                     @foreach ($product->categories as $category)
-                                    <span class="badge badge-primary text-dark">{{ $category->name }}</span>
+                                        <span>{{ $category->name }}</span>
                                     @endforeach
                                 </td>
                                 <td>
@@ -67,7 +68,6 @@
                                         <table class="table table-sm">
                                             <thead>
                                                 <tr>
-                                                    <th>Giá trị</th>
                                                     <th>SKU</th>
                                                     <th>Tồn kho</th>
                                                     <th>Giá</th>
@@ -75,16 +75,25 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @php
+                                                    $groupId = null; // Khởi tạo $groupId ban đầu là null
+                                                @endphp
+
                                                 @foreach ($product->productAttributes as $value => $attributes)
-                                                    <tr>
-                                                        <td>{{ $value }}</td>
-                                                        <td>{{ $attributes->group->SKU ?? 'N/A' }}</td>
-                                                        <td>{{ $attributes->group->stock ?? 'N/A' }}</td>
-                                                        <td>{{ number_format($attributes->group->price ?? 0, 0, ',', '.') }}
-                                                            VNĐ</td>
-                                                        <td>{{ number_format($attributes->group->price_sale ?? 0, 0, ',', '.') }}
-                                                            VNĐ</td>
-                                                    </tr>
+                                                    {{-- Kiểm tra nếu nhóm hiện tại khác với nhóm trước đó --}}
+                                                    @if ($attributes->group->id != $groupId)
+                                                        @php
+                                                            $groupId = $attributes->group->id; // Cập nhật lại $groupId bằng id của nhóm hiện tại
+                                                        @endphp
+                                                        <tr>
+                                                            <td>{{ $attributes->group->SKU ?? 'N/A' }}</td>
+                                                            <td>{{ $attributes->group->stock ?? 'N/A' }}</td>
+                                                            <td>{{ number_format($attributes->group->price ?? 0, 0, ',', '.') }}
+                                                                VNĐ</td>
+                                                            <td>{{ number_format($attributes->group->price_sale ?? 0, 0, ',', '.') }}
+                                                                VNĐ</td>
+                                                        </tr>
+                                                    @endif
                                                 @endforeach
                                             </tbody>
                                         </table>

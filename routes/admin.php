@@ -22,7 +22,7 @@ Route::prefix('admin')
 
         Route::prefix('products')
             ->as('products.')
-            ->group(function(){
+            ->group(function () {
                 Route::get('/', [ProductController::class, 'index'])->name('index');
                 Route::get('create', [ProductController::class, 'create'])->name('create');
                 Route::post('store', [ProductController::class, 'store'])->name('store');
@@ -104,9 +104,9 @@ Route::prefix('admin')
         Route::prefix('contact')
             ->as('contact.')
             ->group(function () {
-            Route::get('/', [ContactFormController::class, 'index'])->name('index');
-            Route::delete('destroy/{id}', [ContactFormController::class, 'destroy'])->name('destroy');
-        });
+                Route::get('/', [ContactFormController::class, 'index'])->name('index');
+                Route::delete('destroy/{id}', [ContactFormController::class, 'destroy'])->name('destroy');
+            });
 
         Route::get('/chat', function () {
             return view('admin.chat.index');
