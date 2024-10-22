@@ -170,7 +170,7 @@ Trang Chủ
                             <div class="col mb-30">
                                 <div class="product__items ">
                                     <div class="product__items--thumbnail">
-                                        <a class="product__items--link" href="product-details.html">
+                                        <a class="product__items--link" href="{{route('productDetail', ['category_id'=> $product->categories->first()->id, 'id' => $product->id,'slug' => $product->slug])}}">
                                             <img src="{{Storage::url($product->img_thumbnail)}}" alt="">
                                         </a>
                                         <ul class="product__items--action d-flex justify-content-center">

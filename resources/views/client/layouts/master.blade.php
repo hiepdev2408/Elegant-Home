@@ -535,6 +535,7 @@
 
     <!-- Customscript js -->
     <script src="{{ asset('themes') }}/client/js/script.js" defer="defer"></script>
+    
 </body>
 
 </html>
