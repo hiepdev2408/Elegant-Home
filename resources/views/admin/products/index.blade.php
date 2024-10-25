@@ -22,23 +22,19 @@
                         <tr>
                             <th>ID</th>
                             <th>Tên sản phẩm</th>
-                            <th>Danh mục</th>
-                            <th>Hình ảnh chính</th>
-                            <th>Thuộc tính</th>
+                            <th>Giá cơ bản</th>
+                            <th>Ảnh sản phẩm</th>
                             <th>Biến thể</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($products as $product)
+                        @foreach ($products as $key => $product)
+                            {{-- @dd($product->productAttributes) --}}
                             <tr>
-                                <td>{{ $product->id }}</td>
+                                <td>{{ $key+1 }}</td>
                                 <td>{{ $product->name }}</td>
-                                <td>
-                                    @foreach ($product->categories as $category)
-                                        <span class="badge badge-primary">{{ $category->name }}</span>
-                                    @endforeach
-                                </td>
+                                <td>{{ number_format($product->base_price, 0, ',', '.') }} VND</td>
                                 <td>
                                     @if ($product->img_thumbnail)
                                         <img src="{{ Storage::url($product->img_thumbnail) }}" alt="{{ $product->name }}"
@@ -48,48 +44,46 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @foreach ($product->productAttributes->groupBy('attribute_id') as $attributeGroup)
-                                        @foreach ($attributeGroup as $attribute)
-                                            <div class="product-attribute-item">
-                                                <span class="attribute-name">{{ $attribute->attribute->name }}:</span>
-                                                @if ($attribute->attribute->name == 'Màu sắc')
-                                                    <span class="color-indicator"
-                                                        style="background: {{ $attribute->value }};"></span>
-                                                @else
-                                                    <span class="attribute-value">{{ $attribute->value }}</span>
-                                                @endif
-                                            </div>
-                                        @endforeach
-                                    @endforeach
-                                </td>
-                                <td>
-                                    @if ($product->productAttributes->isNotEmpty())
+                                    @if ($product->variants->isEmpty())
+                                        <em>Không có biến thể</em>
+                                    @else
                                         <table class="table table-sm">
                                             <thead>
                                                 <tr>
-                                                    <th>Giá trị</th>
-                                                    <th>SKU</th>
-                                                    <th>Tồn kho</th>
+                                                    <th>Tên Biến Thể</th>
                                                     <th>Giá</th>
-                                                    <th>Giá khuyến mãi</th>
+                                                    <th>Tồn Kho</th>
+                                                    <th>Ảnh biến thể</th>
+                                                    <th>Thuộc Tính</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($product->productAttributes as $value => $attributes)
+                                                @foreach ($product->variants as $variant)
                                                     <tr>
-                                                        <td>{{ $value }}</td>
-                                                        <td>{{ $attributes->group->SKU ?? 'N/A' }}</td>
-                                                        <td>{{ $attributes->group->stock ?? 'N/A' }}</td>
-                                                        <td>{{ number_format($attributes->group->price ?? 0, 0, ',', '.') }}
-                                                            VNĐ</td>
-                                                        <td>{{ number_format($attributes->group->price_sale ?? 0, 0, ',', '.') }}
-                                                            VNĐ</td>
+                                                        <td>{{ $variant->sku }}</td>
+                                                        <td>{{ number_format($variant->price_modifier, 0, ',', '.') }} VND</td>
+                                                        <td>{{ $variant->stock }}</td>
+                                                        <td>
+                                                            @if ($variant->image)
+                                                                <img src="{{ Storage::url($variant->image) }}" width="50px" alt="">
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if ($variant->attributes)
+                                                                <ul>
+                                                                    @foreach ($variant->attributes as $attribute)
+                                                                        <li>{{ $attribute->attribute->name }}:
+                                                                            {{ $attribute->attributeValue->value }}</li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            @else
+                                                                <em>Không có thuộc tính</em>
+                                                            @endif
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
-                                    @else
-                                        <span class="text-muted">Không có biến thể</span>
                                     @endif
                                 </td>
                                 <td>
@@ -119,24 +113,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
-    <style>
-        .product-attribute-item {
-            display: flex;
-            align-items: center;
-            margin: 5px 0;
-            justify-content: space-between;
-            /* Căn giữa các phần tử */
-        }
-
-        .color-indicator {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 1px solid #ccc;
-            margin-left: 10px;
-            /* Khoảng cách giữa tên thuộc tính và màu sắc */
-        }
-    </style>
 @endsection
 
 @section('script-libs')

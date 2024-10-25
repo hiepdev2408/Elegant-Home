@@ -36,7 +36,8 @@ Route::group(['prefix' => 'account'], function () {
         // ->middleware('auth')
         ->name('profile.show');
 
-    Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
 
     Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
 
@@ -44,6 +45,7 @@ Route::group(['prefix' => 'account'], function () {
     Route::get('/users', [UserController::class, 'show'])
         // ->middleware('users')
         ->name('users.show');
+
     Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
     Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
 
@@ -55,3 +57,6 @@ Route::group(['prefix' => 'contact'], function () {
     Route::get('/contact', [ContactFormController::class, 'contact'])->name('contact');
     Route::post('/contact', [ContactFormController::class, 'submit'])->name('contact.submit');
 });
+
+Route::get('categories/{category_id}/product/{id}/{slug}', [HomeController::class, 'detail'])->name('productDetail');
+

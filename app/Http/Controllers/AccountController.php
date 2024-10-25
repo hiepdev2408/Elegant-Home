@@ -31,6 +31,7 @@ class AccountController extends Controller
         ]);
         $data = request()->all('email', 'password');
         if (auth()->attempt($data)) {
+          
             return redirect()->route('home')->with('success','Đăng nhập thành công') ;
         }
         return redirect()->back()->with([
@@ -65,9 +66,6 @@ class AccountController extends Controller
             'password.min' => 'Họ và tên cần trên 6 ký tự',
             'config_password.required' => 'Xác nhận mật khẩu chưa nhập',
             'config_password.same' => 'Xác nhận mật khẩu phải trùng với mật khẩu bên trên',
-
-
-
 
         ]);
         $user = $request->only(['name', 'email', 'phone', 'address']);
