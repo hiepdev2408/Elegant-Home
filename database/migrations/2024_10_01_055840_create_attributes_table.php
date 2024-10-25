@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->softDeletes();
+            $table->string('data_type')->default('string');
             $table->timestamps();
         });
     }
