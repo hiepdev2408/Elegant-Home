@@ -31,7 +31,8 @@ class AccountController extends Controller
         ]);
         $data = request()->all('email', 'password');
         if (auth()->attempt($data)) {
-            return redirect()->intended();
+          
+            return redirect()->route('home')->with('success','Đăng nhập thành công') ;
         }
         return redirect()->back()->with([
             'messageError' => 'Email đăng nhập hoặc mật khẩu sai',

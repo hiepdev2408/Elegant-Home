@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CategoryRequest;
 use App\Http\Middleware\CheckAdmin;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -66,5 +67,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' => CheckAdmin::class,
+        'category.validation'=> CategoryRequest::class,
     ];
 }

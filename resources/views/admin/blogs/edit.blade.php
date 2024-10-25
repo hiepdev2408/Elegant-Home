@@ -28,6 +28,7 @@
                 <input type="text" class="form-control" id="title" name="title" placeholder="Tiêu đề"
                     value="{{ $dataID->title }}">
             </div>
+
             @error('title')
                 <span class=" " style="color: red">{{ $message }}</span>
             @enderror
@@ -38,6 +39,7 @@
                     placeholder="Enter blog slug"value="{{ $dataID->slug }}">
             </div>
 
+
             <!-- Image -->
             <div class="mb-3">
                 <label for="image" class="form-label">Ảnh</label>
@@ -45,6 +47,7 @@
                 @if ($dataID->img_path)
                     <img src="{{ Storage::url($dataID->img_path) }}" alt="" width="100px">
                 @endif
+
             </div>
             <!-- Content -->
             <div class="mb-3">

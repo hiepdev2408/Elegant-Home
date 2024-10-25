@@ -92,8 +92,8 @@ trait TraitCRUD
 
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
-                $data[$key] = $request->input($key);
-            } elseif (Str::startsWith($key, 'img_') && $request->hasFile($key)) {
+                $data[$key] = $request->input(key: $key);
+            } elseif (Str::startsWith($key, needles: 'img_') && $request->hasFile($key)) {
                 $data[$key] = Storage::put($this->model->getTable(), $request->file($key));
             }
         }

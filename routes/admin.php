@@ -34,6 +34,7 @@ Route::prefix('admin')
 
         Route::prefix('categories')
             ->name('categories.')
+
             ->group(function () {
                 Route::get('/', [CategoryController::class, 'index'])
                     ->name('index');
@@ -42,12 +43,14 @@ Route::prefix('admin')
                 Route::get('/create', [CategoryController::class, 'create'])
                     ->name('create');
                 Route::post('/store', [CategoryController::class, 'store'])
+                    ->middleware(['category.validation'])
                     ->name('store');
                 Route::get('/show/{category}', [CategoryController::class, 'show'])
                     ->name('show');
                 Route::get('/edit/{category}', [CategoryController::class, 'edit'])
                     ->name('edit');
                 Route::put('/update/{category}', [CategoryController::class, 'update'])
+                    ->middleware(['category.validation'])
                     ->name('update');
 
                 Route::post('/delete/{category}', [CategoryController::class, 'restore'])

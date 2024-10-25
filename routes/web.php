@@ -8,13 +8,11 @@ use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('client.home');
-// })->name('home');
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get( '/', [HomeController::class, 'index'])->name('home');
 
 Route::group(['prefix' => 'account'], function () {
+
     Route::get('/login', [AccountController::class, 'login'])->name('login');
     Route::post('/login_check', [AccountController::class, 'check_login'])->name('login.submit');
 
@@ -44,7 +42,10 @@ Route::group(['prefix' => 'account'], function () {
     Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::get('/users', [UserController::class, 'index'])->name('user.index');
-    Route::get('/users', [UserController::class, 'show'])->middleware('users')->name('users.show');
+    Route::get('/users', [UserController::class, 'show'])
+        // ->middleware('users')
+        ->name('users.show');
+
     Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
     Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
 
@@ -57,5 +58,5 @@ Route::group(['prefix' => 'contact'], function () {
     Route::post('/contact', [ContactFormController::class, 'submit'])->name('contact.submit');
 });
 
-
 Route::get('categories/{category_id}/product/{id}/{slug}', [HomeController::class, 'detail'])->name('productDetail');
+
