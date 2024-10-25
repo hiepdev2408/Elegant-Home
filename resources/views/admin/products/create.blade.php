@@ -1,25 +1,26 @@
 @extends('admin.layouts.master')
-@section('title')
-    Thêm mới sản phẩm
-@endsection
-@section('menu-item-product')
-    open
-@endsection
-
-@section('menu-sub-create-product')
-    active
-@endsection
 
 @section('content')
     <div class="container">
-        <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
+        <h2>Thêm Sản Phẩm Nội Thất</h2>
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <!-- Form tạo sản phẩm -->
+        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header align-items-center d-flex">
                             <h4 class="card-title mb-0 flex-grow-1">Thông tin</h4>
                         </div><!-- end card header -->
+                        {{-- @dd($attributes) --}}
                         <div class="card-body">
                             <div class="live-preview">
                                 <div class="row gy-4">
@@ -41,6 +42,10 @@
                                                     <option value="{{ $id }}">{{ $name }}</option>
                                                 @endforeach
                                             </select>
+                                        </div>
+                                        <div class="mt-3">
+                                            <label for="">Giá sản phẩm</label>
+                                            <input type="text" name="base_price" class="form-control">
                                         </div>
                                         <div class="mt-3">
                                             <label for="img_thumbnail" class="form-label">Img thumbnail</label>
@@ -105,267 +110,165 @@
                 </div>
                 <!--end col-->
             </div>
-            <div class="row mt-5" style="height: 300px; overflow: scroll">
+            <div class="row mt-5">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header align-items-center d-flex">
-                            <h4 class="card-title mb-0 flex-grow-1">Gallary</h4>
-                        </div><!-- end card header -->
+                            <h4 class="card-title mb-0 flex-grow-1">Gallery</h4>
+                        </div>
                         <div class="card-body">
-                            <div class="live-preview">
-                                <div class="row gy-4">
-                                    <div>
-                                        <label for="gallery_1" class="form-label">Galleries</label>
-                                        <input type="file" class="form-control" name="product_galleries[]"
-                                            id="gallery_1">
-                                    </div>
-                                    <div>
-                                        <label for="gallery_2" class="form-label">Galleries 2</label>
-                                        <input type="file" class="form-control" name="product_galleries[]"
-                                            id="gallery_2">
-                                    </div>
+                            <div class="row gy-4" id="gallery-container">
+                                <div class="col-12" id="gallery_1">
+                                    <label for="gallery_input_1" class="form-label">Gallery 1</label>
+                                    <input type="file" class="form-control" name="product_galleries[]"
+                                        id="gallery_input_1">
                                 </div>
                             </div>
+                            <button type="button" class="btn btn-primary mt-3" id="add-gallery">Thêm Gallery</button>
                         </div>
                     </div>
                 </div>
-                <!--end col-->
             </div>
 
-            <div class="col-12">
-                <h3 class="mt-5">Biến thể</h3>
-                <div id="variant-container">
-                    <!-- Nhóm biến thể đầu tiên -->
-                    <div class="variant-group" data-variant="0">
-                        <div class="row variant-row">
-                            <div class="col">
-                                <label for="">Thuộc tính</label>
-                                <select name="product_attribute[attribute_id][0][]" class="form-control">
-                                    @foreach ($attribute as $id => $name)
-                                        <option value="{{ $id }}">{{ $name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col">
-                                <label for="">Giá trị</label>
-                                <input type="text" name="product_attribute[value][0][]" class="form-control">
-                            </div>
+            <!-- Toggle thêm biến thể -->
+            <div class="form-group form-check">
+                <input type="checkbox" id="hasVariants" class="form-check-input">
+                <label class="form-check-label" for="hasVariants">Sản phẩm này có biến thể</label>
+            </div>
+
+            <!-- Biến thể sản phẩm (ẩn theo mặc định) -->
+            <div id="variantsSection" style="display: none;">
+                <h4>Biến Thể Sản Phẩm</h4>
+                <div id="variants">
+                    <div class="variant">
+                        <h5>Biến Thể 1</h5>
+                        <div class="form-group">
+                            <label for="variant_sku_0">Mã biến thể:</label>
+                            <input type="text" id="variant_sku_0" name="variants[0][sku]" class="form-control">
                         </div>
 
-                        <!-- Nút thêm cặp thuộc tính-giá trị cho biến thể này -->
-                        <button type="button" class="btn btn-secondary mt-2 add-attribute">Thêm thuộc tính</button>
-                        <div class="row">
-                            <div class="col-md-2 mt-3">
-                                <label for="">SKU</label>
-                                <input type="text" name="group[0][SKU]" value="{{ strtoupper(Str::random(8)) }}"
-                                    class="form-control" required>
-                            </div>
-
-                            <div class="col-md-2 mt-3">
-                                <label for="">Số lượng</label>
-                                <input type="text" name="group[0][stock]" class="form-control" required>
-                            </div>
-
-                            <div class="col-md-2 mt-3">
-                                <label for="">Giá bán</label>
-                                <input type="text" name="group[0][price]" class="form-control" required>
-                            </div>
-
-                            <div class="col-md-2 mt-3">
-                                <label for="">Giá sale</label>
-                                <input type="text" name="group[0][price_sale]" class="form-control">
-                            </div>
-
-                            <div class="col-md-4 mt-3">
-                                <label for="">Image Variant</label>
-                                <input type="file" name="group[0][img_variant]" class="form-control">
-                            </div>
+                        <div class="form-group">
+                            <label for="variant_price_modifier_0">Giá điều chỉnh:</label>
+                            <input type="number" id="variant_price_modifier_0" name="variants[0][price_modifier]"
+                                class="form-control" step="0.01">
                         </div>
 
-                        <hr class="text-danger">
+                        <div class="form-group">
+                            <label for="variant_stock_0">Số lượng tồn kho:</label>
+                            <input type="number" id="variant_stock_0" name="variants[0][stock]" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="variant_image_0">Ảnh biến thể:</label>
+                            <input type="file" id="variant_image_0" name="variants[0][image]" class="form-control">
+                        </div>
+                        <!-- Thuộc tính của biến thể -->
+                        <div id="attributesSection_0">
+
+                            @foreach ($attributes as $attribute)
+                                <div class="form-group">
+                                    <label for="variant_attribute_{{ $attribute->id }}_0">{{ $attribute->name }}:</label>
+                                    <select id="variant_attribute_{{ $attribute->id }}_0"
+                                        name="variants[0][attributes][{{ $attribute->id }}]" class="form-control">
+                                        <option value="">Chọn {{ $attribute->name }}</option>
+                                        @foreach ($attribute->values as $value)
+                                            <option value="{{ $value->id }}">{{ $value->value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
 
-                <!-- Nút thêm biến thể -->
-                <button type="button" class="btn btn-primary mt-3" id="add-variant">Thêm biến thể</button>
+                <button type="button" id="add-variant" class="btn btn-secondary">Thêm Biến Thể</button>
             </div>
 
-            <button class="btn btn-success mt-3">Thêm mới</button>
+            <!-- Nút submit -->
+            <button type="submit" class="btn btn-primary">Lưu Sản Phẩm</button>
         </form>
     </div>
 @endsection
-
 @section('script-libs')
-    <script>
-        let variantCount = 0;
-
-        // Thêm biến thể mới
-        document.getElementById('add-variant').addEventListener('click', function() {
-            variantCount++;
-            const container = document.getElementById('variant-container');
-
-            // Tạo hàng mới cho biến thể
-            const newRow = document.createElement('div');
-            newRow.classList.add('variant-group');
-            newRow.setAttribute('data-variant', variantCount);
-            newRow.innerHTML = `
-            <div class="row variant-row">
-                <div class="col">
-                    <label for="">Thuộc tính</label>
-                    <select name="product_attribute[attribute_id][${variantCount}][]" class="form-control">
-                        @foreach ($attribute as $id => $name)
-                            <option value="{{ $id }}">{{ $name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col">
-                    <label for="">Giá trị</label>
-                    <input type="text" name="product_attribute[value][${variantCount}][]" class="form-control">
-                </div>
-            </div>
-
-            <button type="button" class="btn btn-secondary mt-2 add-attribute">Thêm thuộc tính</button>
-            <div class="row">
-                <div class="col-md-2 mt-3">
-                    <label for="">SKU</label>
-                    <input type="text" name="group[${variantCount}][SKU]" value="{{ strtoupper(Str::random(8)) }}" class="form-control" required>
-                </div>
-
-                <div class="col-md-2 mt-3">
-                    <label for="">Số lượng</label>
-                    <input type="text" name="group[${variantCount}][stock]" class="form-control" required>
-                </div>
-
-                <div class="col-md-2 mt-3">
-                    <label for="">Giá bán</label>
-                    <input type="text" name="group[${variantCount}][price]" class="form-control" required>
-                </div>
-
-                <div class="col-md-2 mt-3">
-                    <label for="">Giá sale</label>
-                    <input type="text" name="group[${variantCount}][price_sale]" class="form-control">
-                </div>
-
-                <div class="col-md-4 mt-3">
-                    <label for="">Image Variant</label>
-                    <input type="file" name="group[${variantCount}][img_variant]" class="form-control">
-                </div>
-            </div>
-            <hr class="text-danger">
-        `;
-
-            container.appendChild(newRow);
-        });
-
-        // Thêm thuộc tính mới vào biến thể
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.classList.contains('add-attribute')) {
-                const variantGroup = e.target.closest('.variant-group');
-                const variantIndex = variantGroup.getAttribute('data-variant');
-
-                const newAttributeRow = document.createElement('div');
-                newAttributeRow.classList.add('row', 'variant-row', 'mt-2');
-                newAttributeRow.innerHTML = `
-                <div class="col">
-                    <label>Thuộc tính</label>
-                    <select name="product_attribute[attribute_id][${variantIndex}][]" class="form-control">
-                        @foreach ($attribute as $id => $name)
-                            <option value="{{ $id }}">{{ $name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col">
-                    <label>Giá trị</label>
-                    <input type="text" name="product_attribute[value][${variantIndex}][]" class="form-control">
-                </div>
-
-            `;
-
-                variantGroup.insertBefore(newAttributeRow, e.target);
-            }
-        });
-
-
-        // Hiển thị slug
-        document.getElementById('productName').addEventListener('input', function() {
-            const name = this.value;
-
-            // Hàm chuyển đổi ký tự tiếng Việt
-            const slugify = (text) => {
-                const specialCharsMap = {
-                    'à': 'a',
-                    'á': 'a',
-                    'ả': 'a',
-                    'ã': 'a',
-                    'ạ': 'a',
-                    'ầ': 'a',
-                    'ấ': 'a',
-                    'ẩ': 'a',
-                    'ẫ': 'a',
-                    'ậ': 'a',
-                    'è': 'e',
-                'é'    : 'e',
-                    'ẻ': 'e',
-                    'ẽ': 'e',
-                    'ẹ': 'e',
-                    'ề': 'e',
-                    'ế': 'e',
-                    'ể': 'e',
-                    'ễ': 'e',
-                    'ệ': 'e',
-                    'ì': 'i',
-                    'í': 'i',
-                    'ỉ': 'i',
-                    'ĩ': 'i',
-                    'ị': 'i',
-                    'ò': 'o',
-                    'ó': 'o',
-                    'ỏ': 'o',
-                    'õ': 'o',
-                    'ọ': 'o',
-                    'ồ': 'o',
-                    'ố': 'o',
-                    'ổ': 'o',
-                    'ỗ': 'o',
-                    'ộ': 'o',
-                    'ù': 'u',
-                    'ú': 'u',
-                    'ủ': 'u',
-                    'ũ': 'u',
-                    'ụ': 'u',
-                    'ừ': 'u',
-                    'ứ': 'u',
-                    'ử': 'u',
-                    'ữ': 'u',
-                    'ự': 'u',
-                    'ỳ': 'y',
-                    'ý': 'y',
-                    'ỷ': 'y',
-                    'ỹ': 'y',
-                    'ỵ': 'y',
-                    'Đ': 'D',
-                    'đ': 'd'
-                };
-
-                // Thay thế các ký tự đặc biệt
-                text = text.replace(/[àáảãạầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộùúủũụừứửữựỳýỷỹỵĐđ]/g, (char) =>
-                    specialCharsMap[char] || char);
-
-                return text
-                    .toLowerCase() // Chuyển về chữ thường
-                    .replace(/\s+/g, '-') // Thay thế khoảng trắng bằng dấu '-'
-                    .replace(/[^\w\-]+/g, '') // Xóa ký tự không hợp lệ
-                    .replace(/\-\-+/g, '-') // Xóa dấu '-' trùng lặp
-                    .replace(/^-+/, '') // Xóa dấu '-' ở đầu
-                    .replace(/-+$/, ''); // Xóa dấu '-' ở cuối
-            };
-
-            const slug = slugify(name);
-            document.getElementById('productSlug').value = slug;
-        });
-    </script>
     <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
     <script>
         CKEDITOR.replace('content');
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let galleryCount = 1;
+
+            const galleryContainer = document.getElementById('gallery-container');
+            const addGalleryButton = document.getElementById('add-gallery');
+
+            addGalleryButton.addEventListener('click', function() {
+                galleryCount++;
+                const newGalleryDiv = document.createElement('div');
+                newGalleryDiv.classList.add('col-12');
+                newGalleryDiv.id = `gallery_${galleryCount}`;
+                newGalleryDiv.innerHTML = `
+                <label for="gallery_input_${galleryCount}" class="form-label">Gallery ${galleryCount}</label>
+                <input type="file" class="form-control" name="product_galleries[]" id="gallery_input_${galleryCount}">
+            `;
+                galleryContainer.appendChild(newGalleryDiv);
+            });
+        });
+    </script>
+    <script>
+        // JSON cho dữ liệu thuộc tính và các giá trị của chúng
+        const attributesData = @json($attributes);
+
+        document.getElementById('hasVariants').addEventListener('change', function() {
+            const variantsSection = document.getElementById('variantsSection');
+            variantsSection.style.display = this.checked ? 'block' : 'none';
+        });
+
+        let variantIndex = 1;
+        document.getElementById('add-variant').addEventListener('click', function() {
+            let variantsDiv = document.getElementById('variants');
+            let newVariantDiv = document.createElement('div');
+            newVariantDiv.classList.add('variant');
+            newVariantDiv.innerHTML = `
+                <h5>Biến Thể ${variantIndex + 1}</h5>
+                <div class="form-group">
+                    <label for="variant_name_${variantIndex}">Mã sản phẩm:</label>
+                    <input type="text" id="variant_sku_${variantIndex}" name="variants[${variantIndex}][sku]" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="variant_price_modifier_${variantIndex}">Giá điều chỉnh:</label>
+                    <input type="number" id="variant_price_modifier_${variantIndex}" name="variants[${variantIndex}][price_modifier]" class="form-control" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="variant_stock_${variantIndex}">Số lượng tồn kho:</label>
+                    <input type="number" id="variant_stock_${variantIndex}" name="variants[${variantIndex}][stock]" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="variant_image_${variantIndex}">Ảnh biến thể:</label>
+                    <input type="file" id="variant_image_${variantIndex}" name="variants[${variantIndex}][image]" class="form-control">
+                </div>
+                ${generateAttributeFields(variantIndex)}
+    `;
+            variantsDiv.appendChild(newVariantDiv);
+            variantIndex++;
+        });
+
+        function generateAttributeFields(index) {
+            let fieldsHTML = '';
+            attributesData.forEach(attribute => {
+                let optionsHTML = '<option value="">Chọn ' + attribute.name + '</option>';
+                attribute.values.forEach(value => {
+                    optionsHTML += `<option value="${value.id}">${value.value}</option>`;
+                });
+
+                fieldsHTML += `
+            <div class="form-group">
+                <label for="variant_attribute_${attribute.id}_${index}">${attribute.name}:</label>
+                <select id="variant_attribute_${attribute.id}_${index}" name="variants[${index}][attributes][${attribute.id}]" class="form-control">
+                    ${optionsHTML}
+                </select>
+            </div>
+        `;
+            });
+            return fieldsHTML;
+        }
     </script>
 @endsection

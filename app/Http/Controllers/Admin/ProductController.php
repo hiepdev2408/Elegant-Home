@@ -9,6 +9,7 @@ use App\Models\Gallery;
 use App\Models\Group;
 use App\Models\Product;
 use App\Models\ProductAttribute;
+use App\Models\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -22,7 +23,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with(['categories', 'galleries', 'productAttributes.group'])->latest('id')->get();
+        $products = Product::with([
+            'variants.attributes' => function ($query) {
+                $query->with('attribute', 'attributeValue');
+            }
+        ])->get();
 
         return view('admin.products.index', compact('products'));
     }
@@ -32,74 +37,74 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $attribute = Attribute::query()->pluck('name', 'id')->all();
+        $attributes = Attribute::all();
         $category = Category::query()->pluck('name', 'id')->all();
 
-        return view('admin.products.create', compact('attribute', 'category'));
+        return view('admin.products.create', compact('attributes', 'category'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        // dd($request->product_galleries);
+        // dd($request->all());
         try {
-            DB::transaction(function () use ($request) {
+            DB::transaction(function ()use ($request) {
+                $dataProduct = $request->except(['product_galleries', 'variants', 'categories']);
 
-                $data = $request->except(['product_attribute', 'group', 'product_galleries', 'categories']);
-                $data['is_active'] = isset($data['is_active']) ? 1 : 0;
-                $data['is_good_deal'] = isset($data['is_good_deal']) ? 1 : 0;
-                $data['is_new'] = isset($data['is_new']) ? 1 : 0;
-                $data['is_show_home'] = isset($data['is_show_home']) ? 1 : 0;
-                $data['slug'] = Str::slug($data['name']);
+                // dd($dataProduct);
+                $dataProduct['is_active'] = isset($dataProduct['is_active']) ? 1 : 0;
+                $dataProduct['is_good_deal'] = isset($dataProduct['is_good_deal']) ? 1 : 0;
+                $dataProduct['is_new'] = isset($dataProduct['is_new']) ? 1 : 0;
+                $dataProduct['is_show_home'] = isset($dataProduct['is_show_home']) ? 1 : 0;
+                $dataProduct['slug'] = Str::slug($dataProduct['name']);
 
-                // dd($data['img_thumbnail']);
-                if ($request->hasFile('img_thumbnail')) {
-                    $data['img_thumbnail'] = Storage::put('products', $request->file('img_thumbnail'));
+                if($request->hasFile('img_thumbnail')){
+                    $dataProduct['img_thumbnail'] = Storage::put('products', $request->file('img_thumbnail'));
                 }
 
-                $product = Product::create($data);
+                $product = Product::query()->create($dataProduct);
 
-                // Sử lý gallery
-                foreach ($request->product_galleries as $image) {
-                    Gallery::create([
+                foreach ($request->product_galleries as $imageGallery) {
+                    Gallery::query()->create([
                         'product_id' => $product->id,
-                        'img_path' => Storage::put('galleries', $image),
+                        'img_path' => $imageGallery,
                     ]);
                 }
-
-                // Sử lý group
-                foreach ($request->group as $key => $dataGroup) {
-                    $group = Group::query()->create([
-                        'SKU' => $dataGroup['SKU'],
-                        'stock' => $dataGroup['stock'],
-                        'price' => $dataGroup['price'],
-                        'price_sale' => $dataGroup['price_sale'],
-                        'img_variant' => Storage::put('group', $dataGroup['img_variant']),
-                    ]);
-
-                    foreach ($request->product_attribute['attribute_id'][$key] as $proAttriIndex => $productAttributeValue) {
-                        $valueProductAttribute = $request->product_attribute['value'][$key][$proAttriIndex];
-
-                        $productAttribute = ProductAttribute::create([
+                // dd($request->variants);
+                foreach ($request->variants as $variantData) {
+                    if (!empty($variantData['sku'])) {
+                        $variant = Variant::query()->create([
                             'product_id' => $product->id,
-                            'attribute_id' => $productAttributeValue,
-                            'group_id' => $group->id,
-                            'value' => $valueProductAttribute,
+                            'sku' => $variantData['sku'] ?? 0,
+                            'stock' => $variantData['stock'],
+                            'price_modifier' =>  $variantData['price_modifier'] ?? 0,
+                            'image' => Storage::put('variants', $variantData['image']),
                         ]);
                     }
+                    // dd($variant);
+                    if (!empty($variantData['attributes'])) {
+                        foreach ($variantData['attributes'] as $key => $value) {
+                            // dd($value);
+                            if($value){
+                                $variant->attributes()->create([
+                                    'attribute_id' => $key,
+                                    'attribute_value_id' => $value,
+                                ]);
+                            }
+                        }
+                    }
                 }
-                $product->categories()->sync($request->categories);
-            }, 1);
 
-            return redirect()->route('products.index')->with('success', 'Thêm mới thành công!');
+                $product->categories()->attach($request->categories);
+            }, 3);
+
+            return redirect()->route('products.index')->with('success', 'Thao tác thành công');
         } catch (\Exception $exception) {
             dd($exception->getMessage());
 
             return back();
         }
     }
+
 
     /**
      * Display the specified resource.

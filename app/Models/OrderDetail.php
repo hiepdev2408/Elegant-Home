@@ -11,7 +11,6 @@ class OrderDetail extends Model
 
     protected $fillable = [
         'order_id',
-        'combination_id',
         'quantity',
         'price',
         'total_amount',
@@ -21,7 +20,4 @@ class OrderDetail extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function combination(){
-        return $this->belongsTo(Combination::class);
-    }
 }
