@@ -1,11 +1,10 @@
 <?php
 
-use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Account\AccountController;
+use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ContactFormController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Client\ContactFormController;
+use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Route;
 
 

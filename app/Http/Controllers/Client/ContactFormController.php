@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
+use App\Http\Controllers\Controller;
 use App\Mail\ContactFormMail;
 use App\Models\Contract;
 use Illuminate\Http\Request;
