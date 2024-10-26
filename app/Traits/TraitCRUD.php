@@ -36,7 +36,7 @@ trait TraitCRUD
 
             case 'attributes':
                 $rules = [
-
+                    'name' => 'required|string|max:255|min:4',
                 ];
                 break;
 

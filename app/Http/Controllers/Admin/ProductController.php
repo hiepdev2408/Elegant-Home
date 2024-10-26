@@ -6,9 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Gallery;
-use App\Models\Group;
 use App\Models\Product;
-use App\Models\ProductAttribute;
 use App\Models\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +33,7 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $attributes = Attribute::all();
         $category = Category::query()->pluck('name', 'id')->all();
@@ -118,11 +116,10 @@ class ProductController extends Controller
     {
         $product = Product::query()->findOrFail($id);
 
-        $attribute = Attribute::query()->pluck('name', 'id')->all();
-        $category = Category::query()->pluck('name', 'id')->all();
-        $proCate = $product->categories()->pluck('id')->all();
+        $attributes = Attribute::with('values')->get(); // Lấy tất cả thuộc tính và giá trị
+        $product->load(['galleries', 'variants.attributes']);
 
-        return view('admin.products.edit', compact('product', 'category', 'attribute', 'proCate'));
+        return view('admin.products.edit', compact('product', 'attributes'));
     }
 
     /**

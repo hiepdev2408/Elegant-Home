@@ -4,15 +4,13 @@
         <div class="card-header">
             <h5 class="card-title">Danh sách thuộc tính</h5>
             <a href="{{ route('attributes.create') }}" class="btn btn-info">Thêm thuộc tính</a>
-            <a href="{{ route('attributes.delete') }}" class="btn btn-dark">Thùng rác</a>
         </div>
         <div class="card-datatable table-responsive">
             <table class="datatables-users table">
                 <thead class="border-top table-light">
                     <tr>
                         <th>STT</th>
-                        <th>Danh mục</th>
-                        <th>Thuộc tính</th>
+                        <th>Tên thuộc tính</th>
                         <th>Ngày Đăng</th>
                         <th>Action</th>
                     </tr>
@@ -21,9 +19,8 @@
                     @foreach ($data as $key => $value)
                         <tr>
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $value->category->name }}</td>
                             <td>{{ $value->name }}</td>
-                            <td>{{ $value->created_at->format('d/m/Y') }}</td>
+                            <td>{{ $value->created_at ? $value->created_at->format('d/m/Y') : '' }}</td>
                             <td>
                                 <div class="d-flex justify-content-center">
 
@@ -56,7 +53,7 @@
         function confirmDelete(id) {
             Swal.fire({
                 title: 'Bạn có chắc không?',
-                text: "Hành động này sẽ chuyển mục vào thùng rác!",
+                text: "Hành động này sẽ xóa vĩnh viễn thuộc tính!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

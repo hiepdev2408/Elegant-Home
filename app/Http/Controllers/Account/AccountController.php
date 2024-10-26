@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Account;
 
+use App\Http\Controllers\Controller;
 use App\Mail\VerifyAccount;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class AccountController extends Controller
         ]);
         $data = request()->all('email', 'password');
         if (auth()->attempt($data)) {
-          
+
             return redirect()->route('home')->with('success','Đăng nhập thành công') ;
         }
         return redirect()->back()->with([
