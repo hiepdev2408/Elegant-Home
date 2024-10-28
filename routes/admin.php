@@ -6,8 +6,8 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\ContactFormController;
-use App\Mail\ContactFormMail;
+use App\Http\Controllers\Client\ContactFormController;
+use App\Helpers\Mail\ContactFormMail;
 use Illuminate\Support\Facades\Route;
 
 
@@ -107,9 +107,9 @@ Route::prefix('admin')
         Route::prefix('contact')
             ->as('contact.')
             ->group(function () {
-                Route::get('/', [ContactFormController::class, 'index'])->name('index');
-                Route::delete('destroy/{id}', [ContactFormController::class, 'destroy'])->name('destroy');
-            });
+            Route::get('/', [ContactFormController::class, 'index'])->name('index');
+            Route::delete('destroy/{id}', [ContactFormController::class, 'destroy'])->name('destroy');
+        });
 
         Route::get('/chat', function () {
             return view('admin.chat.index');
