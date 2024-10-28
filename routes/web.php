@@ -59,3 +59,7 @@ Route::group(['prefix' => 'contact'], function () {
 
 Route::get('product/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 
+Route::group(['prefix' => 'shops'], function () {
+    Route::get('/shops', [HomeController::class, 'shop'])->name('shop');
+
+});

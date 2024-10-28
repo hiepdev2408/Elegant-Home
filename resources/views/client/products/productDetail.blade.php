@@ -1116,6 +1116,7 @@
                                             </svg>
                                             <span class="add__to--cart__text"> Add to cart</span>
                                         </a>
+
                                     </div>
 
 
