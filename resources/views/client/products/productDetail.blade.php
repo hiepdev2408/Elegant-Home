@@ -1098,7 +1098,16 @@
                                         </div>
 
                                     </div>
-<<<<<<< HEAD
+<<<<<<<<< Temporary merge branch 1
+
+                                </div>
+                                <div class="product__items--content text-center">
+
+                                    <h3 class="product__items--content__title h4"><a href="product-details.html">Fashion Plastic Chair</a></h3>
+                                    <div class="product__items--price">
+                                        <span class="current__price">$150.00</span>
+                                        <span class="old__price">$200.00</span>
+=========
                                     <div class="product__items--content text-center">
 
                                         <h3 class="product__items--content__title h4"><a
@@ -1117,16 +1126,7 @@
                                             </svg>
                                             <span class="add__to--cart__text"> Add to cart</span>
                                         </a>
-=======
-                                 
-                                </div>
-                                <div class="product__items--content text-center">
-                                   
-                                    <h3 class="product__items--content__title h4"><a href="product-details.html">Fashion Plastic Chair</a></h3>
-                                    <div class="product__items--price">
-                                        <span class="current__price">$150.00</span>
-                                        <span class="old__price">$200.00</span>
->>>>>>> 4abc810d7c0273b05baabbccac16e528edcd9262
+>>>>>>>>> Temporary merge branch 2
                                     </div>
 
 
