@@ -57,7 +57,6 @@ trait TraitCRUD
                 $query->with($this->relations);
             })
             ->latest()->paginate(10);
-
         return view('admin.' . $this->model->getTable() . '.' . __FUNCTION__, compact('data'));
     }
     public function delete()
@@ -88,6 +87,7 @@ trait TraitCRUD
         $data = $request->all();
 
         if (!isset($data['slug'])) {
+            
             $data['slug'] = Str::slug($request['title']);
         }
 
