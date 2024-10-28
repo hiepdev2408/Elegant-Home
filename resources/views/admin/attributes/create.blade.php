@@ -2,22 +2,22 @@
 @section('title')
     Thêm thuộc tính
 @endsection
-@section('menu-item-attributes')
+
+@section('menu-item-attribute')
     open
 @endsection
 
-@section('menu-sub-create-attributes')
+@section('menu-sub-create-attribute')
     active
 @endsection
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="py-3 mb-4">
-            <span class="text-muted fw-light"></span><span> Thêm mới thuộc tính</span>
+            <span class="text-muted fw-light">Thuộc Tính /</span> Danh sách thuộc tính
         </h4>
         <form action="{{ route('attributes.store') }}" method="POST">
             @csrf
-
             <div class="app-ecommerce">
                 <!-- Add Product -->
                 <div
@@ -28,7 +28,7 @@
                     </div>
                     <div class="d-flex align-content-center flex-wrap gap-3">
                         <button type="reset" class="btn btn-outline-primary">Nhập Lại</button>
-                        <a href="{{ route('categories.index') }}" class="btn btn-info">Quay Lại</a>
+                        <a href="{{ route('attributes.index') }}" class="btn btn-info">Quay Lại</a>
                         <button type="submit" class="btn btn-primary">
                             Xuất bản
                         </button>
@@ -43,14 +43,12 @@
                             <div class="card-header">
                                 <h5 class="card-tile mb-0">Thông tin thuộc tính</h5>
                             </div>
-
                             <div class="card-body">
-                                <span style="margin-left: 900px; color: red">* Trường này bắt buộc nhập</span>
                                 <div class="form-floating form-floating-outline">
-
                                     <input type="text" class="form-control" placeholder="Tên thuộc tính" name="name"
                                         id="name" value="{{ old('name') }}" />
                                     <label for="ecommerce-product-name">Tên thuộc tính</label>
+                                    {{-- <span style="color: red">* Trường này bắt buộc nhập</span> --}}
                                     @error('name')
                                         <span class=" " style="color: red">{{ $message }}</span>
                                     @enderror

@@ -2,18 +2,18 @@
 @section('title')
     Thêm thuộc tính
 @endsection
-@section('menu-item-attributes')
+@section('menu-item-attribute')
     open
 @endsection
 
-@section('menu-sub-create-attributes')
+@section('menu-sub-create-attribute')
     active
 @endsection
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="py-3 mb-4">
-            <span class="text-muted fw-light"></span><span> Chỉnh sửa thuộc tính</span>
+            <span class="text-muted fw-light">Thuộc Tính /</span><span> {{ $dataID->name }}</span>
         </h4>
         <form action="{{ route('attributes.update', $dataID->id) }}" method="POST">
             @csrf
@@ -28,7 +28,7 @@
                     </div>
                     <div class="d-flex align-content-center flex-wrap gap-3">
                         <button type="reset" class="btn btn-outline-primary">Nhập Lại</button>
-                        <a href="{{ route('categories.index') }}" class="btn btn-info">Quay Lại</a>
+                        <a href="{{ route('attributes.index') }}" class="btn btn-info">Quay Lại</a>
                         <button type="submit" class="btn btn-primary">
                             Xuất bản
                         </button>
@@ -45,7 +45,7 @@
                             </div>
 
                             <div class="card-body">
-                                <span style="margin-left: 900px; color: red">* Trường này bắt buộc nhập</span>
+                                {{-- <span style="margin-left: 900px; color: red">* Trường này bắt buộc nhập</span> --}}
                                 <div class="form-floating form-floating-outline">
 
                                     <input type="text" class="form-control" placeholder="Tên thuộc tính" name="name"
