@@ -112,7 +112,7 @@
             </ul>
         </li>
         <li class="menu-item @yield('menu-item-attribute')">
-            <a  class="menu-link menu-toggle">
+            <a class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons mdi mdi-distribute-horizontal-center'></i>
                 <div data-i18n="Thuộc tính">Thuộc tính</div>
             </a>

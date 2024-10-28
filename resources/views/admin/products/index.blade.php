@@ -1,4 +1,15 @@
 @extends('admin.layouts.master')
+
+@section('title')
+    Thêm sản phẩm
+@endsection
+@section('menu-item-product')
+    open
+@endsection
+
+@section('menu-sub-index-product')
+    active
+@endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
@@ -32,7 +43,7 @@
                         @foreach ($products as $key => $product)
                             {{-- @dd($product->productAttributes) --}}
                             <tr>
-                                <td>{{ $key+1 }}</td>
+                                <td>{{ $key + 1 }}</td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ number_format($product->base_price, 0, ',', '.') }} VND</td>
                                 <td>
@@ -61,11 +72,13 @@
                                                 @foreach ($product->variants as $variant)
                                                     <tr>
                                                         <td>{{ $variant->sku }}</td>
-                                                        <td>{{ number_format($variant->price_modifier, 0, ',', '.') }} VND</td>
+                                                        <td>{{ number_format($variant->price_modifier, 0, ',', '.') }} VND
+                                                        </td>
                                                         <td>{{ $variant->stock }}</td>
                                                         <td>
                                                             @if ($variant->image)
-                                                                <img src="{{ Storage::url($variant->image) }}" width="50px" alt="">
+                                                                <img src="{{ Storage::url($variant->image) }}"
+                                                                    width="50px" alt="">
                                                             @endif
                                                         </td>
                                                         <td>
