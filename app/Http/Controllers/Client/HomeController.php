@@ -32,29 +32,16 @@ class HomeController extends Controller
         $products = Product::latest()->take(10)->get();
         $blogs = Blog::with('user')->get();
 
-        return view('client.home', compact('categories', 'products','blogs'));
+        return view('client.home', compact('categories', 'products', 'blogs'));
     }
-    public function detail($category_id, $id, $slug)
+    public function detail($slug)
     {
         // Lấy sản phẩm theo ID và slug
-        $product = Product::with(['galleries', 'productAttributes', 'categories'])
-                          ->where('id', $id)
-                          ->where('slug', $slug)
-                          ->firstOrFail();
-
-        // Lấy danh mục của sản phẩm hiện tại
-        $categoryIds = $product->categories->pluck('id');
-
-        // Lấy các sản phẩm có cùng danh mục (trừ sản phẩm hiện tại)
-        $relatedProducts = Product::whereHas('categories', function ($query) use ($categoryIds) {
-            $query->whereIn('id', $categoryIds);
-        })
-        ->where('id', '!=', $product->id)
-        ->limit(4)
-        ->get();
-            // dd($relatedProducts);
+        $product = Product::with(['galleries', 'categories'])
+            ->where('slug', $slug)
+            ->firstOrFail();
 
         // Trả về view với thông tin sản phẩm và sản phẩm liên quan
-        return view('client.products.productDetail', compact('product', 'relatedProducts'));
+        return view('client.products.productDetail', compact('product'));
     }
 }

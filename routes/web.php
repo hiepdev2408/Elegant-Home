@@ -8,7 +8,7 @@ use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get( '/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::group(['prefix' => 'account'], function () {
 
@@ -57,5 +57,5 @@ Route::group(['prefix' => 'contact'], function () {
     Route::post('/contact', [ContactFormController::class, 'submit'])->name('contact.submit');
 });
 
-Route::get('categories/{category_id}/product/{id}/{slug}', [HomeController::class, 'detail'])->name('productDetail');
+Route::get('product/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 
