@@ -25,7 +25,7 @@
                                 <a class="header__menu--link" href="/">Trang chủ </a>
                             </li>
                             <li class="header__menu--items mega__menu--items">
-                                <a class="header__menu--link" href="shop.html">Sản phẩm <span
+                                <a class="header__menu--link" href="{{ route('shop') }}">Sản phẩm <span
                                         class="menu__plus--icon">+</span></a>
                                 <ul class="header__mega--menu d-flex">
                                     <li class="header__mega--menu__li">
