@@ -4,97 +4,6 @@
 @endsection
 @section('content')
     <main class="main__content_wrapper">
-        <!-- Start slider section -->
-        <section class="hero__slider--section">
-            <div class="hero__slider--inner hero__slider--activation swiper">
-                <div class="hero__slider--wrapper swiper-wrapper">
-                    <div class="swiper-slide ">
-                        <div class="hero__slider--items hero__slider--bg slider1">
-                            <div class="container-fluid">
-                                <div class="hero__slider--items__inner">
-                                    <div class="row row-cols-1">
-                                        <div class="col">
-                                            <div class="slider__content">
-                                                <p class="slider__content--desc desc1 text-white mb-15">Khám phá bộ sưu tập
-                                                    đồ nội thất tốt nhất của chúng tôi
-                                                    từ nhà</p>
-                                                <h2 class="slider__content--maintitle text-white h1">Đồ nội thất phong cách
-                                                    <br>
-                                                    Mang đến vẻ đẹp
-                                                </h2>
-                                                <p class="slider__content--desc text-white mb-35 d-sm-2-none">Đồ nội thất
-                                                    tuyệt vời có thể mang lại vẻ đẹp cho ngôi nhà của bạn, vì vậy hãy mua
-                                                    sản phẩm phổ biến của chúng tôi <br>
-                                                    và đồ nội thất thời trang. Bây giờ bạn được giảm giá tới 100%.</p>
-                                                <a class="slider__content--btn primary__btn" href="shop.html">Start to
-                                                    Buying</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide ">
-                        <div class="hero__slider--items hero__slider--bg slider2">
-                            <div class="container-fluid">
-                                <div class="hero__slider--items__inner">
-                                    <div class="row">
-                                        <div class="col-lg-6 offset-lg-6">
-                                            <div class="slider__content text-center">
-                                                <p class="slider__content--desc desc1 right text-white mb-15">Khám phá bộ
-                                                    sưu tập đồ nội thất tốt nhất của chúng tôi từ nhà</p>
-                                                <h2 class="slider__content--maintitle text-white h1">Nội thất thời trang
-                                                    <br>
-                                                    Mang lại vẻ đẹp
-                                                </h2>
-                                                <p class="slider__content--desc text-white mb-35 d-sm-2-none">Đồ nội thất
-                                                    tuyệt vời có thể mang lại vẻ đẹp cho ngôi nhà của bạn, vì vậy hãy mua
-                                                    sản phẩm phổ biến của chúng tôi <br>
-                                                    và đồ nội thất thời trang. Bây giờ bạn được giảm giá tới 100% ngay bây
-                                                    giờ.</p>
-                                                <a class="slider__content--btn primary__btn" href="shop.html">Start to
-                                                    Buying</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide ">
-                        <div class="hero__slider--items hero__slider--bg slider3">
-                            <div class="container-fluid">
-                                <div class="hero__slider--items__inner">
-                                    <div class="row row-cols-1">
-                                        <div class="col">
-                                            <div class="slider__content">
-                                                <p class="slider__content--desc desc1 text-white mb-15">Khám phá bộ sưu tập
-                                                    đồ nội thất tốt nhất của chúng tôi từ nhà</p>
-                                                <h2 class="slider__content--maintitle text-white h1">Nội thất thời trang
-                                                    <br>
-                                                    Mang lại vẻ đẹp
-                                                </h2>
-                                                <p class="slider__content--desc text-white mb-35 d-sm-2-none">Đồ nội thất
-                                                    tuyệt vời có thể mang lại vẻ đẹp cho ngôi nhà của bạn, vì vậy hãy mua
-                                                    sản phẩm phổ biến của chúng tôi <br>
-                                                    và đồ nội thất thời trang. Bây giờ bạn được giảm giá tới 100%.</p>
-                                                <a class="slider__content--btn primary__btn" href="shop.html">Start to
-                                                    Buying</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper__nav--btn swiper-button-next"></div>
-                <div class="swiper__nav--btn swiper-button-prev"></div>
-            </div>
-        </section>
-        <!-- End slider section -->
-
         <!-- Start banner section -->
         <section class="product__details--section section--padding">
             <div class="container">
@@ -1098,6 +1007,16 @@
                                         </div>
 
                                     </div>
+<<<<<<<<< Temporary merge branch 1
+
+                                </div>
+                                <div class="product__items--content text-center">
+
+                                    <h3 class="product__items--content__title h4"><a href="product-details.html">Fashion Plastic Chair</a></h3>
+                                    <div class="product__items--price">
+                                        <span class="current__price">$150.00</span>
+                                        <span class="old__price">$200.00</span>
+=========
                                     <div class="product__items--content text-center">
 
                                         <h3 class="product__items--content__title h4"><a
@@ -1116,7 +1035,7 @@
                                             </svg>
                                             <span class="add__to--cart__text"> Add to cart</span>
                                         </a>
-
+>>>>>>>>> Temporary merge branch 2
                                     </div>
 
 
