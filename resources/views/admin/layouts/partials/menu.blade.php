@@ -112,9 +112,9 @@
             </ul>
         </li>
         <li class="menu-item @yield('menu-item-attribute')">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <a class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons mdi mdi-distribute-horizontal-center'></i>
-                <div data-i18n="Attribute">Attribute</div>
+                <div data-i18n="Thuộc tính">Thuộc tính</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item @yield('menu-sub-create-attribute')">

@@ -24,7 +24,6 @@ trait TraitCRUD
                     'title' => 'required|string|max:255|min:4',
                     'content' => 'required|string',
                     'img_path' => 'required|image',
-                    'slug'=>'required|alpha_dash|unique:blogs,slug|max:255',
                 ];
                 break;
 
@@ -37,7 +36,7 @@ trait TraitCRUD
 
             case 'attributes':
                 $rules = [
-
+                    'name' => 'required|string|max:255|min:4',
                 ];
                 break;
 
@@ -93,8 +92,8 @@ trait TraitCRUD
 
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
-                $data[$key] = $request->input($key);
-            } elseif (Str::startsWith($key, 'img_') && $request->hasFile($key)) {
+                $data[$key] = $request->input(key: $key);
+            } elseif (Str::startsWith($key, needles: 'img_') && $request->hasFile($key)) {
                 $data[$key] = Storage::put($this->model->getTable(), $request->file($key));
             }
         }

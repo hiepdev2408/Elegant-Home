@@ -17,9 +17,7 @@
         </h4>
         <form action="{{ route('categories.store') }}" method="POST">
             @csrf
-
             <div class="app-ecommerce">
-                <!-- Add Product -->
                 <div
                     class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
                     <div class="d-flex flex-column justify-content-center">
@@ -53,7 +51,6 @@
                                     </select>
                                     <label for="ecommerce-product-name">Danh mục cha</label>
                                 </div>
-
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" class="form-control" placeholder="Tên danh mục" name="name"
                                         id="name" value="{{ old('name') }}" />

@@ -6,8 +6,8 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\ContactFormController;
-use App\Mail\ContactFormMail;
+use App\Http\Controllers\Client\ContactFormController;
+use App\Helpers\Mail\ContactFormMail;
 use Illuminate\Support\Facades\Route;
 
 
@@ -22,7 +22,7 @@ Route::prefix('admin')
 
         Route::prefix('products')
             ->as('products.')
-            ->group(function(){
+            ->group(function () {
                 Route::get('/', [ProductController::class, 'index'])->name('index');
                 Route::get('create', [ProductController::class, 'create'])->name('create');
                 Route::post('store', [ProductController::class, 'store'])->name('store');
@@ -34,6 +34,7 @@ Route::prefix('admin')
 
         Route::prefix('categories')
             ->name('categories.')
+
             ->group(function () {
                 Route::get('/', [CategoryController::class, 'index'])
                     ->name('index');
@@ -42,12 +43,14 @@ Route::prefix('admin')
                 Route::get('/create', [CategoryController::class, 'create'])
                     ->name('create');
                 Route::post('/store', [CategoryController::class, 'store'])
+                    ->middleware(['category.validation'])
                     ->name('store');
                 Route::get('/show/{category}', [CategoryController::class, 'show'])
                     ->name('show');
                 Route::get('/edit/{category}', [CategoryController::class, 'edit'])
                     ->name('edit');
                 Route::put('/update/{category}', [CategoryController::class, 'update'])
+                    ->middleware(['category.validation'])
                     ->name('update');
 
                 Route::post('/delete/{category}', [CategoryController::class, 'restore'])

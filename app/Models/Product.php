@@ -9,9 +9,13 @@ class Product extends Model
 {
     use HasFactory;
 
+    const TYPE_HAVE_VARIATION = 'có biến thể';
+    const TYPE_NO_VARIATION = 'không có biến thể';
+
     protected $fillable = [
         'name',
         'slug',
+        'base_price',
         'img_thumbnail',
         'description',
         'user_manual',
@@ -38,10 +42,8 @@ class Product extends Model
         return $this->hasMany(Gallery::class);
     }
 
-    public function productAttributes(){
-        return $this->hasMany(ProductAttribute::class);
+    public function variants()
+    {
+        return $this->hasMany(Variant::class);
     }
-    // public function group(){
-    //     return $this->belongsTo(Group::class);
-    // }
 }

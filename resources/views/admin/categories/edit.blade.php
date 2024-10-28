@@ -2,6 +2,7 @@
 @section('title')
     Cập nhật danh mục
 @endsection
+
 @section('menu-item-categories')
     open
 @endsection
@@ -9,6 +10,7 @@
 @section('menu-sub-index-categories')
     active
 @endsection
+
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="py-3 mb-4">
@@ -18,6 +20,7 @@
             @csrf
             @method('PUT')
             <div class="app-ecommerce">
+
                 <!-- Update Product -->
                 <div
                     class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
@@ -28,6 +31,7 @@
                     <div class="d-flex align-content-center flex-wrap gap-3">
                         <button type="reset" class="btn btn-outline-primary">Nhập Lại</button>
                         <a href="{{ route('categories.index') }}" class="btn btn-info">Quay Lại</a>
+
                         <button type="submit" class="btn btn-primary">
                             Xuất bản
                         </button>
@@ -48,12 +52,14 @@
                                         <option value="">Chọn danh mục cha (nếu có)</option>
                                         @foreach ($data as $parent)
                                             <option @selected($dataID->parent_id == $parent->id) value="{{ $parent->id }}">
+
                                                 {{ $parent->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                     <label for="ecommerce-product-name">Danh mục cha</label>
                                 </div>
+
 
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" class="form-control" placeholder="Tên danh mục" name="name"
@@ -76,6 +82,7 @@
                             <div class="card-body">
                                 <label class="switch switch-success">
                                     <input type="hidden" name="is_active" value="0">
+
                                     <input type="checkbox" name="is_active" class="switch-input" value="1"
                                         @checked($dataID->is_active) />
                                     <span class="switch-toggle-slider">

@@ -5117,9 +5117,11 @@ Trang Chủ
                     <div class="swiper-slide">
                         <div class="blog__items">
                             <div class="blog__thumbnail">
+                                @if ($item->img_path)
                                 <a class="blog__thumbnail--link display-block" href="blog-details.html"><img
-                                        class="blog__thumbnail--img display-block"
-                                        src="{{Storage::url($item->img_path)}}" alt="blog-img"></a>
+                                    class="blog__thumbnail--img display-block"
+                                    src="{{Storage::url($item->img_path)}}" width="409px" height="409px" alt="blog-img"></a>
+                                @endif
                             </div>
                             <div class="blog__content">
                                 <ul class="blog__content--meta d-flex">
@@ -5143,7 +5145,7 @@ Trang Chủ
                                     </li>
                                 </ul>
                                 <h3 class="blog__content--title h4"><a href="blog-details.html">{{$item->title}}</a></h3>
-                                <p class="blog__content--desc">{{$item->content}}</p>
+                                <p class="blog__content--desc">{!! Str::limit($item->content, 100) !!}</p>
                                 <a class="blog__content--btn primary__btn" href="blog-details.html">Đọc </a>
                             </div>
                         </div>

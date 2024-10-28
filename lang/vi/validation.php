@@ -131,7 +131,7 @@ return [
     'prohibited_if' => 'The :attribute field is prohibited when :other is :value.',
     'prohibited_unless' => 'The :attribute field is prohibited unless :other is in :values.',
     'prohibits' => 'The :attribute field prohibits :other from being present.',
-    'regex' => 'The :attribute field format is invalid.',
+    'regex' => 'Trường :attribute không đúng định dạng.',
     'required' => 'Trường :attribute không được bỏ trống.',
     'required_array_keys' => 'The :attribute field must contain entries for: :values.',
     'required_if' => 'The :attribute field is required when :other is :value.',
@@ -187,10 +187,10 @@ return [
     */
 
     'attributes' => [
-        'name'=>'Tên',
-        'title'=>'Tiêu đề',
-        'img_path'=>'Ảnh',
-        'content'=>'Nội dung',
+        'name'=>'tên',
+        'title'=>'tiêu đề',
+        'img_path'=>'ảnh',
+        'content'=>'nội dung',
         'slug'=>'đường dẫn'
     ],
 

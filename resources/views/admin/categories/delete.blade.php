@@ -4,6 +4,7 @@
 @endsection
 @section('menu-item-categories')
     open
+>>>>>>> 74112967acda104f9f93ea329d3fa8aa7ec4aed3
 @endsection
 
 @section('menu-sub-delete-categories')
@@ -12,6 +13,7 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
+
             <span class="text-muted fw-light">Danh Mục /</span> Thùng rác
         </h4>
         @if (session()->has('success'))
@@ -19,7 +21,6 @@
                 {{ session()->get('success') }}
             </div>
         @endif
-
         <div class="card-header d-flex justify-content-end align-items-center mb-3">
             <a class="btn btn-primary me-2" href="{{ route('categories.create') }}">
                 <i class="mdi mdi-plus me-0 me-sm-1"></i>
@@ -82,12 +83,14 @@
                                         <td>—</td>
                                         <td>{{ $child->name }}</td>
                                         <td>{{ $category->name }}</td>
+
                                         <td>
                                             <span class="badge {{ $child->is_active ? 'bg-success' : 'bg-danger' }}">
                                                 {{ $child->is_active ? 'Kích hoạt' : 'Không kích hoạt' }}
                                             </span>
                                         </td>
                                         <td>
+
                                             <form action="{{ route('categories.restore', $child->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
@@ -111,6 +114,7 @@
                         @endforeach
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>
@@ -141,6 +145,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
     <script>
+
+
         new DataTable("#example", {
             order: [
                 [1, 'asc']
@@ -148,3 +154,4 @@
         });
     </script>
 @endsection
+
