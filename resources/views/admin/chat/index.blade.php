@@ -1,6 +1,11 @@
 @extends('admin.layouts.master')
 
 @section('title')
+    Trò Chuyện
+@endsection
+
+@section('menu-item-chat')
+    active
 @endsection
 
 @section('content')

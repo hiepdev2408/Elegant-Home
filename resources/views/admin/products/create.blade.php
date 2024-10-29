@@ -133,7 +133,7 @@
                                             <!-- Thuộc tính của biến thể -->
                                             <div id="attributesSection_0 mb-4">
                                                 @foreach ($attributes as $attribute)
-                                                    <div class="form-floating form-floating-outline">
+                                                    <div class="form-floating form-floating-outline mt-4">
                                                         <select class="select2 form-select mt-4"
                                                             id="variant_attribute_{{ $attribute->id }}_0"
                                                             name="variants[0][attributes][{{ $attribute->id }}]"

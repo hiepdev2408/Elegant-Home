@@ -9,6 +9,11 @@ class Product extends Model
 {
     use HasFactory;
 
+    public function getRouteKeyName()
+    {
+        return 'slug'; // Đặt trường `slug` là khóa tìm kiếm thay vì `id`
+    }
+
     const TYPE_HAVE_VARIATION = 'có biến thể';
     const TYPE_NO_VARIATION = 'không có biến thể';
 
@@ -34,11 +39,13 @@ class Product extends Model
         'is_show_home' => 'boolean',
     ];
 
-    public function categories(){
+    public function categories()
+    {
         return $this->belongsToMany(Category::class, 'product_category', 'product_id', 'category_id');
     }
 
-    public function galleries(){
+    public function galleries()
+    {
         return $this->hasMany(Gallery::class);
     }
 

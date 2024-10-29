@@ -18,10 +18,13 @@
     <link rel="stylesheet" href="{{ asset('themes') }}/client/css/style.css">
 
     @yield('style-libs')
+    
 
 </head>
 
 <body>
+
+   
 
     <!-- Start header area -->
     @include('client.layouts.partials.header')
