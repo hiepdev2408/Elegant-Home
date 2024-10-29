@@ -2,6 +2,13 @@
 @section('title')
     Thêm danh mục
 @endsection
+@section('menu-item-categories')
+    open
+@endsection
+
+@section('menu-sub-create-categories')
+    active
+@endsection
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -10,9 +17,7 @@
         </h4>
         <form action="{{ route('categories.store') }}" method="POST">
             @csrf
-
             <div class="app-ecommerce">
-                <!-- Add Product -->
                 <div
                     class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
                     <div class="d-flex flex-column justify-content-center">
@@ -20,8 +25,8 @@
                         <p>Danh mục được đặt trên cửa hàng của bạn</p>
                     </div>
                     <div class="d-flex align-content-center flex-wrap gap-3">
-                        {{-- <button class="btn btn-outline-secondary">Hủy</button> --}}
                         <button type="reset" class="btn btn-outline-primary">Nhập Lại</button>
+                        <a href="{{ route('categories.index') }}" class="btn btn-info">Quay Lại</a>
                         <button type="submit" class="btn btn-primary">
                             Xuất bản
                         </button>
@@ -38,7 +43,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-floating form-floating-outline mb-4">
-                                    <select name="parent_id" id="parent_id" class="form-select" >
+                                    <select name="parent_id" id="parent_id" class="form-select">
                                         <option value="">Chọn danh mục cha (nếu có)</option>
                                         @foreach ($data as $parent)
                                             <option value="{{ $parent->id }}">{{ $parent->name }}</option>
@@ -46,14 +51,13 @@
                                     </select>
                                     <label for="ecommerce-product-name">Danh mục cha</label>
                                 </div>
-
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" class="form-control" placeholder="Tên danh mục" name="name"
-                                        id="name" value="{{old('name')}}" />
+                                        id="name" value="{{ old('name') }}" />
                                     <label for="ecommerce-product-name">Tên danh mục</label>
                                     @error('name')
-                                    <span class=" " style="color: red">{{ $message }}</span>
-                                @enderror
+                                        <span class=" " style="color: red">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>

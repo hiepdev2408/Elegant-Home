@@ -1,8 +1,14 @@
 @extends('admin.layouts.master')
 @section('title')
-    Danh sách Loại Tin
+    Danh sách danh mục
+@endsection
+@section('menu-item-categories')
+    open
 @endsection
 
+@section('menu-sub-index-categories')
+    active
+@endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
@@ -18,7 +24,7 @@
             <a class="btn btn-primary me-2" href="{{ route('categories.create') }}">
                 <i class="mdi mdi-plus me-0 me-sm-1"></i>
                 Thêm mới danh mục</a>
-            <a href="{{ route('categories.delete') }}" class="btn btn-dark">Thùng rác</a>
+            <a href="{{ route('categories.delete') }}" class="btn btn-danger">Thùng rác</a>
         </div>
         <div class="card">
             <div class="card-body">
@@ -41,11 +47,11 @@
                     </thead>
                     <tbody>
                         @php $stt = 1; @endphp
-                        @foreach ($data as  $category)
+                        @foreach ($data as $category)
                             @if (is_null($category->parent))
                                 <!-- Kiểm tra xem đây có phải danh mục cha không -->
                                 <tr>
-                                    <td>{{ $stt ++ }}</td>
+                                    <td>{{ $stt++ }}</td>
                                     <td>{{ $category->name }}</td>
                                     <td>Không có</td>
                                     <td>
@@ -125,10 +131,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
     <script>
-        // new DataTable("#example", {
-        //     order: [
-        //         [1, 'asc']
-        //     ]
-        // });
+        new DataTable("#example", {
+            order: [
+                [1, 'asc']
+            ]
+        });
     </script>
 @endsection

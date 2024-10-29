@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->unsignedDecimal('base_price',10, 2);
             $table->string('img_thumbnail')->nullable();
             $table->string('description')->nullable();
             $table->text('user_manual')->nullable();
@@ -27,7 +28,6 @@ return new class extends Migration
             $table->boolean('is_new')->default(false);
             $table->boolean('is_show_home')->default(false);
 
-            $table->softDeletes();
             $table->timestamps();
         });
     }

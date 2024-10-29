@@ -2,10 +2,10 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 
@@ -24,7 +24,6 @@ trait TraitCRUD
                     'title' => 'required|string|max:255|min:4',
                     'content' => 'required|string',
                     'img_path' => 'required|image',
-                    'slug'=>'required|alpha_dash|unique:blogs,slug|max:255',
                 ];
                 break;
 
@@ -37,7 +36,7 @@ trait TraitCRUD
 
             case 'attributes':
                 $rules = [
-
+                    'name' => 'required|string|max:255|min:4',
                 ];
                 break;
 
@@ -49,11 +48,6 @@ trait TraitCRUD
         // Thực hiện validate
         Validator::make($request->all(), $rules)->validate();
     }
-
-
-
-
-
     // end validate
     public function index()
     {
@@ -62,7 +56,6 @@ trait TraitCRUD
                 $query->with($this->relations);
             })
             ->latest()->paginate(10);
-
         return view('admin.' . $this->model->getTable() . '.' . __FUNCTION__, compact('data'));
     }
     public function delete()
@@ -79,7 +72,6 @@ trait TraitCRUD
 
     public function create()
     {
-
         $data = $this->model
             ->when(!empty($this->relations), function (Builder $query) {
                 $query->with($this->relations);
@@ -89,27 +81,19 @@ trait TraitCRUD
     }
     public function store(Request $request)
     {
-
         $this->validateData($request);
 
         $data = $request->all();
 
-
-
-
-        $data['is_active'] = $request->has('is_active') ? 1 : 0;
-
-
-        // dd($data);
-
         if (!isset($data['slug'])) {
+            
             $data['slug'] = Str::slug($request['title']);
         }
 
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, 'is_')) {
-                $data[$key] = $request->input($key);
-            } elseif (Str::startsWith($key, 'img_') && $request->hasFile($key)) {
+                $data[$key] = $request->input(key: $key);
+            } elseif (Str::startsWith($key, needles: 'img_') && $request->hasFile($key)) {
                 $data[$key] = Storage::put($this->model->getTable(), $request->file($key));
             }
         }

@@ -1,88 +1,257 @@
 @extends('admin.layouts.master')
+
+@section('title')
+    Thêm sản phẩm
+@endsection
+@section('menu-item-product')
+    open
+@endsection
+
+@section('menu-sub-create-product')
+    active
+@endsection
+
 @section('content')
-<div class="container">
-    <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
-        @csrf
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Thông tin</h4>
-                    </div><!-- end card header -->
-                    <div class="card-body">
-                        <div class="live-preview">
-                            <div class="row gy-4">
-                                <div class="col-md-4">
-                                    <div class="mt-3">
-                                        <label for="">Tên sản phẩm</label>
-                                        <input type="text" id="productName" name="name" class="form-control">
-                                    </div>
-                                    <div class="mt-3">
-                                        <label for="">Slug</label>
-                                        <input type="text" id="productSlug" name="slug" class="form-control" disabled>
-                                    </div>
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="py-3 mb-4">
+            <span class="text-muted fw-light">Sản Phẩm /</span><span> Thêm mới sản phẩm</span>
+        </h4>
 
-                                    <div class="mt-3">
-                                        <label for="name" class="form-label">Danh mục</label>
-                                        <select name="categories[]" class="form-control" multiple>
-                                            @foreach ($category as $id => $name)
-                                                <option value="{{ $id }}">{{ $name }}</option>
-                                            @endforeach
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <!-- Form tạo sản phẩm -->
+        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="app-ecommerce">
+                <!-- Add Product -->
+                <div
+                    class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
+                    <div class="d-flex flex-column justify-content-center">
+                        <h4 class="mb-1 mt-3">Thêm sản phẩm mới</h4>
+                        <p>Sản phẩm được đặt trên cửa hàng của bạn</p>
+                    </div>
+                    <div class="d-flex align-content-center flex-wrap gap-3">
+                        <button type="reset" class="btn btn-outline-primary">Nhập Lại</button>
+                        <a href="{{ route('products.index') }}" class="btn btn-info">Quay Lại</a>
+                        <button type="submit" class="btn btn-primary">
+                            Xuất bản
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-8">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Thông tin sản phẩm</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-floating form-floating-outline mb-4">
+                                    <input type="text" class="form-control" id="ecommerce-product-name"
+                                        placeholder="Tên sản phẩm" name="name" />
+                                    <label for="ecommerce-product-name">Tên sản phẩm</label>
+                                </div>
+                                <div hidden class="form-floating form-floating-outline mb-4">
+                                    <input type="text" class="form-control" id="ecommerce-product-slug"
+                                        placeholder="Tên sản phẩm" name="slug" />
+                                    <label for="ecommerce-product-name">Tên sản phẩm</label>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Content
+                                        <span class="text-muted">(Optional)</span></label>
+                                    <textarea class="form-control" name="content" id="content"></textarea>
+                                </div>
+                                <div class="form-floating form-floating-outline mb-4">
+                                    <textarea class="form-control" name="description" id="description" rows="2" placeholder="Mô tả ngắn"></textarea>
+                                    <label for="ecommerce-product-description">Mô tả ngắn</label>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="img_thumbnail" class="form-label">Ảnh sản phẩm</label>
+                                    <input type="file" class="form-control" name="img_thumbnail" id="img_thumbnail">
+                                </div>
+                                <div class="form-floating form-floating-outline mb-4">
+                                    <textarea class="form-control" name="user_manual" id="user_manual" rows="2" placeholder="Hướng dẫn sử dụng"></textarea>
+                                    <label for="ecommerce-product-user_manual">Hướng dẫn sử dụng</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Album ảnh</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row gy-3" id="gallery-container">
+                                    <div id="gallery_1">
+                                        <label for="gallery_input_1" class="form-label">Gallery 1</label>
+                                        <input type="file" class="form-control" name="product_galleries[]"
+                                            id="gallery_input_1">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary mt-3" id="add-gallery"><i
+                                        class="mdi mdi-plus me-0 me-sm-1"></i>Thêm</button>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="card-title">Thuộc Tính</h5>
+                                <p>Thêm mới thuộc tính giúp sản phẩm có nhiều lựa chọn, như kích cỡ hay màu sắc.</p>
+                            </div>
+                            <div class="card-body" style="margin-top: -25px">
+                                <input type="checkbox" id="hasVariants" class="form-check-input">
+                                <label class="form-check-label" for="hasVariants">Sản phẩm này có biến thể</label>
+
+                                <!-- Biến thể sản phẩm (ẩn theo mặc định) -->
+                                <div id="variantsSection" style="display: none;">
+                                    <div id="variants" class="mb-4">
+                                        <div class="variant">
+                                            <h5 class="mt-3">Thuộc Tính 1</h5>
+                                            <div class="form-floating form-floating-outline mb-4">
+                                                <input type="text" id="variant_sku_0" name="variants[0][sku]"
+                                                    placeholder="Mã biến thể" class="form-control">
+                                                <label for="variant_sku_0">Mã biến thể</label>
+                                            </div>
+
+                                            <div class="form-floating form-floating-outline mb-4">
+                                                <input type="number" id="variant_price_modifier_0"
+                                                    name="variants[0][price_modifier]" class="form-control"
+                                                    step="0.01" placeholder="Giá điều chỉnh">
+                                                <label for="variant_price_modifier_0">Giá điều chỉnh</label>
+                                            </div>
+
+                                            <div class="form-floating form-floating-outline mb-4">
+                                                <input type="number" id="variant_stock_0" name="variants[0][stock]"
+                                                    class="form-control" placeholder="Số lượng tồn kho">
+                                                <label for="variant_stock_0">Số lượng tồn kho</label>
+                                            </div>
+                                            <div class="form-floating form-floating-outline mb-4">
+                                                <input type="file" id="variant_image_0" name="variants[0][image]"
+                                                    class="form-control">
+                                            </div>
+                                            <!-- Thuộc tính của biến thể -->
+                                            <div id="attributesSection_0 mb-4">
+                                                @foreach ($attributes as $attribute)
+                                                    <div class="form-floating form-floating-outline mt-4">
+                                                        <select class="select2 form-select mt-4"
+                                                            id="variant_attribute_{{ $attribute->id }}_0"
+                                                            name="variants[0][attributes][{{ $attribute->id }}]"
+                                                            class="form-control">
+                                                            <option value="">Chọn {{ $attribute->name }}</option>
+                                                            @foreach ($attribute->values as $value)
+                                                                <option value="{{ $value->id }}">{{ $value->value }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <label
+                                                            for="variant_attribute_{{ $attribute->id }}_0">{{ $attribute->name }}</label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" id="add-variant" class="btn btn-primary "><i
+                                            class="mdi mdi-plus me-0 me-sm-1"></i>Thêm Thuộc
+                                        Tính</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Trạng Thái</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <div class="form-check form-switch form-switch-secondary">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                name="is_active" id="is_active" checked>
+                                            <label class="form-check-label" for="is_active">Kích hoạt</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check form-switch form-switch-success">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                name="is_good_deal" id="is_good_deal" checked>
+                                            <label class="form-check-label" for="is_good_deal">Sản phẩm tốt</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                name="is_new" id="is_new" checked>
+                                            <label class="form-check-label" for="is_new">Sản phẩm mới</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check form-switch form-switch-danger">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                name="is_show_home" id="is_show_home" checked>
+                                            <label class="form-check-label" for="is_show_home">Hiện thị Home</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Giá Cả</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-floating form-floating-outline mb-4">
+                                    <input type="text" class="form-control" id="ecommerce-product-base_price"
+                                        placeholder="Giá sản phẩm" name="base_price" />
+                                    <label for="ecommerce-product-base_price">Giá sản phẩm</label>
+                                </div>
+                                <div class="form-floating form-floating-outline ">
+                                    <input type="text" class="form-control" id="ecommerce-product-base_price"
+                                        placeholder="Giá sản phẩm" name="" />
+                                    <label for="ecommerce-product-base_price">Giá giảm giá</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Tổ Chức</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-4 col ecommerce-select2-dropdown">
+                                    <div class="form-floating form-floating-outline">
+                                        <select id="vendor" class="select2 form-select"
+                                            data-placeholder="Select Vendor">
+                                            <option value="">Chọn nhà cung cấp</option>
+                                            <option value="men-clothing">
+                                                Men's Clothing
+                                            </option>
+                                            <option value="women-clothing">
+                                                Women's-clothing
+                                            </option>
+                                            <option value="kid-clothing">
+                                                Kid's-clothing
+                                            </option>
                                         </select>
+                                        <label for="vendor">Nhà cung cấp</label>
                                     </div>
-                                    <div class="mt-3">
-                                        <label for="img_thumbnail" class="form-label">Img thumbnail</label>
-                                        <input type="file" class="form-control" name="img_thumbnail" id="img_thumbnail">
-                                    </div>
-
                                 </div>
-                                <div class="col-md-8">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <div class="form-check form-switch form-switch-secondary">
-                                                <input class="form-check-input" type="checkbox" role="switch" name="is_active"
-                                                    id="is_active" checked>
-                                                <label class="form-check-label" for="is_active">Is Active</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-check form-switch form-switch-success">
-                                                <input class="form-check-input" type="checkbox" role="switch"
-                                                    name="is_good_deal" id="is_good_deal" checked>
-                                                <label class="form-check-label" for="is_good_deal">Is good deal</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" name="is_new"
-                                                    id="is_new" checked>
-                                                <label class="form-check-label" for="is_new">Is new</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-check form-switch form-switch-danger">
-                                                <input class="form-check-input" type="checkbox" role="switch"
-                                                    name="is_show_home" id="is_show_home" checked>
-                                                <label class="form-check-label" for="is_show_home">Is show home</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row">
-                                        <div class="mt-3">
-                                            <label for="description" class="form-label">Description</label>
-                                            <textarea class="form-control" name="description" id="description" rows="2"></textarea>
-                                        </div>
-                                        <div class="mt-3">
-                                            <label for="user_manual" class="form-label">User manual</label>
-                                            <textarea class="form-control" name="user_manual" id="user_manual" rows="2"></textarea>
-                                        </div>
-                                        {{-- Hướng dẫn sử dụng --}}
-                                        <div class="mt-3">
-                                            <label for="content" class="form-label">Content</label>
-                                            <textarea class="form-control" name="content" id="content"></textarea>
-                                        </div>
+                                <div class="form-floating form-floating-outline">
+                                    <select name="categories[]" class="form-select" multiple>
+                                        @foreach ($category as $id => $name)
+                                            <option value="{{ $id }}">{{ $name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <label for="name" class="form-label">Danh mục</label>
+                                </div>
+                                <div class="mb-3 mt-4">
+                                    <div class="form-floating form-floating-outline">
+                                        <input id="ecommerce-product-tags" class="form-control h-auto"
+                                            name="ecommerce-product-tags" value="Normal,Standard,Premium"
+                                            aria-label="Product Tags" />
+                                        <label for="ecommerce-product-tags">Tags</label>
                                     </div>
                                 </div>
                             </div>
@@ -90,229 +259,113 @@
                     </div>
                 </div>
             </div>
-            <!--end col-->
-        </div>
-        <div class="row mt-5" style="height: 300px; overflow: scroll">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Gallary</h4>
-                    </div><!-- end card header -->
-                    <div class="card-body">
-                        <div class="live-preview">
-                            <div class="row gy-4">
-                                <div>
-                                    <label for="gallery_1" class="form-label">Galleries</label>
-                                    <input type="file" class="form-control" name="product_galleries[]" id="gallery_1">
-                                </div>
-                                <div>
-                                    <label for="gallery_2" class="form-label">Galleries 2</label>
-                                    <input type="file" class="form-control" name="product_galleries[]" id="gallery_2">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--end col-->
-        </div>
+        </form>
+    </div>
+@endsection
 
-        <div class="col-12">
-            <h3 class="mt-5">Biến thể</h3>
-            <div id="variant-container">
-                <!-- Nhóm biến thể đầu tiên -->
-                <div class="variant-group" data-variant="0">
-                    <div class="row variant-row">
-                        <div class="col">
-                            <label for="">Thuộc tính</label>
-                            <select name="product_attribute[attribute_id][0][]" class="form-control">
-                                @foreach ($attribute as $id => $name)
-                                    <option value="{{ $id }}">{{ $name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col">
-                            <label for="">Giá trị</label>
-                            <input type="text" name="product_attribute[value][0][]" class="form-control">
-                        </div>
-                    </div>
-
-                    <!-- Nút thêm cặp thuộc tính-giá trị cho biến thể này -->
-                    <button type="button" class="btn btn-secondary mt-2 add-attribute">Thêm thuộc tính</button>
-                    <div class="row">
-                        <div class="col-md-2 mt-3">
-                            <label for="">SKU</label>
-                            <input type="text" name="group[0][SKU]" value="{{ strtoupper(Str::random(8)) }}" class="form-control" required>
-                        </div>
-
-                        <div class="col-md-2 mt-3">
-                            <label for="">Số lượng</label>
-                            <input type="text" name="group[0][stock]" class="form-control" required>
-                        </div>
-
-                        <div class="col-md-2 mt-3">
-                            <label for="">Giá bán</label>
-                            <input type="text" name="group[0][price]" class="form-control" required>
-                        </div>
-
-                        <div class="col-md-2 mt-3">
-                            <label for="">Giá sale</label>
-                            <input type="text" name="group[0][price_sale]" class="form-control">
-                        </div>
-
-                        <div class="col-md-4 mt-3">
-                            <label for="">Image Variant</label>
-                            <input type="file" name="group[0][img_variant]" class="form-control">
-                        </div>
-                    </div>
-
-                    <hr class="text-danger">
-                </div>
-            </div>
-
-            <!-- Nút thêm biến thể -->
-            <button type="button" class="btn btn-primary mt-3" id="add-variant">Thêm biến thể</button>
-        </div>
-
-        <button class="btn btn-success mt-3">Thêm mới</button>
-    </form>
-</div>
-
+@section('style-libs')
+    <link rel="stylesheet" href="{{ asset('themes') }}/admin/vendor/libs/quill/typography.css" />
+    <link rel="stylesheet" href="{{ asset('themes') }}/admin/vendor/libs/quill/katex.css" />
+    <link rel="stylesheet" href="{{ asset('themes') }}/admin/vendor/libs/quill/editor.css" />
+    <link rel="stylesheet" href="{{ asset('themes') }}/admin/vendor/libs/select2/select2.css" />
+    <link rel="stylesheet" href="{{ asset('themes') }}/admin/vendor/libs/dropzone/dropzone.css" />
+    <link rel="stylesheet" href="{{ asset('themes') }}/admin/vendor/libs/flatpickr/flatpickr.css" />
+    <link rel="stylesheet" href="{{ asset('themes') }}/admin/vendor/libs/tagify/tagify.css" />
 @endsection
 
 @section('script-libs')
-<script>
-    let variantCount = 0;
+    <script src="{{ asset('themes') }}/admin/vendor/libs/quill/katex.js"></script>
+    <script src="{{ asset('themes') }}/admin/vendor/libs/quill/quill.js"></script>
+    <script src="{{ asset('themes') }}/admin/vendor/libs/select2/select2.js"></script>
+    <script src="{{ asset('themes') }}/admin/vendor/libs/dropzone/dropzone.js"></script>
+    <script src="{{ asset('themes') }}/admin/vendor/libs/jquery-repeater/jquery-repeater.js"></script>
+    <script src="{{ asset('themes') }}/admin/vendor/libs/flatpickr/flatpickr.js"></script>
+    <script src="{{ asset('themes') }}/admin/vendor/libs/tagify/tagify.js"></script>
+    <script src="{{ asset('themes') }}/admin/js/app-ecommerce-product-add.js"></script>
 
-    // Thêm biến thể mới
-    document.getElementById('add-variant').addEventListener('click', function() {
-        variantCount++;
-        const container = document.getElementById('variant-container');
-
-        // Tạo hàng mới cho biến thể
-        const newRow = document.createElement('div');
-        newRow.classList.add('variant-group');
-        newRow.setAttribute('data-variant', variantCount);
-        newRow.innerHTML = `
-            <div class="row variant-row">
-                <div class="col">
-                    <label for="">Thuộc tính</label>
-                    <select name="product_attribute[attribute_id][${variantCount}][]" class="form-control">
-                        @foreach ($attribute as $id => $name)
-                            <option value="{{ $id }}">{{ $name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col">
-                    <label for="">Giá trị</label>
-                    <input type="text" name="product_attribute[value][${variantCount}][]" class="form-control">
-                </div>
-            </div>
-
-            <button type="button" class="btn btn-secondary mt-2 add-attribute">Thêm thuộc tính</button>
-            <div class="row">
-                <div class="col-md-2 mt-3">
-                    <label for="">SKU</label>
-                    <input type="text" name="group[${variantCount}][SKU]" value="{{ strtoupper(Str::random(8)) }}" class="form-control" required>
-                </div>
-
-                <div class="col-md-2 mt-3">
-                    <label for="">Số lượng</label>
-                    <input type="text" name="group[${variantCount}][stock]" class="form-control" required>
-                </div>
-
-                <div class="col-md-2 mt-3">
-                    <label for="">Giá bán</label>
-                    <input type="text" name="group[${variantCount}][price]" class="form-control" required>
-                </div>
-
-                <div class="col-md-2 mt-3">
-                    <label for="">Giá sale</label>
-                    <input type="text" name="group[${variantCount}][price_sale]" class="form-control">
-                </div>
-
-                <div class="col-md-4 mt-3">
-                    <label for="">Image Variant</label>
-                    <input type="file" name="group[${variantCount}][img_variant]" class="form-control">
-                </div>
-            </div>
-            <hr class="text-danger">
-        `;
-
-        container.appendChild(newRow);
-    });
-
-    // Thêm thuộc tính mới vào biến thể
-    document.addEventListener('click', function(e) {
-        if (e.target && e.target.classList.contains('add-attribute')) {
-            const variantGroup = e.target.closest('.variant-group');
-            const variantIndex = variantGroup.getAttribute('data-variant');
-
-            const newAttributeRow = document.createElement('div');
-            newAttributeRow.classList.add('row', 'variant-row', 'mt-2');
-            newAttributeRow.innerHTML = `
-                <div class="col">
-                    <label>Thuộc tính</label>
-                    <select name="product_attribute[attribute_id][${variantIndex}][]" class="form-control">
-                        @foreach ($attribute as $id => $name)
-                            <option value="{{ $id }}">{{ $name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col">
-                    <label>Giá trị</label>
-                    <input type="text" name="product_attribute[value][${variantIndex}][]" class="form-control">
-                </div>
-
-            `;
-
-            variantGroup.insertBefore(newAttributeRow, e.target);
-        }
-    });
-
-
-    // Hiển thị slug
-    document.getElementById('productName').addEventListener('input', function() {
-        const name = this.value;
-
-        // Hàm chuyển đổi ký tự tiếng Việt
-        const slugify = (text) => {
-            const specialCharsMap = {
-                'à': 'a', 'á': 'a', 'ả': 'a', 'ã': 'a', 'ạ': 'a',
-                'ầ': 'a', 'ấ': 'a', 'ẩ': 'a', 'ẫ': 'a', 'ậ': 'a',
-                'è': 'e', 'é': 'e', 'ẻ': 'e', 'ẽ': 'e', 'ẹ': 'e',
-                'ề': 'e', 'ế': 'e', 'ể': 'e', 'ễ': 'e', 'ệ': 'e',
-                'ì': 'i', 'í': 'i', 'ỉ': 'i', 'ĩ': 'i', 'ị': 'i',
-                'ò': 'o', 'ó': 'o', 'ỏ': 'o', 'õ': 'o', 'ọ': 'o',
-                'ồ': 'o', 'ố': 'o', 'ổ': 'o', 'ỗ': 'o', 'ộ': 'o',
-                'ù': 'u', 'ú': 'u', 'ủ': 'u', 'ũ': 'u', 'ụ': 'u',
-                'ừ': 'u', 'ứ': 'u', 'ử': 'u', 'ữ': 'u', 'ự': 'u',
-                'ỳ': 'y', 'ý': 'y', 'ỷ': 'y', 'ỹ': 'y', 'ỵ': 'y',
-                'Đ': 'D', 'đ': 'd'
-            };
-
-            // Thay thế các ký tự đặc biệt
-            text = text.replace(/[àáảãạầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộùúủũụừứửữựỳýỷỹỵĐđ]/g, (char) => specialCharsMap[char] || char);
-
-            return text
-                .toLowerCase()                    // Chuyển về chữ thường
-                .replace(/\s+/g, '-')             // Thay thế khoảng trắng bằng dấu '-'
-                .replace(/[^\w\-]+/g, '')         // Xóa ký tự không hợp lệ
-                .replace(/\-\-+/g, '-')            // Xóa dấu '-' trùng lặp
-                .replace(/^-+/, '')                // Xóa dấu '-' ở đầu
-                .replace(/-+$/, '');               // Xóa dấu '-' ở cuối
-        };
-
-        const slug = slugify(name);
-        document.getElementById('productSlug').value = slug;
-    });
-
-</script>
     <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
     <script>
         CKEDITOR.replace('content');
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let galleryCount = 1;
+
+            const galleryContainer = document.getElementById('gallery-container');
+            const addGalleryButton = document.getElementById('add-gallery');
+
+            addGalleryButton.addEventListener('click', function() {
+                galleryCount++;
+                const newGalleryDiv = document.createElement('div');
+                newGalleryDiv.classList.add('col-12');
+                newGalleryDiv.id = `gallery_${galleryCount}`;
+                newGalleryDiv.innerHTML = `
+                <label for="gallery_input_${galleryCount}" class="form-label">Gallery ${galleryCount}</label>
+                <input type="file" class="form-control" name="product_galleries[]" id="gallery_input_${galleryCount}">
+            `;
+                galleryContainer.appendChild(newGalleryDiv);
+            });
+        });
+    </script>
+    <script>
+        // JSON cho dữ liệu thuộc tính và các giá trị của chúng
+        const attributesData = @json($attributes);
+
+        document.getElementById('hasVariants').addEventListener('change', function() {
+            const variantsSection = document.getElementById('variantsSection');
+            variantsSection.style.display = this.checked ? 'block' : 'none';
+        });
+
+        let variantIndex = 1;
+        document.getElementById('add-variant').addEventListener('click', function() {
+            let variantsDiv = document.getElementById('variants');
+            let newVariantDiv = document.createElement('div');
+            newVariantDiv.classList.add('variant');
+            newVariantDiv.innerHTML = `
+            <h5 class="mt-3">Thuộc Tính ${variantIndex + 1}</h5>
+            <div class="form-floating form-floating-outline mb-4">
+            <input type="text" id="variant_sku_${variantIndex}" name="variants[${variantIndex}][sku]" placeholder="Mã biến thể" class="form-control">
+            <label for="variant_sku_${variantIndex}">Mã biến thể</label>
+            </div>
+
+            <div class="form-floating form-floating-outline mb-4">
+            <input type="number" id="variant_price_modifier_${variantIndex}" name="variants[${variantIndex}][price_modifier]" class="form-control" step="0.01" placeholder="Giá điều chỉnh">
+            <label for="variant_price_modifier_${variantIndex}">Giá điều chỉnh</label>
+            </div>
+
+            <div class="form-floating form-floating-outline mb-4">
+            <input type="number" id="variant_stock_${variantIndex}" name="variants[${variantIndex}][stock]" class="form-control" placeholder="Số lượng tồn kho">
+            <label for="variant_stock_${variantIndex}">Số lượng tồn kho</label>
+            </div>
+
+            <div class="form-floating form-floating-outline mb-4">
+            <input type="file" id="variant_image_${variantIndex}" name="variants[${variantIndex}][image]" class="form-control">
+            </div>
+                ${generateAttributeFields(variantIndex)}
+    `;
+            variantsDiv.appendChild(newVariantDiv);
+            variantIndex++;
+        });
+
+        function generateAttributeFields(index) {
+            let fieldsHTML = '';
+            attributesData.forEach(attribute => {
+                let optionsHTML = `<option value="">Chọn ${attribute.name}</option>`;
+
+                attribute.values.forEach(value => {
+                    optionsHTML += `<option value="${value.id}">${value.value}</option>`;
+                });
+
+                fieldsHTML += `
+            <div class="form-floating form-floating-outline mb-4">
+                <select id="variant_attribute_${attribute.id}_${index}" name="variants[${index}][attributes][${attribute.id}]" class="form-control">
+                    ${optionsHTML}
+                </select>
+                <label for="variant_attribute_${attribute.id}_${index}">${attribute.name}</label>
+            </div>
+        `;
+            });
+            return fieldsHTML;
+        }
+    </script>
 @endsection
-
-
-

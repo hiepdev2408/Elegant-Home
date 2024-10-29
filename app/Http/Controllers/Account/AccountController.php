@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Account;
 
-use App\Mail\VerifyAccount;
+use App\Http\Controllers\Controller;
+use App\Helpers\Mail\VerifyAccount;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,14 +29,11 @@ class AccountController extends Controller
             'password.required' => 'Mật khẩu chưa nhập',
             'password.min' => 'Họ và tên cần trên 6 ký tự',
 
-
-
-
-
         ]);
         $data = request()->all('email', 'password');
         if (auth()->attempt($data)) {
-            return view('client.home');
+
+            return redirect()->route('home')->with('success', 'Đăng nhập thành công');
         }
         return redirect()->back()->with([
             'messageError' => 'Email đăng nhập hoặc mật khẩu sai',
@@ -70,9 +68,6 @@ class AccountController extends Controller
             'config_password.required' => 'Xác nhận mật khẩu chưa nhập',
             'config_password.same' => 'Xác nhận mật khẩu phải trùng với mật khẩu bên trên',
 
-
-
-
         ]);
         $user = $request->only(['name', 'email', 'phone', 'address']);
         $user['password'] = bcrypt($request->password);
@@ -88,21 +83,21 @@ class AccountController extends Controller
         return redirect()->route('login')->with('Xác nhận đăng ký thành công');
     }
 
-     public function showForgotPasswordForm()
-     {
-         return view('client.auth.passwords.email');
-     }
+    public function showForgotPasswordForm()
+    {
+        return view('client.auth.passwords.email');
+    }
 
-     public function sendResetLinkEmail(Request $request)
-     {
-         $request->validate(['email' => 'required|email']);
+    public function sendResetLinkEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
 
-         $status = Password::sendResetLink($request->only('email'));
+        $status = Password::sendResetLink($request->only('email'));
 
-         return $status == Password::RESET_LINK_SENT
-             ? back()->with('status', __($status))
-             : back()->withErrors(['email' => __($status)]);
-     }
+        return $status == Password::RESET_LINK_SENT
+            ? back()->with('status', __($status))
+            : back()->withErrors(['email' => __($status)]);
+    }
 
 
     public function showResetForm($token)
@@ -118,7 +113,7 @@ class AccountController extends Controller
             'email' => 'required|email',
             'password' => 'required|confirmed|min:8',
             'token' => 'required'
-        ],[
+        ], [
             'password.min' => 'Mật khẩu phải tối thiểu 8 ký tự',
         ]);
 

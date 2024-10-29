@@ -1,9 +1,15 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách Loại Tin
+    Thêm sản phẩm
+@endsection
+@section('menu-item-product')
+    open
 @endsection
 
+@section('menu-sub-index-product')
+    active
+@endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
@@ -15,8 +21,8 @@
             </div>
         @endif
         <div class="card-header d-flex justify-content-end align-items-center mb-3">
-            {{-- <a class="btn btn-primary" href="{{ route('admin.categories.create') }}"><i
-                    class="mdi mdi-plus me-0 me-sm-1"></i>Thêm Loại Tin</a> --}}
+            <a class="btn btn-primary" href="{{ route('products.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Thêm sản
+                phẩm</a>
         </div>
         <div class="card">
             <div class="card-body">
@@ -26,48 +32,86 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
-                            <th>Image</th>
-                            <th>Active</th>
-                            <th>Action</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá cơ bản</th>
+                            <th>Ảnh sản phẩm</th>
+                            <th>Biến thể</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach ($categories as $item)
+                        @foreach ($products as $key => $product)
+                            {{-- @dd($product->productAttributes) --}}
                             <tr>
-                                <td>{{ $item['id'] }}</td>
-                                <td>{{ $item['name'] }}</td>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $product->name }}</td>
+                                <td>{{ number_format($product->base_price, 0, ',', '.') }} VND</td>
                                 <td>
-                                    <img class="rounded-2" src="{{ Storage::url($item->cover) }}" alt=""
-                                        width="50px" height="50px">
+                                    @if ($product->img_thumbnail)
+                                        <img class="rounded-3" src="{{ Storage::url($product->img_thumbnail) }}"
+                                            alt="{{ $product->name }}" height="50px">
+                                    @else
+                                        <span>Chưa có hình</span>
+                                    @endif
                                 </td>
                                 <td>
-                                    {!! $item['is_active'] ? '<span class="badge bg-success">YES</span>' : '<span class="badge bg-danger">NO</span>' !!}
+                                    @if ($product->variants->isEmpty())
+                                        <em>Không có biến thể</em>
+                                    @else
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sku</th>
+                                                    <th>Giá</th>
+                                                    <th>Tồn Kho</th>
+                                                    <th>Ảnh biến thể</th>
+                                                    <th>Thuộc Tính</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($product->variants as $variant)
+                                                    <tr>
+                                                        <td>{{ $variant->sku }}</td>
+                                                        <td>{{ number_format($variant->price_modifier, 0, ',', '.') }} VND
+                                                        </td>
+                                                        <td>{{ $variant->stock }}</td>
+                                                        <td>
+                                                            @if ($variant->image)
+                                                                <img src="{{ Storage::url($variant->image) }}"
+                                                                    width="50px" alt="">
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if ($variant->attributes)
+                                                                <ul>
+                                                                    @foreach ($variant->attributes as $attribute)
+                                                                        <li>{{ $attribute->attribute->name }}:
+                                                                            {{ $attribute->attributeValue->value }}</li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            @else
+                                                                <em>Không có thuộc tính</em>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
                                 </td>
                                 <td>
-                                    <div class="d-flex justify-content-center">
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Show"
-                                            class="btn btn-info btn-sm me-2"
-                                            href="{{ route('admin.categories.show', $item->id) }}"><i
-                                                class="mdi mdi-eye"></i></a>
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Update"
-                                            class="btn btn-warning btn-sm me-2"
-                                            href="{{ route('admin.categories.edit', $item->id) }}"><i
-                                                class="mdi mdi-pencil"></i></a>
-
-                                        <form action="{{ route('admin.categories.destroy', $item->id) }}" method="POST">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                data-bs-title="Delete" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn có muốn xóa không')">
-                                                <i class="mdi mdi-delete-circle"></i></button>
-
-                                        </form>
-                                    </div>
+                                    <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Chỉnh
+                                        sửa</a>
+                                    <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
+                                    </form>
                                 </td>
                             </tr>
-                        @endforeach --}}
+                        @endforeach
                     </tbody>
                 </table>
             </div>
