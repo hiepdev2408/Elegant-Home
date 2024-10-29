@@ -8,7 +8,7 @@ use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get( '/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::group(['prefix' => 'account'], function () {
 
@@ -58,6 +58,4 @@ Route::group(['prefix' => 'contact'], function () {
 });
 
 Route::get('categories/{category_id}/product/{id}', [HomeController::class, 'detail'])->name('productDetail');
-
-
- Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
+Route::get('/shop', [HomeController::class, 'shop'])->name('shop');

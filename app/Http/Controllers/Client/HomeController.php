@@ -36,7 +36,7 @@ class HomeController extends Controller
         $products = Product::latest()->take(10)->get();
         $blogs = Blog::with('user')->get();
 
-        return view('client.home', compact('categories', 'products','blogs'));
+        return view('client.home', compact('categories', 'products', 'blogs'));
     }
     public function detail($category_id, $id)
     {
@@ -68,7 +68,5 @@ class HomeController extends Controller
 
   public function shop(){
     return view('client.shops.listProduct');
-
-
 }
 }

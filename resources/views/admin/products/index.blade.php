@@ -48,8 +48,8 @@
                                 <td>{{ number_format($product->base_price, 0, ',', '.') }} VND</td>
                                 <td>
                                     @if ($product->img_thumbnail)
-                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt="{{ $product->name }}"
-                                            style="width: 100px;">
+                                        <img class="rounded-3" src="{{ Storage::url($product->img_thumbnail) }}"
+                                            alt="{{ $product->name }}" height="50px">
                                     @else
                                         <span>Chưa có hình</span>
                                     @endif
@@ -61,7 +61,7 @@
                                         <table class="table table-sm">
                                             <thead>
                                                 <tr>
-                                                    <th>Tên Biến Thể</th>
+                                                    <th>Sku</th>
                                                     <th>Giá</th>
                                                     <th>Tồn Kho</th>
                                                     <th>Ảnh biến thể</th>
