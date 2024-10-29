@@ -40,7 +40,7 @@ class HomeController extends Controller
     }
     public function detail($category_id, $id)
     {
-        // Lấy sản phẩm theo ID 
+        // Lấy sản phẩm theo ID
         $product = Product::with(['galleries', 'categories', 'variants.attributes' =>
                           function ($query){
                             $query->with('attribute', 'attributeValue');
@@ -66,7 +66,12 @@ class HomeController extends Controller
         return view('client.products.productDetail', compact('product', 'relatedProducts','attributes'));
     }
 
-  public function shop(){
-    return view('client.shops.listProduct');
+  public function shop(Request $request){
+    // Lấy tất cả danh mục và các danh mục con của nó
+    $categories = Category::with('children')->whereNull('parent_id')->get();
+    //Lấy sản phẩm
+    $products = Product::query()->get();
+
+    return view('client.shops.listProduct', compact('categories', 'products'));
 }
 }

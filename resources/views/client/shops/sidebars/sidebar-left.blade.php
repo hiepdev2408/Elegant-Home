@@ -7,193 +7,41 @@
                     <input class="widget__search--form__input border-0" placeholder="Search by" type="text">
                 </label>
                 <button class="widget__search--form__btn"  type="submit">
-                    Search 
+                    Search
                 </button>
             </form>
         </div>
         <div class="single__widget widget__bg">
-            <h2 class="widget__title position__relative h3">Categories</h2>
-            <ul class="widget__categories--menu">
-                <li class="widget__categories--menu__list">
-                    <label class="widget__categories--menu__label d-flex align-items-center">
-                        <img class="widget__categories--menu__img" src="assets/img/product/small-product1.webp" alt="categories-img">
-                        <span class="widget__categories--menu__text">Denim Jacket</span>
-                        <svg class="widget__categories--menu__arrowdown--icon" xmlns="http://www.w3.org/2000/svg" width="12.355" height="8.394">
-                            <path  d="M15.138,8.59l-3.961,3.952L7.217,8.59,6,9.807l5.178,5.178,5.178-5.178Z" transform="translate(-6 -8.59)" fill="currentColor"></path>
-                        </svg>
-                    </label>
+    <h2 class="widget__title position__relative h3">Categories</h2>
+    <ul class="widget__categories--menu">
+        @foreach($categories as $category)
+            <li class="widget__categories--menu__list">
+                <label class="widget__categories--menu__label d-flex align-items-center">
+                    <!-- <img class="widget__categories--menu__img" src="{{ $category->image }}" alt="categories-img"> -->
+                    <span class="widget__categories--menu__text">{{$category->name}}</span>
+                    <svg class="widget__categories--menu__arrowdown--icon" xmlns="http://www.w3.org/2000/svg" width="12.355" height="8.394">
+                        <path d="M15.138,8.59l-3.961,3.952L7.217,8.59,6,9.807l5.178,5.178,5.178-5.178Z" transform="translate(-6 -8.59)" fill="currentColor"></path>
+                    </svg>
+                </label>
+                @if($category->children->isNotEmpty())
                     <ul class="widget__categories--sub__menu">
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product2.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Jacket, Women</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product3.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Woolend Jacket</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product4.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Western denim</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product5.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Mini Dresss</span>
-                            </a>
-                        </li>
+                        @foreach($category->children as $item)
+                            <li class="widget__categories--sub__menu--list">
+                                <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
+                                    <!-- <img class="widget__categories--sub__menu--img" src="{{ $item->image }}" alt="categories-img"> -->
+                                    <span class="widget__categories--sub__menu--text">{{$item->name}}</span>
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
-                </li>
-                <li class="widget__categories--menu__list">
-                    <label class="widget__categories--menu__label d-flex align-items-center">
-                        <img class="widget__categories--menu__img" src="assets/img/product/small-product2.webp" alt="categories-img">
-                        <span class="widget__categories--menu__text">Oversize Cotton</span>
-                        <svg class="widget__categories--menu__arrowdown--icon" xmlns="http://www.w3.org/2000/svg" width="12.355" height="8.394" >
-                            <path  d="M15.138,8.59l-3.961,3.952L7.217,8.59,6,9.807l5.178,5.178,5.178-5.178Z" transform="translate(-6 -8.59)" fill="currentColor"></path>
-                        </svg>
-                    </label>
-                    <ul class="widget__categories--sub__menu">
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product2.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Jacket, Women</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product3.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Woolend Jacket</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product4.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Western denim</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product5.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Mini Dresss</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="widget__categories--menu__list">
-                    <label class="widget__categories--menu__label d-flex align-items-center">
-                        <img class="widget__categories--menu__img" src="assets/img/product/small-product3.webp" alt="categories-img">
-                        <span class="widget__categories--menu__text">Dairy & chesse</span>
-                        <svg class="widget__categories--menu__arrowdown--icon" xmlns="http://www.w3.org/2000/svg" width="12.355" height="8.394">
-                            <path  d="M15.138,8.59l-3.961,3.952L7.217,8.59,6,9.807l5.178,5.178,5.178-5.178Z" transform="translate(-6 -8.59)" fill="currentColor"></path>
-                        </svg>
-                    </label>
-                    <ul class="widget__categories--sub__menu">
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product2.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Jacket, Women</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product3.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Woolend Jacket</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product4.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Western denim</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product5.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Mini Dresss</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="widget__categories--menu__list">
-                    <label class="widget__categories--menu__label d-flex align-items-center">
-                        <img class="widget__categories--menu__img" src="assets/img/product/small-product4.webp" alt="categories-img">
-                        <span class="widget__categories--menu__text">Shoulder Bag</span>
-                        <svg class="widget__categories--menu__arrowdown--icon" xmlns="http://www.w3.org/2000/svg" width="12.355" height="8.394">
-                            <path  d="M15.138,8.59l-3.961,3.952L7.217,8.59,6,9.807l5.178,5.178,5.178-5.178Z" transform="translate(-6 -8.59)" fill="currentColor"></path>
-                        </svg>
-                    </label>
-                    <ul class="widget__categories--sub__menu">
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product2.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Jacket, Women</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product3.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Woolend Jacket</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product4.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Western denim</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product5.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Mini Dresss</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="widget__categories--menu__list">
-                    <label class="widget__categories--menu__label d-flex align-items-center">
-                        <img class="widget__categories--menu__img" src="assets/img/product/small-product5.webp" alt="categories-img">
-                        <span class="widget__categories--menu__text">Denim Jacket</span>
-                        <svg class="widget__categories--menu__arrowdown--icon" xmlns="http://www.w3.org/2000/svg" width="12.355" height="8.394">
-                            <path  d="M15.138,8.59l-3.961,3.952L7.217,8.59,6,9.807l5.178,5.178,5.178-5.178Z" transform="translate(-6 -8.59)" fill="currentColor"></path>
-                        </svg>
-                    </label>
-                    <ul class="widget__categories--sub__menu">
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product2.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Jacket, Women</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product3.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Woolend Jacket</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product4.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Western denim</span>
-                            </a>
-                        </li>
-                        <li class="widget__categories--sub__menu--list">
-                            <a class="widget__categories--sub__menu--link d-flex align-items-center" href="shop.html">
-                                <img class="widget__categories--sub__menu--img" src="assets/img/product/small-product5.webp" alt="categories-img">
-                                <span class="widget__categories--sub__menu--text">Mini Dresss</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+                @endif
+            </li>
+        @endforeach
+    </ul>
+</div>
         <div class="single__widget price__filter widget__bg">
             <h2 class="widget__title position__relative h3">Filter By Price</h2>
-            <form class="price__filter--form" action="#"> 
+            <form class="price__filter--form" action="#">
                 <div class="price__filter--form__inner mb-15 d-flex align-items-center">
                     <div class="price__filter--group">
                         <label class="price__filter--label" for="Filter-Price-GTE1">From</label>
@@ -209,8 +57,8 @@
                         <label class="price__filter--label" for="Filter-Price-LTE1">To</label>
                         <div class="price__filter--input border-radius-5 d-flex align-items-center">
                             <span class="price__filter--currency">$</span>
-                            <input class="price__filter--input__field border-0" id="Filter-Price-LTE1" name="filter.v.price.lte" type="number" min="0" placeholder="250.00" max="250.00"> 
-                        </div>	
+                            <input class="price__filter--input__field border-0" id="Filter-Price-LTE1" name="filter.v.price.lte" type="number" min="0" placeholder="250.00" max="250.00">
+                        </div>
                     </div>
                 </div>
                 <button class="price__filter--btn primary__btn" type="submit">Filter</button>
