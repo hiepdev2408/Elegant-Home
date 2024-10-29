@@ -57,9 +57,5 @@ Route::group(['prefix' => 'contact'], function () {
     Route::post('/contact', [ContactFormController::class, 'submit'])->name('contact.submit');
 });
 
-Route::get('product/{slug}', [HomeController::class, 'detail'])->name('productDetail');
-
-Route::group(['prefix' => 'shops'], function () {
-    Route::get('/shops', [HomeController::class, 'shop'])->name('shop');
-
-});
+Route::get('categories/{category_id}/product/{id}', [HomeController::class, 'detail'])->name('productDetail');
+Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
