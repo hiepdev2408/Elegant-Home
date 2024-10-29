@@ -61,7 +61,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="price__filter--btn primary__btn" type="submit">Filter</button>
+                <button class="price__filter--btn primary__btn" type="submit">Search</button>
             </form>
         </div>
         <div class="single__widget widget__bg">
