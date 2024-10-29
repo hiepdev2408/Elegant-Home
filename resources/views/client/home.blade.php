@@ -244,7 +244,7 @@ Trang Chủ
                                         <h3 class="product__items--content__title h4"><a
                                                 href="product-details.html">{{$product->name}}</a></h3>
                                         <div class="product__items--price">
-                                            <span class="current__price">200</span>
+                                            <span class="current__price">{{$product->base_price}}</span>
                                             <span class="old__price"></span>
                                         </div>
                                         <a class="product__items--action__cart--btn primary__btn" href="cart.html">
