@@ -12,7 +12,7 @@
             </form>
         </div>
         <div class="single__widget widget__bg">
-    <h2 class="widget__title position__relative h3">Categories</h2>
+    <h2 class="widget__title position__relative h3">Danh mục</h2>
     <ul class="widget__categories--menu">
         @foreach($categories as $category)
             <li class="widget__categories--menu__list">
@@ -40,7 +40,7 @@
     </ul>
 </div>
         <div class="single__widget price__filter widget__bg">
-            <h2 class="widget__title position__relative h3">Filter By Price</h2>
+            <h2 class="widget__title position__relative h3">Tìm kiếm giá</h2>
             <form class="price__filter--form" action="#">
                 <div class="price__filter--form__inner mb-15 d-flex align-items-center">
                     <div class="price__filter--group">
