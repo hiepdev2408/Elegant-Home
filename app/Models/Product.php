@@ -14,13 +14,11 @@ class Product extends Model
         return 'slug'; // Đặt trường `slug` là khóa tìm kiếm thay vì `id`
     }
 
-    const TYPE_HAVE_VARIATION = 'có biến thể';
-    const TYPE_NO_VARIATION = 'không có biến thể';
-
     protected $fillable = [
         'name',
         'slug',
         'base_price',
+        'price_sale',
         'img_thumbnail',
         'description',
         'user_manual',

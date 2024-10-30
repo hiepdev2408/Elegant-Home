@@ -33,11 +33,12 @@ class HomeController extends Controller
     {
         $categories = Category::with('products')->get();
 
-        $products = Product::latest()->take(10)->get();
+        $products = Product::latest('id')->take(10)->get();
         $blogs = Blog::with('user')->get();
 
         return view('client.home', compact('categories', 'products', 'blogs'));
     }
+<<<<<<< HEAD
     public function detail($category_id, $id)
     {
         // Lấy sản phẩm theo ID
@@ -49,22 +50,42 @@ class HomeController extends Controller
                           ->firstOrFail();
         $attributes = Attribute::with( 'values')->get();
         // dd($product->galleries);
+=======
+    public function detail($slug)
+{
+    // Lấy sản phẩm theo id và slug
+    $product = Product::where([
+            ['slug', $slug],
+        ])
+        ->with([
+            'galleries',
+            'categories',
+            'variants.attributes' => function ($query) {
+                $query->with('attribute', 'attributeValue');
+            }
+        ])
+        ->firstOrFail();
+>>>>>>> 37920c276ff585df749aa6335af895fcedc888f9
 
-        // Lấy danh mục của sản phẩm hiện tại
-        $categoryIds = $product->categories->pluck('id');
-        // Lấy các sản phẩm có cùng danh mục (trừ sản phẩm hiện tại)
-        $relatedProducts = Product::whereHas('categories', function ($query) use ($categoryIds) {
+    // Lấy danh mục của sản phẩm hiện tại
+    $categoryIds = $product->categories->pluck('id');
+
+    // Lấy các sản phẩm có cùng danh mục (trừ sản phẩm hiện tại)
+    $relatedProducts = Product::whereHas('categories', function ($query) use ($categoryIds) {
             $query->whereIn('id', $categoryIds);
         })
         ->where('id', '!=', $product->id)
         ->distinct()
         ->limit(4)
         ->get();
-            // dd($relatedProducts);
 
-        // Trả về view với thông tin sản phẩm và sản phẩm liên quan
-        return view('client.products.productDetail', compact('product', 'relatedProducts','attributes'));
-    }
+    // Lấy tất cả các thuộc tính để hiển thị
+    $attributes = Attribute::with('values')->get();
+
+    // Trả về view với thông tin sản phẩm và sản phẩm liên quan
+    return view('client.products.productDetail', compact('product', 'relatedProducts', 'attributes'));
+}
+
 
   public function shop(Request $request){
     // Lấy tất cả danh mục và các danh mục con của nó
@@ -75,3 +96,7 @@ class HomeController extends Controller
     return view('client.shops.listProduct', compact('categories', 'products'));
 }
 }
+<<<<<<< HEAD
+=======
+}
+>>>>>>> 37920c276ff585df749aa6335af895fcedc888f9
