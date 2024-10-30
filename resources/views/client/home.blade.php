@@ -4463,7 +4463,7 @@ Trang Chủ
                                 <div class="col mb-25">
                                     <div class="product__items">
                                         <div class="product__items--thumbnail">
-                                            <a class="product__items--link" href="{{route('productDetail', ['category_id'=> $product->categories->first()->id, 'id' => $product->id])}}">
+                                            <a class="product__items--link" href="{{ route('productDetail', ['slug' => $item->slug]) }}">
                                                 <img src="{{Storage::url($item->img_thumbnail)}}" alt="">
                                             </a>
                                             <div class="product__badge">

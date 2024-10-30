@@ -19,5 +19,8 @@ class AttributeValue extends Model
     public function attributes(){
         return $this->hasMany(VariantAttribute::class);
     }
-    
+
+    public function cartDetails(){
+        return $this->hasMany(CartDetail::class);
+    }
 }
