@@ -171,13 +171,8 @@ Trang Chủ
                             <div class="col mb-30">
                                 <div class="product__items ">
                                     <div class="product__items--thumbnail">
-<<<<<<< HEAD
                                         <a class="product__items--link" href="{{ route('productDetail', ['slug' => $item->slug]) }}">
                                             <img src="{{Storage::url($item->img_thumbnail)}}" alt="">
-=======
-                                        {{-- <a class="product__items--link" href="{{route('productDetail', ['category_id'=> $product->categories->first()->id, 'id' => $product->id])}}"> --}}
-                                            <img src="{{Storage::url($product->img_thumbnail)}}" alt="">
->>>>>>> beb4207048d3196c106985c358927052e732386c
                                         </a>
                                         <ul class="product__items--action d-flex justify-content-center">
                                             <li class="product__items--action__list">
@@ -252,7 +247,7 @@ Trang Chủ
                                         <h3 class="product__items--content__title h4"><a
                                                 href="product-details.html">{{$product->name}}</a></h3>
                                         <div class="product__items--price">
-                                            <span class="current__price">200</span>
+                                            <span class="current__price">{{$product->base_price}}</span>
                                             <span class="old__price"></span>
                                         </div>
                                         <p>
@@ -4496,11 +4491,7 @@ Trang Chủ
                                                 </li>
                                                 @if (Auth::check())
                                                 <li class="product__items--action__list">
-<<<<<<< HEAD
-                                                    <a class="product__items--action__btn" href="{{route('favorite', $product->id)}}">
-=======
                                                     <a class="product__items--action__btn" href="{{route('favorite',$item->id)}}">
->>>>>>> beb4207048d3196c106985c358927052e732386c
                                                         <svg class="product__items--action__btn--svg"
                                                             xmlns="http://www.w3.org/2000/svg" width="17.51"
                                                             height="15.443" viewBox="0 0 24.526 21.82">
