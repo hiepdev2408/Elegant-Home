@@ -247,7 +247,7 @@ Trang Chủ
                                         <h3 class="product__items--content__title h4"><a
                                                 href="product-details.html">{{$product->name}}</a></h3>
                                         <div class="product__items--price">
-                                            <span class="current__price">200</span>
+                                            <span class="current__price">{{$product->base_price}}</span>
                                             <span class="old__price"></span>
                                         </div>
                                         <p>
@@ -4491,7 +4491,7 @@ Trang Chủ
                                                 </li>
                                                 @if (Auth::check())
                                                 <li class="product__items--action__list">
-                                                    <a class="product__items--action__btn" href="{{route('favorite', $product->id)}}">
+                                                    <a class="product__items--action__btn" href="{{route('favorite',$item->id)}}">
                                                         <svg class="product__items--action__btn--svg"
                                                             xmlns="http://www.w3.org/2000/svg" width="17.51"
                                                             height="15.443" viewBox="0 0 24.526 21.82">

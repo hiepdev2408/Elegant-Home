@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use App\Helpers\Mail\VerifyAccount;
+use App\Models\favorite;
 use App\Models\User;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -146,13 +147,15 @@ class AccountController extends Controller
         $favorite = auth()->user()->favorites;
         return view('client.auth.favorite', compact('favorite'));
     }
-    public function deleteFavorite($product_id)
+    public function deleteFavorite($id)
     {
-        $use_id = Auth::id();
-        $data = [
-            'product_id' => $product_id,
-            'user_id' => $use_id,
-        ];
-        
+
+        $user_id = Auth::id();
+        $favorite = favorite::where('id', $id)
+            ->where('user_id', $user_id)
+            ->first();
+
+        $favorite->delete();
+        return back()->with('success', 'Thao tác thành công!');
     }
 }

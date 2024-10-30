@@ -52,7 +52,7 @@ Route::group(['prefix' => 'account'], function () {
     Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
 //favorite
     Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
-    Route::delete('/deleteFavorite/{product}',[AccountController::class,'deleteFavorite'])->name('delete.favorite');
+    Route::delete('/deleteFavorite/{id}',[AccountController::class,'deleteFavorite'])->name('deleteFavorite');
 });
 
 Route::group(['prefix' => 'contact'], function () {
