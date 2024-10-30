@@ -41,6 +41,7 @@ class HomeController extends Controller
         return view('client.home', compact('categories', 'products', 'blogs'));
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
     public function detail($category_id, $id)
     {
         // Lấy sản phẩm theo ID
@@ -53,6 +54,8 @@ class HomeController extends Controller
         $attributes = Attribute::with( 'values')->get();
         // dd($product->galleries);
 =======
+=======
+>>>>>>> 5bc21ef6767b1c4707158208e9f3880cb8bb3147
     public function detail($slug)
 {
     // Lấy sản phẩm theo id và slug
@@ -67,8 +70,11 @@ class HomeController extends Controller
             }
         ])
         ->firstOrFail();
+<<<<<<< HEAD
 >>>>>>> 37920c276ff585df749aa6335af895fcedc888f9
 
+=======
+>>>>>>> 5bc21ef6767b1c4707158208e9f3880cb8bb3147
     // Lấy danh mục của sản phẩm hiện tại
     $categoryIds = $product->categories->pluck('id');
 
@@ -93,6 +99,9 @@ class HomeController extends Controller
     return view('client.shops.listProduct');
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5bc21ef6767b1c4707158208e9f3880cb8bb3147
 public function favorite( $product_id){
 $user_id=Auth::id();
 $favorite = Favorite::where('product_id', $product_id)
@@ -105,6 +114,9 @@ if ($favorite) {
 }
 }
 
+<<<<<<< HEAD
 =======
 >>>>>>> 37920c276ff585df749aa6335af895fcedc888f9
+=======
+>>>>>>> 5bc21ef6767b1c4707158208e9f3880cb8bb3147
 }
