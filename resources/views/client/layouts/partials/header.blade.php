@@ -184,9 +184,9 @@
                                 </ul>
                             </li>
                         @endif
-
+                      @if (Auth::check())
                         <li class="header__account--items d-md-none">
-                            <a class="header__account--btn" href="wishlist.html">
+                            <a class="header__account--btn" href="{{route('show.favorite')}}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24.526" height="21.82"
                                     viewBox="0 0 24.526 21.82">
                                     <path
@@ -197,6 +197,7 @@
                                 <span class="items__count wishlist">02</span>
                             </a>
                         </li>
+                        @endif
                         <li class="header__account--items">
                             <a class="header__account--btn minicart__open--btn" href="javascript:void(0)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18.897" height="21.565"

@@ -13,7 +13,7 @@ class Attribute extends Model
         'name',
     ];
 
-    public function attributes(){
+     function attributes(){
         return $this->hasMany(VariantAttribute::class);
     }
 

@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\favorite;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\VariantAttribute;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -40,7 +42,7 @@ class HomeController extends Controller
     }
     public function detail($category_id, $id)
     {
-        // Lấy sản phẩm theo ID 
+        // Lấy sản phẩm theo ID
         $product = Product::with(['galleries', 'categories', 'variants.attributes' =>
                           function ($query){
                             $query->with('attribute', 'attributeValue');
@@ -69,4 +71,16 @@ class HomeController extends Controller
   public function shop(){
     return view('client.shops.listProduct');
 }
+public function favorite( $product_id){
+$user_id=Auth::id();
+$favorite = Favorite::where('product_id', $product_id)
+->where('user_id', $user_id)
+->first();
+
+if ($favorite) {
+    $favorite->delete();
+    return redirect()->back()->with('success', 'Bỏ yêu thích sản phẩm thành công');
+}
+}
+
 }
