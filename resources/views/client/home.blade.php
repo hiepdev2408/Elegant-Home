@@ -171,8 +171,8 @@ Trang Chủ
                             <div class="col mb-30">
                                 <div class="product__items ">
                                     <div class="product__items--thumbnail">
-                                        <a class="product__items--link" href="{{route('productDetail', ['category_id'=> $product->categories->first()->id, 'id' => $product->id])}}">
-                                            <img src="{{Storage::url($product->img_thumbnail)}}" alt="">
+                                        <a class="product__items--link" href="{{ route('productDetail', ['slug' => $item->slug]) }}">
+                                            <img src="{{Storage::url($item->img_thumbnail)}}" alt="">
                                         </a>
                                         <ul class="product__items--action d-flex justify-content-center">
                                             <li class="product__items--action__list">
@@ -4491,7 +4491,7 @@ Trang Chủ
                                                 </li>
                                                 @if (Auth::check())
                                                 <li class="product__items--action__list">
-                                                    <a class="product__items--action__btn" href="{{route('favorite',$product->id)}}">
+                                                    <a class="product__items--action__btn" href="{{route('favorite', $product->id)}}">
                                                         <svg class="product__items--action__btn--svg"
                                                             xmlns="http://www.w3.org/2000/svg" width="17.51"
                                                             height="15.443" viewBox="0 0 24.526 21.82">
