@@ -50,6 +50,9 @@ Route::group(['prefix' => 'account'], function () {
 
     Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
     Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
+//favorite
+    Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
+    Route::delete('/deleteFavorite/{product}',[AccountController::class,'deleteFavorite'])->name('delete.favorite');
 });
 
 Route::group(['prefix' => 'contact'], function () {
@@ -57,9 +60,6 @@ Route::group(['prefix' => 'contact'], function () {
     Route::post('/contact', [ContactFormController::class, 'submit'])->name('contact.submit');
 });
 
-Route::get('product/{slug}', [HomeController::class, 'detail'])->name('productDetail');
-
-Route::group(['prefix' => 'shops'], function () {
-    Route::get('/shops', [HomeController::class, 'shop'])->name('shop');
-
-});
+Route::get('productDetail/{slug}', [HomeController::class, 'detail'])->name('productDetail');
+Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
+Route::get('favorite/{id}', [HomeController::class, 'favorite'])->name('favorite');

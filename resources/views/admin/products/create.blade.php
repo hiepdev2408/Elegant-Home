@@ -211,7 +211,7 @@
                                 </div>
                                 <div class="form-floating form-floating-outline ">
                                     <input type="text" class="form-control" id="ecommerce-product-base_price"
-                                        placeholder="Giá sản phẩm" name="" />
+                                        placeholder="Giá sản phẩm" name="price_sale" />
                                     <label for="ecommerce-product-base_price">Giá giảm giá</label>
                                 </div>
                             </div>

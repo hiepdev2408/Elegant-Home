@@ -64,7 +64,7 @@ class ProductController extends Controller
                 foreach ($request->product_galleries as $imageGallery) {
                     Gallery::query()->create([
                         'product_id' => $product->id,
-                        'img_path' => $imageGallery,
+                        'img_path' => Storage::put('galleries', $imageGallery),
                     ]);
                 }
                 // dd($request->variants);

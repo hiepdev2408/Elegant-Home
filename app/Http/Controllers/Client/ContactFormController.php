@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Mail\ContactFormMail;
+use App\Helpers\Mail\ContactFormMail;
 use App\Models\Contract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
