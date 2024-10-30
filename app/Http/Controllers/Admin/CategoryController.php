@@ -18,5 +18,5 @@ class CategoryController extends Controller
     public function __construct( protected Category $model ){
 
     }
-  
+
 }

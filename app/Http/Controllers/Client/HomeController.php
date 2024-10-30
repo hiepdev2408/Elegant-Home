@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\favorite;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\VariantAttribute;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -38,7 +40,6 @@ class HomeController extends Controller
 
         return view('client.home', compact('categories', 'products', 'blogs'));
     }
-<<<<<<< HEAD
     public function detail($category_id, $id)
     {
         // Lấy sản phẩm theo ID
@@ -50,7 +51,7 @@ class HomeController extends Controller
                           ->firstOrFail();
         $attributes = Attribute::with( 'values')->get();
         // dd($product->galleries);
-=======
+
     public function detail($slug)
 {
     // Lấy sản phẩm theo id và slug
@@ -65,8 +66,6 @@ class HomeController extends Controller
             }
         ])
         ->firstOrFail();
->>>>>>> 37920c276ff585df749aa6335af895fcedc888f9
-
     // Lấy danh mục của sản phẩm hiện tại
     $categoryIds = $product->categories->pluck('id');
 
@@ -95,8 +94,16 @@ class HomeController extends Controller
 
     return view('client.shops.listProduct', compact('categories', 'products'));
 }
+public function favorite( $product_id){
+$user_id=Auth::id();
+$favorite = Favorite::where('product_id', $product_id)
+->where('user_id', $user_id)
+->first();
+
+if ($favorite) {
+    $favorite->delete();
+    return redirect()->back()->with('success', 'Bỏ yêu thích sản phẩm thành công');
 }
-<<<<<<< HEAD
-=======
 }
->>>>>>> 37920c276ff585df749aa6335af895fcedc888f9
+
+}
