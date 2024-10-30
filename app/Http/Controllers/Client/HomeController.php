@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\favorite;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\VariantAttribute;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -76,7 +78,9 @@ class HomeController extends Controller
 
     public function shop()
     {
-        return view('client.shops.listProduct');
+        $categories = Category::with('children')->whereNull('parent_id')->get();
+
+        return view('client.shops.listProduct' , compact('categories'));
     }
 
     public function favorite($product_id)
