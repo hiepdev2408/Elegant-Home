@@ -25,7 +25,7 @@ class ShopController extends Controller
     public function shopFilter(Request $request, $category_id = null)
     {     
         $categories = Category::with('children')->whereNull('parent_id')->get();    
-       
+        $productnew = Product::query()->latest('id')->take(3)->get();
         $products = Product::query();
            
         if ($request->input('search')) {
@@ -57,7 +57,7 @@ class ShopController extends Controller
        
         $products = $products->paginate(8);
        
-        return view('client.shops.listProduct', compact('categories', 'products'));
+        return view('client.shops.listProduct', compact('categories', 'products','productnew'));
     }
    
 

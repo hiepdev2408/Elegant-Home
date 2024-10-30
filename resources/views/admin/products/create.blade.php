@@ -11,6 +11,7 @@
     active
 @endsection
 
+
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="py-3 mb-4">
@@ -133,7 +134,7 @@
                                             <!-- Thuộc tính của biến thể -->
                                             <div id="attributesSection_0 mb-4">
                                                 @foreach ($attributes as $attribute)
-                                                    <div class="form-floating form-floating-outline">
+                                                    <div class="form-floating form-floating-outline mt-4">
                                                         <select class="select2 form-select mt-4"
                                                             id="variant_attribute_{{ $attribute->id }}_0"
                                                             name="variants[0][attributes][{{ $attribute->id }}]"
@@ -210,7 +211,7 @@
                                 </div>
                                 <div class="form-floating form-floating-outline ">
                                     <input type="text" class="form-control" id="ecommerce-product-base_price"
-                                        placeholder="Giá sản phẩm" name="" />
+                                        placeholder="Giá sản phẩm" name="price_sale" />
                                     <label for="ecommerce-product-base_price">Giá giảm giá</label>
                                 </div>
                             </div>

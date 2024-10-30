@@ -9,7 +9,7 @@ use App\Http\Controllers\Client\ShopController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get( '/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::group(['prefix' => 'account'], function () {
 
@@ -51,6 +51,9 @@ Route::group(['prefix' => 'account'], function () {
 
     Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
     Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
+//favorite
+    Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
+    Route::delete('/deleteFavorite/{id}',[AccountController::class,'deleteFavorite'])->name('deleteFavorite');
 });
 
 Route::group(['prefix' => 'contact'], function () {
@@ -58,11 +61,12 @@ Route::group(['prefix' => 'contact'], function () {
     Route::post('/contact', [ContactFormController::class, 'submit'])->name('contact.submit');
 });
 
-Route::get('categories/{category_id}/product/{id}', [HomeController::class, 'detail'])->name('productDetail');
+Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
+Route::get('/search', [ShopController::class, 'shopFilter'])->name('shop.search');
+Route::get('/categories/{category_id}', [ShopController::class, 'shopFilter'])->name('shop.categoryProduct');
+Route::get('/filter', [ShopController::class, 'shopFilter'])->name('shop.filter');
 
 
- Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
- Route::get('/search', [ShopController::class, 'shopFilter'])->name('shop.search');
- Route::get('/categories/{category_id}', [ShopController::class, 'shopFilter'])->name('shop.categoryProduct');
- Route::get('/filter', [ShopController::class, 'shopFilter'])->name('shop.filter');
+Route::get('productDetail/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 
+Route::get('favorite/{id}', [HomeController::class, 'favorite'])->name('favorite');

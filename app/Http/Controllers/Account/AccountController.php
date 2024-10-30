@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use App\Helpers\Mail\VerifyAccount;
+use App\Models\favorite;
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
@@ -130,8 +132,6 @@ class AccountController extends Controller
         return $status == Password::PASSWORD_RESET
             ? redirect()->route('login')->with('status', 'Đổi mật khẩu thành công')
             : back()->withErrors(['email' => __($status)]);
-
-
     }
     public function logout()
     {
@@ -141,5 +141,21 @@ class AccountController extends Controller
         return redirect('/')
             ->with('success', 'Đăng xuất thành công!');
     }
+    // Favorite
+    public function showFavorite()
+    {
+        $favorite = auth()->user()->favorites;
+        return view('client.auth.favorite', compact('favorite'));
+    }
+    public function deleteFavorite($id)
+    {
 
+        $user_id = Auth::id();
+        $favorite = favorite::where('id', $id)
+            ->where('user_id', $user_id)
+            ->first();
+
+        $favorite->delete();
+        return back()->with('success', 'Thao tác thành công!');
+    }
 }

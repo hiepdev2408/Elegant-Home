@@ -94,7 +94,6 @@
             </div>
         </section>
         <!-- End slider section -->
-
         <!-- Start banner section -->
         <section class="product__details--section section--padding">
             <div class="container">
@@ -131,61 +130,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- <div class="swiper-slide">
-                                        <div class="product__media--preview__items">
-                                            <a class="product__media--preview__items--link glightbox" data-gallery="product-media-preview" href="assets/img/product/big-product2.webp"><img class="product__media--preview__items--img" src="assets/img/product/big-product2.webp" alt="product-media-img"></a>
-                                            <div class="product__media--view__icon">
-                                                <a class="product__media--view__icon--link glightbox" href="assets/img/product/big-product2.webp" data-gallery="product-media-preview">
-                                                    <svg class="product__media--view__icon--svg" xmlns="http://www.w3.org/2000/svg" width="22.51" height="22.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path></svg>
-                                                    <span class="visually-hidden">Media Gallery</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="product__media--preview__items">
-                                            <a class="product__media--preview__items--link glightbox" data-gallery="product-media-preview" href="assets/img/product/big-product3.webp"><img class="product__media--preview__items--img" src="assets/img/product/big-product3.webp" alt="product-media-img"></a>
-                                            <div class="product__media--view__icon">
-                                                <a class="product__media--view__icon--link glightbox" href="assets/img/product/big-product3.webp" data-gallery="product-media-preview">
-                                                    <svg class="product__media--view__icon--svg" xmlns="http://www.w3.org/2000/svg" width="22.51" height="22.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path></svg>
-                                                    <span class="visually-hidden">Media Gallery</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="product__media--preview__items">
-                                            <a class="product__media--preview__items--link glightbox" data-gallery="product-media-preview" href="assets/img/product/big-product4.webp"><img class="product__media--preview__items--img" src="assets/img/product/big-product4.webp" alt="product-media-img"></a>
-                                            <div class="product__media--view__icon">
-                                                <a class="product__media--view__icon--link glightbox" href="assets/img/product/big-product4.webp" data-gallery="product-media-preview">
-                                                    <svg class="product__media--view__icon--svg" xmlns="http://www.w3.org/2000/svg" width="22.51" height="22.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path></svg>
-                                                    <span class="visually-hidden">Media Gallery</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="product__media--preview__items">
-                                            <a class="product__media--preview__items--link glightbox" data-gallery="product-media-preview" href="assets/img/product/big-product5.webp"><img class="product__media--preview__items--img" src="assets/img/product/big-product5.webp" alt="product-media-img"></a>
-                                            <div class="product__media--view__icon">
-                                                <a class="product__media--view__icon--link glightbox" href="assets/img/product/big-product5.webp" data-gallery="product-media-preview">
-                                                    <svg class="product__media--view__icon--svg" xmlns="http://www.w3.org/2000/svg" width="22.51" height="22.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path></svg>
-                                                    <span class="visually-hidden">Media Gallery</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="product__media--preview__items">
-                                            <a class="product__media--preview__items--link glightbox" data-gallery="product-media-preview" href="assets/img/product/big-product6.webp"><img class="product__media--preview__items--img" src="assets/img/product/big-product6.webp" alt="product-media-img"></a>
-                                            <div class="product__media--view__icon">
-                                                <a class="product__media--view__icon--link glightbox" href="assets/img/product/big-product6.webp" data-gallery="product-media-preview">
-                                                    <svg class="product__media--view__icon--svg" xmlns="http://www.w3.org/2000/svg" width="22.51" height="22.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path></svg>
-                                                    <span class="visually-hidden">Media Gallery</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div> --}}
                                 </div>
                             </div>
                             <div class="product__media--nav swiper">
@@ -198,32 +142,6 @@
                                             </div>
                                         </div>
                                     @endforeach
-
-                                    {{-- <div class="swiper-slide">
-                                        <div class="product__media--nav__items">
-                                            <img class="product__media--nav__items--img" src="assets/img/product/small-product2.webp" alt="product-nav-img">
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="product__media--nav__items">
-                                            <img class="product__media--nav__items--img" src="assets/img/product/small-product3.webp" alt="product-nav-img">
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="product__media--nav__items">
-                                            <img class="product__media--nav__items--img" src="assets/img/product/small-product4.webp" alt="product-nav-img">
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="product__media--nav__items">
-                                            <img class="product__media--nav__items--img" src="assets/img/product/small-product5.webp" alt="product-nav-img">
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="product__media--nav__items">
-                                            <img class="product__media--nav__items--img" src="assets/img/product/small-product6.webp" alt="product-nav-img">
-                                        </div>
-                                    </div> --}}
                                 </div>
                                 <div class="swiper__nav--btn swiper-button-next"></div>
                                 <div class="swiper__nav--btn swiper-button-prev"></div>
@@ -234,19 +152,12 @@
                         <div class="product__details--info">
                             <form action="#">
                                 <h2 class="product__details--info__title mb-15">{{ $product->name }}</h2>
-
-
-
                                 <div class="product__details--info__price mb-10">
 
                                     <span class="current__price">{{ $product->base_price }}VNĐ</span>
                                     {{-- <span class="old__price">VNĐ</span> --}}
 
                                 </div>
-
-
-
-
                                 <div class="product__details--info__rating d-flex align-items-center mb-15">
                                     <ul class="rating product__list--rating d-flex">
                                         <li class="rating__list">
@@ -306,79 +217,32 @@
                                 <div class="product__variant">
                                     <div class="product__variant--list mb-20">
                                         <fieldset class="variant__input--fieldset">
-                                            @foreach ($attributes as $attribute) <!-- Lặp qua tất cả các thuộc tính -->
-                                                <legend class="product__variant--title mb-8">{{ $attribute->name }}</legend>
+                                            @foreach ($attributes as $attribute)
+                                                <!-- Lặp qua tất cả các thuộc tính -->
+                                                <legend class="product__variant--title mb-8">{{ $attribute->name }}
+                                                </legend>
                                                 <ul class="variant__size d-flex">
-                                                    @foreach ($attribute->values as $value) <!-- Lặp qua các giá trị của thuộc tính -->
+                                                    @foreach ($attribute->values as $value)
+                                                        <!-- Lặp qua các giá trị của thuộc tính -->
                                                         <li class="variant__size--list">
-                                                            <input id="attribute-{{ $value->id }}" name="attribute[{{ $attribute->id }}]" type="radio" value="{{ $value->value }}" checked>
+                                                            <input id="attribute-{{ $value->id }}"
+                                                                name="attribute[{{ $attribute->id }}]" type="radio"
+                                                                value="{{ $value->value }}" checked>
                                                             @if ($attribute->name === 'Màu sắc')
-                                                                <label class="variant__size--value" for="attribute-{{ $value->id }}" style="background: {{ $value->value }};"></label>
+                                                                <label class="variant__size--value"
+                                                                    for="attribute-{{ $value->id }}"
+                                                                    style="background: {{ $value->value }};"></label>
                                                             @else
-                                                                <label class="variant__size--value">{{ $value->value }}</label>
+                                                                <label
+                                                                    class="variant__size--value">{{ $value->value }}</label>
                                                             @endif
                                                         </li>
                                                     @endforeach
                                                 </ul>
                                             @endforeach
-                                        
-                                                
-                                           
-
-
-
-                                            {{-- <div class="variant__color d-flex">
-                                                <div class="variant__color--list">
-                                                    <input id="color-red1" name="color" type="radio" checked>
-                                                    <label class="variant__color--value red" for="color-red1"
-                                                        title="Red"><img class="variant__color--value__img"
-                                                            src="assets/img/product/product1.webp"
-                                                            alt="variant-color-img"></label>
-                                                </div> --}}
-                                            {{-- <div class="variant__color--list">
-                                                    <input id="color-red2" name="color" type="radio">
-                                                    <label class="variant__color--value red" for="color-red2"
-                                                        title="Black"><img class="variant__color--value__img"
-                                                            src="assets/img/product/product6.webp"
-                                                            alt="variant-color-img"></label>
-                                                </div>
-                                                <div class="variant__color--list">
-                                                    <input id="color-red3" name="color" type="radio">
-                                                    <label class="variant__color--value red" for="color-red3"
-                                                        title="Pink"><img class="variant__color--value__img"
-                                                            src="assets/img/product/product7.webp"
-                                                            alt="variant-color-img"></label>
-                                                </div>
-                                                <div class="variant__color--list">
-                                                    <input id="color-red4" name="color" type="radio">
-                                                    <label class="variant__color--value red" for="color-red4"
-                                                        title="Orange"><img class="variant__color--value__img"
-                                                            src="assets/img/product/product4.webp"
-                                                            alt="variant-color-img"></label>
-                                                </div> --}}
                                     </div>
                                     </fieldset>
                                 </div>
-
-                                {{-- <div class="product__variant--list mb-20">
-                                        <fieldset class="variant__input--fieldset">
-                                            <legend class="product__variant--title mb-8">Weight :</legend>
-                                            <ul class="variant__size d-flex">
-                                                <li class="variant__size--list">
-                                                    <input id="weight1" name="weight" type="radio" checked>
-                                                    <label class="variant__size--value red" for="weight1">5 kg</label>
-                                                </li>
-                                                <li class="variant__size--list">
-                                                    <input id="weight2" name="weight" type="radio">
-                                                    <label class="variant__size--value red" for="weight2">3 kg</label>
-                                                </li>
-                                                <li class="variant__size--list">
-                                                    <input id="weight3" name="weight" type="radio">
-                                                    <label class="variant__size--value red" for="weight3">2 kg</label>
-                                                </li>
-                                            </ul>
-                                        </fieldset>
-                                    </div> --}}
                                 <div class="product__variant--list quantity d-flex align-items-center mb-20">
                                     <div class="product__variant--list quantity d-flex align-items-center mb-20">
                                         <div class="quantity__box d-flex align-items-center">
@@ -492,9 +356,6 @@
             </div>
             </div>
         </section>
-        <!-- End product details section -->
-
-        <!-- Start product details tab section -->
         <section class="product__details--tab__section section--padding">
             <div class="container">
                 <div class="row row-cols-1">
@@ -1059,107 +920,27 @@
         <!-- End product details tab section -->
 
         <!-- Start product section -->
-        <section class="product__section section--padding">
-            <div class="container">
-                <div class="section__heading text-center mb-40">
-                    <h2 class="section__heading--maintitle">You may also like</h2>
-                </div>
-                <div class="product__section--inner product__swiper--column4 swiper">
-                    <div class="swiper-wrapper">
-                       
-                      <div class="swiper-container">
-    <div class="swiper-wrapper">
-        @if ($relatedProducts && $relatedProducts->count())
-            @foreach ($relatedProducts as $productSimilar)
-                <div class="swiper-slide"> <!-- Di chuyển div này vào vòng lặp -->
-                    <div class="product__items">
-                        <div class="product__items--thumbnail">
-                            <a class="product__items--link"
-                               href="{{ route('productDetail', ['category_id' => $productSimilar->categories->first()->id, 'id' => $productSimilar->id]) }}">
-                               <img class="product__items--img product__primary--img"
-                                    src="{{ Storage::url($productSimilar->img_thumbnail) }}" alt="product-img">
-                            </a>
-                            <div class="product__badge">
-                                <span class="product__badge--items sale">New555</span>
-                            </div>
-                        </div>
-                        <div class="product__items--content text-center">
-                            <h3 class="product__items--content__title h4">
-                                <a href="{{ route('productDetail', ['category_id' => $productSimilar->categories->first()->id, 'id' => $productSimilar->id]) }}">
-                                    {{$productSimilar->name}}
-                                </a>
-                            </h3>
-                            <div class="product__items--price">
-                                <span class="current__price">{{$productSimilar->base_price}}</span>
-                            </div>
-                            <a class="product__items--action__cart--btn primary__btn" href="cart.html">
-                                <svg class="product__items--action__cart--btn__icon" xmlns="http://www.w3.org/2000/svg" width="13.897" height="14.565" viewBox="0 0 18.897 21.565">
-                                    <path d="M16.84,8.082V6.091a4.725,4.725,0,1,0-9.449,0v4.725a.675.675,0,0,0,1.35,0V9.432h5.4V8.082h-5.4V6.091a3.375,3.375,0,0,1,6.75,0v4.691a.675.675,0,1,0,1.35,0V9.433h3.374V21.581H4.017V9.432H6.041V8.082H2.667V21.641a1.289,1.289,0,0,0,1.289,1.29h16.32a1.289,1.289,0,0,0,1.289-1.29V8.082Z" transform="translate(-2.667 -1.366)" fill="currentColor"></path>
-                                </svg>
-                                <span class="add__to--cart__text"> Add to cart</span>
-                            </a>
-                        </div>
-                    </div>
-                </div> <!-- Kết thúc swiper-slide -->
-            @endforeach
-        @endif
-    </div>
-</div>
-                       
-                       
-                    </div>
-                    <div class="swiper__nav--btn swiper-button-next"></div>
-                    <div class="swiper__nav--btn swiper-button-prev"></div>
-                </div>
-            </div>
-        </section>
-        <!-- End product section -->
 
-        <!-- Start Newsletter banner section -->
-        {{-- <section class="newsletter__banner--section section--padding pt-0">
-            <div class="container">
-                <div class="newsletter__banner--thumbnail position__relative">
-                    <img class="newsletter__banner--thumbnail__img" src="assets/img/banner/banner-bg7.webp"
-                        alt="newsletter-banner">
-                    <div class="newsletter__content newsletter__subscribe">
-                        <h5 class="newsletter__content--subtitle text-white">Want to offer regularly ?</h5>
-                        <h2 class="newsletter__content--title text-white h3 mb-25">Subscribe Our Newsletter <br>
-                            for Get Daily Update</h2>
-                        <form class="newsletter__subscribe--form position__relative" action="#">
-                            <label>
-                                <input class="newsletter__subscribe--input" placeholder="Enter your email address"
-                                    type="email">
-                            </label>
-                            <button class="newsletter__subscribe--button primary__btn" type="submit">Subscribe
-                                <svg class="newsletter__subscribe--button__icon" xmlns="http://www.w3.org/2000/svg"
-                                    width="9.159" height="7.85" viewBox="0 0 9.159 7.85">
-                                    <path data-name="Icon material-send"
-                                        d="M3,12.35l9.154-3.925L3,4.5,3,7.553l6.542.872L3,9.3Z"
-                                        transform="translate(-3 -4.5)" fill="currentColor" />
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section> --}}
-        
+
     </main>
     <style>
-         .product__items {
-        width: 50%; /* Đặt chiều rộng cho mỗi sản phẩm */
-        margin: 0 auto; /* Căn giữa sản phẩm */
-    }
-    
-    .product__items--img {
-        width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của sản phẩm */
-        height: auto; /* Giữ tỷ lệ khung hình cho ảnh */
-    }
-    
-    .product__items--content {
-        font-size: 14px; /* Giảm kích thước font chữ nếu cần */
-    }
-    </style>
-    
-@endsection
+        .product__items {
+            width: 50%;
+            /* Đặt chiều rộng cho mỗi sản phẩm */
+            margin: 0 auto;
+            /* Căn giữa sản phẩm */
+        }
 
+        .product__items--img {
+            width: 100%;
+            /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của sản phẩm */
+            height: auto;
+            /* Giữ tỷ lệ khung hình cho ảnh */
+        }
+
+        .product__items--content {
+            font-size: 14px;
+            /* Giảm kích thước font chữ nếu cần */
+        }
+    </style>
+@endsection

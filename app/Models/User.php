@@ -70,6 +70,15 @@ class User extends Authenticatable
     public function blogs(){
         return $this->hasMany(Blog::class);
     }
+
+    public function carts(){
+        return $this->hasMany(Cart::class);
+    }
+
+    public function cartDetails(){
+        return $this->hasMany(CartDetail::class);
+    }
+
     public function isAdmin()
     {
         return $this->type == self::TYPE_ADMIN;
@@ -77,5 +86,8 @@ class User extends Authenticatable
     public function isMember()
     {
         return $this->type == self::TYPE_MEMBER;
+    }
+    public function favorites() {
+        return $this->hasMany(favorite::class, 'user_id','id');
     }
 }

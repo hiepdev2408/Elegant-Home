@@ -9,13 +9,16 @@ class Product extends Model
 {
     use HasFactory;
 
-    const TYPE_HAVE_VARIATION = 'có biến thể';
-    const TYPE_NO_VARIATION = 'không có biến thể';
+    public function getRouteKeyName()
+    {
+        return 'slug'; // Đặt trường `slug` là khóa tìm kiếm thay vì `id`
+    }
 
     protected $fillable = [
         'name',
         'slug',
         'base_price',
+        'price_sale',
         'img_thumbnail',
         'description',
         'user_manual',
@@ -34,11 +37,13 @@ class Product extends Model
         'is_show_home' => 'boolean',
     ];
 
-    public function categories(){
+    public function categories()
+    {
         return $this->belongsToMany(Category::class, 'product_category', 'product_id', 'category_id');
     }
 
-    public function galleries(){
+    public function galleries()
+    {
         return $this->hasMany(Gallery::class);
     }
 
