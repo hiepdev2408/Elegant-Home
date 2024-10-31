@@ -74,11 +74,7 @@ class HomeController extends Controller
     }
 
 
-    public function shop()
-    {
-        return view('client.shops.listProduct');
-    }
-
+   
     public function favorite($product_id)
     {
         $user_id = Auth::id();
