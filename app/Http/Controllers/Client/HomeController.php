@@ -76,6 +76,13 @@ class HomeController extends Controller
     }
 
 
+    public function shop()
+    {
+        $categories = Category::with('children')->whereNull('parent_id')->get();
+
+        return view('client.shops.listProduct' , compact('categories'));
+    }
+
 
     public function favorite($product_id)
     {
