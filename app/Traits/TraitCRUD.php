@@ -40,7 +40,13 @@ trait TraitCRUD
                 ];
                 break;
 
-            // Bạn có thể thêm các bảng khác tại đây
+                case 'attribute_values':
+                    $rules = [
+                        'attribute_id' => 'required|exists:attributes,id',
+                        'value' => 'required|string|max:255',
+                    ];
+                    break;
+            
             default:
                 throw new \Exception("Invalid model table for validation.");
         }
@@ -168,6 +174,7 @@ trait TraitCRUD
     public function destroy($id)
     {
         $this->model->findOrFail($id)->delete();
+        
         return redirect()->back()->with('success', __('Xóa dữ liệu thành công'));
     }
     public function restore($id)
