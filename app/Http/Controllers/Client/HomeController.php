@@ -83,9 +83,9 @@ class HomeController extends Controller
         return view('client.shops.listProduct' , compact('categories'));
     }
 
+
     public function favorite($product_id)
     {
-        $user_id = Auth::id();
         $use_id = Auth::id();
         $data = [
             'product_id' => $product_id,

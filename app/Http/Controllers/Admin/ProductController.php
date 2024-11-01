@@ -61,11 +61,13 @@ class ProductController extends Controller
 
                 $product = Product::query()->create($dataProduct);
 
-                foreach ($request->product_galleries as $imageGallery) {
-                    Gallery::query()->create([
-                        'product_id' => $product->id,
-                        'img_path' => Storage::put('galleries', $imageGallery),
-                    ]);
+                if(!empty($request->product_galleries)){
+                    foreach ($request->product_galleries as $imageGallery) {
+                        Gallery::query()->create([
+                            'product_id' => $product->id,
+                            'img_path' => Storage::put('galleries', $imageGallery),
+                        ]);
+                    }
                 }
                 // dd($request->variants);
                 foreach ($request->variants as $variantData) {
@@ -127,7 +129,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
+
     }
 
     /**
