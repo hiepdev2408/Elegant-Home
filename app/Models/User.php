@@ -87,4 +87,7 @@ class User extends Authenticatable
     {
         return $this->type == self::TYPE_MEMBER;
     }
+    public function favorites() {
+        return $this->hasMany(favorite::class, 'user_id','id');
+    }
 }

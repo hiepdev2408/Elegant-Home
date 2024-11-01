@@ -48,7 +48,7 @@ trait TraitCRUD
                     break;
             
             default:
-                throw new \Exception("Invalid model table for validation.");
+                throw new \Exception("không hợp lệ để xác thực.");
         }
 
         // Thực hiện validate
