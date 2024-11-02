@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\favorite;
 use App\Models\Product;
 use App\Models\Variant;
@@ -80,7 +81,7 @@ class HomeController extends Controller
     {
         $categories = Category::with('children')->whereNull('parent_id')->get();
 
-        return view('client.shops.listProduct' , compact('categories'));
+        return view('client.shops.listProduct', compact('categories'));
     }
 
 
@@ -92,7 +93,17 @@ class HomeController extends Controller
             'user_id' => $use_id,
         ];
         favorite::create($data);
-            return redirect()->back()->with('success', ' yêu thích sản phẩm thành công');
+        return redirect()->back()->with('success', ' yêu thích sản phẩm thành công');
     }
+    public function store(Request $request)
+    {
+        Comment::create([
+            'comment' => $request->comment,
+            'user_id' => Auth::user()->id,
+            'product_id' => $request->product_id,
+            'parent_id' => $request->parent_id ?? null,
+        ]);
 
+        return back();
+    }
 }
