@@ -33,13 +33,21 @@ class HomeController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         $categories = Category::with('products', 'children')->get();
         $products = Product::with('categories')->latest('id')->take(10)->get();
+=======
+        $categories = Category::with('products')->get();
+
+        $products = Product::latest('id')->take(10)->get();
+        // $products =Product::query()->get();
+>>>>>>> 5afeb7f6b93fdc036edcec014d50d666f55a6e44
         $blogs = Blog::with('user')->get();
         // dd($products->toArray());
 
         return view('client.home', compact('categories', 'products', 'blogs'));
     }
+
     public function detail($slug)
     {
         // Lấy sản phẩm theo id và slug
@@ -72,6 +80,7 @@ class HomeController extends Controller
         // Trả về view với thông tin sản phẩm và sản phẩm liên quan
         return view('client.products.productDetail', compact('product', 'relatedProducts', 'attributes'));
     }
+<<<<<<< HEAD
     public function shop()
     {
         return view('client.shops.listProduct');
@@ -87,6 +96,27 @@ class HomeController extends Controller
             $favorite->delete();
             return redirect()->back()->with('success', 'Bỏ yêu thích sản phẩm thành công');
         }
+=======
+
+
+    public function shop()
+    {
+        $categories = Category::with('children')->whereNull('parent_id')->get();
+
+        return view('client.shops.listProduct' , compact('categories'));
+    }
+
+
+    public function favorite($product_id)
+    {
+        $use_id = Auth::id();
+        $data = [
+            'product_id' => $product_id,
+            'user_id' => $use_id,
+        ];
+        favorite::create($data);
+            return redirect()->back()->with('success', ' yêu thích sản phẩm thành công');
+>>>>>>> 5afeb7f6b93fdc036edcec014d50d666f55a6e44
     }
 
 }

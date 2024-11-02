@@ -812,24 +812,36 @@
             </div>
         </section>
     </main>
-    <style>
-        .product__items {
-            width: 50%;
-            /* Đặt chiều rộng cho mỗi sản phẩm */
-            margin: 0 auto;
-            /* Căn giữa sản phẩm */
-        }
 
-        .product__items--img {
-            width: 100%;
-            /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của sản phẩm */
-            height: auto;
-            /* Giữ tỷ lệ khung hình cho ảnh */
-        }
+@endsection
+@section('style-libs')
+<style>
+    .product__items {
+        width: 50%;
+        /* Đặt chiều rộng cho mỗi sản phẩm */
+        margin: 0 auto;
+        /* Căn giữa sản phẩm */
+    }
 
-        .product__items--content {
-            font-size: 14px;
-            /* Giảm kích thước font chữ nếu cần */
-        }
-    </style>
+    .product__items--img {
+        width: 100%;
+        /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của sản phẩm */
+        height: auto;
+        /* Giữ tỷ lệ khung hình cho ảnh */
+    }
+
+    .product__items--content {
+        font-size: 14px;
+        /* Giảm kích thước font chữ nếu cần */
+    }
+</style>
+@endsection
+@section('script-libs')
+<button id="scroll__top"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 244l144-144 144 144M256 120v292"/></svg></button>
+<script src="{{ asset('themes/client/assets/js/plugins/swiper-bundle.min.js') }}" defer="defer"></script>
+<script src="{{ asset('themes/client/assets/js/plugins/glightbox.min.js') }}" defer="defer"></script>
+
+<!-- Customscript js -->
+<script src="{{ asset('themes/client/assets/js/script.js') }}" defer="defer"></script>
+
 @endsection
