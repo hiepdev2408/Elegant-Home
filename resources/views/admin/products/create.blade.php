@@ -209,11 +209,11 @@
                                         placeholder="Giá sản phẩm" name="base_price" />
                                     <label for="ecommerce-product-base_price">Giá sản phẩm</label>
                                 </div>
-                                <div class="form-floating form-floating-outline ">
+                                {{-- <div class="form-floating form-floating-outline ">
                                     <input type="text" class="form-control" id="ecommerce-product-base_price"
                                         placeholder="Giá sản phẩm" name="price_sale" />
                                     <label for="ecommerce-product-base_price">Giá giảm giá</label>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <div class="card mb-4">

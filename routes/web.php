@@ -3,6 +3,7 @@
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\ContactFormController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ShopController;
@@ -54,6 +55,7 @@ Route::group(['prefix' => 'account'], function () {
     //favorite
     Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
     Route::delete('/deleteFavorite/{id}', [AccountController::class, 'deleteFavorite'])->name('deleteFavorite');
+
 });
 
 Route::group(['prefix' => 'contact'], function () {
@@ -72,3 +74,9 @@ Route::get('productDetail/{slug}', [HomeController::class, 'detail'])->name('pro
 Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
 Route::get('favorite/{id}', [HomeController::class, 'favorite'])->name('favorite');
+
+//cart
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index']);
+    Route::post('store', [CartController::class, 'store'])->name('store');
+});

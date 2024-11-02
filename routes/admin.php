@@ -100,7 +100,7 @@ Route::prefix('admin')
 
                 Route::get('listDestroy', [AttributeController::class, 'delete'])->name('delete');
                 // Hiển thị danh sách xóa
-
+        
                 Route::post('restore/{id}', [AttributeController::class, 'restore'])->name('restore');
                 Route::delete('forceDelete/{id}', [AttributeController::class, 'forceDelete'])->name('forceDelete');
             });
