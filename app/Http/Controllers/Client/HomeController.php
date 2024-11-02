@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\favorite;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\VariantAttribute;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
