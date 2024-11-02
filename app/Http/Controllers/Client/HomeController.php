@@ -33,60 +33,60 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('products')->get();
-
-        $products = Product::latest('id')->take(10)->get();
+        $categories = Category::with('products', 'children')->get();
+        $products = Product::with('categories')->latest('id')->take(10)->get();
         $blogs = Blog::with('user')->get();
+        // dd($products->toArray());
 
         return view('client.home', compact('categories', 'products', 'blogs'));
     }
     public function detail($slug)
-{
-    // Lấy sản phẩm theo id và slug
-    $product = Product::where([
+    {
+        // Lấy sản phẩm theo id và slug
+        $product = Product::where([
             ['slug', $slug],
         ])
-        ->with([
-            'galleries',
-            'categories',
-            'variants.attributes' => function ($query) {
-                $query->with('attribute', 'attributeValue');
-            }
-        ])
-        ->firstOrFail();
-    // Lấy danh mục của sản phẩm hiện tại
-    $categoryIds = $product->categories->pluck('id');
+            ->with([
+                'galleries',
+                'categories',
+                'variants.attributes' => function ($query) {
+                    $query->with('attribute', 'attributeValue');
+                }
+            ])
+            ->firstOrFail();
+        // Lấy danh mục của sản phẩm hiện tại
+        $categoryIds = $product->categories->pluck('id');
 
-    // Lấy các sản phẩm có cùng danh mục (trừ sản phẩm hiện tại)
-    $relatedProducts = Product::whereHas('categories', function ($query) use ($categoryIds) {
+        // Lấy các sản phẩm có cùng danh mục (trừ sản phẩm hiện tại)
+        $relatedProducts = Product::whereHas('categories', function ($query) use ($categoryIds) {
             $query->whereIn('id', $categoryIds);
         })
-        ->where('id', '!=', $product->id)
-        ->distinct()
-        ->limit(4)
-        ->get();
+            ->where('id', '!=', $product->id)
+            ->distinct()
+            ->limit(4)
+            ->get();
 
-    // Lấy tất cả các thuộc tính để hiển thị
-    $attributes = Attribute::with('values')->get();
+        // Lấy tất cả các thuộc tính để hiển thị
+        $attributes = Attribute::with('values')->get();
 
-    // Trả về view với thông tin sản phẩm và sản phẩm liên quan
-    return view('client.products.productDetail', compact('product', 'relatedProducts', 'attributes'));
-}
+        // Trả về view với thông tin sản phẩm và sản phẩm liên quan
+        return view('client.products.productDetail', compact('product', 'relatedProducts', 'attributes'));
+    }
+    public function shop()
+    {
+        return view('client.shops.listProduct');
+    }
+    public function favorite($product_id)
+    {
+        $user_id = Auth::id();
+        $favorite = Favorite::where('product_id', $product_id)
+            ->where('user_id', $user_id)
+            ->first();
 
-
-  public function shop(){
-    return view('client.shops.listProduct');
-}
-public function favorite( $product_id){
-$user_id=Auth::id();
-$favorite = Favorite::where('product_id', $product_id)
-->where('user_id', $user_id)
-->first();
-
-if ($favorite) {
-    $favorite->delete();
-    return redirect()->back()->with('success', 'Bỏ yêu thích sản phẩm thành công');
-}
-}
+        if ($favorite) {
+            $favorite->delete();
+            return redirect()->back()->with('success', 'Bỏ yêu thích sản phẩm thành công');
+        }
+    }
 
 }

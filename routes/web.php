@@ -3,6 +3,7 @@
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\ContactFormController;
 use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -50,9 +51,9 @@ Route::group(['prefix' => 'account'], function () {
 
     Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
     Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
-//favorite
+    //favorite
     Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
-    Route::delete('/deleteFavorite/{product}',[AccountController::class,'deleteFavorite'])->name('delete.favorite');
+    Route::delete('/deleteFavorite/{product}', [AccountController::class, 'deleteFavorite'])->name('delete.favorite');
 });
 
 Route::group(['prefix' => 'contact'], function () {
@@ -60,6 +61,14 @@ Route::group(['prefix' => 'contact'], function () {
     Route::post('/contact', [ContactFormController::class, 'submit'])->name('contact.submit');
 });
 
+// Route::get('product/{category_slug}/{product_slug}/', [HomeController::class, 'detail'])->name('home.detail');
+
 Route::get('productDetail/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
 Route::get('favorite/{id}', [HomeController::class, 'favorite'])->name('favorite');
+
+//cart
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index']);
+    Route::post('store', [CartController::class, 'store'])->name('store');
+});

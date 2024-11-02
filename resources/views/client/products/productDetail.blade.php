@@ -4,96 +4,6 @@
 @endsection
 @section('content')
     <main class="main__content_wrapper">
-        <!-- Start slider section -->
-        <section class="hero__slider--section">
-            <div class="hero__slider--inner hero__slider--activation swiper">
-                <div class="hero__slider--wrapper swiper-wrapper">
-                    <div class="swiper-slide ">
-                        <div class="hero__slider--items hero__slider--bg slider1">
-                            <div class="container-fluid">
-                                <div class="hero__slider--items__inner">
-                                    <div class="row row-cols-1">
-                                        <div class="col">
-                                            <div class="slider__content">
-                                                <p class="slider__content--desc desc1 text-white mb-15">Khám phá bộ sưu tập
-                                                    đồ nội thất tốt nhất của chúng tôi
-                                                    từ nhà</p>
-                                                <h2 class="slider__content--maintitle text-white h1">Đồ nội thất phong cách
-                                                    <br>
-                                                    Mang đến vẻ đẹp
-                                                </h2>
-                                                <p class="slider__content--desc text-white mb-35 d-sm-2-none">Đồ nội thất
-                                                    tuyệt vời có thể mang lại vẻ đẹp cho ngôi nhà của bạn, vì vậy hãy mua
-                                                    sản phẩm phổ biến của chúng tôi <br>
-                                                    và đồ nội thất thời trang. Bây giờ bạn được giảm giá tới 100%.</p>
-                                                <a class="slider__content--btn primary__btn" href="shop.html">Start to
-                                                    Buying</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide ">
-                        <div class="hero__slider--items hero__slider--bg slider2">
-                            <div class="container-fluid">
-                                <div class="hero__slider--items__inner">
-                                    <div class="row">
-                                        <div class="col-lg-6 offset-lg-6">
-                                            <div class="slider__content text-center">
-                                                <p class="slider__content--desc desc1 right text-white mb-15">Khám phá bộ
-                                                    sưu tập đồ nội thất tốt nhất của chúng tôi từ nhà</p>
-                                                <h2 class="slider__content--maintitle text-white h1">Nội thất thời trang
-                                                    <br>
-                                                    Mang lại vẻ đẹp
-                                                </h2>
-                                                <p class="slider__content--desc text-white mb-35 d-sm-2-none">Đồ nội thất
-                                                    tuyệt vời có thể mang lại vẻ đẹp cho ngôi nhà của bạn, vì vậy hãy mua
-                                                    sản phẩm phổ biến của chúng tôi <br>
-                                                    và đồ nội thất thời trang. Bây giờ bạn được giảm giá tới 100% ngay bây
-                                                    giờ.</p>
-                                                <a class="slider__content--btn primary__btn" href="shop.html">Start to
-                                                    Buying</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide ">
-                        <div class="hero__slider--items hero__slider--bg slider3">
-                            <div class="container-fluid">
-                                <div class="hero__slider--items__inner">
-                                    <div class="row row-cols-1">
-                                        <div class="col">
-                                            <div class="slider__content">
-                                                <p class="slider__content--desc desc1 text-white mb-15">Khám phá bộ sưu tập
-                                                    đồ nội thất tốt nhất của chúng tôi từ nhà</p>
-                                                <h2 class="slider__content--maintitle text-white h1">Nội thất thời trang
-                                                    <br>
-                                                    Mang lại vẻ đẹp
-                                                </h2>
-                                                <p class="slider__content--desc text-white mb-35 d-sm-2-none">Đồ nội thất
-                                                    tuyệt vời có thể mang lại vẻ đẹp cho ngôi nhà của bạn, vì vậy hãy mua
-                                                    sản phẩm phổ biến của chúng tôi <br>
-                                                    và đồ nội thất thời trang. Bây giờ bạn được giảm giá tới 100%.</p>
-                                                <a class="slider__content--btn primary__btn" href="shop.html">Start to
-                                                    Buying</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper__nav--btn swiper-button-next"></div>
-                <div class="swiper__nav--btn swiper-button-prev"></div>
-            </div>
-        </section>
-        <!-- End slider section -->
         <!-- Start banner section -->
         <section class="product__details--section section--padding">
             <div class="container">
@@ -110,24 +20,6 @@
                                                     class="product__media--preview__items--img"
                                                     src="{{ Storage::url($product->img_thumbnail) }}"
                                                     alt="product-media-img"></a>
-                                            <div class="product__media--view__icon">
-                                                <a class="product__media--view__icon--link glightbox"
-                                                    href="assets/img/product/big-product1.webp"
-                                                    data-gallery="product-media-preview">
-                                                    <svg class="product__media--view__icon--svg"
-                                                        xmlns="http://www.w3.org/2000/svg" width="22.51" height="22.443"
-                                                        viewBox="0 0 512 512">
-                                                        <path
-                                                            d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"
-                                                            fill="none" stroke="currentColor" stroke-miterlimit="10"
-                                                            stroke-width="32"></path>
-                                                        <path fill="none" stroke="currentColor" stroke-linecap="round"
-                                                            stroke-miterlimit="10" stroke-width="32"
-                                                            d="M338.29 338.29L448 448"></path>
-                                                    </svg>
-                                                    <span class="visually-hidden">Media Gallery</span>
-                                                </a>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -148,15 +40,20 @@
                             </div>
                         </div>
                     </div>
+
+
                     <div class="col">
                         <div class="product__details--info">
-                            <form action="#">
+                            <form action="{{ route('store') }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <input type="hidden" name="total_amount" value="{{ $product->base_price }}">
+                                <input type="hidden" name="variant_attribute_id" value="{{ $product->id }}">
                                 <h2 class="product__details--info__title mb-15">{{ $product->name }}</h2>
                                 <div class="product__details--info__price mb-10">
-
-                                    <span class="current__price">{{ $product->base_price }}VNĐ</span>
+                                    <span
+                                        class="current__price">{{ number_format($product->base_price, 0, ',', '.') }}VNĐ</span>
                                     {{-- <span class="old__price">VNĐ</span> --}}
-
                                 </div>
                                 <div class="product__details--info__rating d-flex align-items-center mb-15">
                                     <ul class="rating product__list--rating d-flex">
@@ -227,7 +124,7 @@
                                                         <li class="variant__size--list">
                                                             <input id="attribute-{{ $value->id }}"
                                                                 name="attribute[{{ $attribute->id }}]" type="radio"
-                                                                value="{{ $value->value }}" checked>
+                                                                value="{{ $value->value }}">
                                                             @if ($attribute->name === 'Màu sắc')
                                                                 <label class="variant__size--value"
                                                                     for="attribute-{{ $value->id }}"
@@ -244,14 +141,14 @@
                                     </fieldset>
                                 </div>
                                 <div class="product__variant--list quantity d-flex align-items-center mb-20">
-                                    <div class="product__variant--list quantity d-flex align-items-center mb-20">
+                                    <div class="product__variant--list quantity">
                                         <div class="quantity__box d-flex align-items-center">
                                             <button type="button"
                                                 class="quantity__value quickview__value--quantity decrease"
                                                 aria-label="Decrease quantity">-</button>
 
                                             <label class="quantity__label">
-                                                <input type="number" id="quantity-input"
+                                                <input name="quantity" type="number" id="quantity-input"
                                                     class="quantity__number quickview__value--number" value="1"
                                                     min="1" aria-label="Quantity" />
                                             </label>
@@ -261,43 +158,40 @@
                                                 aria-label="Increase quantity">+</button>
                                         </div>
                                     </div>
-
-
-                                    <button class="quickview__cart--btn primary__btn" type="submit">Add To
-                                        Cart</button>
+                                    <button class="quickview__cart--btn primary__btn" type="submit">Thêm vào giỏ
+                                        hàng</button>
                                 </div>
-                                <div class="product__variant--list mb-15">
-                                    <a class="variant__wishlist--icon mb-15" href="wishlist.html"
-                                        title="Add to wishlist">
-                                        <svg class="quickview__variant--wishlist__svg" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 512 512">
-                                            <path
-                                                d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-95.08 96.81-1.1 109.33 86.73 187.08 183 252.42a16 16 0 0018 0c96.26-65.34 184.09-143.09 183-252.42-.54-52.67-42.32-96.81-95.08-96.81z"
-                                                fill="none" stroke="currentColor" stroke-linecap="round"
-                                                stroke-linejoin="round" stroke-width="32" />
-                                        </svg>
-                                        Add to Wishlist
-                                    </a>
-                                    <button class="variant__buy--now__btn primary__btn" type="submit">Buy it
-                                        now</button>
-                                </div>
-                                <div class="product__variant--list mb-15">
-                                    <div class="product__details--info__meta">
-                                        @foreach ($product->variants as $variant)
-                                            <p class="product__details--info__meta--list"><strong>SKU:</strong>
-                                                <span>{{ $variant->SKU }}</span>
-                                            </p>
-                                            <p class="product__details--info__meta--list"><strong>Số lượng:</strong>
-                                                <span>{{ $variant->stock }}</span>
-                                            </p>
-                                        @endforeach
+                            </form>
+                            <div class="product__variant--list mb-15">
+                                <a class="variant__wishlist--icon mb-15" href="wishlist.html" title="Add to wishlist">
+                                    <svg class="quickview__variant--wishlist__svg" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 512 512">
+                                        <path
+                                            d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-95.08 96.81-1.1 109.33 86.73 187.08 183 252.42a16 16 0 0018 0c96.26-65.34 184.09-143.09 183-252.42-.54-52.67-42.32-96.81-95.08-96.81z"
+                                            fill="none" stroke="currentColor" stroke-linecap="round"
+                                            stroke-linejoin="round" stroke-width="32" />
+                                    </svg>
+                                    Yêu thích
+                                </a>
+                                <button class="variant__buy--now__btn primary__btn" type="submit">Mua ngay</button>
+                            </div>
+                            <div class="product__variant--list mb-15">
+                                <div class="product__details--info__meta">
+                                    @foreach ($product->variants as $variant)
+                                        <p class="product__details--info__meta--list"><strong>Mã sản phẩm:</strong>
+                                            <span>{{ $variant->SKU }}</span>
+                                        </p>
+                                        <p class="product__details--info__meta--list"><strong>Số lượng:</strong>
+                                            <span>{{ $variant->stock }}</span>
+                                        </p>
+                                    @endforeach
 
 
-                                    </div>
                                 </div>
+                            </div>
                         </div>
                         <div class="quickview__social d-flex align-items-center mb-15">
-                            <label class="quickview__social--title">Social Share:</label>
+                            <label class="quickview__social--title">Chia sẻ xã hội:</label>
                             <ul class="quickview__social--wrapper mt-0 d-flex">
                                 <li class="quickview__social--list">
                                     <a class="quickview__social--icon" target="_blank" href="https://www.facebook.com/">
@@ -346,12 +240,12 @@
                             </ul>
                         </div>
                         <div class="guarantee__safe--checkout">
-                            <h5 class="guarantee__safe--checkout__title">Guaranteed Safe Checkout</h5>
-                            <img class="guarantee__safe--checkout__img" src="assets/img/other/safe-checkout.webp"
-                                alt="Payment Image">
+                            <h5 class="guarantee__safe--checkout__title">Đảm bảo thanh toán an toàn</h5>
+                            <img class="guarantee__safe--checkout__img"
+                                src="{{ asset('themes') }}/client/img/other/safe-checkout.webp" alt="Payment Image">
                         </div>
-                        </form>
                     </div>
+
                 </div>
             </div>
             </div>
@@ -362,13 +256,13 @@
                     <div class="col">
                         <ul class="product__details--tab d-flex mb-30">
                             <li class="product__details--tab__list active" data-toggle="tab" data-target="#description">
-                                Description</li>
-                            <li class="product__details--tab__list" data-toggle="tab" data-target="#reviews">Product
-                                Reviews</li>
+                                Mô tả</li>
+                            <li class="product__details--tab__list" data-toggle="tab" data-target="#reviews">Sản phẩm
+                                Đánh giá</li>
                             <li class="product__details--tab__list" data-toggle="tab" data-target="#information">
-                                Additional Info</li>
-                            <li class="product__details--tab__list" data-toggle="tab" data-target="#custom">Custom
-                                Content</li>
+                                Thông tin bổ sung</li>
+                            <li class="product__details--tab__list" data-toggle="tab" data-target="#custom">Tùy chỉnh
+                                Nội dung</li>
                         </ul>
                         <div class="product__details--tab__inner border-radius-10">
                             <div class="tab_content">
@@ -917,11 +811,6 @@
                 </div>
             </div>
         </section>
-        <!-- End product details tab section -->
-
-        <!-- Start product section -->
-
-
     </main>
     <style>
         .product__items {
