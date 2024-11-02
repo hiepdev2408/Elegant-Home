@@ -54,29 +54,24 @@ Route::group(['prefix' => 'account'], function () {
     Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
     //favorite
     Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
-<<<<<<< HEAD
-    Route::delete('/deleteFavorite/{product}', [AccountController::class, 'deleteFavorite'])->name('delete.favorite');
-=======
-    Route::delete('/deleteFavorite/{id}',[AccountController::class,'deleteFavorite'])->name('deleteFavorite');
->>>>>>> 5afeb7f6b93fdc036edcec014d50d666f55a6e44
+    Route::delete('/deleteFavorite/{id}', [AccountController::class, 'deleteFavorite'])->name('deleteFavorite');
+
 });
 
 Route::group(['prefix' => 'contact'], function () {
     Route::get('/contact', [ContactFormController::class, 'contact'])->name('contact');
     Route::post('/contact', [ContactFormController::class, 'submit'])->name('contact.submit');
 });
+Route::get('categories/{category_id}/product/{id}/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 
-<<<<<<< HEAD
-// Route::get('product/{category_slug}/{product_slug}/', [HomeController::class, 'detail'])->name('home.detail');
-=======
 Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
 Route::get('/search', [ShopController::class, 'shopFilter'])->name('shop.search');
 Route::get('/categories/{category_id}', [ShopController::class, 'shopFilter'])->name('shop.categoryProduct');
 Route::get('/filter', [ShopController::class, 'shopFilter'])->name('shop.filter');
 
->>>>>>> 5afeb7f6b93fdc036edcec014d50d666f55a6e44
 
 Route::get('productDetail/{slug}', [HomeController::class, 'detail'])->name('productDetail');
+Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
 Route::get('favorite/{id}', [HomeController::class, 'favorite'])->name('favorite');
 
