@@ -69,5 +69,6 @@ Route::get('/filter', [ShopController::class, 'shopFilter'])->name('shop.filter'
 
 
 Route::get('productDetail/{slug}', [HomeController::class, 'detail'])->name('productDetail');
+Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
 Route::get('favorite/{id}', [HomeController::class, 'favorite'])->name('favorite');
