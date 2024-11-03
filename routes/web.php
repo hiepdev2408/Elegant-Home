@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+// Route::get('/', function (){
+//     return view('client.layouts.master');
+// });
 
 Route::group(['prefix' => 'account'], function () {
 
