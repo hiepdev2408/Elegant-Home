@@ -69,7 +69,7 @@ class ProductController extends Controller
                         ]);
                     }
                 }
-                // dd($request->variants);
+
                 foreach ($request->variants as $variantData) {
                     if (!empty($variantData['sku'])) {
                         $variant = Variant::query()->create([
@@ -80,7 +80,7 @@ class ProductController extends Controller
                             'image' => Storage::put('variants', $variantData['image']),
                         ]);
                     }
-                    // dd($variant);
+                    
                     if (!empty($variantData['attributes'])) {
                         foreach ($variantData['attributes'] as $key => $value) {
                             // dd($value);
