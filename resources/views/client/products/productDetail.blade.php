@@ -370,9 +370,10 @@
                                         </div>
                                         <div id="writereview" class="reviews__comment--reply__area">
                                             @if (Auth::check())
+
                                                 <form action="{{ route('comments') }}" method="post">
                                                     @csrf
-                                                    <h3 class="reviews__comment--reply__title mb-15">Thêm bình luận </h3>
+                                                    <h3 class="reviews__comment--reply__title mb-15">Thêm Bình Luận </h3>
 
                                                     <div class="row">
                                                         <input type="hidden" name="product_id"
