@@ -209,11 +209,23 @@
                                         placeholder="Giá sản phẩm" name="base_price" />
                                     <label for="ecommerce-product-base_price">Giá sản phẩm</label>
                                 </div>
-                                {{-- <div class="form-floating form-floating-outline ">
+                                <div class="form-floating form-floating-outline ">
                                     <input type="text" class="form-control" id="ecommerce-product-base_price"
                                         placeholder="Giá sản phẩm" name="price_sale" />
                                     <label for="ecommerce-product-base_price">Giá giảm giá</label>
-                                </div> --}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Mã sản phẩm</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-floating form-floating-outline mb-4">
+                                    <input type="text" class="form-control" id="ecommerce-product-base_price"
+                                        placeholder="Mã sản phẩm" name="sku" />
+                                    <label for="ecommerce-product-base_price">Mã sản phẩm</label>
+                                </div>
                             </div>
                         </div>
                         <div class="card mb-4">

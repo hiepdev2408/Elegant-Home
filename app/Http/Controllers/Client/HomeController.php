@@ -77,7 +77,7 @@ class HomeController extends Controller
         // Trả về view với thông tin sản phẩm và sản phẩm liên quan
         return view('client.products.productDetail', compact('product', 'relatedProducts', 'attributes'));
     }
-  
+
     public function shop()
     {
         $categories = Category::with('children')->whereNull('parent_id')->get();
