@@ -38,7 +38,7 @@
                                                     class="header__mega--sub__menu--title"
                                                     href="shop-right-sidebar.html">Shop Right Sidebar</a></li>
                                             <li class="header__mega--sub__menu_li"><a
-                                                    class="header__mega--sub__menu--title" href="shop-grid.html">Shop
+                                                    class="header__mega--sub__menu--title" href="{{ route('gird') }}">Shop
                                                     Grid</a></li>
                                             <li class="header__mega--sub__menu_li"><a
                                                     class="header__mega--sub__menu--title"

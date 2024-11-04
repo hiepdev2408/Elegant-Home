@@ -62,6 +62,8 @@ Route::group(['prefix' => 'contact'], function () {
 });
 
 Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
+Route::get('/gird', [ShopController::class, 'gird'])->name('gird');
+
 Route::get('/search', [ShopController::class, 'shopFilter'])->name('shop.search');
 Route::get('/categories/{category_id}', [ShopController::class, 'shopFilter'])->name('shop.categoryProduct');
 Route::get('/filter', [ShopController::class, 'shopFilter'])->name('shop.filter');
