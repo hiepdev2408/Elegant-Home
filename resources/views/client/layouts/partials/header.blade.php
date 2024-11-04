@@ -72,7 +72,7 @@
                     </div>
 
                     <!-- User Box -->
-                    <a class="user-box flaticon-user-3" href="contact.html"></a>
+                    <a class="user-box flaticon-user-3" href="{{ route('login') }}"></a>
 
                     <!-- Like Box -->
                     <div class="like-box">

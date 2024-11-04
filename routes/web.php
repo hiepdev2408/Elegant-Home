@@ -83,3 +83,6 @@ Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index']);
     Route::post('store', [CartController::class, 'store'])->name('store');
 });
+
+// Search sản phẩm cùng danh mục
+Route::get('search/{id}', [HomeController::class, 'search'])->name('search');

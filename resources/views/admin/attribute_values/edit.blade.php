@@ -8,7 +8,7 @@
     open
 @endsection
 
-@section('menu-sub-create-attribute')
+@section('menu-sub-create-attribute_value')
     active
 @endsection
 
