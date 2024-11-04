@@ -17,6 +17,7 @@ class Product extends Model
     protected $fillable = [
         'name',
         'slug',
+        'sku',
         'base_price',
         'price_sale',
         'img_thumbnail',
@@ -50,5 +51,17 @@ class Product extends Model
     public function variants()
     {
         return $this->hasMany(Variant::class);
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
+
+    public function cartDetails(){
+        return $this->hasMany(CartDetail::class);
+    }
+
+    public function orderDetails(){
+        return $this->hasMany(OrderDetail::class);
     }
 }

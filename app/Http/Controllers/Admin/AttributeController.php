@@ -16,6 +16,6 @@ class AttributeController extends Controller
     public function __construct(
         protected Attribute $model
     ){
-
+        
     }
 }

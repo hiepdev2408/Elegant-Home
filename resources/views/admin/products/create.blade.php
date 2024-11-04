@@ -218,6 +218,18 @@
                         </div>
                         <div class="card mb-4">
                             <div class="card-header">
+                                <h5 class="card-title mb-0">Mã sản phẩm</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-floating form-floating-outline mb-4">
+                                    <input type="text" class="form-control" id="ecommerce-product-base_price"
+                                        placeholder="Mã sản phẩm" name="sku" />
+                                    <label for="ecommerce-product-base_price">Mã sản phẩm</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
                                 <h5 class="card-title mb-0">Tổ Chức</h5>
                             </div>
                             <div class="card-body">

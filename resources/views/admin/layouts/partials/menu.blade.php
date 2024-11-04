@@ -123,6 +123,26 @@
                 </li>
             </ul>
         </li>
+        
+        <li class="menu-item @yield('menu-item-attribute-values')">
+            <a class="menu-link menu-toggle">
+                <i class='menu-icon tf-icons mdi mdi-distribute-horizontal-center'></i>
+                <div data-i18n="Giá trị thuộc tính">Giá trị thuộc tính</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item @yield('menu-sub-create-attribute-values')">
+                    <a href="{{ route('attribute_values.create') }}" class="menu-link">
+                        <div data-i18n="Thêm giá trị thuộc tính">Thêm giá trị thuộc tính</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-index-attribute-values')">
+                    <a href="{{ route('attribute_values.index') }}" class="menu-link">
+                        <div data-i18n="Danh sách giá trị thuộc tính">Danh sách giá trị thuộc tính</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        
 
         <li class="menu-item @yield('menu-item-account')">
             <a href="javascript:void(0);" class="menu-link">

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AttributeController;
+
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\ContactFormController;
 use App\Helpers\Mail\ContactFormMail;
+use App\Http\Controllers\Admin\AttributeValueController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -98,9 +100,19 @@ Route::prefix('admin')
 
                 Route::get('listDestroy', [AttributeController::class, 'delete'])->name('delete');
                 // Hiển thị danh sách xóa
-
+        
                 Route::post('restore/{id}', [AttributeController::class, 'restore'])->name('restore');
                 Route::delete('forceDelete/{id}', [AttributeController::class, 'forceDelete'])->name('forceDelete');
+            });
+            Route::prefix('attribute_values')
+            ->as('attribute_values.')
+            ->group(function () {
+                Route::get('/', [AttributeValueController::class, 'index'])->name('index');
+                Route::get('create', [AttributeValueController::class, 'create'])->name('create');
+                Route::post('store', [AttributeValueController::class, 'store'])->name('store');
+                Route::get('edit/{id}', [AttributeValueController::class, 'edit'])->name('edit');
+                Route::put('update/{id}', [AttributeValueController::class, 'update'])->name('update');
+                Route::delete('destroy/{id}', [AttributeValueController::class, 'destroy'])->name('destroy');
             });
 
         // Contact
