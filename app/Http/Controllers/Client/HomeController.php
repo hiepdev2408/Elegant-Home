@@ -76,10 +76,20 @@ class HomeController extends Controller
     }
 
 
+<<<<<<< HEAD
 
+=======
+    public function shop()
+    {
+        $categories = Category::with('children')->whereNull('parent_id')->get();
+
+        return view('client.shops.listProduct' , compact('categories'));
+    }
+
+
+>>>>>>> a958f7c86f3f3e9c182909c0ef0e7b6459cdaeb0
     public function favorite($product_id)
     {
-        $user_id = Auth::id();
         $use_id = Auth::id();
         $data = [
             'product_id' => $product_id,
