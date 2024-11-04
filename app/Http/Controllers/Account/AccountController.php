@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use App\Helpers\Mail\VerifyAccount;
 use App\Models\favorite;
+use App\Models\Favourite;
 use App\Models\User;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -151,7 +152,7 @@ class AccountController extends Controller
     {
 
         $user_id = Auth::id();
-        $favorite = favorite::where('id', $id)
+        $favorite = Favourite::where('id', $id)
             ->where('user_id', $user_id)
             ->first();
 
