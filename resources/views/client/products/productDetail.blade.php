@@ -146,7 +146,6 @@
                                 </div>
                                 <p class="product__details--info__desc mb-20">{!! $product->content !!}</p>
                                 <div class="product__variant">
-
                                     @php
                                         // Khởi tạo để chứ dữ liệu của attribute->name và attribute_value->value
                                         // Mục dích ở đây là mình sẽ đưa dữ liệu của attibute->name là key
