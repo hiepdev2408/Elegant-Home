@@ -48,30 +48,30 @@ class AccountController extends Controller
     }
     public function check_register(Request $request)
     {
-        $request->validate([
-            'name' => 'required|min:6|max:100',
-            'email' => 'required|email|unique:users',
-            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
-            'address' => 'required|string',
-            'password' => 'required|min:6|',
-            'config_password' => 'required|same:password',
+        // $request->validate([
+        //     'name' => 'required|min:6|max:100',
+        //     'email' => 'required|email|unique:users',
+        //     'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
+        //     'address' => 'required|string',
+        //     'password' => 'required|min:6|',
+        //     'config_password' => 'required|same:password',
 
-        ], [
-            'name.required' => 'Họ và tên chưa nhập',
-            'name.min' => 'Họ và tên cần trên 6 ký tự',
-            'name.max' => 'Họ và tên không quá trên 100 ký tự',
-            'email.required' => 'email chưa nhập',
-            'email.email' => 'email không đúng định dạng',
-            'phone.required' => 'Số điện thoại chưa nhập',
-            'phone.regex' => 'Số điện thoại không đúng định dạng',
-            'address.required' => 'Địa chỉ chưa nhập',
-            'address.string' => 'Địa chỉ không đúng định dạng',
-            'password.required' => 'Mật khẩu chưa nhập',
-            'password.min' => 'Họ và tên cần trên 6 ký tự',
-            'config_password.required' => 'Xác nhận mật khẩu chưa nhập',
-            'config_password.same' => 'Xác nhận mật khẩu phải trùng với mật khẩu bên trên',
+        // ], [
+        //     'name.required' => 'Họ và tên chưa nhập',
+        //     'name.min' => 'Họ và tên cần trên 6 ký tự',
+        //     'name.max' => 'Họ và tên không quá trên 100 ký tự',
+        //     'email.required' => 'email chưa nhập',
+        //     'email.email' => 'email không đúng định dạng',
+        //     'phone.required' => 'Số điện thoại chưa nhập',
+        //     'phone.regex' => 'Số điện thoại không đúng định dạng',
+        //     'address.required' => 'Địa chỉ chưa nhập',
+        //     'address.string' => 'Địa chỉ không đúng định dạng',
+        //     'password.required' => 'Mật khẩu chưa nhập',
+        //     'password.min' => 'Họ và tên cần trên 6 ký tự',
+        //     'config_password.required' => 'Xác nhận mật khẩu chưa nhập',
+        //     'config_password.same' => 'Xác nhận mật khẩu phải trùng với mật khẩu bên trên',
 
-        ]);
+        // ]);
         $user = $request->only(['name', 'email', 'phone', 'address']);
         $user['password'] = bcrypt($request->password);
         if ($acc = User::create($user)) {

@@ -14,7 +14,8 @@
                 </div>
 
                 <!-- Logo -->
-                <div class="logo"><a href="index.html"><img src="{{ asset('themes/clients/images/logo.png') }}" alt="" title=""></a></div>
+                <div class="logo"><a href="index.html"><img src="{{ asset('themes/clients/images/logo.png') }}"
+                            alt="" title=""></a></div>
             </div>
             <div class="nav-outer clearfix">
 
@@ -50,7 +51,7 @@
                                     <li><a href="not-found.html">Not Found</a></li>
                                 </ul>
                             </li>
-                            <li><a href="contact.html">Contact us</a></li>
+                            <li><a href="{{ route('contact') }}">Contact us</a></li>
                         </ul>
                     </div>
 
@@ -72,7 +73,11 @@
                     </div>
 
                     <!-- User Box -->
-                    <a class="user-box flaticon-user-3" href="{{ route('login') }}"></a>
+                    @if (Auth::check())
+                        <li><a href="contact.html">{{ Auth::user()->name }}</a></li>
+                    @else
+                        <a class="user-box flaticon-user-3" href="{{ route('login') }}"></a>
+                    @endif
 
                     <!-- Like Box -->
                     <div class="like-box">
@@ -113,7 +118,8 @@
         <div class="d-flex justify-content-between align-items-center">
             <!-- Logo -->
             <div class="logo">
-                <a href="index.html" title=""><img src="{{ asset('themes/clients/images/logo-small.png') }}" alt="" title=""></a>
+                <a href="index.html" title=""><img src="{{ asset('themes/clients/images/logo-small.png') }}"
+                        alt="" title=""></a>
             </div>
 
             <!-- Right Col -->
@@ -138,7 +144,8 @@
     <div class="menu-backdrop"></div>
     <div class="close-btn"><span class="icon flaticon-multiply"></span></div>
     <nav class="menu-box">
-        <div class="nav-logo"><a href="index.html"><img src="{{ asset('themes/clients/images/mobile-logo.png') }}" alt="" title=""></a>
+        <div class="nav-logo"><a href="index.html"><img src="{{ asset('themes/clients/images/mobile-logo.png') }}"
+                    alt="" title=""></a>
         </div>
         <!-- Search -->
         <div class="search-box">
@@ -150,6 +157,7 @@
             </form>
         </div>
         <div class="menu-outer">
-            <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header--></div>
+            <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
+        </div>
     </nav>
 </div>

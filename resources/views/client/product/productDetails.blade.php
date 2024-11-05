@@ -69,8 +69,10 @@
                                     <i>(4 customer review)</i>
                                 </div>
                                 <!-- Price -->
-                                <div class="price">{{ number_format($product->price_sale) ?? 0, 0, ',', '.' }}VNĐ
-                                    <span>{{ number_format($product->base_price) ?? 0, 0, ',', '.' }}VNĐ</span> <i>-34%</i>
+                                <div class="price">
+                                    {{ number_format($product->price_sale ?? 0, 0, ',', '.') }} VNĐ
+                                    <span>{{ number_format($product->base_price ?? 0, 0, ',', '.') }} VNĐ</span>
+                                    <i>-34%</i>
                                 </div>
                                 <div class="text">{{ $product->description }}</div>
                                 <div class="d-flex flex-wrap">
@@ -247,83 +249,94 @@
                                 </div>
 
                                 <!--Tab-->
-                                <div class="tab" id="prod-review">
-                                    <h2 class="">Bình luận</h2>
+                                <div class="tab p-2" id="prod-review">
+                                    <h1 class="">Bình luận</h1>
                                     <!--Reviews Container-->
-                                    <div class="comments-area">
+                                    <div class="comments-area p-3">
                                         <!--Comment Box-->
                                         <!-- Bình luận cấp 1 -->
-                                        @if ($product->comments())
+                                        @if ($product->comments->count() == 0)
+                                            <p>Không có bình luận nào</p>
+                                        @else
                                             @foreach ($product->comments->where('parent_id', null) as $comment)
-                                                <div class=" mt-3 mb-3">
+                                                <div class="mb-3 p-4">
                                                     <div class="card-body">
                                                         <div class="d-flex">
-
-                                                            @if ($comment->user->img_thumbnail)
-                                                                <img src="{{ $comment->user->img_thumbnail }}"
-                                                                    class="rounded-circle me-3" alt="User Avatar">
-                                                            @else
-                                                                <img src="{{ asset('themes/image/logo.jpg') }}"
-                                                                    class="rounded-circle me-3" alt="User Avatar">
-                                                            @endif
                                                             <div>
-                                                                <h5 class="mb-1"> {{ $comment->user->name }}</h5>
-                                                                <small
-                                                                    class="text-muted">{{ $comment->created_at->format('d-m-Y') }}</small>
-                                                                <p class="mt-2">{!! $comment->comment !!}</p>
-                                                                <!-- Nút trả lời -->
-                                                                <button class="btn btn-sm btn-outline-primary reply-btn"
-                                                                    type="button">Trả lời</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    @if ($comment->replies)
-                                                        <!-- Hiển thị các phản hồi -->
-                                                        @foreach ($comment->replies as $reply)
-                                                            <!-- Bình luận cấp 2 (trả lời) -->
-                                                            <div class="card-body ps-5">
-                                                                <div class="d-flex mb-3">
+                                                                <h4 class="mb-1">
                                                                     @if ($comment->user->img_thumbnail)
-                                                                        <img src="{{ $comment->user->img_thumbnail }}"
-                                                                            class="rounded-circle me-3" alt="User Avatar">
+                                                                        <img src="{{ Storage::url($comment->user->img_thumbnail) }}"
+                                                                            class="rounded-circle me-3" alt="User Avatar"
+                                                                            width="50">
                                                                     @else
                                                                         <img src="{{ asset('themes/image/logo.jpg') }}"
-                                                                            class="rounded-circle me-3" alt="User Avatar">
+                                                                            class="rounded-circle me-3" alt="User Avatar"
+                                                                            width="50">
                                                                     @endif
-                                                                    <div>
-                                                                        <h5 class="mb-1"> {{ $comment->user->name }}
-                                                                        </h5>
-                                                                        <small
-                                                                            class="text-muted">{{ $comment->created_at->format('d-m-Y') }}</small>
-                                                                        <p class="mt-2">{!! $comment->comment !!}</p>
-                                                                        <!-- Nút trả lời -->
+                                                                    {{ $comment->user->name }}
+                                                                </h4>
+                                                                <small
+                                                                    class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                                                                <p class="mt-2">{{ $comment->comment }}</p>
+                                                                <!-- Nút trả lời -->
+                                                                <button class="btn btn-sm btn-outline-primary reply-btn"
+                                                                    type="button" data-id="{{ $comment->id }}">Trả
+                                                                    lời</button>
 
-                                                                    </div>
-                                                                </div>
-                                                                <!-- Thêm bình luận trả lời cấp 2 khác tại đây nếu cần -->
                                                             </div>
-                                                        @endforeach
-                                                    @endif
-                                                    <!-- Bình luận cấp 2 (trả lời) -->
-                                                    <div class="card-body ps-5">
-                                                        <div class="d-flex mb-3">
-                                                            <img src="https://via.placeholder.com/50"
-                                                                class="rounded-circle me-3" alt="User Avatar">
-                                                            <div>
-                                                                <h6 class="mb-1">Tên người dùng</h6>
-                                                                <small class="text-muted">1 giờ trước</small>
-                                                                <p class="mt-2">Đây là nội dung bình luận trả lời.</p>
-                                                            </div>
+
                                                         </div>
-                                                        <!-- Thêm bình luận trả lời cấp 2 khác tại đây nếu cần -->
+                                                        <hr>
                                                     </div>
+                                                    <!-- Bình luận cấp 2 (trả lời) -->
+                                                    @foreach ($comment->replies as $reply)
+                                                        <div class="card-body ps-5 mt-3">
+                                                            <div class="d-flex mb-4">
+
+                                                                <div>
+                                                                    <h5 class="mb-1">
+                                                                        @if ($reply->user->img_thumbnail)
+                                                                            <img src="{{ Storage::url($reply->user->img_thumbnail) }}"
+                                                                                class="rounded-circle me-3"
+                                                                                alt="User Avatar" width="50">
+                                                                        @else
+                                                                            <img src="{{ asset('themes/image/logo.jpg') }}"
+                                                                                class="rounded-circle me-3"
+                                                                                alt="User Avatar" width="50">
+                                                                        @endif
+                                                                        {{ $reply->user->name }}
+                                                                    </h5>
+                                                                    <small
+                                                                        class="text-muted">{{ $reply->created_at->diffForHumans() }}</small>
+                                                                    <p class="mt-2">{{ $reply->comment }}</p>
+                                                                    <button
+                                                                        class="btn btn-sm btn-outline-primary reply-btn"
+                                                                        type="button" data-id="{{ $comment->id }}">Trả
+                                                                        lời</button>
+                                                                </div>
+
+                                                            </div>
+                                                            <hr>
+                                                        </div>
+                                                    @endforeach
 
                                                     <!-- Khu vực nhập bình luận trả lời -->
-                                                    <div class="card-body ps-5 d-none reply-form">
-                                                        <input type="text" class="form-control mb-2"
-                                                            placeholder="Nhập câu trả lời...">
-                                                        <button class="btn btn-primary btn-sm">Gửi</button>
-                                                        <button class="btn btn-secondary btn-sm cancel-btn">Hủy</button>
+                                                    <div class="card-body ps-5 d-none reply-form"
+                                                        id="reply-form-{{ $comment->id }}">
+                                                        <form action="{{ route('comments', $comment->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="product_id"
+                                                                value="{{ $product->id }}">
+                                                            <input type="hidden" name="parent_id"
+                                                                value="{{ $comment->id }}">
+                                                            <div class="mb-2">
+                                                                <textarea class="form-control" name="comment" rows="2" placeholder="Nhập câu trả lời..."></textarea>
+                                                            </div>
+                                                            <button class="btn btn-primary btn-sm">Gửi</button>
+                                                            <button type="button"
+                                                                class="btn btn-secondary btn-sm cancel-btn">Hủy</button>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             @endforeach
@@ -331,32 +344,33 @@
 
 
 
+
                                     </div>
 
                                     <!-- Comment Form -->
-                                    {{-- @if (Auth::check()) --}}
-                                    <div class="shop-comment-form">
-                                        <form action="{{ route('comments') }}" method="post">
-                                            @csrf
-                                            <h3 class="reviews__comment--reply__title mb-15">Thêm Bình Luận </h3>
+                                    @if (Auth::check())
+                                        <div class="shop-comment-form">
+                                            <form action="{{ route('comments') }}" method="post">
+                                                @csrf
+                                                <h2 class="reviews__comment--reply__title mb-15">Thêm Bình Luận </h2>
 
-                                            <div class="row">
-                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
-                                                    <label>Bình luận của bạn*</label>
-                                                    <textarea name="comment" placeholder=""></textarea>
+                                                <div class="row">
+                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                                                        <textarea class="form-control" style="height: 200px;" name="comment" placeholder="Nhập câu trả lời..."></textarea>
+
+                                                    </div>
+
                                                 </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                                                    <button class="btn btn-primary p-3">
+                                                        Gửi
+                                                    </button>
 
-                                            </div>
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
-                                                <button class="btn btn-primary">
-                                                    Gửi
-                                                </button>
-
-                                            </div>
-                                        </form>
-                                    </div>
-                                    {{-- @endif --}}
+                                                </div>
+                                            </form>
+                                        </div>
+                                    @endif
 
 
                                 </div>
@@ -712,14 +726,13 @@
 @endsection
 @section('script')
     <script>
-        // Khi nhấn nút "Trả lời", hiện form trả lời
         document.querySelectorAll('.reply-btn').forEach(button => {
             button.addEventListener('click', function() {
-                this.closest('.card').querySelector('.reply-form').classList.toggle('d-none');
+                let replyForm = document.getElementById('reply-form-' + this.dataset.id);
+                replyForm.classList.toggle('d-none');
             });
         });
 
-        // Khi nhấn nút "Hủy", ẩn form trả lời
         document.querySelectorAll('.cancel-btn').forEach(button => {
             button.addEventListener('click', function() {
                 this.closest('.reply-form').classList.add('d-none');

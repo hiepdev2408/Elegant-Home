@@ -288,8 +288,8 @@
                                 <h6><a href="shop-detail.html">{{ Str::limit($product->name, 30) }}</a></h6>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="price">
-                                        <span>{{ number_format($product->base_price) ?? 0, 0, ',', '.' }}VNĐ</span>
-                                        {{ number_format($product->price_sale) ?? 0, 0, ',', '.' }}VNĐ
+                                        <span>{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                        {{ number_format($product->price_sale ?? 0, 0, ',', '.' )}}VNĐ
                                     </div>
                                 </div>
                             </div>
@@ -909,8 +909,8 @@
                                     </h6>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="price">
-                                            <span>{{ number_format($product->base_price) ?? 0, 0, ',', '.' }}VNĐ</span>
-                                            {{ number_format($product->price_sale) ?? 0, 0, ',', '.' }}VNĐ
+                                            <span>{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                            {{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ
                                         </div>
                                     </div>
                                 </div>
