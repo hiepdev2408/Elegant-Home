@@ -72,7 +72,11 @@
                     </div>
 
                     <!-- User Box -->
+                    @if (Auth::check())
+                        <li><a href="contact.html">{{ Auth::user()->name }}</a></li>
+                    @else
                     <a class="user-box flaticon-user-3" href="{{ route('login') }}"></a>
+                    @endif
 
                     <!-- Like Box -->
                     <div class="like-box">
