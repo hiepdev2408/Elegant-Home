@@ -26,7 +26,7 @@
 
         @include('client.layouts.partials.extra')
 
-        <div class="container">
+        <div class="container-fluid">
             @yield('content')
         </div>
 

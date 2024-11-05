@@ -71,7 +71,7 @@ class HomeController extends Controller
         $attributes = Attribute::with('values')->get();
 
         // Trả về view với thông tin sản phẩm và sản phẩm liên quan
-        return view('client.products.productDetail', compact('product', 'relatedProducts', 'attributes'));
+        return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes'));
     }
 
     public function shop()
