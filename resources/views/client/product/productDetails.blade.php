@@ -137,9 +137,10 @@
 
 
                                 <!-- Categories -->
-                                <div class="categories"><span>Danh mục :</span> @foreach ($product->categories as $category)
-                                    {{ $category->name }}
-                                @endforeach
+                                <div class="categories"><span>Danh mục :</span>
+                                    @foreach ($product->categories as $category)
+                                        {{ $category->name }}
+                                    @endforeach
                                 </div>
 
                                 <!-- Tags -->
@@ -247,115 +248,116 @@
 
                                 <!--Tab-->
                                 <div class="tab" id="prod-review">
-                                    <h2 class="title">2 Reviews For win Your Friends</h2>
+                                    <h2 class="">Bình luận</h2>
                                     <!--Reviews Container-->
                                     <div class="comments-area">
                                         <!--Comment Box-->
-                                        <div class="comment-box">
-                                            <div class="comment">
-                                                <div class="author-thumb"><img src="images/resource/author-1.jpg"
-                                                        alt=""></div>
-                                                <div class="comment-inner">
-                                                    <div class="comment-info clearfix">Steven Rich – March 17, 2022:</div>
-                                                    <div class="rating">
-                                                        <span class="fa fa-star"></span>
-                                                        <span class="fa fa-star"></span>
-                                                        <span class="fa fa-star"></span>
-                                                        <span class="fa fa-star"></span>
-                                                        <span class="fa fa-star light"></span>
+                                        <!-- Bình luận cấp 1 -->
+                                        @if ($product->comments())
+                                            @foreach ($product->comments->where('parent_id', null) as $comment)
+                                                <div class=" mt-3 mb-3">
+                                                    <div class="card-body">
+                                                        <div class="d-flex">
+
+                                                            @if ($comment->user->img_thumbnail)
+                                                                <img src="{{ $comment->user->img_thumbnail }}"
+                                                                    class="rounded-circle me-3" alt="User Avatar">
+                                                            @else
+                                                                <img src="{{ asset('themes/image/logo.jpg') }}"
+                                                                    class="rounded-circle me-3" alt="User Avatar">
+                                                            @endif
+                                                            <div>
+                                                                <h5 class="mb-1"> {{ $comment->user->name }}</h5>
+                                                                <small
+                                                                    class="text-muted">{{ $comment->created_at->format('d-m-Y') }}</small>
+                                                                <p class="mt-2">{!! $comment->comment !!}</p>
+                                                                <!-- Nút trả lời -->
+                                                                <button class="btn btn-sm btn-outline-primary reply-btn"
+                                                                    type="button">Trả lời</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="text">How all this mistaken idea of denouncing pleasure
-                                                        and praising pain was born and I will give you a complete account of
-                                                        the system, and expound the actual teachings.</div>
+                                                    @if ($comment->replies)
+                                                        <!-- Hiển thị các phản hồi -->
+                                                        @foreach ($comment->replies as $reply)
+                                                            <!-- Bình luận cấp 2 (trả lời) -->
+                                                            <div class="card-body ps-5">
+                                                                <div class="d-flex mb-3">
+                                                                    @if ($comment->user->img_thumbnail)
+                                                                        <img src="{{ $comment->user->img_thumbnail }}"
+                                                                            class="rounded-circle me-3" alt="User Avatar">
+                                                                    @else
+                                                                        <img src="{{ asset('themes/image/logo.jpg') }}"
+                                                                            class="rounded-circle me-3" alt="User Avatar">
+                                                                    @endif
+                                                                    <div>
+                                                                        <h5 class="mb-1"> {{ $comment->user->name }}
+                                                                        </h5>
+                                                                        <small
+                                                                            class="text-muted">{{ $comment->created_at->format('d-m-Y') }}</small>
+                                                                        <p class="mt-2">{!! $comment->comment !!}</p>
+                                                                        <!-- Nút trả lời -->
+
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Thêm bình luận trả lời cấp 2 khác tại đây nếu cần -->
+                                                            </div>
+                                                        @endforeach
+                                                    @endif
+                                                    <!-- Bình luận cấp 2 (trả lời) -->
+                                                    <div class="card-body ps-5">
+                                                        <div class="d-flex mb-3">
+                                                            <img src="https://via.placeholder.com/50"
+                                                                class="rounded-circle me-3" alt="User Avatar">
+                                                            <div>
+                                                                <h6 class="mb-1">Tên người dùng</h6>
+                                                                <small class="text-muted">1 giờ trước</small>
+                                                                <p class="mt-2">Đây là nội dung bình luận trả lời.</p>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Thêm bình luận trả lời cấp 2 khác tại đây nếu cần -->
+                                                    </div>
+
+                                                    <!-- Khu vực nhập bình luận trả lời -->
+                                                    <div class="card-body ps-5 d-none reply-form">
+                                                        <input type="text" class="form-control mb-2"
+                                                            placeholder="Nhập câu trả lời...">
+                                                        <button class="btn btn-primary btn-sm">Gửi</button>
+                                                        <button class="btn btn-secondary btn-sm cancel-btn">Hủy</button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <!--Comment Box-->
-                                        <div class="comment-box reply-comment">
-                                            <div class="comment">
-                                                <div class="author-thumb"><img src="images/resource/author-2.jpg"
-                                                        alt=""></div>
-                                                <div class="comment-inner">
-                                                    <div class="comment-info clearfix">William Cobus – April 21, 2022:
-                                                    </div>
-                                                    <div class="rating">
-                                                        <span class="fa fa-star"></span>
-                                                        <span class="fa fa-star"></span>
-                                                        <span class="fa fa-star"></span>
-                                                        <span class="fa fa-star"></span>
-                                                        <span class="fa fa-star-half-empty"></span>
-                                                    </div>
-                                                    <div class="text">There anyone who loves or pursues or desires to
-                                                        obtain pain itself, because it is pain sed, because occasionally
-                                                        circumstances occur some great pleasure.</div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            @endforeach
+                                        @endif
+
+
 
                                     </div>
 
                                     <!-- Comment Form -->
+                                    {{-- @if (Auth::check()) --}}
                                     <div class="shop-comment-form">
-                                        <h4>Add Your Comments</h4>
-                                        <div class="rating-box">
-                                            <div class="text"> Your Rating:</div>
-                                            <div class="rating">
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                            </div>
-                                            <div class="rating">
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                            </div>
-                                            <div class="rating">
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                            </div>
-                                            <div class="rating">
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                            </div>
-                                            <div class="rating">
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                            </div>
-                                        </div>
-                                        <form method="post" action="https://html.themexriver.com/bloxic/contact.html">
-                                            <div class="row clearfix">
-                                                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                                                    <label>First Name *</label>
-                                                    <input type="text" name="username" placeholder="" required>
-                                                </div>
+                                        <form action="{{ route('comments') }}" method="post">
+                                            @csrf
+                                            <h3 class="reviews__comment--reply__title mb-15">Thêm Bình Luận </h3>
 
-                                                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                                                    <label>Last Name*</label>
-                                                    <input type="email" name="email" placeholder="" required>
-                                                </div>
-                                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                                    <label>Email*</label>
-                                                    <input type="text" name="number" placeholder="" required>
-                                                </div>
+                                            <div class="row">
+                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
-                                                    <label>Your Comments*</label>
-                                                    <textarea name="message" placeholder=""></textarea>
+                                                    <label>Bình luận của bạn*</label>
+                                                    <textarea name="comment" placeholder=""></textarea>
                                                 </div>
 
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
-                                                    <button class="theme-btn btn-style-four">
-                                                        Submit now
-                                                    </button>
-
-                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                                                <button class="btn btn-primary">
+                                                    Gửi
+                                                </button>
 
                                             </div>
                                         </form>
-
                                     </div>
+                                    {{-- @endif --}}
+
 
                                 </div>
 
@@ -707,4 +709,21 @@
             </div>
         </form>
     </div>
+@endsection
+@section('script')
+    <script>
+        // Khi nhấn nút "Trả lời", hiện form trả lời
+        document.querySelectorAll('.reply-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                this.closest('.card').querySelector('.reply-form').classList.toggle('d-none');
+            });
+        });
+
+        // Khi nhấn nút "Hủy", ẩn form trả lời
+        document.querySelectorAll('.cancel-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                this.closest('.reply-form').classList.add('d-none');
+            });
+        });
+    </script>
 @endsection
