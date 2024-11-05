@@ -1,180 +1,179 @@
 @extends('client.layouts.master')
+@section('title')
+    {{ $product->name }}
+@endsection
 @section('content')
     <div class="page-wrapper">
-        <section class="page-title">
-            <div class="auto-container">
-                <h2>Shop Detail</h2>
-                <ul class="bread-crumb clearfix">
-                    <li><a href="{{ route('home') }}">Home</a></li>
-                    <li>Pages</li>
-                    <li>Shop Details</li>
-                </ul>
-            </div>
-        </section>
-
         <!-- Shop Detail Section -->
         <section class="shop-detail-section">
             <div class="auto-container">
                 <!-- Upper Box -->
-                <div class="upper-box">
-                    <div class="row clearfix">
-                        <!-- Gallery Column -->
-                        <div class="gallery-column col-lg-6 col-md-12 col-sm-12">
-                            <div class="inner-column">
-                                <div class="carousel-outer">
-                                    <!-- Swiper -->
-                                    <div class="swiper-container content-carousel">
-                                        <div class="swiper-wrapper">
-                                            @foreach ($product->galleries as $gallery)
-                                                @if ($gallery->img_path)
-                                                    <div class="swiper-slide">
-                                                        <figure class="image"><a
-                                                                href="{{ Storage::url($gallery->img_path) }}"
-                                                                class="lightbox-image"><img
-                                                                    src="{{ Storage::url($gallery->img_path) }}"
-                                                                    alt=""></a></figure>
-                                                    </div>
-                                                @endif
-                                            @endforeach
+                <form action="{{ route('store') }}" method="post" id="addToCartForm">
+                    @csrf
+                    <div class="upper-box">
+                        <div class="row clearfix">
+                            <!-- Gallery Column -->
+                            <div class="gallery-column col-lg-6 col-md-12 col-sm-12">
+                                <div class="inner-column">
+                                    <div class="carousel-outer">
+                                        <!-- Swiper -->
+                                        <div class="swiper-container content-carousel">
+                                            <div class="swiper-wrapper">
+                                                @foreach ($product->galleries as $gallery)
+                                                    @if ($gallery->img_path)
+                                                        <div class="swiper-slide">
+                                                            <figure class="image">
+                                                                <a href="{{ Storage::url($gallery->img_path) }}"
+                                                                    class="lightbox-image">
+                                                                    <img src="{{ Storage::url($gallery->img_path) }}"
+                                                                        alt="">
+                                                                </a>
+                                                            </figure>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="swiper-container thumbs-carousel">
-                                        <div class="swiper-wrapper">
-                                            @foreach ($product->galleries as $gallery)
-                                                @if ($gallery->img_path)
-                                                    <div class="swiper-slide">
-                                                        <figure class="thumb"><img
-                                                                src="{{ Storage::url($gallery->img_path) }}"
-                                                                style="height: 100px" alt=""></figure>
-                                                    </div>
-                                                @endif
-                                            @endforeach
+                                        <div class="swiper-container thumbs-carousel">
+                                            <div class="swiper-wrapper">
+                                                @foreach ($product->galleries as $gallery)
+                                                    @if ($gallery->img_path)
+                                                        <div class="swiper-slide mb-5">
+                                                            <figure class="thumb"><img
+                                                                    src="{{ Storage::url($gallery->img_path) }}"
+                                                                    style="height: 100px" alt=""></figure>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Content Column -->
-                        <div class="content-column col-lg-6 col-md-12 col-sm-12">
-                            <div class="inner-column">
-                                <h3>{{ $product->name }}</h3>
-                                <!-- Rating -->
-                                <div class="rating">
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="light fa fa-star"></span>
-                                    <i>(4 customer review)</i>
-                                </div>
-                                <!-- Price -->
-                                <div class="price">{{ number_format($product->price_sale) ?? 0, 0, ',', '.' }}VNĐ
-                                    <span>{{ number_format($product->base_price) ?? 0, 0, ',', '.' }}VNĐ</span> <i>-34%</i>
-                                </div>
-                                <div class="text">{{ $product->description }}</div>
-                                <div class="d-flex flex-wrap">
-                                    @php
-                                        // Khởi tạo mảng để lưu trữ các nhóm thuộc tính và giá trị của chúng
-                                        // Mục đích ở đây là muốn chuyển attribute thành key và attribute_value thành value
-                                        // Hoặc có thể hiểu nó sẽ đưa về kiểu [1][0];
-                                        $groupAttribute = [];
-                                    @endphp
-
-                                    <!-- Nhóm các giá trị thuộc tính lại với nhau -->
-                                    @foreach ($product->variants as $variant)
-                                        @foreach ($variant->attributes as $attribute)
-                                            @php
-                                                // Lấy tên và giá trị của thuộc tính
-                                                $attributeName = $attribute->attribute->name;
-                                                $attributeValue = $attribute->attributeValue->value;
-
-                                                // Kiểm tra nếu $attributeName đã tồn tại trong mảng chưa
-                                                if (!isset($groupAttribute[$attributeName])) {
-                                                    $groupAttribute[$attributeName] = [];
-                                                }
-
-                                                // Kiểm tra sự tồn tại: Sử dụng if (!isset($groupAttribute[$attributeName]))
-                                                // để kiểm tra nếu attributeName đã có trong mảng $groupAttribute chưa.
-                                                // Nếu chưa có, thì tạo một mảng mới cho nó.
-
-                                                // Nếu $attributeValue chưa có trong danh sách của $attributeName thì thêm vào
-                                                if (!in_array($attributeValue, $groupAttribute[$attributeName])) {
-                                                    $groupAttribute[$attributeName][] = $attributeValue;
-                                                }
-
-                                                // Loại bỏ trùng lặp: Kiểm tra nếu attributeValue chưa có trong danh sách giá trị của attributeName,
-                                                //thì thêm vào.
-
-                                            @endphp
-                                        @endforeach
-                                    @endforeach
-
-                                    <!-- Hiển thị các nhóm thuộc tính và các giá trị của chúng -->
-                                    <div class="d-flex flex-wrap attribute-container">
-                                        @foreach ($groupAttribute as $attributeName => $values)
-                                            <div class="attribute-group">
-                                                <div class="model mb-2">
-                                                    <span class="model-title">{{ $attributeName }}</span>
-                                                </div>
-                                                <div class="select-size-box d-flex flex-wrap">
-                                                    @foreach ($values as $index => $value)
-                                                        <div class="select-box me-3">
-                                                            <input type="radio" name="{{ $attributeName }}"
-                                                                id="{{ Str::slug($attributeName . '-' . $value) }}"
-                                                                value="{{ $value }}"
-                                                                {{ $loop->first ? 'checked' : '' }}>
-                                                            <label
-                                                                for="{{ Str::slug($attributeName . '-' . $value) }}">{{ $value }}</label>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        @endforeach
+                            <!-- Content Column -->
+                            <div class="content-column col-lg-6 col-md-12 col-sm-12">
+                                <div class="inner-column">
+                                    <h3>{{ $product->name }}</h3>
+                                    <!-- Rating -->
+                                    <div class="rating">
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="light fa fa-star"></span>
+                                        <i>(4 customer review)</i>
                                     </div>
-
-                                </div>
-
-
-                                <!-- Categories -->
-                                <div class="categories"><span>Danh mục :</span> @foreach ($product->categories as $category)
-                                    {{ $category->name }}
-                                @endforeach
-                                </div>
-
-                                <!-- Tags -->
-                                <div class="sku"><span>Mã sản phẩm :</span> {{ $product->sku }}</div>
-
-                                <!-- Social Box -->
-                                <ul class="social-box">
-                                    <li class="share">Share:</li>
-                                    <li><a href="https://www.facebook.com/" class="fa fa-facebook-f"></a></li>
-                                    <li><a href="https://www.twitter.com/" class="fa fa-twitter"></a></li>
-                                    <li><a href="https://dribbble.com/" class="fa fa-dribbble"></a></li>
-                                    <li><a href="https://www.linkedin.com/" class="fa fa-linkedin"></a></li>
-                                </ul>
-
-                                <div class="d-flex align-items-center flex-wrap">
-
-                                    <!-- Button Box -->
-                                    <div class="button-box">
-                                        <a href="shop.html" class="theme-btn btn-style-one">
-                                            Add to cart
-                                        </a>
+                                    <!-- Price -->
+                                    <div class="price">{{ number_format($product->price_sale, 0, ',', '.') }} VNĐ
+                                        <span>{{ number_format($product->base_price, 0, ',', '.') }}VNĐ</span>
                                     </div>
+                                    <div class="text">{{ $product->description }}</div>
 
-                                    <!-- Quantity Box -->
-                                    <div class="quantity-box">
-                                        <div class="item-quantity">
-                                            <input class="qty-spinner" type="text" value="1" name="quantity">
+                                    <div class="d-flex flex-wrap">
+                                        @php
+                                            // Khởi tạo mảng để lưu trữ các nhóm thuộc tính và giá trị của chúng
+                                            // Mục đích ở đây là muốn chuyển attribute thành key và attribute_value thành value
+                                            // Hoặc có thể hiểu nó sẽ đưa về kiểu [1][0];
+                                            $groupAttribute = [];
+                                        @endphp
+
+                                        <!-- Nhóm các giá trị thuộc tính lại với nhau -->
+                                        @foreach ($product->variants as $variant)
+                                            @foreach ($variant->attributes as $attribute)
+                                                @php
+                                                    // Lấy tên và giá trị của thuộc tính
+                                                    $attributeName = $attribute->attribute->name;
+                                                    $attributeValue = $attribute->attributeValue->value;
+
+                                                    // Kiểm tra nếu $attributeName đã tồn tại trong mảng chưa
+                                                    if (!isset($groupAttribute[$attributeName])) {
+                                                        $groupAttribute[$attributeName] = [];
+                                                    }
+
+                                                    // Kiểm tra sự tồn tại: Sử dụng if (!isset($groupAttribute[$attributeName]))
+                                                    // để kiểm tra nếu attributeName đã có trong mảng $groupAttribute chưa.
+                                                    // Nếu chưa có, thì tạo một mảng mới cho nó.
+
+                                                    // Nếu $attributeValue chưa có trong danh sách của $attributeName thì thêm vào
+                                                    if (!in_array($attributeValue, $groupAttribute[$attributeName])) {
+                                                        $groupAttribute[$attributeName][] = $attributeValue;
+                                                    }
+
+                                                    // Loại bỏ trùng lặp: Kiểm tra nếu attributeValue chưa có trong danh sách giá trị của attributeName,
+                                                    //thì thêm vào.
+
+                                                @endphp
+                                            @endforeach
+                                        @endforeach
+
+                                        <!-- Hiển thị các nhóm thuộc tính và các giá trị của chúng -->
+                                        <div class="d-grid flex-wrap attribute-container">
+                                            @foreach ($groupAttribute as $attributeName => $values)
+                                                <div class="attribute-group">
+                                                    <div class="model">
+                                                        <span class="model-title">{{ $attributeName }}</span>
+                                                    </div>
+                                                    <div class="select-size-box d-flex flex-wrap">
+                                                        @foreach ($values as $index => $value)
+                                                            <div class="select-box me-3">
+                                                                <input type="radio" name="{{ $attributeName }}"
+                                                                    id="{{ Str::slug($attributeName . '-' . $value) }}"
+                                                                    value="{{ $value }}"
+                                                                    {{ $loop->first ? 'checked' : '' }}>
+                                                                <label
+                                                                    for="{{ Str::slug($attributeName . '-' . $value) }}">{{ $value }}</label>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @endforeach
                                         </div>
+                                        <!-- Categories -->
+
+                                    </div>
+                                    <div class="categories"><span>Danh mục :</span>
+                                        @foreach ($product->categories as $category)
+                                            {{ $category->name }}
+                                        @endforeach
                                     </div>
 
+                                    <!-- Tags -->
+                                    <div class="sku"><span>Mã sản phẩm :</span> {{ $product->sku }}</div>
+                                    <!-- Social Box -->
+                                    <ul class="social-box">
+                                        <li class="share">Share:</li>
+                                        <li><a href="https://www.facebook.com/" class="fa fa-facebook-f"></a></li>
+                                        <li><a href="https://www.twitter.com/" class="fa fa-twitter"></a></li>
+                                        <li><a href="https://dribbble.com/" class="fa fa-dribbble"></a></li>
+                                        <li><a href="https://www.linkedin.com/" class="fa fa-linkedin"></a></li>
+                                    </ul>
+
+                                    <div class="d-flex align-items-center flex-wrap">
+
+                                        <!-- Button Box -->
+                                        <div class="button-box">
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            {{-- <input type="hidden" name="variant_id" value="{{ $variant->id }}"> --}}
+                                            <input type="hidden" name="total_amount" value="{{ $product->price_sale }}">
+                                            <button type="submit" class="theme-btn btn-style-one">
+                                                Add to cart
+                                            </button>
+                                        </div>
+
+                                        <!-- Quantity Box -->
+                                        <div class="quantity-box d-flex align-items-center">
+                                            <div class="item-quantity">
+                                                <input class="qty-spinner" type="text" value="1" name="quantity">
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
                 <!-- End Upper Box -->
 
                 <!-- Lower Box -->
@@ -380,7 +379,6 @@
 
                 </div>
                 <!-- End Lower Box -->
-
             </div>
         </section>
 
@@ -596,102 +594,6 @@
         </section>
         <!-- End Gallery Section -->
 
-        <!-- Main Footer -->
-        <footer class="main-footer">
-            <div class="auto-container">
-
-                <!-- Widgets Section -->
-                <div class="widgets-section">
-                    <div class="row clearfix">
-                        <!-- Column -->
-                        <div class="big-column col-lg-7 col-md-12 col-sm-12">
-                            <div class="row clearfix">
-
-                                <!-- Footer Column -->
-                                <div class="footer-column col-lg-7 col-md-6 col-sm-12">
-                                    <div class="footer-widget links-widget">
-                                        <!-- Logo -->
-                                        <div class="logo"><a href="index.html"><img src="images/logo.png"
-                                                    alt="" title=""></a></div>
-                                        <div class="text">4517 Washington Ave. Manchester, Kentucky 39495 ashington Ave.
-                                            Manchester, </div>
-                                        <ul class="contact-list">
-                                            <li><span class="icon flaticon-map"></span>254 Lillian Blvd, Holbrook</li>
-                                            <li><span class="icon flaticon-call"></span>1-800-654-3210</li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <!-- Footer Column -->
-                                <div class="footer-column col-lg-5 col-md-6 col-sm-12">
-                                    <div class="footer-widget links-widget">
-                                        <h5>Find It Fast</h5>
-                                        <ul class="page-list">
-                                            <li><a href="#">Laptops & Computers</a></li>
-                                            <li><a href="#">Cameras & Photography</a></li>
-                                            <li><a href="#">Smart Phones & Tablets</a></li>
-                                            <li><a href="#">Video Games & Consoles</a></li>
-                                            <li><a href="#">TV & Audio</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <!-- Column -->
-                        <div class="big-column col-lg-5 col-md-12 col-sm-12">
-                            <div class="row clearfix">
-
-                                <!-- Footer Column -->
-                                <div class="footer-column col-lg-7 col-md-6 col-sm-12">
-                                    <div class="footer-widget links-widget">
-                                        <h5>Quick Links</h5>
-                                        <ul class="page-list">
-                                            <li><a href="#">Your Account</a></li>
-                                            <li><a href="#">Returns & Exchanges</a></li>
-                                            <li><a href="#">Return Center</a></li>
-                                            <li><a href="#">Purchase Hisotry</a></li>
-                                            <li><a href="#">App Download</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <!-- Footer Column -->
-                                <div class="footer-column col-lg-5 col-md-6 col-sm-12">
-                                    <div class="footer-widget instagram-widget">
-                                        <h5>Service us</h5>
-                                        <ul class="page-list-two">
-                                            <li><a href="#">Support Center</a></li>
-                                            <li><a href="#">Term & Conditions</a></li>
-                                            <li><a href="#">Shipping</a></li>
-                                            <li><a href="#">Privacy Policy</a></li>
-                                            <li><a href="#">Help</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Footer Bottom -->
-                <div class="footer-bottom">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap">
-                        <div class="copyright"><span>&copy; 2022</span> Powered by Theme. All Rights Reserved.</div>
-                        <div class="email-box">
-                            <a href="mailto:DumTheme@gmail.com"><span
-                                    class="icon flaticon-mail"></span>DumTheme@gmail.com</a>
-                        </div>
-                        <div class="cards"><img src="images/icons/cards.png" alt="" /></div>
-                    </div>
-                </div>
-
-            </div>
-        </footer>
-        <!-- End Main Footer -->
 
     </div>
     <!-- End PageWrapper -->
@@ -707,4 +609,40 @@
             </div>
         </form>
     </div>
+@endsection
+
+@section('script-libs')
+    <script>
+        $('#addToCartButton').click(function() {
+            const selectedAttributes = {};
+
+            // Lấy tất cả các thuộc tính đã chọn
+            $('#addToCartForm input[type="radio"]:checked').each(function() {
+                const name = $(this).attr('name');
+                const value = $(this).val();
+                selectedAttributes[name] = value;
+            });
+
+            // Gửi request AJAX đến server
+            $.ajax({
+                url: '/cart/get-variant-id',
+                type: 'POST',
+                data: {
+                    attributes: selectedAttributes,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.variant_id) {
+                        alert('Variant ID là: ' + response.variant_id);
+                        // Thực hiện logic thêm vào giỏ hàng ở đây
+                    } else {
+                        alert('Không tìm thấy sản phẩm với các lựa chọn này.');
+                    }
+                },
+                error: function() {
+                    alert('Có lỗi xảy ra.');
+                }
+            });
+        });
+    </script>
 @endsection
