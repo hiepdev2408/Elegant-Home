@@ -39,7 +39,7 @@ class HomeController extends Controller
 
         $products = Product::latest('id')->take(10)->get();
         // $products =Product::query()->get();
-        $blogs = Blog::with('user')->get();
+        $blogs = Blog::with('user')->latest()->paginate(5);
         // dd($products->toArray());
 
         return view('client.home', compact('categories', 'products', 'blogs'));
