@@ -81,8 +81,8 @@ Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favour
 //cart
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart');
-    Route::post('store', [CartController::class, 'store'])->name('store');
-    Route::post('update', [CartController::class, 'update'])->name('cart.update');
+    Route::post('store', [CartController::class, 'store'])->name('cart.add');
+    Route::put('update/{id}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('destroy/{id}', [CartController::class, 'destroy'])->name('destroy');
 
 });

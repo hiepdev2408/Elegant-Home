@@ -57,14 +57,18 @@
                                                     </td>
                                                     <!-- Quantity Box -->
                                                     <td class="quantity-box">
-                                                        <div class="item-quantity">
-                                                            <button class="qty-btn minus"
-                                                                data-id="{{ $cart->id }}"></button>
-                                                            <input class="qty-spinner" type="text"
-                                                                value="{{ $cart->quantity }}" name="quantity" readonly>
-                                                            <button class="qty-btn plus"
-                                                                data-id="{{ $cart->id }}"></button>
-                                                        </div>
+                                                        <form action="{{ route('cart.update', $cart->id) }}" method="post">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="item-quantity">
+                                                                <input class="qty-spinner" type="text"
+                                                                    value="{{ $cart->quantity }}" name="quantity" readonly>
+                                                            </div>
+                                                            <input type="hidden" name="cart_id"
+                                                                value="{{ $cart->id }}">
+                                                            <input type="hidden" name="price_sale"
+                                                                value="{{ $cart->variant->product->price_sale }}">
+                                                        </form>
                                                     </td>
 
                                                     <td class="sub-total">
@@ -211,44 +215,4 @@
 @endsection
 
 @section('script-libs')
-    <script>
-        $(document).ready(function() {
-            $('.qty-btn').click(function() {
-                // Lấy ID giỏ hàng từ data-id của nút
-                var cartId = $(this).data('id');
-                // Lấy số lượng hiện tại
-                var $input = $(this).siblings('.qty-spinner');
-                var currentQuantity = parseInt($input.val());
-
-                // Kiểm tra nút nào được nhấn và cập nhật số lượng
-                if ($(this).hasClass('plus')) {
-                    currentQuantity += 1; // Tăng số lượng
-                } else if ($(this).hasClass('minus') && currentQuantity > 1) {
-                    currentQuantity -= 1; // Giảm số lượng, tránh giảm dưới 1
-                }
-
-                // Cập nhật số lượng trong ô input
-                $input.val(currentQuantity);
-
-                // Gửi yêu cầu AJAX để cập nhật số lượng trong giỏ hàng
-                $.ajax({
-                    url: '/cart/update', // Đường dẫn đến route xử lý cập nhật giỏ hàng
-                    type: 'POST',
-                    data: {
-                        cart_id: cartId,
-                        quantity: currentQuantity,
-                        _token: '{{ csrf_token() }}' // Đảm bảo có CSRF token
-                    },
-                    success: function(response) {
-                        // Xử lý thành công nếu cần
-                        console.log('Cập nhật thành công!', response);
-                    },
-                    error: function(xhr) {
-                        // Xử lý lỗi nếu cần
-                        console.error('Có lỗi xảy ra!', xhr);
-                    }
-                });
-            });
-        });
-    </script>
 @endsection

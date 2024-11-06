@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html>
 
-<!-- Mirrored from html.themexriver.com/bloxic/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 06 Sep 2024 16:37:55 GMT -->
-
 <head>
     <meta charset="utf-8">
     <title>Elegant Home | @yield('title')</title>
     <!-- Stylesheets -->
+
     @include('client.layouts.partials.style')
 
-    @yield('style-libs')
-    @yield('style')
+    @include('client.layouts.partials.fonts.font')
 
+    <link rel="shortcut icon" href="{{ asset('themes') }}/clients/images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="{{ asset('themes') }}/clients/images/favicon.png" type="image/x-icon">
+
+    <!-- Responsive -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
@@ -20,17 +22,23 @@
 <body>
 
     <div class="page-wrapper">
+
+        <!-- Main Header -->
         <header class="main-header">
             @include('client.layouts.partials.header')
         </header>
+        <!-- End Main Header -->
 
+        <!-- Sidebar Cart Item -->
         @include('client.layouts.partials.extra')
+        <!-- END sidebar widget item -->
 
-        <div class="container-fluid">
-            @yield('content')
-        </div>
+        @yield('content')
 
+        <!-- Main Footer -->
         @include('client.layouts.partials.footer')
+
+        <!-- End Main Footer -->
 
     </div>
     <!-- End PageWrapper -->
@@ -41,8 +49,7 @@
         <button class="close-search"><span class="fa fa-arrow-up"></span></button>
         <form method="post" action="https://html.themexriver.com/bloxic/blog.html">
             <div class="form-group">
-                <input type="search" name="search-field" value="" placeholder="Search Here"
-                    required="">
+                <input type="search" name="search-field" value="" placeholder="Search Here" required="">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </div>
         </form>
@@ -53,11 +60,6 @@
     <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-arrow-up"></span></div>
 
     @include('client.layouts.partials.script')
-
-    @yield('script-libs')
-    @yield('script')
 </body>
-
-<!-- Mirrored from html.themexriver.com/bloxic/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 06 Sep 2024 16:38:06 GMT -->
 
 </html>
