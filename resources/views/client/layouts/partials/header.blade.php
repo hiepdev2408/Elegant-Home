@@ -51,7 +51,7 @@
                                     <li><a href="not-found.html">Not Found</a></li>
                                 </ul>
                             </li>
-                            <li><a href="contact.html">Contact us</a></li>
+                            <li><a href="{{ route('contact') }}">Contact us</a></li>
                         </ul>
                     </div>
 
