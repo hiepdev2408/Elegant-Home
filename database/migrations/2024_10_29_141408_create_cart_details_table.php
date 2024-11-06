@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Cart;
+use App\Models\Product;
+use App\Models\Variant;
 use App\Models\VariantAttribute;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +18,8 @@ return new class extends Migration
         Schema::create('cart_details', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Cart::class)->constrained();
-            $table->foreignIdFor(VariantAttribute::class)->constrained();
+            $table->foreignIdFor(Product::class)->nullable()->constrained();
+            $table->foreignIdFor(Variant::class)->nullable()->constrained();
             $table->unsignedBigInteger('quantity');
             $table->unsignedBigInteger('total_amount');
             $table->timestamps();

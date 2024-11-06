@@ -17,7 +17,7 @@
         </h4>
         <form action="{{ route('attributes.update', $dataID->id) }}" method="POST">
             @csrf
-            @method('put')
+            @method('PUT')
             <div class="app-ecommerce">
                 <!-- Add Product -->
                 <div
