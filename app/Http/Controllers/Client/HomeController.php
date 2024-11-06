@@ -9,7 +9,6 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Favourite;
 use App\Models\Product;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -82,13 +81,17 @@ class HomeController extends Controller
     }
 
 
-    public function favorite($product_id)
+    public function favourite($id)
     {
+
         $use_id = Auth::id();
         $data = [
-            'product_id' => $product_id,
+            'product_id' => $id,
             'user_id' => $use_id,
         ];
+        if ($data) {
+        return redirect()->back()->with('error','Sản phẩm đã có trong danh sách yêu thích.');
+        }
         Favourite::create($data);
 
         return redirect()->back()->with('success', ' yêu thích sản phẩm thành công');

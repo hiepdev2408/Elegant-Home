@@ -21,32 +21,50 @@
                 <div class="column col-lg-6 col-md-12 col-sm-12">
                     <!-- Login Form -->
                     <div class="styled-form">
-                        <h4>Sign Up</h4>
+                        <h4>Register</h4>
                         <form method="post" action="{{ route('register.submit') }}">
                             @csrf
                             <div class="form-group">
                                 <label>Your Name</label>
-                                <input type="text" name="name" value="" placeholder="Enter your name*" required>
+                                <input type="text" name="name" value="" placeholder="Enter your name*" >
+                                @error('name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                             </div>
                             <div class="form-group">
                                 <label>Email address</label>
-                                <input type="email" name="email" value="" placeholder="Enter Email Adress" required>
+                                <input type="email" name="email" value="" placeholder="Enter Email Adress" >
+                                @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                             </div>
                             <div class="form-group">
                                 <label>Phone</label>
-                                <input type="text" name="phone" value="" placeholder="Enter phone" required>
+                                <input type="text" name="phone" value="" placeholder="Enter phone" >
+                                @error('phone')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                             </div>
                             <div class="form-group">
                                 <label>Address</label>
-                                <input type="text" name="address" value="" placeholder="Enter Adress" required>
+                                <input type="text" name="address" value="" placeholder="Enter Adress" >
+                                @error('address')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input type="password" name="password" value="" placeholder="Create password" required>
+                                <input type="password" name="password" value="" placeholder="Create password" >
+                                @error('password')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                             </div>
                             <div class="form-group">
                                 <label>Password confirmation</label>
-                                <input type="password" name="password_confirmation" value="" placeholder="Create password" required>
+                                <input type="password" name="password_confirmation" value="" placeholder="Create password" >
+                                @error('password_confirmation')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                             </div>
                             <div class="form-group">
                                 <div class="check-box">
@@ -56,10 +74,16 @@
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="theme-btn btn-style-one">
-                                    Sign Up
+                                    Register
                                 </button>
                             </div>
                         </form>
+                        <div class="form-group">
+                            <label for="type-2">Bạn đã tài khoản ?</label>
+
+                            <button type="submit" class="theme-btn btn-style-one">
+                               <a href="{{route('login')}}">Login</a>
+                            </button>
                     </div>
                 </div>
                 <!-- Column -->

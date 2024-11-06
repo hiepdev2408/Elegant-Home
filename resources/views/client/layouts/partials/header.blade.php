@@ -50,7 +50,7 @@
                                     <li><a href="not-found.html">Not Found</a></li>
                                 </ul>
                             </li>
-                            <li><a href="contact.html">Contact us</a></li>
+                            <li><a href="{{route('contact')}}">Contact us</a></li>
                         </ul>
                     </div>
 
@@ -79,11 +79,12 @@
                     @endif
 
                     <!-- Like Box -->
+                    @if (Auth::check())
                     <div class="like-box">
-                        <a class="user-box flaticon-heart" href="contact.html"></a>
+                        <a class="user-box flaticon-heart" href="{{route('show.favorite')}}"></a>
                         <span class="total-like">0</span>
                     </div>
-
+                    @endif
                 </div>
 
                 <!-- Cart Box -->
