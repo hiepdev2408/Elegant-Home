@@ -80,8 +80,11 @@ Route::get('favorite/{id}', [HomeController::class, 'favorite'])->name('favorite
 
 //cart
 Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class, 'index']);
+    Route::get('/', [CartController::class, 'index'])->name('cart');
     Route::post('store', [CartController::class, 'store'])->name('store');
+    Route::post('update', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('destroy/{id}', [CartController::class, 'destroy'])->name('destroy');
+
 });
 
 // Search sản phẩm cùng danh mục

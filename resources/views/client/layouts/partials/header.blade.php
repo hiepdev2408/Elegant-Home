@@ -33,7 +33,7 @@
 
                     <div class="navbar-collapse collapse clearfix" id="navbarSupportedContent">
                         <ul class="navigation clearfix">
-                            <li><a href="#">Home</a></li>
+                            <li><a href="/">Home</a></li>
                             <li><a href="about.html">About</a></li>
                             <li class="dropdown"><a href="#">Shop</a>
                                 <ul>
@@ -90,7 +90,7 @@
                 <!-- Cart Box -->
                 <div class="cart-box">
                     <div class="box-inner">
-                        <a href="shop-detail.html" class="icon-box">
+                        <a href="{{ route('cart') }}" class="icon-box">
                             <span class="icon flaticon-bag"></span>
                             <i class="total-cart">0</i>
                         </a>
