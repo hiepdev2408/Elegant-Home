@@ -891,7 +891,11 @@
                                             <img src="{{ Storage::url($product->img_thumbnail) }}" alt="" />
                                         @endif
                                     </a>
+                                    
+                                  <a href="{{route('favourite', $product->id)}}">
                                     <span class="tag flaticon-heart"></span>
+                                  </a>
+
                                     <div class="cart-box text-center">
                                         <a class="cart" href="#">Add to Cart</a>
                                     </div>

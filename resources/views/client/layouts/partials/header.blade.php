@@ -80,11 +80,12 @@
                     @endif
 
                     <!-- Like Box -->
+                    @if (Auth::check())
                     <div class="like-box">
-                        <a class="user-box flaticon-heart" href="contact.html"></a>
+                        <a class="user-box flaticon-heart" href="{{route('show.favorite')}}"></a>
                         <span class="total-like">0</span>
                     </div>
-
+                    @endif
                 </div>
 
                 <!-- Cart Box -->
