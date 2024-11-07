@@ -58,6 +58,7 @@ class HomeController extends Controller
                 }
             ])
             ->firstOrFail();
+        // dd($product->variants);
         // Lấy danh mục của sản phẩm hiện tại
         $categoryIds = $product->categories->pluck('id');
 

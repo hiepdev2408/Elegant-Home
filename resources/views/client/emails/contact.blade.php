@@ -1,7 +1,4 @@
 @extends('client.layouts.master')
-@section('title')
-    Liên Hệ
-@endsection
 @section('content')
     <!-- End contact section -->
 
@@ -131,8 +128,6 @@
                                         <small class="text-danger">{{ $errors->first('last_name') }}</small>
                                     @endif
                                 </div>
-
-
                                 <div class="col-lg-6 col-md-6 col-sm-12 form-group">
 
                                     <input class="contact__form--input" name="phone_number" id="input3"
@@ -176,7 +171,6 @@
             </div>
         </div>
         <!-- End Contact Page Section -->
-
         <!-- Gallery Section -->
         <section class="gallery-section">
             <div class="outer-container">
@@ -246,3 +240,4 @@
             </div>
         </section>
     @endsection
+
