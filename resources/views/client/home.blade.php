@@ -272,7 +272,14 @@
                                         <img src="{{ Storage::url($product->img_thumbnail) }}" alt="" />
                                     @endif
                                 </a>
-                                <span class="tag flaticon-heart"></span>
+                                <div class="favourite">
+                                    @if (Auth::check())
+                                    <a href="{{route('favourite', $product->id)}}">
+                                        <span class="tag flaticon-heart"></span>
+                                      </a>
+
+                                      @endif
+                                   </div>
                                 <div class="cart-box text-center">
                                     <a class="cart" href="#">Add to Cart</a>
                                 </div>
@@ -288,8 +295,8 @@
                                 <h6><a href="shop-detail.html">{{ Str::limit($product->name, 30) }}</a></h6>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="price">
-                                        <span>{{ number_format($product->base_price) ?? 0, 0, ',', '.' }}VNĐ</span>
-                                        {{ number_format($product->price_sale) ?? 0, 0, ',', '.' }}VNĐ</div>
+                                        <span>{{ number_format($product->base_price ?? 0, 0, ',', '.' )}}VNĐ</span>
+                                        {{ number_format($product->price_sale ?? 0, 0, ',', '.' )}}VNĐ</div>
                                 </div>
                             </div>
                         </div>
@@ -890,10 +897,14 @@
                                             <img src="{{ Storage::url($product->img_thumbnail) }}" alt="" />
                                         @endif
                                     </a>
-                                    
-                                  <a href="{{route('favourite', $product->id)}}">
+                               <div class="favourite">
+                                @if (Auth::check())
+                                <a href="{{route('favourite', $product->id)}}">
                                     <span class="tag flaticon-heart"></span>
                                   </a>
+                                  @endif
+                               </div>
+
 
                                     <div class="cart-box text-center">
                                         <a class="cart" href="#">Add to Cart</a>
