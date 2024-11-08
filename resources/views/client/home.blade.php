@@ -295,14 +295,12 @@
                                 <h6><a href="shop-detail.html">{{ Str::limit($product->name, 30) }}</a></h6>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="price">
-<<<<<<< HEAD
                                         <span>{{ number_format($product->base_price ?? 0, 0, ',', '.' )}}VNĐ</span>
                                         {{ number_format($product->price_sale ?? 0, 0, ',', '.' )}}VNĐ</div>
-=======
-                                        <span>{{ number_format($product->base_price, 0, ',', '.') }} VNĐ</span>
-                                        {{ number_format($product->base_sale, 0, ',', '.') }}VNĐ
+
+                                 
                                     </div>
->>>>>>> ee12b391b32e9222f6e344eb58742cf5d0b793b6
+
                                 </div>
                             </div>
                         </div>
