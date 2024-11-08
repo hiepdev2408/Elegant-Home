@@ -62,8 +62,8 @@ Route::group(['prefix' => 'account'], function () {
 });
 
 Route::group(['prefix' => 'contact'], function () {
-    Route::get('/contact', [ContactFormController::class, 'contact'])->name('contact');
-    Route::post('/contact', [ContactFormController::class, 'submit'])->name('contact.submit');
+    Route::get('/', [ContactFormController::class, 'contact'])->name('contact');
+    Route::post('/', [ContactFormController::class, 'submit'])->name('contact.submit');
 });
 Route::get('categories/{category_id}/product/{id}/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 
@@ -76,10 +76,16 @@ Route::get('/filter', [ShopController::class, 'shopFilter'])->name('shop.filter'
 Route::get('productDetail/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
-Route::get('favorite/{id}', [HomeController::class, 'favorite'])->name('favorite');
+Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
 
 //cart
 Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class, 'index']);
+    Route::get('/', [CartController::class, 'index'])->name('cart');
     Route::post('store', [CartController::class, 'store'])->name('store');
+    Route::post('update', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('destroy/{id}', [CartController::class, 'destroy'])->name('destroy');
+
 });
+
+// Search sản phẩm cùng danh mục
+Route::get('search/{id}', [HomeController::class, 'search'])->name('search');

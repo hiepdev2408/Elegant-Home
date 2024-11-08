@@ -7,11 +7,8 @@ use App\Models\Attribute;
 use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Comment;
-use App\Models\favorite;
+use App\Models\Favourite;
 use App\Models\Product;
-use App\Models\Variant;
-use App\Models\VariantAttribute;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,12 +32,10 @@ class HomeController extends Controller
     public function index()
     {
 
-        $categories = Category::with('products')->get();
+        $categories = Category::query()->take(5)->has('products')->get();
 
-        $products = Product::latest('id')->take(10)->get();
-        // $products =Product::query()->get();
+        $products = Product::query()->with('categories')->latest('id')->take(10)->get();
         $blogs = Blog::with('user')->get();
-        // dd($products->toArray());
 
         return view('client.home', compact('categories', 'products', 'blogs'));
     }
@@ -59,6 +54,7 @@ class HomeController extends Controller
                 }
             ])
             ->firstOrFail();
+        // dd($product->variants);
         // Lấy danh mục của sản phẩm hiện tại
         $categoryIds = $product->categories->pluck('id');
 
@@ -75,7 +71,7 @@ class HomeController extends Controller
         $attributes = Attribute::with('values')->get();
 
         // Trả về view với thông tin sản phẩm và sản phẩm liên quan
-        return view('client.products.productDetail', compact('product', 'relatedProducts', 'attributes'));
+        return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes'));
     }
 
     public function shop()
@@ -86,14 +82,18 @@ class HomeController extends Controller
     }
 
 
-    public function favorite($product_id)
+    public function favourite($id)
     {
+
         $use_id = Auth::id();
         $data = [
-            'product_id' => $product_id,
+            'product_id' => $id,
             'user_id' => $use_id,
         ];
-        favorite::create($data);
+        if ($data) {
+        return redirect()->back()->with('error','Sản phẩm đã có trong danh sách yêu thích.');
+        }
+        Favourite::create($data);
 
         return redirect()->back()->with('success', ' yêu thích sản phẩm thành công');
     }
@@ -107,5 +107,14 @@ class HomeController extends Controller
         ]);
 
         return back();
+    }
+
+    public function search($id)
+    {
+        $category = Category::findOrFail($id);
+
+        $productCategory = $category->products()->get();
+
+        return view('client.layouts.partials.filter', compact('category', 'productCategory'));
     }
 }

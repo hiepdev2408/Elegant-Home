@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Favourite;
 
 class User extends Authenticatable
 {
@@ -88,6 +89,6 @@ class User extends Authenticatable
         return $this->type == self::TYPE_MEMBER;
     }
     public function favorites() {
-        return $this->hasMany(favorite::class, 'user_id','id');
+        return $this->hasMany(Favourite::class, 'user_id','id');
     }
 }

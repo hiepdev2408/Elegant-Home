@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('admin')
-    ->middleware(['auth', 'admin'])
+    // ->middleware(['auth', 'admin'])
     ->group(function () {
         Route::get('/', function () {
             return view(view: 'admin.dashboard');
@@ -100,7 +100,7 @@ Route::prefix('admin')
 
                 Route::get('listDestroy', [AttributeController::class, 'delete'])->name('delete');
                 // Hiển thị danh sách xóa
-        
+
                 Route::post('restore/{id}', [AttributeController::class, 'restore'])->name('restore');
                 Route::delete('forceDelete/{id}', [AttributeController::class, 'forceDelete'])->name('forceDelete');
             });
