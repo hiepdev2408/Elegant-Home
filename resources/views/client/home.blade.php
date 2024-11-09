@@ -289,7 +289,7 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="price">
                                         <span>{{ number_format($product->base_price, 0, ',', '.') }} VNĐ</span>
-                                        {{ number_format($product->base_sale, 0, ',', '.') }}VNĐ
+                                        {{ number_format($product->price_sale, 0, ',', '.') }}VNĐ
                                     </div>
                                 </div>
                             </div>
@@ -891,7 +891,7 @@
                                             <img src="{{ Storage::url($product->img_thumbnail) }}" alt="" />
                                         @endif
                                     </a>
-                                    
+
                                   <a href="{{route('favourite', $product->id)}}">
                                     <span class="tag flaticon-heart"></span>
                                   </a>
