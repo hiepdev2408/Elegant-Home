@@ -79,12 +79,11 @@ Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
 
 //cart
-Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class, 'index'])->name('cart');
-    Route::post('store', [CartController::class, 'store'])->name('store');
-    Route::post('update', [CartController::class, 'update'])->name('cart.update');
-    Route::delete('destroy/{id}', [CartController::class, 'destroy'])->name('destroy');
-
+Route::group([
+    'middleware' => 'auth',
+], function () {
+    Route::post('addToCart', [CartController::class, 'addToCart'])->name('addToCart');
+    Route::get('listCart', [CartController::class, 'listCart'])->name('listCart');
 });
 
 // Search sản phẩm cùng danh mục
