@@ -75,9 +75,9 @@
                         }
                     </style>
                     <!-- Login Form -->
-                    @if (session()->has('success'))
-                        <div class="alert alert-success fw-bold">
-                            {{ session()->get('success') }}
+                    @if (session()->has('erorr'))
+                        <div class="alert alert-red fw-bold">
+                            {{ session()->get('erorr') }}
                         </div>
                     @endif
                     @if (session()->has('ok'))

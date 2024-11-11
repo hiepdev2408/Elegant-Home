@@ -58,6 +58,7 @@ Route::group(['prefix' => 'account'], function () {
     Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
     //favorite
     Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
+    Route::get('/favourite/count',[AccountController::class,'favouriteCount'])->name('favouriteCount');
     Route::delete('/deleteFavorite/{id}', [AccountController::class, 'deleteFavorite'])->name('deleteFavorite');
 
 });
@@ -78,6 +79,7 @@ Route::get('productDetail/{slug}', [HomeController::class, 'detail'])->name('pro
 Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
 Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
+
 
 //cart
 Route::group([

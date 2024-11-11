@@ -11,6 +11,7 @@ use App\Models\Favourite;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {
@@ -35,7 +36,10 @@ class HomeController extends Controller
         $categories = Category::query()->take(5)->has('products')->get();
 
         $products = Product::query()->with('categories')->latest('id')->take(10)->get();
+
         $blogs = Blog::with('user')->get();
+
+
 
         return view('client.home', compact('categories', 'products', 'blogs'));
     }
@@ -82,22 +86,31 @@ class HomeController extends Controller
         return view('client.shops.listProduct', compact('categories'));
     }
 
-
+    //favourite
     public function favourite($id)
     {
-
         $use_id = Auth::id();
         $data = [
             'product_id' => $id,
             'user_id' => $use_id,
         ];
-        if ($data) {
-        return redirect()->back()->with('error','Sản phẩm đã có trong danh sách yêu thích.');
-        }
-        Favourite::create($data);
 
-        return redirect()->back()->with('success', ' yêu thích sản phẩm thành công');
+        $exists = Favourite::where('product_id', $id)->where('user_id', $use_id)->exists();
+        if ($exists) {
+            return redirect()->back()->with('error', 'Sản phẩm đã có trong danh sách yêu thích.');
+        } else {
+            Favourite::create($data);
+            return redirect()->back()->with('success', ' yêu thích sản phẩm thành công');
+        }
     }
+    public function compose(View $view)
+    {
+        $user_id = Auth::id(); // lấy id user
+        $favouritecount = Favourite::where('user_id', $user_id)->count();
+        // dd($favouritecount);
+        $view->with('favouritecount',  $favouritecount);
+    }
+
     public function store(Request $request)
     {
         Comment::create([

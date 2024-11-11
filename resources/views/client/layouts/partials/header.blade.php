@@ -87,10 +87,10 @@
                     @endif
                     <!-- Like Box -->
                     @if (Auth::check())
-                        <div class="like-box">
-                            <a class="user-box flaticon-heart" href="{{ route('show.favorite') }}"></a>
-                            <span class="total-like">0</span>
-                        </div>
+                    <div class="like-box">
+                        <a class="user-box flaticon-heart" href="{{route('show.favorite')}}"></a>
+                        <span class="total-like"  id="favourites-count">{{$favouritecount}}</span>
+                    </div>
                     @endif
                 </div>
 
