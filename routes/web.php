@@ -29,9 +29,10 @@ Route::group(['prefix' => 'account'], function () {
 
     Route::get('/veryfy_account/{email}', [AccountController::class, 'veryfy'])->name('veryfy');
 
-    Route::get('/password/forgot', [AccountController::class, 'showForgotPasswordForm'])->name('password.request');
-    Route::post('/password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
-
+    Route::get('password/reset', [AccountController::class, 'showForgotPasswordForm'])->name('password.request');
+    Route::post('password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
+    Route::post('password/reset', [AccountController::class, 'reset'])->name('password.update');
     Route::get('/profile', [ProfileController::class, 'profile'])
         // ->middleware('auth')
         ->name('profile.user');
