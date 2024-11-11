@@ -37,8 +37,10 @@ class HomeController extends Controller
 
         $products = Product::query()->with('categories')->latest('id')->take(10)->get();
 
-        $blogs = Blog::with('user')->get();
-
+        $products = Product::latest('id')->take(10)->get();
+        // $products =Product::query()->get();
+        $blogs = Blog::with('user')->latest()->paginate(5);
+        // dd($products->toArray());
 
 
         return view('client.home', compact('categories', 'products', 'blogs'));
@@ -78,6 +80,7 @@ class HomeController extends Controller
         // Trả về view với thông tin sản phẩm và sản phẩm liên quan
         return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes'));
     }
+
 
     public function shop()
     {
