@@ -14,7 +14,7 @@
                 </div>
 
                 <!-- Logo -->
-                <div class="logo"><a href="index.html"><img src="{{ asset('themes/clients/images/logo.png') }}"
+                <div class="logo"><a href="{{ route('home') }}"><img src="{{ asset('themes/clients/images/logo.png') }}"
                             alt="" title=""></a></div>
             </div>
             <div class="nav-outer clearfix">
@@ -35,9 +35,9 @@
                         <ul class="navigation clearfix">
                             <li><a href="/">Home</a></li>
                             <li><a href="about.html">About</a></li>
-                            <li class="dropdown"><a href="#">Shop</a>
+                            <li class="dropdown"><a href="{{ route('shop')}}">Shop</a>
                                 <ul>
-                                    <li><a href="shop.html">Our Products</a></li>
+                                    <li><a href="{{ route('shop')}}">Our Products</a></li>
                                     <li><a href="shop-detail.html">Product Single</a></li>
                                     <li><a href="cart.html">Shoping Cart</a></li>
                                     <li><a href="checkout.html">CheckOut</a></li>
@@ -72,13 +72,19 @@
                         <div class="search-box-btn"><span class="flaticon-search-1"></span></div>
                     </div>
 
-                    <!-- User Box -->
                     @if (Auth::check())
-                        <li><a href="contact.html">{{ Auth::user()->name }}</a></li>
+                        <div class="search-box-outer">
+                            <div class="search-box-btn">
+                                <a class="phone" href="">{{ Auth::user()->name }}</a>
+                            </div>
+                        </div>
                     @else
-                        <a class="user-box flaticon-user-3" href="{{ route('login') }}"></a>
+                    <div class="search-box-outer">
+                        <div class="search-box-btn">
+                            <a class="user-box flaticon-user-3" href="{{ route('login') }}"></a>
+                        </div>
+                    </div>
                     @endif
-
                     <!-- Like Box -->
                     @if (Auth::check())
                     <div class="like-box">
@@ -91,7 +97,7 @@
                 <!-- Cart Box -->
                 <div class="cart-box">
                     <div class="box-inner">
-                        <a href="{{ route('cart') }}" class="icon-box">
+                        <a href="" class="icon-box">
                             <span class="icon flaticon-bag"></span>
                             <i class="total-cart">0</i>
                         </a>
@@ -119,7 +125,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <!-- Logo -->
             <div class="logo">
-                <a href="index.html" title=""><img src="{{ asset('themes/clients/images/logo-small.png') }}"
+                <a href="{{ route('home') }}" title=""><img src="{{ asset('themes/clients/images/logo-small.png') }}"
                         alt="" title=""></a>
             </div>
 

@@ -111,10 +111,14 @@
                                 <label>New Password</label>
                                 <input type="password" name="password" value="" placeholder="Create password">
                             </div>
-                            <div class="form-group">
-                                <div class="check-box">
+                            <div class="form-group row container-fluid">
+                                <div class="check-box col-sm-6 ">
                                     <input type="checkbox" name="remember-password" id="type-2">
                                     <label for="type-2">Remember Me?</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    
+                                    <label for="type-2"><a href="{{route('password.request')}}">Quên mật khẩu</a></label>
                                 </div>
                             </div>
 
