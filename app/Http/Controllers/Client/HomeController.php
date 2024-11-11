@@ -54,6 +54,7 @@ class HomeController extends Controller
                 }
             ])
             ->firstOrFail();
+            
         // dd($product->variants);
         // Lấy danh mục của sản phẩm hiện tại
         $categoryIds = $product->categories->pluck('id');
@@ -109,12 +110,4 @@ class HomeController extends Controller
         return back();
     }
 
-    public function search($id)
-    {
-        $category = Category::findOrFail($id);
-
-        $productCategory = $category->products()->get();
-
-        return view('client.layouts.partials.filter', compact('category', 'productCategory'));
-    }
 }

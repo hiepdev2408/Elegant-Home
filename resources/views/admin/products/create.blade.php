@@ -233,26 +233,9 @@
                                 <h5 class="card-title mb-0">Tổ Chức</h5>
                             </div>
                             <div class="card-body">
-                                <div class="mb-4 col ecommerce-select2-dropdown">
-                                    <div class="form-floating form-floating-outline">
-                                        <select id="vendor" class="select2 form-select"
-                                            data-placeholder="Select Vendor">
-                                            <option value="">Chọn nhà cung cấp</option>
-                                            <option value="men-clothing">
-                                                Men's Clothing
-                                            </option>
-                                            <option value="women-clothing">
-                                                Women's-clothing
-                                            </option>
-                                            <option value="kid-clothing">
-                                                Kid's-clothing
-                                            </option>
-                                        </select>
-                                        <label for="vendor">Nhà cung cấp</label>
-                                    </div>
-                                </div>
+
                                 <div class="form-floating form-floating-outline">
-                                    <select name="categories[]" class="form-select" multiple>
+                                    <select name="categories[]" class="form-select" style="min-height: 100px" multiple>
                                         @foreach ($category as $id => $name)
                                             <option value="{{ $id }}">{{ $name }}</option>
                                         @endforeach
