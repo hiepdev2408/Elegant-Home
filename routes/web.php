@@ -58,6 +58,7 @@ Route::group(['prefix' => 'account'], function () {
     Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
     //favorite
     Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
+    Route::get('/favourite/count',[AccountController::class,'favouriteCount'])->name('favouriteCount');
     Route::delete('/deleteFavorite/{id}', [AccountController::class, 'deleteFavorite'])->name('deleteFavorite');
 
 });
@@ -69,6 +70,8 @@ Route::group(['prefix' => 'contact'], function () {
 Route::get('categories/{category_id}/product/{id}/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 
 Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
+Route::get('/gird', [ShopController::class, 'gird'])->name('gird');
+
 Route::get('/search', [ShopController::class, 'shopFilter'])->name('shop.search');
 Route::get('/categories/{category_id}', [ShopController::class, 'shopFilter'])->name('shop.categoryProduct');
 Route::get('/filter', [ShopController::class, 'shopFilter'])->name('shop.filter');
@@ -78,6 +81,12 @@ Route::get('productDetail/{slug}', [HomeController::class, 'detail'])->name('pro
 Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
 Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
+
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart');
+    Route::post('store', [CartController::class, 'store'])->name('cart.add');
+    Route::put('update/{id}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('destroy/{id}', [CartController::class, 'destroy'])->name('destroy');
 
 //cart
 Route::group([
