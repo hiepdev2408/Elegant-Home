@@ -11,6 +11,7 @@
 
     @yield('style-libs')
     @yield('style')
+   
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -56,6 +57,7 @@
 
     @yield('script-libs')
     @yield('script')
+    @yield('boostraps')
 </body>
 
 <!-- Mirrored from html.themexriver.com/bloxic/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 06 Sep 2024 16:38:06 GMT -->

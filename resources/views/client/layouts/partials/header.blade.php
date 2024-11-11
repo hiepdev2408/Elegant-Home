@@ -35,9 +35,9 @@
                         <ul class="navigation clearfix">
                             <li><a href="/">Home</a></li>
                             <li><a href="about.html">About</a></li>
-                            <li class="dropdown"><a href="#">Shop</a>
+                            <li class="dropdown"><a href="{{ route('shop')}}">Shop</a>
                                 <ul>
-                                    <li><a href="shop.html">Our Products</a></li>
+                                    <li><a href="{{ route('shop')}}">Our Products</a></li>
                                     <li><a href="shop-detail.html">Product Single</a></li>
                                     <li><a href="cart.html">Shoping Cart</a></li>
                                     <li><a href="checkout.html">CheckOut</a></li>
