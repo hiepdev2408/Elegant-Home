@@ -8,12 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-
-    public function getRouteKeyName()
-    {
-        return 'slug'; // Đặt trường `slug` là khóa tìm kiếm thay vì `id`
-    }
-
     protected $fillable = [
         'name',
         'slug',

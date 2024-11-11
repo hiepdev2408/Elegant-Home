@@ -2,12 +2,12 @@
 
 @section('title', 'Thêm giá trị thuộc tính')
 
-@section('menu-item-attribute', 'open')
+@section('menu-item-attribute_value', 'open')
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="py-3 mb-4">Thêm giá trị thuộc tính mới</h4>
-        
+
         <form action="{{ route('attribute_values.store') }}" method="POST">
             @csrf
             <div class="card">
