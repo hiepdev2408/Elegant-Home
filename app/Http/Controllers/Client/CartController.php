@@ -14,13 +14,8 @@ use function Laravel\Prompts\alert;
 
 class CartController extends Controller
 {
-    public function index()
-    {
-        $carts = Cart::query()->with('cartDetails.variant')->where('user_id', 1)->get();
-        return view('Client.cart.listCart', compact('carts'));
-    }
 
-    public function store(Request $request)
+    public function listCart()
     {
         // dd($request->all());
         try {
@@ -55,22 +50,12 @@ class CartController extends Controller
             Log::error($th->getMessage());
         }
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function addToCart(Request $request)
     {
-        //
-    }
+        // Lấy ID của sản phẩm từ request
+        $productId = $request->input('product_id');
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        dd($productId);
 
     /**
      * Update the specified resource in storage.

@@ -7,9 +7,7 @@
     <!-- Stylesheets -->
 
     @include('client.layouts.partials.style')
-
     @include('client.layouts.partials.fonts.font')
-
     <link rel="shortcut icon" href="{{ asset('themes') }}/clients/images/favicon.png" type="image/x-icon">
     <link rel="icon" href="{{ asset('themes') }}/clients/images/favicon.png" type="image/x-icon">
 
@@ -60,6 +58,10 @@
     <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-arrow-up"></span></div>
 
     @include('client.layouts.partials.script')
+
+    @yield('script-libs')
+    @yield('script')
+    @yield('boostraps')
 </body>
 
 </html>

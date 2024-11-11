@@ -29,9 +29,10 @@ Route::group(['prefix' => 'account'], function () {
 
     Route::get('/veryfy_account/{email}', [AccountController::class, 'veryfy'])->name('veryfy');
 
-    Route::get('/password/forgot', [AccountController::class, 'showForgotPasswordForm'])->name('password.request');
-    Route::post('/password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
-
+    Route::get('password/reset', [AccountController::class, 'showForgotPasswordForm'])->name('password.request');
+    Route::post('password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
+    Route::post('password/reset', [AccountController::class, 'reset'])->name('password.update');
     Route::get('/profile', [ProfileController::class, 'profile'])
         // ->middleware('auth')
         ->name('profile.user');
@@ -57,6 +58,7 @@ Route::group(['prefix' => 'account'], function () {
     Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
     //favorite
     Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
+    Route::get('/favourite/count',[AccountController::class,'favouriteCount'])->name('favouriteCount');
     Route::delete('/deleteFavorite/{id}', [AccountController::class, 'deleteFavorite'])->name('deleteFavorite');
 
 });
@@ -78,13 +80,18 @@ Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
 Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
 
-//cart
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart');
     Route::post('store', [CartController::class, 'store'])->name('cart.add');
     Route::put('update/{id}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('destroy/{id}', [CartController::class, 'destroy'])->name('destroy');
 
+//cart
+Route::group([
+    'middleware' => 'auth',
+], function () {
+    Route::post('addToCart', [CartController::class, 'addToCart'])->name('addToCart');
+    Route::get('listCart', [CartController::class, 'listCart'])->name('listCart');
 });
 
 // Search sản phẩm cùng danh mục
