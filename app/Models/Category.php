@@ -12,20 +12,9 @@ class Category extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        // Tạo slug tự động khi tạo hoặc cập nhật danh mục
-        static::saving(function ($category) {
-            $category->slug = Str::slug($category->name);
-        });
-    }
-
     protected $fillable = [
         'parent_id',
         'name',
-        'slug',
         'is_active',
     ];
 
