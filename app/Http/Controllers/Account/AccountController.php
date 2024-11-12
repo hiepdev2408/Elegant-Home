@@ -51,6 +51,7 @@ class AccountController extends Controller
     }
     public function check_register(Request $request)
     {
+
         $request->validate([
             'name' => 'required|min:6|max:100',
             'email' => 'required|email|unique:users',

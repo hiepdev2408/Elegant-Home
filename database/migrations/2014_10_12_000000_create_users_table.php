@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Role::class)->default(3)->constrained();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -25,7 +27,6 @@ return new class extends Migration
             $table->string('ward_id', 10)->nullable();
             $table->string('address');
             $table->unsignedBigInteger('point')->nullable();
-            $table->string('type')->default(User::TYPE_MEMBER);
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
