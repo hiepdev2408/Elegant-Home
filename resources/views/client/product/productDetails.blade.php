@@ -116,7 +116,7 @@
                                                         @foreach ($values as $value)
                                                             <div class="select-box me-3">
                                                                 <input type="radio" name="{{ $attributeName }}"
-                                                                    id="{{ $value['id'] }}" value="{{ $value['name'] }}"
+                                                                    id="attributes[{{ $value['id'] }}]" value="attributes[{{ $value['id'] }}]"
                                                                     {{ $loop->first ? 'checked' : '' }}>
                                                                 <label
                                                                     for="{{ $value['id'] }}">{{ $value['name'] }}</label>
