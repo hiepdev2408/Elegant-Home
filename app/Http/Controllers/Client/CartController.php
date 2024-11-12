@@ -10,12 +10,45 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+use function Laravel\Prompts\alert;
+
 class CartController extends Controller
 {
 
     public function listCart()
     {
-        return view('client.cart.listCart');
+        // dd($request->all());
+        try {
+            // $user = Auth::user();
+
+            // Tạo giỏ hàng mới nếu chưa có, hoặc lấy giỏ hàng hiện tại của user
+            $variant_id = 8;
+            $cart = Cart::firstOrCreate(['user_id' => 1]);
+
+            // Kiểm tra xem sản phẩm với variant_id có tồn tại trong giỏ hàng hay không
+            $cartItem = $cart->cartDetails()
+                ->where('variant_id', $variant_id)
+                ->first();
+
+            if ($cartItem) {
+                // Nếu sản phẩm với variant_id đã tồn tại trong giỏ hàng, cộng thêm số lượng
+                $cartItem->quantity += $request->quantity;
+                $cartItem->total_amount += $request->total_amount * $request->quantity;
+                $cartItem->save();
+            } else {
+                // Nếu sản phẩm chưa tồn tại, tạo mới cart item
+                $cartItem = $cart->cartDetails()->create([
+                    'product_id' => $request->product_id,
+                    'variant_id' => 8,
+                    'quantity' => $request->quantity,
+                    'total_amount' => $request->total_amount * $request->quantity,
+                ]);
+            }
+            return back();
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        }
     }
     public function addToCart(Request $request)
     {
@@ -67,5 +100,6 @@ class CartController extends Controller
         session()->push('cart.items', $cartItem);
 
         return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng');
+
     }
 }

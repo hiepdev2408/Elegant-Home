@@ -1,4 +1,3 @@
-<div class="header-lower">
 
     <div class="auto-container">
         <div class="inner-container d-flex justify-content-between align-items-center">
@@ -35,9 +34,9 @@
                         <ul class="navigation clearfix">
                             <li><a href="/">Home</a></li>
                             <li><a href="about.html">About</a></li>
-                            <li class="dropdown"><a href="#">Shop</a>
+                            <li class="dropdown"><a href="{{ route('shop')}}">Shop</a>
                                 <ul>
-                                    <li><a href="shop.html">Our Products</a></li>
+                                    <li><a href="{{ route('shop')}}">Our Products</a></li>
                                     <li><a href="shop-detail.html">Product Single</a></li>
                                     <li><a href="cart.html">Shoping Cart</a></li>
                                     <li><a href="checkout.html">CheckOut</a></li>
@@ -87,10 +86,10 @@
                     @endif
                     <!-- Like Box -->
                     @if (Auth::check())
-                        <div class="like-box">
-                            <a class="user-box flaticon-heart" href="{{ route('show.favorite') }}"></a>
-                            <span class="total-like">0</span>
-                        </div>
+                    <div class="like-box">
+                        <a class="user-box flaticon-heart" href="{{route('show.favorite')}}"></a>
+                        <span class="total-like"  id="favourites-count">{{$favouritecount}}</span>
+                    </div>
                     @endif
                 </div>
 

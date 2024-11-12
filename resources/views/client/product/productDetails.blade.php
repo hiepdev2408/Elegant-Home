@@ -8,28 +8,31 @@
         <section class="shop-detail-section">
             <div class="auto-container">
                 <!-- Upper Box -->
-                <div class="upper-box">
-                    <div class="row clearfix">
-                        <!-- Gallery Column -->
-                        <div class="gallery-column col-lg-6 col-md-12 col-sm-12">
-                            <div class="inner-column">
-                                <div class="carousel-outer">
-                                    <!-- Swiper -->
-                                    <div class="swiper-container content-carousel">
-                                        <div class="swiper-wrapper">
-                                            @foreach ($product->galleries as $gallery)
-                                                @if ($gallery->img_path)
-                                                    <div class="swiper-slide">
-                                                        <figure class="image">
-                                                            <a href="{{ Storage::url($gallery->img_path) }}"
-                                                                class="lightbox-image">
-                                                                <img src="{{ Storage::url($gallery->img_path) }}"
-                                                                    alt="">
-                                                            </a>
-                                                        </figure>
-                                                    </div>
-                                                @endif
-                                            @endforeach
+                <form action="{{ route('cart.add') }}" method="post" id="addToCartForm">
+                    @csrf
+                    <div class="upper-box">
+                        <div class="row clearfix">
+                            <!-- Gallery Column -->
+                            <div class="gallery-column col-lg-6 col-md-12 col-sm-12">
+                                <div class="inner-column">
+                                    <div class="carousel-outer">
+                                        <!-- Swiper -->
+                                        <div class="swiper-container content-carousel">
+                                            <div class="swiper-wrapper">
+                                                @foreach ($product->galleries as $gallery)
+                                                    @if ($gallery->img_path)
+                                                        <div class="swiper-slide">
+                                                            <figure class="image">
+                                                                <a href="{{ Storage::url($gallery->img_path) }}"
+                                                                    class="lightbox-image">
+                                                                    <img src="{{ Storage::url($gallery->img_path) }}"
+                                                                        alt="">
+                                                                </a>
+                                                            </figure>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
                                         </div>
                                     </div>
 
@@ -610,39 +613,4 @@
             </div>
         </form>
     </div>
-@endsection
-@section('script-libs')
-    <script>
-        $('#addToCartButton').click(function() {
-            const selectedAttributes = {};
-
-            // Lấy tất cả các thuộc tính đã chọn
-            $('#addToCartForm input[type="radio"]:checked').each(function() {
-                const name = $(this).attr('name');
-                const value = $(this).val();
-                selectedAttributes[name] = value;
-            });
-
-            // Gửi request AJAX đến server
-            $.ajax({
-                url: '/cart/get-variant-id',
-                type: 'POST',
-                data: {
-                    attributes: selectedAttributes,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    if (response.variant_id) {
-                        alert('Variant ID là: ' + response.variant_id);
-                        // Thực hiện logic thêm vào giỏ hàng ở đây
-                    } else {
-                        alert('Không tìm thấy sản phẩm với các lựa chọn này.');
-                    }
-                },
-                error: function() {
-                    alert('Có lỗi xảy ra.');
-                }
-            });
-        });
-    </script>
 @endsection
