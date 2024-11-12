@@ -55,7 +55,8 @@ class CartController extends Controller
         // Lấy ID của sản phẩm từ request
         $productId = $request->input('product_id');
 
-        dd($productId);
+        // dd($productId);
+    }
 
     /**
      * Update the specified resource in storage.
