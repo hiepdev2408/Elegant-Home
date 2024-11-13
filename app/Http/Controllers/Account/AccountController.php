@@ -51,7 +51,6 @@ class AccountController extends Controller
     }
     public function check_register(Request $request)
     {
-<<<<<<< HEAD
        // Xác thực dữ liệu
     $request->validate([
         'name' => 'required|min:6|max:100',
@@ -83,7 +82,7 @@ class AccountController extends Controller
 
     // Lưu người dùng vào cơ sở dữ liệu
     $acc = User::create($user);
-    
+
     if ($acc) {
         // Gửi email xác minh
         Mail::to($acc->email)->send(new VerifyAccount($acc));
@@ -92,38 +91,7 @@ class AccountController extends Controller
 
     // Nếu có lỗi, hiển thị cho người dùng
     return redirect()->back()->withErrors(['msg' => 'Có lỗi xảy ra trong quá trình đăng ký']);
-       
-=======
 
-        $request->validate([
-            'name' => 'required|min:6|max:100',
-            'email' => 'required|email|unique:users',
-            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
-            'address' => 'required|string',
-            'password' => 'required|min:6',
-            'password_confirmation' => 'required|same:password',
-        ], [
-            'name.required' => 'Họ và tên chưa nhập',
-            'name.min' => 'Họ và tên cần trên 6 ký tự',
-            'name.max' => 'Họ và tên không quá trên 100 ký tự',
-            'email.required' => 'email chưa nhập',
-            'email.email' => 'email không đúng định dạng',
-            'phone.required' => 'Số điện thoại chưa nhập',
-            'phone.regex' => 'Số điện thoại không đúng định dạng',
-            'address.required' => 'Địa chỉ chưa nhập',
-            'address.string' => 'Địa chỉ không đúng định dạng',
-            'password.required' => 'Mật khẩu chưa nhập',
-            'password.min' => 'Mật khẩu cần trên 6 ký tự',
-            'password_confirmation.required' => 'Xác nhận mật khẩu chưa nhập',
-            'password_confirmation.same' => 'Xác nhận mật khẩu phải trùng với mật khẩu bên trên',
-        ]);
-        $user = $request->only(['name', 'email', 'phone', 'address']);
-        $user['password'] = bcrypt($request->password);
-        if ($acc = User::create($user)) {
-            Mail::to($acc->email)->send(new VerifyAccount($acc));
-            return redirect()->route('login')->with('oke',' đăng ký thành công vui lòng kiểm trang gmail để xác nhận tài khoản');
-        }
->>>>>>> 70f234e5caa6845eb3c225ff5ef02e974acdcfc0
     }
     public function veryfy($email)
     {
