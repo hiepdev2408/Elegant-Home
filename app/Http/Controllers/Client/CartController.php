@@ -52,39 +52,59 @@ class CartController extends Controller
     }
     public function addToCart(Request $request)
     {
-        // Lấy ID của sản phẩm từ request
-        $productId = $request->input('product_id');
+        // Tìm sản phẩm theo `product_id`
+        $product = Product::findOrFail($request->input('product_id'));
 
+<<<<<<< HEAD
         // dd($productId);
     }
+=======
+        // Khởi tạo biến để lưu thông tin giỏ hàng
+        $cartItem = [
+            'product_id' => $product->id,
+            'name' => $product->name,
+            'quantity' => $request->input('quantity', 1),
+            'price' => $request->input('total_amount'),
+            'attributes' => [],
+        ];
+>>>>>>> 70f234e5caa6845eb3c225ff5ef02e974acdcfc0
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request)
-    {
-        // dd($request->all());
-        $cartItem = CartDetail::find($request->cart_id);
-        if (!$cartItem) {
-            echo '<script>alert("Sản phẩm không tồn tại");</script>';
+        // Kiểm tra nếu sản phẩm có biến thể
+        if ($product->variants->count() > 0) {
+            // Lấy các thuộc tính từ request
+            $attributes = $request->except(['_token', 'product_id', 'quantity', 'total_amount']);
+
+            // Tìm biến thể dựa trên thuộc tính đã chọn
+            $variant = $product->variants()->whereHas('attributes', function ($query) use ($attributes) {
+                foreach ($attributes as $attributeName => $attributeValue) {
+                    $query->whereHas('attribute', function ($query) use ($attributeName) {
+                        $query->where('name', $attributeName);
+                    })->whereHas('attributeValue', function ($query) use ($attributeValue) {
+                        $query->where('value', $attributeValue);
+                    });
+                }
+            })->first();
+
+            // Nếu không tìm thấy biến thể phù hợp, trả về lỗi
+            if (!$variant) {
+                return back()->with('error', 'Không tìm thấy biến thể phù hợp.');
+            }
+
+            // Cập nhật `cartItem` với thông tin biến thể
+            $cartItem['variant_id'] = $variant->id;
+            $cartItem['price'] = $variant->getFinalPriceAttribute(); // Lấy giá của biến thể nếu có
+            foreach ($attributes as $attributeName => $attributeValue) {
+                $cartItem['attributes'][$attributeName] = $attributeValue;
+            }
+        } else {
+            // Nếu sản phẩm không có biến thể, dùng giá `base_price` hoặc `price_sale` của sản phẩm
+            $cartItem['price'] = $product->price_sale ?? $product->base_price;
         }
 
-        // Cập nhật số lượng và tổng giá của sản phẩm trong giỏ hàng
-        $cartItem->quantity = $request->quantity;
-        $cartItem->total_amount = $request->price_sale * $cartItem->quantity;
-        $cartItem->save();
+        // Thêm sản phẩm vào session hoặc giỏ hàng
+        session()->push('cart.items', $cartItem);
 
-        return back();
-    }
+        return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng');
 
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $cart = CartDetail::query()->find($id);
-        $cart->delete();
-        return back();
     }
 }
