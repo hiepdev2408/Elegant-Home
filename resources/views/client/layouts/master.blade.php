@@ -61,7 +61,6 @@
 
     @yield('script-libs')
     @yield('script')
-    @yield('boostraps')
 </body>
 
 </html>
