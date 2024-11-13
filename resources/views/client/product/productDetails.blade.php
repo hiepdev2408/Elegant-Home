@@ -114,18 +114,20 @@
                                                     <div class="select-size-box d-flex flex-wrap">
                                                         @foreach ($values as $value)
                                                             <div class="select-box me-3">
-                                                                <input type="radio" name="{{ $attributeName }}"
-                                                                    id="attribute_{{ $attributeName }}_{{ $value['id'] }}"
-                                                                    value="{{ $value['id'] }}"
-                                                                    {{ $loop->first ? 'checked' : '' }}>
-                                                                <label
-                                                                    for="attribute_{{ $attributeName }}_{{ $value['id'] }}">{{ $value['name'] }}</label>
+                                                                <input type="radio"
+                                                                       name="attributes[{{ $attributeName }}]"
+                                                                       id="{{ $value['id'] }}"
+                                                                       value="{{ $value['id'] }}"
+                                                                       {{ $loop->first ? 'checked' : '' }}>
+                                                                <label for="{{ $value['id'] }}">{{ $value['name'] }}</label>
                                                             </div>
                                                         @endforeach
                                                     </div>
                                                 </div>
                                             @endforeach
                                         </div>
+
+
                                     </div>
 
                                     <div class="categories"><span>Danh mục :</span>
@@ -149,17 +151,14 @@
                                         <!-- Button Box -->
                                         <div class="button-box">
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <input type="hidden" name="variant_id" id="variantId" value="">
                                             <input type="hidden" name="total_amount" value="{{ $product->price_sale }}">
-                                            <button type="submit" onclick="addToCart()" class="theme-btn btn-style-one">
+                                            <button type="submit" class="theme-btn btn-style-one">
                                                 Add to cart
                                             </button>
                                         </div>
                                         <!-- Quantity Box -->
                                         <div class="quantity-box d-flex align-items-center">
-                                            <div class="item-quantity">
-                                                <input class="qty-spinner" type="text" value="1" name="quantity">
-                                            </div>
+                                            <input type="number" name="quantity" min="1" value="1">
                                         </div>
                                     </div>
                                 </div>
