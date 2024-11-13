@@ -166,100 +166,126 @@
                             </div>
                         </div>
                     </form>
-                    <!-- End Upper Box -->
+                </div>
+                <!-- End Upper Box -->
 
-                    <!-- Lower Box -->
-                    <div class="lower-box">
+                <!-- Lower Box -->
+                <div class="lower-box">
 
-                        <!-- Product Info Tabs -->
-                        <div class="product-info-tabs">
-                            <!-- Product Tabs -->
-                            <div class="prod-tabs tabs-box">
+                    <!-- Product Info Tabs -->
+                    <div class="product-info-tabs">
+                        <!-- Product Tabs -->
+                        <div class="prod-tabs tabs-box">
 
-                                <!-- Tab Btns -->
-                                <ul class="tab-btns tab-buttons clearfix">
-                                    <li data-tab="#prod-details" class="tab-btn active-btn">Product Details</li>
-                                    <li data-tab="#prod-info" class="tab-btn">additional information</li>
-                                    <li data-tab="#prod-review" class="tab-btn">Review (02)</li>
-                                    <li data-tab="#prod-faq" class="tab-btn">Faq</li>
-                                </ul>
+                            <!-- Tab Btns -->
+                            <ul class="tab-btns tab-buttons clearfix">
+                                <li data-tab="#prod-details" class="tab-btn active-btn">Product Details</li>
+                                <li data-tab="#prod-info" class="tab-btn">additional information</li>
+                                <li data-tab="#prod-review" class="tab-btn">Review (02)</li>
+                                <li data-tab="#prod-faq" class="tab-btn">Faq</li>
+                            </ul>
 
-                                <!-- Tabs Container -->
-                                <div class="tabs-content">
+                            <!-- Tabs Container -->
+                            <div class="tabs-content">
 
-                                    <!-- Tab / Active Tab -->
-                                    <div class="tab active-tab" id="prod-details">
-                                        <div class="content">
-                                            <h3>Experience is over the world visit</h3>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
-                                                vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus
-                                                aliquet
-                                                nunc vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
-                                                cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum
-                                                accumsan
-                                                quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
-                                                bibendum dui. Aenean consequat pulvinar luctus</p>
-                                            <h5>More Details</h5>
-                                            <div class="row clearfix">
-                                                <div class="col-lg-6 col-md-12 col-sm-12">
-                                                    <ul class="list-one">
-                                                        <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                                                            industry</li>
-                                                        <li>Lorem Ipsum has been the ‘s standard dummy text. Lorem Ipsumum
-                                                            is
-                                                            simply dummy text.</li>
-                                                        <li>type here your detail one by one li more add</li>
-                                                        <li>has been the industry’s standard dummy text ever since. Lorem
-                                                            Ips
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="col-lg-6 col-md-12 col-sm-12">
-                                                    <ul class="list-two">
-                                                        <li>Lorem Ipsum generators on the tend to repeat.</li>
-                                                        <li>If you are going to use a passage.</li>
-                                                        <li>Lorem Ipsum generators on the tend to repeat.</li>
-                                                        <li>Lorem Ipsum generators on the tend to repeat.</li>
-                                                        <li>If you are going to use a passage.</li>
-                                                    </ul>
-                                                </div>
+                                <!-- Tab / Active Tab -->
+                                <div class="tab active-tab" id="prod-details">
+                                    <div class="content">
+                                        <h3>Experience is over the world visit</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
+                                            vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus aliquet
+                                            nunc vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
+                                            cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum accumsan
+                                            quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
+                                            bibendum dui. Aenean consequat pulvinar luctus</p>
+                                        <h5>More Details</h5>
+                                        <div class="row clearfix">
+                                            <div class="col-lg-6 col-md-12 col-sm-12">
+                                                <ul class="list-one">
+                                                    <li>Lorem Ipsum is simply dummy text of the printing and typesetting
+                                                        industry</li>
+                                                    <li>Lorem Ipsum has been the ‘s standard dummy text. Lorem Ipsumum is
+                                                        simply dummy text.</li>
+                                                    <li>type here your detail one by one li more add</li>
+                                                    <li>has been the industry’s standard dummy text ever since. Lorem Ips
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12 col-sm-12">
+                                                <ul class="list-two">
+                                                    <li>Lorem Ipsum generators on the tend to repeat.</li>
+                                                    <li>If you are going to use a passage.</li>
+                                                    <li>Lorem Ipsum generators on the tend to repeat.</li>
+                                                    <li>Lorem Ipsum generators on the tend to repeat.</li>
+                                                    <li>If you are going to use a passage.</li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <!-- Tab -->
-                                    <div class="tab" id="prod-info">
-                                        <div class="content">
-                                            <h3>Experience is over the world visit</h3>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
-                                                vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus
-                                                aliquet
-                                                nunc vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
-                                                cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum
-                                                accumsan
-                                                quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
-                                                bibendum dui. Aenean consequat pulvinar luctus</p>
-                                        </div>
+                                <!-- Tab -->
+                                <div class="tab" id="prod-info">
+                                    <div class="content">
+                                        <h3>Experience is over the world visit</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
+                                            vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus aliquet
+                                            nunc vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
+                                            cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum accumsan
+                                            quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
+                                            bibendum dui. Aenean consequat pulvinar luctus</p>
                                     </div>
+                                </div>
 
-                                    <!--Tab-->
-                                    <div class="tab p-2" id="prod-review">
-                                        <h1 class="">Bình luận</h1>
-                                        <!--Reviews Container-->
-                                        <div class="comments-area p-3">
-                                            <!--Comment Box-->
-                                            <!-- Bình luận cấp 1 -->
-                                            @if ($product->comments->count() == 0)
-                                                <p>Không có bình luận nào</p>
-                                            @else
-                                                @foreach ($product->comments->where('parent_id', null) as $comment)
-                                                    <div class="mb-3 p-4">
-                                                        <div class="card-body">
-                                                            <div class="d-flex">
+                                <!--Tab-->
+                                <div class="tab p-2" id="prod-review">
+                                    <h1 class="">Bình luận</h1>
+                                    <!--Reviews Container-->
+                                    <div class="comments-area p-3">
+                                        <!--Comment Box-->
+                                        <!-- Bình luận cấp 1 -->
+                                        @if ($product->comments->count() == 0)
+                                            <p>Không có bình luận nào</p>
+                                        @else
+                                            @foreach ($product->comments->where('parent_id', null) as $comment)
+                                                <div class="mb-3 p-4">
+                                                    <div class="card-body">
+                                                        <div class="d-flex">
+                                                            <div>
+                                                                <h4 class="mb-1">
+                                                                    @if ($comment->user->img_thumbnail)
+                                                                        <img src="{{ Storage::url($comment->user->img_thumbnail) }}"
+                                                                            class="rounded-circle me-3" alt="User Avatar"
+                                                                            width="50">
+                                                                    @else
+                                                                        <img src="{{ asset('themes/image/logo.jpg') }}"
+                                                                            class="rounded-circle me-3" alt="User Avatar"
+                                                                            width="50">
+                                                                    @endif
+                                                                    {{ $comment->user->name }}
+                                                                </h4>
+                                                                <small
+                                                                    class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                                                                <p class="mt-2">{{ $comment->comment }}</p>
+                                                                <!-- Nút trả lời -->
+                                                                <button class="btn btn-sm btn-outline-primary reply-btn"
+                                                                    type="button" data-id="{{ $comment->id }}">Trả
+                                                                    lời</button>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <hr>
+                                                    </div>
+                                                    <!-- Bình luận cấp 2 (trả lời) -->
+                                                    @foreach ($comment->replies as $reply)
+                                                        <div class="card-body ps-5 mt-3">
+                                                            <div class="d-flex mb-4">
+
                                                                 <div>
-                                                                    <h4 class="mb-1">
-                                                                        @if ($comment->user->img_thumbnail)
-                                                                            <img src="{{ Storage::url($comment->user->img_thumbnail) }}"
+                                                                    <h5 class="mb-1">
+                                                                        @if ($reply->user->img_thumbnail)
+                                                                            <img src="{{ Storage::url($reply->user->img_thumbnail) }}"
                                                                                 class="rounded-circle me-3"
                                                                                 alt="User Avatar" width="50">
                                                                         @else
@@ -267,131 +293,97 @@
                                                                                 class="rounded-circle me-3"
                                                                                 alt="User Avatar" width="50">
                                                                         @endif
-                                                                        {{ $comment->user->name }}
-                                                                    </h4>
+                                                                        {{ $reply->user->name }}
+                                                                    </h5>
                                                                     <small
-                                                                        class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
-                                                                    <p class="mt-2">{{ $comment->comment }}</p>
-                                                                    <!-- Nút trả lời -->
+                                                                        class="text-muted">{{ $reply->created_at->diffForHumans() }}</small>
+                                                                    <p class="mt-2">{{ $reply->comment }}</p>
                                                                     <button
                                                                         class="btn btn-sm btn-outline-primary reply-btn"
                                                                         type="button" data-id="{{ $comment->id }}">Trả
                                                                         lời</button>
-
                                                                 </div>
 
                                                             </div>
                                                             <hr>
                                                         </div>
-                                                        <!-- Bình luận cấp 2 (trả lời) -->
-                                                        @foreach ($comment->replies as $reply)
-                                                            <div class="card-body ps-5 mt-3">
-                                                                <div class="d-flex mb-4">
+                                                    @endforeach
 
-                                                                    <div>
-                                                                        <h5 class="mb-1">
-                                                                            @if ($reply->user->img_thumbnail)
-                                                                                <img src="{{ Storage::url($reply->user->img_thumbnail) }}"
-                                                                                    class="rounded-circle me-3"
-                                                                                    alt="User Avatar" width="50">
-                                                                            @else
-                                                                                <img src="{{ asset('themes/image/logo.jpg') }}"
-                                                                                    class="rounded-circle me-3"
-                                                                                    alt="User Avatar" width="50">
-                                                                            @endif
-                                                                            {{ $reply->user->name }}
-                                                                        </h5>
-                                                                        <small
-                                                                            class="text-muted">{{ $reply->created_at->diffForHumans() }}</small>
-                                                                        <p class="mt-2">{{ $reply->comment }}</p>
-                                                                        <button
-                                                                            class="btn btn-sm btn-outline-primary reply-btn"
-                                                                            type="button"
-                                                                            data-id="{{ $comment->id }}">Trả
-                                                                            lời</button>
-                                                                    </div>
-
-                                                                </div>
-                                                                <hr>
+                                                    <!-- Khu vực nhập bình luận trả lời -->
+                                                    <div class="card-body ps-5 d-none reply-form"
+                                                        id="reply-form-{{ $comment->id }}">
+                                                        <form action="{{ route('comments', $comment->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="product_id"
+                                                                value="{{ $product->id }}">
+                                                            <input type="hidden" name="parent_id"
+                                                                value="{{ $comment->id }}">
+                                                            <div class="mb-2">
+                                                                <textarea class="form-control" name="comment" rows="2" placeholder="Nhập câu trả lời..."></textarea>
                                                             </div>
-                                                        @endforeach
-
-                                                        <!-- Khu vực nhập bình luận trả lời -->
-                                                        <div class="card-body ps-5 d-none reply-form"
-                                                            id="reply-form-{{ $comment->id }}">
-                                                            <form action="{{ route('comments', $comment->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                <input type="hidden" name="product_id"
-                                                                    value="{{ $product->id }}">
-                                                                <input type="hidden" name="parent_id"
-                                                                    value="{{ $comment->id }}">
-                                                                <div class="mb-2">
-                                                                    <textarea class="form-control" name="comment" rows="2" placeholder="Nhập câu trả lời..."></textarea>
-                                                                </div>
-                                                                <button class="btn btn-primary btn-sm">Gửi</button>
-                                                                <button type="button"
-                                                                    class="btn btn-secondary btn-sm cancel-btn">Hủy</button>
-                                                            </form>
-                                                        </div>
+                                                            <button class="btn btn-primary btn-sm">Gửi</button>
+                                                            <button type="button"
+                                                                class="btn btn-secondary btn-sm cancel-btn">Hủy</button>
+                                                        </form>
                                                     </div>
-                                                @endforeach
-                                            @endif
-                                        </div>
-
-                                        <!-- Comment Form -->
-                                        @if (Auth::check())
-                                            <div class="shop-comment-form">
-                                                <form action="{{ route('comments') }}" method="post">
-                                                    @csrf
-                                                    <h2 class="reviews__comment--reply__title mb-15">Thêm Bình Luận </h2>
-
-                                                    <div class="row">
-                                                        <input type="hidden" name="product_id"
-                                                            value="{{ $product->id }}">
-                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
-                                                            <textarea class="form-control" style="height: 200px;" name="comment" placeholder="Nhập câu trả lời..."></textarea>
-
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
-                                                        <button class="btn btn-primary p-3">
-                                                            Gửi
-                                                        </button>
-
-                                                    </div>
-                                                </form>
-                                            </div>
+                                                </div>
+                                            @endforeach
                                         @endif
 
-
                                     </div>
 
-                                    <!-- Tab -->
-                                    <div class="tab" id="prod-faq">
-                                        <div class="content">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
-                                                vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus
-                                                aliquet
-                                                nunc, vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
-                                                cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum
-                                                accumsan
-                                                quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
-                                                bibendum dui. Aenean consequat pulvinar luctus. Suspendisse consectetur
-                                                tristique tortor</p>
+                                    <!-- Comment Form -->
+                                    @if (Auth::check())
+                                        <div class="shop-comment-form">
+                                            <form action="{{ route('comments') }}" method="post">
+                                                @csrf
+                                                <h2 class="reviews__comment--reply__title mb-15">Thêm Bình Luận </h2>
+
+                                                <div class="row">
+                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                                                        <textarea class="form-control" style="height: 200px;" name="comment" placeholder="Nhập câu trả lời..."></textarea>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                                                    <button class="btn btn-primary p-3">
+                                                        Gửi
+                                                    </button>
+
+                                                </div>
+                                            </form>
                                         </div>
-                                    </div>
+                                    @endif
+
 
                                 </div>
-                            </div>
 
+                                <!-- Tab -->
+                                <div class="tab" id="prod-faq">
+                                    <div class="content">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
+                                            vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus aliquet
+                                            nunc, vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
+                                            cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum accumsan
+                                            quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
+                                            bibendum dui. Aenean consequat pulvinar luctus. Suspendisse consectetur
+                                            tristique tortor</p>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-                        <!--End Product Info Tabs-->
 
                     </div>
+                    <!--End Product Info Tabs-->
 
                 </div>
+                <!-- End Lower Box -->
+
+            </div>
         </section>
 
         <section class="products-section-six">
@@ -621,39 +613,4 @@
             </div>
         </form>
     </div>
-@endsection
-@section('script')
-    <script>
-        function addToCart() {
-            // Thu thập tất cả các `attribute` đã chọn
-            const selectedAttributes = {};
-            document.querySelectorAll('.attribute-container input[type="radio"]:checked').forEach(input => {
-                selectedAttributes[input.name] = input.value;
-            });
-
-            // Tìm `variant_id` tương ứng với các `attribute` đã chọn từ server
-            fetch("{{ route('getVariantId') }}", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        product_id: {{ $product->id }},
-                        attributes: selectedAttributes
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.variant_id) {
-                        // Cập nhật `variant_id` vào input hidden và submit form
-                        document.getElementById('variantId').value = data.variant_id;
-                        document.getElementById('addToCartForm').submit();
-                    } else {
-                        alert('Không tìm thấy biến thể phù hợp');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    </script>
 @endsection

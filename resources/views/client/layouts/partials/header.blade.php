@@ -56,11 +56,7 @@
 
                 </nav>
                 <!-- Main Menu End-->
-
             </div>
-
-
-
             <!-- Outer Box -->
             <div class="outer-box d-flex align-items-center">
 
@@ -118,7 +114,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <!-- Logo -->
             <div class="logo">
-                <a href="index.html" title=""><img src="{{ asset('themes/clients/images/logo-small.png') }}"
+                <a href="{{ route('home') }}" title=""><img src="{{ asset('themes/clients/images/logo-small.png') }}"
                         alt="" title=""></a>
             </div>
 
