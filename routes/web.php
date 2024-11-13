@@ -87,7 +87,7 @@ Route::group([
     'middleware' => 'auth',
 ], function () {
     Route::post('addToCart', [CartController::class, 'addToCart'])->name('addToCart');
-    Route::get('listCart', [CartController::class, 'listCart'])->name('listCart');
+    Route::post('get-variant-id', [CartController::class, 'getVariantId'])->name('getVariantId');
 });
 
 // Search sản phẩm cùng danh mục
