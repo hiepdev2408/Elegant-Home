@@ -82,12 +82,6 @@ Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
 Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
 
-Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class, 'index'])->name('cart');
-    Route::post('store', [CartController::class, 'store'])->name('cart.add');
-    Route::put('update/{id}', [CartController::class, 'update'])->name('cart.update');
-    Route::delete('destroy/{id}', [CartController::class, 'destroy'])->name('destroy');
-
 //cart
 Route::group([
     'middleware' => 'auth',

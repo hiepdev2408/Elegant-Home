@@ -14,51 +14,11 @@ use function Laravel\Prompts\alert;
 
 class CartController extends Controller
 {
-
-    public function listCart()
-    {
-        // dd($request->all());
-        try {
-            // $user = Auth::user();
-
-            // Tạo giỏ hàng mới nếu chưa có, hoặc lấy giỏ hàng hiện tại của user
-            $variant_id = 8;
-            $cart = Cart::firstOrCreate(['user_id' => 1]);
-
-            // Kiểm tra xem sản phẩm với variant_id có tồn tại trong giỏ hàng hay không
-            $cartItem = $cart->cartDetails()
-                ->where('variant_id', $variant_id)
-                ->first();
-
-            if ($cartItem) {
-                // Nếu sản phẩm với variant_id đã tồn tại trong giỏ hàng, cộng thêm số lượng
-                $cartItem->quantity += $request->quantity;
-                $cartItem->total_amount += $request->total_amount * $request->quantity;
-                $cartItem->save();
-            } else {
-                // Nếu sản phẩm chưa tồn tại, tạo mới cart item
-                $cartItem = $cart->cartDetails()->create([
-                    'product_id' => $request->product_id,
-                    'variant_id' => 8,
-                    'quantity' => $request->quantity,
-                    'total_amount' => $request->total_amount * $request->quantity,
-                ]);
-            }
-            return back();
-
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-        }
-    }
     public function addToCart(Request $request)
     {
         // Tìm sản phẩm theo `product_id`
         $product = Product::findOrFail($request->input('product_id'));
 
-<<<<<<< HEAD
-        // dd($productId);
-    }
-=======
         // Khởi tạo biến để lưu thông tin giỏ hàng
         $cartItem = [
             'product_id' => $product->id,
@@ -67,7 +27,6 @@ class CartController extends Controller
             'price' => $request->input('total_amount'),
             'attributes' => [],
         ];
->>>>>>> 70f234e5caa6845eb3c225ff5ef02e974acdcfc0
 
         // Kiểm tra nếu sản phẩm có biến thể
         if ($product->variants->count() > 0) {

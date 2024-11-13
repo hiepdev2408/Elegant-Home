@@ -21,10 +21,12 @@
             </div>
         @endif
         <div class="row">
-            <div class="card-header d-flex justify-content-end align-items-center mb-3">
-                <a class="btn btn-warning" href="{{ route('permissions.gant') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>
-                    Cấp quyền</a>
-            </div>
+            @if (Auth::check() && Auth::user()->role_id == 1)
+                <div class="card-header d-flex justify-content-end align-items-center mb-3">
+                    <a class="btn btn-warning" href="{{ route('permissions.gant') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>
+                        Cấp quyền</a>
+                </div>
+            @endif
             <div class="card-header d-flex justify-content-end align-items-center mb-3">
                 <a class="btn btn-primary" href="{{ route('permissions.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>
                     Thêm mới</a>
