@@ -1,5 +1,4 @@
 <div class="header-lower">
-
     <div class="auto-container">
         <div class="inner-container d-flex justify-content-between align-items-center">
 
@@ -37,7 +36,7 @@
                             <li><a href="about.html">About</a></li>
                             <li class="dropdown"><a href="{{ route('shop') }}">Shop</a>
                                 <ul>
-                                    <li><a href="{{ route('gird') }}">Our Products</a></li>
+                                    <li><a href="{{ route('shop') }}">Our Products</a></li>
                                     <li><a href="shop-detail.html">Product Single</a></li>
                                     <li><a href="cart.html">Shoping Cart</a></li>
                                     <li><a href="checkout.html">CheckOut</a></li>
@@ -59,6 +58,7 @@
                 <!-- Main Menu End-->
 
             </div>
+
 
 
             <!-- Outer Box -->
