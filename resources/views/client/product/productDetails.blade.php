@@ -8,9 +8,9 @@
         <section class="shop-detail-section">
             <div class="auto-container">
                 <!-- Upper Box -->
-                <form action="{{ route('cart.add') }}" method="post" id="addToCartForm">
-                    @csrf
-                    <div class="upper-box">
+                <div class="upper-box">
+                    <form action="{{ route('addToCart') }}" method="post">
+                        @csrf
                         <div class="row clearfix">
                             <!-- Gallery Column -->
                             <div class="gallery-column col-lg-6 col-md-12 col-sm-12">
@@ -51,28 +51,24 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Content Column -->
-                        <div class="content-column col-lg-6 col-md-12 col-sm-12">
-                            <div class="inner-column">
-                                <h3>{{ $product->name }}</h3>
-                                <!-- Rating -->
-                                <div class="rating">
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="light fa fa-star"></span>
-                                    <i>(4 customer review)</i>
-                                </div>
-                                <!-- Price -->
-                                <div class="price">{{ number_format($product->price_sale, 0, ',', '.') }} VNĐ
-                                    <span>{{ number_format($product->base_price, 0, ',', '.') }}VNĐ</span>
-                                </div>
-                                <div class="text">{{ $product->description }}</div>
-
-                                <form action="{{ route('addToCart') }}" method="post">
-                                    @csrf
+                            <!-- Content Column -->
+                            <div class="content-column col-lg-6 col-md-12 col-sm-12">
+                                <div class="inner-column">
+                                    <h3>{{ $product->name }}</h3>
+                                    <!-- Rating -->
+                                    <div class="rating">
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="light fa fa-star"></span>
+                                        <i>(4 customer review)</i>
+                                    </div>
+                                    <!-- Price -->
+                                    <div class="price">{{ number_format($product->price_sale, 0, ',', '.') }} VNĐ
+                                        <span>{{ number_format($product->base_price, 0, ',', '.') }}VNĐ</span>
+                                    </div>
+                                    <div class="text">{{ $product->description }}</div>
                                     <div class="d-flex flex-wrap">
                                         @php
                                             // Khởi tạo mảng để lưu trữ các nhóm thuộc tính và giá trị của chúng
@@ -119,10 +115,204 @@
                                                         @foreach ($values as $value)
                                                             <div class="select-box me-3">
                                                                 <input type="radio" name="{{ $attributeName }}"
-                                                                    id="attributes[{{ $value['id'] }}]" value="attributes[{{ $value['id'] }}]"
+                                                                    id="attribute_{{ $attributeName }}_{{ $value['id'] }}"
+                                                                    value="{{ $value['id'] }}"
                                                                     {{ $loop->first ? 'checked' : '' }}>
                                                                 <label
-                                                                    for="{{ $value['id'] }}">{{ $value['name'] }}</label>
+                                                                    for="attribute_{{ $attributeName }}_{{ $value['id'] }}">{{ $value['name'] }}</label>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+                                    <div class="categories"><span>Danh mục :</span>
+                                        @foreach ($product->categories as $category)
+                                            {{ $category->name }}
+                                        @endforeach
+                                    </div>
+
+                                    <!-- Tags -->
+                                    <div class="sku"><span>Mã sản phẩm :</span> {{ $product->sku }}</div>
+                                    <!-- Social Box -->
+                                    <ul class="social-box">
+                                        <li class="share">Share:</li>
+                                        <li><a href="https://www.facebook.com/" class="fa fa-facebook-f"></a></li>
+                                        <li><a href="https://www.twitter.com/" class="fa fa-twitter"></a></li>
+                                        <li><a href="https://dribbble.com/" class="fa fa-dribbble"></a></li>
+                                        <li><a href="https://www.linkedin.com/" class="fa fa-linkedin"></a></li>
+                                    </ul>
+                                    <div class="d-flex align-items-center flex-wrap">
+
+                                        <!-- Button Box -->
+                                        <div class="button-box">
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="hidden" name="variant_id" id="variantId" value="">
+                                            <input type="hidden" name="total_amount" value="{{ $product->price_sale }}">
+                                            <button type="submit" onclick="addToCart()" class="theme-btn btn-style-one">
+                                                Add to cart
+                                            </button>
+                                        </div>
+                                        <!-- Quantity Box -->
+                                        <div class="quantity-box d-flex align-items-center">
+                                            <div class="item-quantity">
+                                                <input class="qty-spinner" type="text" value="1" name="quantity">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- End Upper Box -->
+
+                    <!-- Lower Box -->
+                    <div class="lower-box">
+
+                        <!-- Product Info Tabs -->
+                        <div class="product-info-tabs">
+                            <!-- Product Tabs -->
+                            <div class="prod-tabs tabs-box">
+
+                                <!-- Tab Btns -->
+                                <ul class="tab-btns tab-buttons clearfix">
+                                    <li data-tab="#prod-details" class="tab-btn active-btn">Product Details</li>
+                                    <li data-tab="#prod-info" class="tab-btn">additional information</li>
+                                    <li data-tab="#prod-review" class="tab-btn">Review (02)</li>
+                                    <li data-tab="#prod-faq" class="tab-btn">Faq</li>
+                                </ul>
+
+                                <!-- Tabs Container -->
+                                <div class="tabs-content">
+
+                                    <!-- Tab / Active Tab -->
+                                    <div class="tab active-tab" id="prod-details">
+                                        <div class="content">
+                                            <h3>Experience is over the world visit</h3>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
+                                                vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus
+                                                aliquet
+                                                nunc vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
+                                                cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum
+                                                accumsan
+                                                quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
+                                                bibendum dui. Aenean consequat pulvinar luctus</p>
+                                            <h5>More Details</h5>
+                                            <div class="row clearfix">
+                                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                                    <ul class="list-one">
+                                                        <li>Lorem Ipsum is simply dummy text of the printing and typesetting
+                                                            industry</li>
+                                                        <li>Lorem Ipsum has been the ‘s standard dummy text. Lorem Ipsumum
+                                                            is
+                                                            simply dummy text.</li>
+                                                        <li>type here your detail one by one li more add</li>
+                                                        <li>has been the industry’s standard dummy text ever since. Lorem
+                                                            Ips
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                                    <ul class="list-two">
+                                                        <li>Lorem Ipsum generators on the tend to repeat.</li>
+                                                        <li>If you are going to use a passage.</li>
+                                                        <li>Lorem Ipsum generators on the tend to repeat.</li>
+                                                        <li>Lorem Ipsum generators on the tend to repeat.</li>
+                                                        <li>If you are going to use a passage.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tab -->
+                                    <div class="tab" id="prod-info">
+                                        <div class="content">
+                                            <h3>Experience is over the world visit</h3>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
+                                                vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus
+                                                aliquet
+                                                nunc vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
+                                                cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum
+                                                accumsan
+                                                quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
+                                                bibendum dui. Aenean consequat pulvinar luctus</p>
+                                        </div>
+                                    </div>
+
+                                    <!--Tab-->
+                                    <div class="tab p-2" id="prod-review">
+                                        <h1 class="">Bình luận</h1>
+                                        <!--Reviews Container-->
+                                        <div class="comments-area p-3">
+                                            <!--Comment Box-->
+                                            <!-- Bình luận cấp 1 -->
+                                            @if ($product->comments->count() == 0)
+                                                <p>Không có bình luận nào</p>
+                                            @else
+                                                @foreach ($product->comments->where('parent_id', null) as $comment)
+                                                    <div class="mb-3 p-4">
+                                                        <div class="card-body">
+                                                            <div class="d-flex">
+                                                                <div>
+                                                                    <h4 class="mb-1">
+                                                                        @if ($comment->user->img_thumbnail)
+                                                                            <img src="{{ Storage::url($comment->user->img_thumbnail) }}"
+                                                                                class="rounded-circle me-3"
+                                                                                alt="User Avatar" width="50">
+                                                                        @else
+                                                                            <img src="{{ asset('themes/image/logo.jpg') }}"
+                                                                                class="rounded-circle me-3"
+                                                                                alt="User Avatar" width="50">
+                                                                        @endif
+                                                                        {{ $comment->user->name }}
+                                                                    </h4>
+                                                                    <small
+                                                                        class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                                                                    <p class="mt-2">{{ $comment->comment }}</p>
+                                                                    <!-- Nút trả lời -->
+                                                                    <button
+                                                                        class="btn btn-sm btn-outline-primary reply-btn"
+                                                                        type="button" data-id="{{ $comment->id }}">Trả
+                                                                        lời</button>
+
+                                                                </div>
+
+                                                            </div>
+                                                            <hr>
+                                                        </div>
+                                                        <!-- Bình luận cấp 2 (trả lời) -->
+                                                        @foreach ($comment->replies as $reply)
+                                                            <div class="card-body ps-5 mt-3">
+                                                                <div class="d-flex mb-4">
+
+                                                                    <div>
+                                                                        <h5 class="mb-1">
+                                                                            @if ($reply->user->img_thumbnail)
+                                                                                <img src="{{ Storage::url($reply->user->img_thumbnail) }}"
+                                                                                    class="rounded-circle me-3"
+                                                                                    alt="User Avatar" width="50">
+                                                                            @else
+                                                                                <img src="{{ asset('themes/image/logo.jpg') }}"
+                                                                                    class="rounded-circle me-3"
+                                                                                    alt="User Avatar" width="50">
+                                                                            @endif
+                                                                            {{ $reply->user->name }}
+                                                                        </h5>
+                                                                        <small
+                                                                            class="text-muted">{{ $reply->created_at->diffForHumans() }}</small>
+                                                                        <p class="mt-2">{{ $reply->comment }}</p>
+                                                                        <button
+                                                                            class="btn btn-sm btn-outline-primary reply-btn"
+                                                                            type="button"
+                                                                            data-id="{{ $comment->id }}">Trả
+                                                                            lời</button>
+                                                                    </div>
+
+                                                                </div>
+                                                                <hr>
                                                             </div>
                                                         @endforeach
                                                     </div>
@@ -613,4 +803,39 @@
             </div>
         </form>
     </div>
+@endsection
+@section('script')
+    <script>
+        function addToCart() {
+            // Thu thập tất cả các `attribute` đã chọn
+            const selectedAttributes = {};
+            document.querySelectorAll('.attribute-container input[type="radio"]:checked').forEach(input => {
+                selectedAttributes[input.name] = input.value;
+            });
+
+            // Tìm `variant_id` tương ứng với các `attribute` đã chọn từ server
+            fetch("{{ route('getVariantId') }}", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        product_id: {{ $product->id }},
+                        attributes: selectedAttributes
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.variant_id) {
+                        // Cập nhật `variant_id` vào input hidden và submit form
+                        document.getElementById('variantId').value = data.variant_id;
+                        document.getElementById('addToCartForm').submit();
+                    } else {
+                        alert('Không tìm thấy biến thể phù hợp');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
 @endsection

@@ -82,7 +82,7 @@ class AccountController extends Controller
 
     // Lưu người dùng vào cơ sở dữ liệu
     $acc = User::create($user);
-    
+
     if ($acc) {
         // Gửi email xác minh
         Mail::to($acc->email)->send(new VerifyAccount($acc));
