@@ -98,3 +98,4 @@ Route::group([
 
 // Search sản phẩm cùng danh mục
 Route::get('search/{id}', [HomeController::class, 'search'])->name('search');
+});
