@@ -1,5 +1,4 @@
 <div class="header-lower">
-
     <div class="auto-container">
         <div class="inner-container d-flex justify-content-between align-items-center">
 
@@ -59,6 +58,7 @@
                 <!-- Main Menu End-->
 
             </div>
+            
 
 
             <!-- Outer Box -->
