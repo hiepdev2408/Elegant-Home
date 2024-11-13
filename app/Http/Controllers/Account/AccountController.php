@@ -91,6 +91,7 @@ class AccountController extends Controller
 
     // Nếu có lỗi, hiển thị cho người dùng
     return redirect()->back()->withErrors(['msg' => 'Có lỗi xảy ra trong quá trình đăng ký']);
+       
 
     }
     public function veryfy($email)

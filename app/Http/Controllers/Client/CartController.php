@@ -40,7 +40,7 @@ class CartController extends Controller
     {
         // Xác định user và giỏ hàng hiện tại
         $user = Auth::user();
-        $cart = $user->carts()->firstOrCreate(['user_id' => $user->id]);
+        $cart = $user->cart()->firstOrCreate(['user_id' => $user->id]);
 
         // Lấy thông tin từ request
         $productId = $request->input('product_id');

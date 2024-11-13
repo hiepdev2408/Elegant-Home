@@ -289,7 +289,7 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="price">
                                         <span>{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
-                                        {{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ
+                                        {{ number_format($product->price_sale ?? 0, 0, ',', '.' )}}VNĐ
                                     </div>
                                 </div>
                             </div>
