@@ -21,6 +21,6 @@ class CheckAdmin
          */
         $user = Auth::user();
 
-        return $user->isAdmin() ? $next($request) : abort(403);
+        return in_array($user->role_id, [1, 2]) ? $next($request) : abort(403);
     }
 }
