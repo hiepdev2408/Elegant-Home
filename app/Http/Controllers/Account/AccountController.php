@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Mail;
 
@@ -126,15 +127,11 @@ class AccountController extends Controller
 
     public function reset(Request $request)
     {
-
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|confirmed|min:8',
             'token' => 'required'
-        ], [
-            'password.min' => 'Mật khẩu phải tối thiểu 8 ký tự',
         ]);
-
 
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
@@ -143,7 +140,7 @@ class AccountController extends Controller
                 $user->save();
             }
         );
-
+        Log::info('Password reset request:', $request->all());
 
         return $status == Password::PASSWORD_RESET
             ? redirect()->route('login')->with('status', 'Đổi mật khẩu thành công')

@@ -95,6 +95,11 @@
                         {{ session()->get('messageError') }}
                     </div>
                 @endif
+                @if (session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+            @endif
                     <div class="styled-form">
                         <h4>Login here</h4>
                         <form action="{{ route('login.submit') }}" method="POST">

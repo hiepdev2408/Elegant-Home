@@ -53,32 +53,36 @@
                             <form action="{{ route('password.update') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="token" value="{{ $token }}">
+                                
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" name="email" value="{{ request('email') }}" placeholder="Enter your email" required>
+                                    @error('email')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input type="email" name="password" 
-                                        placeholder="Enter Password">
-                                        @error('password')
-                                        <span class="text-danger">{{ $message }}</span>
+                                    <input type="password" name="password" placeholder="Enter Password" required>
+                                    @error('password')
+                                    <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                
                                 <div class="form-group">
                                     <label>Confirm Password</label>
-                                    <input type="email" name="password_confirmation" 
-                                        placeholder="Enter Password">
-                                        @error('password_confirmation')
-                                        <span class="text-danger">{{ $message }}</span>
+                                    <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+                                    @error('password_confirmation')
+                                    <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-
-
-
-
+                                
                                 <div class="form-group">
-                                    <button type="submit" class="theme-btn btn-style-one">
-                                        Send
-                                    </button>
+                                    <button type="submit" class="theme-btn btn-style-one">Send</button>
                                 </div>
                             </form>
+                        </div>
 
 
 
