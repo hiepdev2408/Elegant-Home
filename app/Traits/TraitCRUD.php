@@ -68,7 +68,7 @@ trait TraitCRUD
     // end validate
     public function index()
     {
-        $this->authorize('modules', '' . $this->model->getTable() . '.' . __FUNCTION__);
+        // $this->authorize('modules', '' . $this->model->getTable() . '.' . __FUNCTION__);
 
         $data = $this->model
             ->when(!empty($this->relations), function (Builder $query) {
@@ -91,7 +91,7 @@ trait TraitCRUD
 
     public function create()
     {
-        $this->authorize('modules', '' . $this->model->getTable() . '.' . __FUNCTION__);
+        // $this->authorize('modules', '' . $this->model->getTable() . '.' . __FUNCTION__);
 
         $data = $this->model
             ->when(!empty($this->relations), function (Builder $query) {
