@@ -274,7 +274,7 @@
                                                             </div>
 
                                                         </div>
-                                                        <hr>
+
                                                     </div>
                                                     <!-- Bình luận cấp 2 (trả lời) -->
                                                     @foreach ($comment->replies as $reply)
@@ -304,7 +304,7 @@
                                                                 </div>
 
                                                             </div>
-                                                            <hr>
+
                                                         </div>
                                                     @endforeach
 
