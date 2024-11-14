@@ -10,26 +10,38 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    
-    public function index()
+
+    public function listAdmin()
     {
-        $data = User::query()->get();
-        return view('admin.users.index', compact('data'));
-       
+        $admins = User::query()->where('role_id', 1)->get();
+
+        return view('admin.users.listAdmin', compact('admins'));
     }
-  
+    public function listStaff()
+    {
+        $staffs = User::query()->where('role_id', 2)->get();
+
+        return view('admin.users.listStaff', compact('staffs'));
+    }
+    public function listCustomer()
+    {
+        $customers = User::query()->where('role_id', 3)->get();
+
+        return view('admin.users.listCustomer', compact('customers'));
+    }
+
     public function create()
     {
-      
+
     }
 
-   
+
     public function store(Request $request)
     {
-        
+
     }
 
-   
+
     public function show(string $id)
     {
         $user = User::findOrFail($id);
@@ -45,7 +57,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        
+
         // $request->validate([
         //     'name' => 'required|string|max:255',
         //     'email' => 'required|string|email|max:255|unique:users,email,'.$id,
@@ -53,9 +65,9 @@ class UserController extends Controller
         //     'address' => 'nullable|string|max:255',
         //     'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         // ]);
-        
+
         $users = $request->except('avatar');
-        
+
         $currentAvatar = 'user/' . $request->avatar;
 
         if($request->hasFile('avatar')){
@@ -69,7 +81,7 @@ class UserController extends Controller
         }
 
         return redirect()->route('users.edit', $id)->with('success', 'Thông tin đã được cập nhật!');
-    }    
+    }
     /**
      * Remove the specified resource from storage.
      */
@@ -79,6 +91,6 @@ class UserController extends Controller
         return redirect()->route('users.index');
 
         // Thêm thông báo thành công
-        
+
     }
 }

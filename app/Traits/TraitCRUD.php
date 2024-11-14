@@ -25,6 +25,7 @@ trait TraitCRUD
                     'content' => 'required|string',
                     'img_path' => 'required|image',
                 ];
+
                 break;
 
             case 'categories':
@@ -32,12 +33,14 @@ trait TraitCRUD
                     'name' => 'required|string|max:255|unique:categories,name',
                     'parent_id' => 'nullable|integer|exists:categories,id',
                 ];
+
                 break;
 
             case 'attributes':
                 $rules = [
                     'name' => 'required|string|max:255|min:4',
                 ];
+
                 break;
 
                 case 'attribute_values':
@@ -45,8 +48,16 @@ trait TraitCRUD
                         'attribute_id' => 'required|exists:attributes,id',
                         'value' => 'required|string|max:255',
                     ];
+
                     break;
-            
+
+                case 'permissions':
+                    $rules = [
+
+                    ];
+
+                    break;
+
             default:
                 throw new \Exception("không hợp lệ để xác thực.");
         }
@@ -57,6 +68,8 @@ trait TraitCRUD
     // end validate
     public function index()
     {
+        $this->authorize('modules', '' . $this->model->getTable() . '.' . __FUNCTION__);
+
         $data = $this->model
             ->when(!empty($this->relations), function (Builder $query) {
                 $query->with($this->relations);
@@ -78,6 +91,8 @@ trait TraitCRUD
 
     public function create()
     {
+        $this->authorize('modules', '' . $this->model->getTable() . '.' . __FUNCTION__);
+
         $data = $this->model
             ->when(!empty($this->relations), function (Builder $query) {
                 $query->with($this->relations);
@@ -92,7 +107,7 @@ trait TraitCRUD
         $data = $request->all();
 
         if (!isset($data['slug'])) {
-            
+
             $data['slug'] = Str::slug($request['title']);
         }
 
@@ -109,6 +124,8 @@ trait TraitCRUD
     }
     public function show($id)
     {
+        $this->authorize('modules', '' . $this->model->getTable() . '.' . __FUNCTION__);
+
         $data = $this->model
             ->when(!empty($this->relations), function (Builder $query) {
                 $query->with($this->relations);
@@ -122,8 +139,9 @@ trait TraitCRUD
         return view('admin.' . $this->model->getTable() . '.' . __FUNCTION__, compact('data', 'dataID'));
     }
     public function edit($id)
-
     {
+        $this->authorize('modules', '' . $this->model->getTable() . '.' . __FUNCTION__);
+
         $data = $this->model
             ->when(!empty($this->relations), function (Builder $query) {
                 $query->with($this->relations);
@@ -174,7 +192,7 @@ trait TraitCRUD
     public function destroy($id)
     {
         $this->model->findOrFail($id)->delete();
-        
+
         return redirect()->back()->with('success', __('Xóa dữ liệu thành công'));
     }
     public function restore($id)

@@ -33,12 +33,10 @@
                 <div class="mb-3">
                     @foreach ($categories as $category)
                     <div class="mb-3">
-                        <h6>
-                            <a href="{{ route('shop.categoryProduct', $category->id) }}" style="color: #000000;">{{ $category->name }}</a>
-                        </h6>
+                       
                         @if ($category->children->isNotEmpty())
                             <select id="subcategorySelect" onchange="location = this.value;" style="font-size: 16px; width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-                               
+                               <option value="{{ route('shop.categoryProduct', $category->id) }}">{{ $category->name }}</option>
                                 @foreach ($category->children as $child)
                                     <option value="{{ route('shop.categoryProduct', $child->id) }}">{{ $child->name }}</option>
                                 @endforeach
@@ -142,6 +140,7 @@
         </div> --}}
         
         <!-- Trending Widget -->
+        @if ($productnew->isNotEmpty())
         <div class="sidebar-widget trending-widget">
             <div class="widget-content">
                
@@ -160,6 +159,8 @@
                
             </div>
         </div>
+        @endif
+       
         
         <!-- Tags Widget -->
         <div class="sidebar-widget-two tags-widget">

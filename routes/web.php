@@ -58,9 +58,8 @@ Route::group(['prefix' => 'account'], function () {
     Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
     //favorite
     Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
-    Route::get('/favourite/count',[AccountController::class,'favouriteCount'])->name('favouriteCount');
+    Route::get('/favourite/count', [AccountController::class, 'favouriteCount'])->name('favouriteCount');
     Route::delete('/deleteFavorite/{id}', [AccountController::class, 'deleteFavorite'])->name('deleteFavorite');
-
 });
 
 Route::group(['prefix' => 'contact'], function () {
@@ -70,6 +69,8 @@ Route::group(['prefix' => 'contact'], function () {
 Route::get('categories/{category_id}/product/{id}/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 
 Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
+Route::get('/gird', [ShopController::class, 'gird'])->name('gird');
+
 Route::get('/search', [ShopController::class, 'shopFilter'])->name('shop.search');
 Route::get('/categories/{category_id}', [ShopController::class, 'shopFilter'])->name('shop.categoryProduct');
 Route::get('/filter', [ShopController::class, 'shopFilter'])->name('shop.filter');
@@ -80,14 +81,14 @@ Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
 Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
 
-
 //cart
 Route::group([
     'middleware' => 'auth',
 ], function () {
     Route::post('addToCart', [CartController::class, 'addToCart'])->name('addToCart');
-    Route::get('listCart', [CartController::class, 'listCart'])->name('listCart');
+    Route::post('get-variant-id', [CartController::class, 'getVariantId'])->name('getVariantId');
 });
 
 // Search sản phẩm cùng danh mục
 Route::get('search/{id}', [HomeController::class, 'search'])->name('search');
+

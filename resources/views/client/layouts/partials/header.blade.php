@@ -1,5 +1,4 @@
 <div class="header-lower">
-
     <div class="auto-container">
         <div class="inner-container d-flex justify-content-between align-items-center">
 
@@ -33,11 +32,11 @@
 
                     <div class="navbar-collapse collapse clearfix" id="navbarSupportedContent">
                         <ul class="navigation clearfix">
-                            <li><a href="/">Home</a></li>
+                            <li><a href="{{ route('home') }}">Home</a></li>
                             <li><a href="about.html">About</a></li>
-                            <li class="dropdown"><a href="{{ route('shop')}}">Shop</a>
+                            <li class="dropdown"><a href="{{ route('shop') }}">Shop</a>
                                 <ul>
-                                    <li><a href="{{ route('shop')}}">Our Products</a></li>
+                                    <li><a href="{{ route('shop') }}">Our Products</a></li>
                                     <li><a href="shop-detail.html">Product Single</a></li>
                                     <li><a href="cart.html">Shoping Cart</a></li>
                                     <li><a href="checkout.html">CheckOut</a></li>
@@ -57,10 +56,7 @@
 
                 </nav>
                 <!-- Main Menu End-->
-
             </div>
-
-
             <!-- Outer Box -->
             <div class="outer-box d-flex align-items-center">
 
@@ -72,32 +68,25 @@
                         <div class="search-box-btn"><span class="flaticon-search-1"></span></div>
                     </div>
 
+                    <!-- User Box -->
                     @if (Auth::check())
-                        <div class="search-box-outer">
-                            <div class="search-box-btn">
-                                <a class="phone" href="">{{ Auth::user()->name }}</a>
-                            </div>
-                        </div>
+                        <li><a href="contact.html">{{ Auth::user()->name }}</a></li>
                     @else
-                    <div class="search-box-outer">
-                        <div class="search-box-btn">
-                            <a class="user-box flaticon-user-3" href="{{ route('login') }}"></a>
-                        </div>
-                    </div>
+                        <a class="user-box flaticon-user-3" href="{{ route('login') }}"></a>
                     @endif
+
                     <!-- Like Box -->
-                    @if (Auth::check())
                     <div class="like-box">
-                        <a class="user-box flaticon-heart" href="{{route('show.favorite')}}"></a>
-                        <span class="total-like"  id="favourites-count">{{$favouritecount}}</span>
+                        <a class="user-box flaticon-heart" href="contact.html"></a>
+                        <span class="total-like">0</span>
                     </div>
-                    @endif
+
                 </div>
 
                 <!-- Cart Box -->
                 <div class="cart-box">
                     <div class="box-inner">
-                        <a href="" class="icon-box">
+                        <a href="shop-detail.html" class="icon-box">
                             <span class="icon flaticon-bag"></span>
                             <i class="total-cart">0</i>
                         </a>
