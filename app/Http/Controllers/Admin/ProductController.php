@@ -48,7 +48,7 @@ class ProductController extends Controller
             DB::transaction(function ()use ($request) {
                 $dataProduct = $request->except(['product_galleries', 'variants', 'categories']);
 
-                // dd($dataProduct);
+
                 $dataProduct['is_active'] = isset($dataProduct['is_active']) ? 1 : 0;
                 $dataProduct['is_good_deal'] = isset($dataProduct['is_good_deal']) ? 1 : 0;
                 $dataProduct['is_new'] = isset($dataProduct['is_new']) ? 1 : 0;
@@ -58,7 +58,7 @@ class ProductController extends Controller
                 if($request->hasFile('img_thumbnail')){
                     $dataProduct['img_thumbnail'] = Storage::put('products', $request->file('img_thumbnail'));
                 }
-
+              
                 $product = Product::query()->create($dataProduct);
 
                 if(!empty($request->product_galleries)){
@@ -80,7 +80,7 @@ class ProductController extends Controller
                             'image' => Storage::put('variants', $variantData['image']),
                         ]);
                     }
-                    
+
                     if (!empty($variantData['attributes'])) {
                         foreach ($variantData['attributes'] as $key => $value) {
                             // dd($value);

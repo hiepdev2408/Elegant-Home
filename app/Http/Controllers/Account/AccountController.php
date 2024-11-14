@@ -147,6 +147,7 @@ class AccountController extends Controller
     public function showFavorite()
     {
         $favorite = auth()->user()->favorites;
+      
         return view('client.auth.favorite', compact('favorite'));
     }
     public function deleteFavorite($id)
