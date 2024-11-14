@@ -51,7 +51,50 @@
                 </div> --}}
                 <!-- Column -->
                 <div class="column col-lg-6 col-md-12 col-sm-12">
+                    <style>
+                        .alert {
+                            padding: 15px;
+                            margin: 20px 0;
+                            border: 1px solid transparent;
+                            border-radius: 4px;
+                        }
+
+                        .alert-red {
+                            color: #cd2228;
+                            background-color: #e1aeb9;
+                            border-color: #c3e6cb;
+                        }
+
+                        .fw-bold {
+                            font-weight: bold;
+                        }
+
+                        .text-danger {
+                            color: red;
+                            font-weight: bold;
+                        }
+                    </style>
                     <!-- Login Form -->
+                    @if (session()->has('erorr'))
+                        <div class="alert alert-red fw-bold">
+                            {{ session()->get('erorr') }}
+                        </div>
+                    @endif
+                    @if (session()->has('ok'))
+                        <div class="alert alert-success fw-bold">
+                            {{ session()->get('ok') }}
+                        </div>
+                    @endif
+                    @if (session()->has('oke'))
+                    <div class="alert alert-primary">
+                        {{ session()->get('oke') }}
+                    </div>
+                @endif
+                @if (session()->has('messageError'))
+                    <div class="alert alert-red fw-bold">
+                        {{ session()->get('messageError') }}
+                    </div>
+                @endif
                     <div class="styled-form">
                         <h4>Login here</h4>
                         <form action="{{ route('login.submit') }}" method="POST">
@@ -68,18 +111,29 @@
                                 <label>New Password</label>
                                 <input type="password" name="password" value="" placeholder="Create password">
                             </div>
-                            <div class="form-group">
-                                <div class="check-box">
+                            <div class="form-group row container-fluid">
+                                <div class="check-box col-sm-6 ">
                                     <input type="checkbox" name="remember-password" id="type-2">
                                     <label for="type-2">Remember Me?</label>
                                 </div>
+                                <div class="col-sm-6">
+                                    
+                                    <label for="type-2"><a href="{{route('password.request')}}">Quên mật khẩu</a></label>
+                                </div>
                             </div>
+
                             <div class="form-group">
                                 <button type="submit" class="theme-btn btn-style-one">
                                     Login here
                                 </button>
                             </div>
                         </form>
+                        <div class="form-group">
+                            <label for="type-2">Bạn chưa có tài khoản ?</label>
+
+                            <button type="submit" class="theme-btn btn-style-one">
+                               <a href="{{route('register')}}">Register</a>
+                            </button>
                     </div>
                 </div>
             </div>

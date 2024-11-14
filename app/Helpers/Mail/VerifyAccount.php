@@ -39,7 +39,7 @@ class VerifyAccount extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'client.auth.verify',
+            view: 'client.auth.email',
         );
     }
 

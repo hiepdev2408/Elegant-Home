@@ -29,9 +29,10 @@ Route::group(['prefix' => 'account'], function () {
 
     Route::get('/veryfy_account/{email}', [AccountController::class, 'veryfy'])->name('veryfy');
 
-    Route::get('/password/forgot', [AccountController::class, 'showForgotPasswordForm'])->name('password.request');
-    Route::post('/password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
-
+    Route::get('password/reset', [AccountController::class, 'showForgotPasswordForm'])->name('password.request');
+    Route::post('password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
+    Route::post('password/reset', [AccountController::class, 'reset'])->name('password.update');
     Route::get('/profile', [ProfileController::class, 'profile'])
         // ->middleware('auth')
         ->name('profile.user');
@@ -57,8 +58,8 @@ Route::group(['prefix' => 'account'], function () {
     Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
     //favorite
     Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
+    Route::get('/favourite/count', [AccountController::class, 'favouriteCount'])->name('favouriteCount');
     Route::delete('/deleteFavorite/{id}', [AccountController::class, 'deleteFavorite'])->name('deleteFavorite');
-
 });
 
 Route::group(['prefix' => 'contact'], function () {
@@ -68,6 +69,8 @@ Route::group(['prefix' => 'contact'], function () {
 Route::get('categories/{category_id}/product/{id}/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 
 Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
+Route::get('/gird', [ShopController::class, 'gird'])->name('gird');
+
 Route::get('/search', [ShopController::class, 'shopFilter'])->name('shop.search');
 Route::get('/categories/{category_id}', [ShopController::class, 'shopFilter'])->name('shop.categoryProduct');
 Route::get('/filter', [ShopController::class, 'shopFilter'])->name('shop.filter');
@@ -76,12 +79,14 @@ Route::get('/filter', [ShopController::class, 'shopFilter'])->name('shop.filter'
 Route::get('productDetail/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
-Route::get('favorite/{id}', [HomeController::class, 'favorite'])->name('favorite');
+Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
 
 //cart
-Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class, 'index']);
-    Route::post('store', [CartController::class, 'store'])->name('store');
+Route::group([
+    'middleware' => 'auth',
+], function () {
+    Route::post('addToCart', [CartController::class, 'addToCart'])->name('addToCart');
+    Route::post('get-variant-id', [CartController::class, 'getVariantId'])->name('getVariantId');
 });
 
 // Search sản phẩm cùng danh mục

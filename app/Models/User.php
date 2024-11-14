@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Favourite;
 
 class User extends Authenticatable
 {
@@ -18,10 +19,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    const TYPE_ADMIN = 'admin';
-    const TYPE_MEMBER = 'member';
 
     protected $fillable = [
+        'role_id',
         'name',
         'email',
         'email_verified_at',
@@ -79,15 +79,19 @@ class User extends Authenticatable
         return $this->hasMany(CartDetail::class);
     }
 
-    public function isAdmin()
-    {
-        return $this->type == self::TYPE_ADMIN;
-    }
-    public function isMember()
-    {
-        return $this->type == self::TYPE_MEMBER;
-    }
+    // public function isAdmin()
+    // {
+    //     return $this->type == self::TYPE_ADMIN;
+    // }
+    // public function isMember()
+    // {
+    //     return $this->type == self::TYPE_MEMBER;
+    // }
     public function favorites() {
-        return $this->hasMany(favorite::class, 'user_id','id');
+        return $this->hasMany(Favourite::class, 'user_id','id');
+    }
+
+    public function role(){
+        return $this->belongsTo(Role::class);
     }
 }

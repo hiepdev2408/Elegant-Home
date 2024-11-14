@@ -4,69 +4,25 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\CartDetail;
+use App\Models\Product;
+use App\Models\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
+use function Laravel\Prompts\alert;
 
 class CartController extends Controller
 {
-    public function index()
-    {
-        $carts = Cart::query()->get();
-        return view('Client.cart.listCart');
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function getVariantId(Request $request)
     {
-        //
+        
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function addToCart(Request $request)
     {
         dd($request->all());
-        try {
-            $user = Auth::user();
-            $cart = Cart::firstOrCreate(['user_id' => $user->id]);
-            $attributes = $request->input('attribute');
 
-        } catch (\Throwable $th) {
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

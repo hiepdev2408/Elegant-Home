@@ -1,5 +1,4 @@
 <div class="header-lower">
-
     <div class="auto-container">
         <div class="inner-container d-flex justify-content-between align-items-center">
 
@@ -14,7 +13,7 @@
                 </div>
 
                 <!-- Logo -->
-                <div class="logo"><a href="index.html"><img src="{{ asset('themes/clients/images/logo.png') }}"
+                <div class="logo"><a href="{{ route('home') }}"><img src="{{ asset('themes/clients/images/logo.png') }}"
                             alt="" title=""></a></div>
             </div>
             <div class="nav-outer clearfix">
@@ -33,11 +32,11 @@
 
                     <div class="navbar-collapse collapse clearfix" id="navbarSupportedContent">
                         <ul class="navigation clearfix">
-                            <li><a href="#">Home</a></li>
+                            <li><a href="{{ route('home') }}">Home</a></li>
                             <li><a href="about.html">About</a></li>
-                            <li class="dropdown"><a href="#">Shop</a>
+                            <li class="dropdown"><a href="{{ route('shop') }}">Shop</a>
                                 <ul>
-                                    <li><a href="shop.html">Our Products</a></li>
+                                    <li><a href="{{ route('shop') }}">Our Products</a></li>
                                     <li><a href="shop-detail.html">Product Single</a></li>
                                     <li><a href="cart.html">Shoping Cart</a></li>
                                     <li><a href="checkout.html">CheckOut</a></li>
@@ -57,10 +56,7 @@
 
                 </nav>
                 <!-- Main Menu End-->
-
             </div>
-
-
             <!-- Outer Box -->
             <div class="outer-box d-flex align-items-center">
 
@@ -118,7 +114,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <!-- Logo -->
             <div class="logo">
-                <a href="index.html" title=""><img src="{{ asset('themes/clients/images/logo-small.png') }}"
+                <a href="{{ route('home') }}" title=""><img src="{{ asset('themes/clients/images/logo-small.png') }}"
                         alt="" title=""></a>
             </div>
 
