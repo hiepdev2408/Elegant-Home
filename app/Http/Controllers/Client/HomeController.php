@@ -39,7 +39,7 @@ class HomeController extends Controller
 
         $products = Product::latest('id')->take(10)->get();
         // $products =Product::query()->get();
-        $blogs = Blog::with('user')->latest()->paginate(5);
+        $blogs = Blog::with('user')->latest()->get();
         // dd($products->toArray());
 
 
@@ -60,7 +60,7 @@ class HomeController extends Controller
                 }
             ])
             ->firstOrFail();
-            
+
         // dd($product->variants);
         // Lấy danh mục của sản phẩm hiện tại
         $categoryIds = $product->categories->pluck('id');
