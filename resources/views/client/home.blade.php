@@ -1,7 +1,7 @@
 @extends('client.layouts.master')
 
 @section('title')
-Trang chủ
+    Trang chủ
 @endsection
 
 @section('content')
@@ -272,14 +272,7 @@ Trang chủ
                                         <img src="{{ Storage::url($product->img_thumbnail) }}" alt="" />
                                     @endif
                                 </a>
-                                <div class="favourite">
-                                    @if (Auth::check())
-                                    <a href="{{route('favourite', $product->id)}}">
-                                        <span class="tag flaticon-heart"></span>
-                                      </a>
-
-                                      @endif
-                                   </div>
+                                <span class="tag flaticon-heart"></span>
                                 <div class="cart-box text-center">
                                     <a class="cart" href="#">Add to Cart</a>
                                 </div>
@@ -295,8 +288,8 @@ Trang chủ
                                 <h6><a href="shop-detail.html">{{ Str::limit($product->name, 30) }}</a></h6>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="price">
-                                        <span>{{ number_format($product->base_price ?? 0, 0, ',', '.' )}}VNĐ</span>
-                                        {{ number_format($product->price_sale ?? 0, 0, ',', '.' )}}VNĐ</div>
+                                        <span>{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                        {{ number_format($product->price_sale ?? 0, 0, ',', '.' )}}VNĐ
                                     </div>
                                 </div>
                             </div>
@@ -898,15 +891,7 @@ Trang chủ
                                             <img src="{{ Storage::url($product->img_thumbnail) }}" alt="" />
                                         @endif
                                     </a>
-                               <div class="favourite">
-                                @if (Auth::check())
-                                <a href="{{route('favourite', $product->id)}}">
                                     <span class="tag flaticon-heart"></span>
-                                  </a>
-                                  @endif
-                               </div>
-
-
                                     <div class="cart-box text-center">
                                         <a class="cart" href="#">Add to Cart</a>
                                     </div>
@@ -924,8 +909,8 @@ Trang chủ
                                     </h6>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="price">
-                                            <span>{{ number_format($product->base_price, 0, ',', '.') }}VNĐ</span>
-                                            {{ number_format($product->base_sale, 0, ',', '.') }}VNĐ
+                                            <span>{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                            {{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ
                                         </div>
                                     </div>
                                 </div>

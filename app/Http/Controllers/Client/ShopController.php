@@ -17,7 +17,7 @@ class ShopController extends Controller
         $productnew = Product::query()->latest('id')->take(3)->get();
         // dd($categories, $products, $productnew);
 
-        return view('client.shops.listProduct', compact(['categories','products', 'productnew']));
+        return view('client.shops.shopProduct', compact(['categories','products', 'productnew']));
     }
 
     public function gird() {
@@ -67,6 +67,6 @@ class ShopController extends Controller
         }
         $products = $products->paginate(8);
 
-        return view('client.shops.listProduct', compact('categories', 'products','productnew'));
+        return view('client.shops.shopProduct', compact('categories', 'products','productnew'));
     }
 }

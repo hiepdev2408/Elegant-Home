@@ -28,10 +28,6 @@ class AuthServiceProvider extends ServiceProvider
             // $user: đại diện cho đối tượng đang login hiện tại
             // $permissionName: Đại diện cho tên quyền cần kiểm tra
 
-            // Lấy tất cả quyền người dùng từ role
-            $roles = $user->role;
-            $permission = $roles->permissions;
-
             $permission = $user->role->permissions;
 
             // Kiểm tra các quyền có chứa slug xem có phù hợp với tên quyền yêu cầu không
