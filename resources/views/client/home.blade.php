@@ -1007,79 +1007,25 @@
     <section class="news-section">
         <div class="auto-container">
             <div class="news-carousel owl-carousel owl-theme">
-
                 <!-- News Block -->
+                 @foreach($blogs as $item)
                 <div class="news-block">
                     <div class="inner-box">
                         <div class="image">
                             <div class="tag">bedroom</div>
                             <a href="blog-detail.html"><img
-                                    src="{{ asset('themes/clients/images/resource/news-1.jpg') }}" alt="" /></a>
+                                    src="https://tse1.mm.bing.net/th?id=OIP.Tn60vMqPKD9zgRwdL5qHeAHaGR&pid=Api" alt="" /></a>
                         </div>
                         <div class="lower-content">
                             <div class="author">
-                                <img src="images/resource/author-1.jpg" alt="" />
+                                <img src="https://tse1.mm.bing.net/th?id=OIP.Tn60vMqPKD9zgRwdL5qHeAHaGR&pid=Api" alt="" />
                             </div>
-                            <h5><a href="blog-detail.html">10 Simple Practices That Will Help You furnis</a></h5>
-                            <div class="info">By: <span>Alextian</span> <i>January 23,2022</i></div>
+                            <h5><a href="blog-detail.html">{{$item->title}}</a></h5>
+                            <div class="info">By: <span>{{$item->user->name}}</span> <i>{{$item->created_at}}</i></div>
                         </div>
                     </div>
                 </div>
-
-                <!-- News Block -->
-                <div class="news-block">
-                    <div class="inner-box">
-                        <div class="image">
-                            <div class="tag">bedroom</div>
-                            <a href="blog-detail.html"><img
-                                    src="{{ asset('themes/clients/images/resource/news-2.jpg') }}" alt="" /></a>
-                        </div>
-                        <div class="lower-content">
-                            <div class="author">
-                                <img src="images/resource/author-1.jpg" alt="" />
-                            </div>
-                            <h5><a href="blog-detail.html">10 Simple Practices That Will Help You furnis</a></h5>
-                            <div class="info">By: <span>Alextian</span> <i>January 23,2022</i></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- News Block -->
-                <div class="news-block">
-                    <div class="inner-box">
-                        <div class="image">
-                            <div class="tag">bedroom</div>
-                            <a href="blog-detail.html"><img
-                                    src="{{ asset('themes/clients/images/resource/news-1.jpg') }}" alt="" /></a>
-                        </div>
-                        <div class="lower-content">
-                            <div class="author">
-                                <img src="images/resource/author-1.jpg" alt="" />
-                            </div>
-                            <h5><a href="blog-detail.html">10 Simple Practices That Will Help You furnis</a></h5>
-                            <div class="info">By: <span>Alextian</span> <i>January 23,2022</i></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- News Block -->
-                <div class="news-block">
-                    <div class="inner-box">
-                        <div class="image">
-                            <div class="tag">bedroom</div>
-                            <a href="blog-detail.html"><img
-                                    src="{{ asset('themes/clients/images/resource/news-2.jpg') }}" alt="" /></a>
-                        </div>
-                        <div class="lower-content">
-                            <div class="author">
-                                <img src="images/resource/author-1.jpg" alt="" />
-                            </div>
-                            <h5><a href="blog-detail.html">10 Simple Practices That Will Help You furnis</a></h5>
-                            <div class="info">By: <span>Alextian</span> <i>January 23,2022</i></div>
-                        </div>
-                    </div>
-                </div>
-
+                @endforeach
             </div>
         </div>
     </section>

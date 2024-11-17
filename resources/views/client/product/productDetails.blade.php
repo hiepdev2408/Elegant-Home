@@ -255,7 +255,7 @@
                                             @foreach ($product->comments->where('parent_id', null) as $comment)
                                                 <div class="mb-3 p-4">
                                                     <div class="card-body">
-                                                        <div class="d-flex">
+                                                        <div class="d-flex mb-3">
                                                             <div>
                                                                 <h4 class="mb-1">
                                                                     @if ($comment->user->img_thumbnail)
@@ -273,14 +273,19 @@
                                                                     class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
                                                                 <p class="mt-2">{{ $comment->comment }}</p>
                                                                 <!-- Nút trả lời -->
-                                                                <button class="btn btn-sm btn-outline-primary reply-btn"
-                                                                    type="button" data-id="{{ $comment->id }}">Trả
-                                                                    lời</button>
+                                                                @if (Auth::check())
+
+                                                                    <button
+                                                                        class="btn btn-sm btn-outline-primary reply-btn"
+                                                                        type="button" data-id="{{ $comment->id }}">Trả
+                                                                        lời</button>
+
+                                                                @endif
 
                                                             </div>
 
                                                         </div>
-                                                        <hr>
+
                                                     </div>
                                                     <!-- Bình luận cấp 2 (trả lời) -->
                                                     @foreach ($comment->replies as $reply)
@@ -303,14 +308,21 @@
                                                                     <small
                                                                         class="text-muted">{{ $reply->created_at->diffForHumans() }}</small>
                                                                     <p class="mt-2">{{ $reply->comment }}</p>
-                                                                    <button
-                                                                        class="btn btn-sm btn-outline-primary reply-btn"
-                                                                        type="button" data-id="{{ $comment->id }}">Trả
-                                                                        lời</button>
+                                                                    @if (Auth::check())
+
+                                                                        <button
+                                                                            class="btn btn-sm btn-outline-primary reply-btn"
+                                                                            type="button"
+                                                                            data-id="{{ $comment->id }}">Trả
+                                                                            lời</button>
+
+                                                                    @else
+                                                                        <hr width="1200px">
+                                                                    @endif
                                                                 </div>
 
                                                             </div>
-                                                            <hr>
+
                                                         </div>
                                                     @endforeach
 
@@ -618,4 +630,33 @@
             </div>
         </form>
     </div>
+@endsection
+@section('script')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Lấy tất cả các nút trả lời
+            const replyButtons = document.querySelectorAll(".reply-btn");
+
+            // Lặp qua từng nút và thêm sự kiện click
+            replyButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    // Lấy ID của comment
+                    const commentId = this.getAttribute("data-id");
+                    // Tìm form trả lời tương ứng với comment
+                    const replyForm = document.getElementById(`reply-form-${commentId}`);
+                    // Toggle lớp d-none để hiện/ẩn form trả lời
+                    replyForm.classList.toggle("d-none");
+                });
+            });
+
+            // Hủy form trả lời khi nhấn nút Hủy
+            const cancelButtons = document.querySelectorAll(".cancel-btn");
+            cancelButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    const replyForm = this.closest(".reply-form");
+                    replyForm.classList.add("d-none");
+                });
+            });
+        });
+    </script>
 @endsection
