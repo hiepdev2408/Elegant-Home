@@ -3,7 +3,6 @@
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Variant;
-use App\Models\VariantAttribute;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
