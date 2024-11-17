@@ -9,6 +9,16 @@
             <div class="auto-container">
                 <!-- Upper Box -->
                 <div class="upper-box">
+                    @if (session()->has('success'))
+                        <div class="alert alert-success fw-bold">
+                            {{ session()->get('success') }}
+                        </div>
+                    @endif
+                    @if (session()->has('error'))
+                        <div class="alert alert-danger fw-bold">
+                            {{ session()->get('error') }}
+                        </div>
+                    @endif
                     <form action="{{ route('addToCart') }}" method="post">
                         @csrf
                         <div class="row clearfix">
@@ -71,33 +81,27 @@
                                     <div class="text">{{ $product->description }}</div>
                                     <div class="d-flex flex-wrap">
                                         @php
-                                            // Khởi tạo mảng để lưu trữ các nhóm thuộc tính và giá trị của chúng
                                             $groupAttribute = [];
                                             $arr = [];
                                         @endphp
 
-                                        <!-- Nhóm các giá trị thuộc tính lại với nhau -->
                                         @foreach ($product->variants as $variant)
                                             @foreach ($variant->attributes as $attribute)
                                                 @php
-                                                    // Chuẩn bị dữ liệu cho mảng $arr với id và name từ attributeValue
                                                     $data = [
                                                         'id' => $attribute->attributeValue->id,
                                                         'name' => $attribute->attributeValue->value,
                                                     ];
 
-                                                    // Nếu chưa tồn tại trong $arr, thêm vào
                                                     if (!in_array($data, $arr)) {
                                                         $arr[] = $data;
                                                     }
 
-                                                    // Tạo nhóm thuộc tính dựa trên tên thuộc tính
                                                     $attributeName = $attribute->attribute->name;
                                                     if (!isset($groupAttribute[$attributeName])) {
                                                         $groupAttribute[$attributeName] = [];
                                                     }
 
-                                                    // Thêm id của attributeValue vào mảng $groupAttribute nếu chưa tồn tại
                                                     if (!in_array($data, $groupAttribute[$attributeName])) {
                                                         $groupAttribute[$attributeName][] = $data;
                                                     }
@@ -112,22 +116,19 @@
                                                         <span class="model-title">{{ $attributeName }}</span>
                                                     </div>
                                                     <div class="select-size-box d-flex flex-wrap">
-                                                        @foreach ($values as $value)
-                                                            <div class="select-box me-3">
-                                                                <input type="radio"
-                                                                       name="attributes[{{ $attributeName }}]"
-                                                                       id="{{ $value['id'] }}"
-                                                                       value="{{ $value['id'] }}"
-                                                                       {{ $loop->first ? 'checked' : '' }}>
-                                                                <label for="{{ $value['id'] }}">{{ $value['name'] }}</label>
-                                                            </div>
-                                                        @endforeach
+                                                        <select name="variant_attributes[attribute_value_id][]"
+                                                            class="form-select attribute-select me-3"
+                                                            data-attribute-name="{{ $attributeName }}">
+                                                            <option value="">Chọn biến thể</option>
+                                                            @foreach ($values as $value)
+                                                                <option value="{{ $value['id'] }}">{{ $value['name'] }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
                                             @endforeach
                                         </div>
-
-
                                     </div>
 
                                     <div class="categories"><span>Danh mục :</span>
@@ -157,8 +158,13 @@
                                             </button>
                                         </div>
                                         <!-- Quantity Box -->
-                                        <div class="quantity-box d-flex align-items-center">
-                                            <input type="number" name="quantity" min="1" value="1">
+                                        <div class="quantity-box d-flex align-items-center"
+                                            style="gap: 0.5rem; padding: 0.5rem; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                                            <label for="quantity"
+                                                style="font-size: 1rem; font-weight: 500;">Quantity:</label>
+                                            <input type="number" id="quantity" name="quantity" min="1"
+                                                value="1"
+                                                style="width: 60px; padding: 0.25rem; border-radius: 4px; border: 1px solid #ccc;">
                                         </div>
                                     </div>
                                 </div>
@@ -249,7 +255,7 @@
                                             @foreach ($product->comments->where('parent_id', null) as $comment)
                                                 <div class="mb-3 p-4">
                                                     <div class="card-body">
-                                                        <div class="d-flex">
+                                                        <div class="d-flex mb-3">
                                                             <div>
                                                                 <h4 class="mb-1">
                                                                     @if ($comment->user->img_thumbnail)
@@ -267,9 +273,14 @@
                                                                     class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
                                                                 <p class="mt-2">{{ $comment->comment }}</p>
                                                                 <!-- Nút trả lời -->
-                                                                <button class="btn btn-sm btn-outline-primary reply-btn"
-                                                                    type="button" data-id="{{ $comment->id }}">Trả
-                                                                    lời</button>
+                                                                @if (Auth::check())
+
+                                                                    <button
+                                                                        class="btn btn-sm btn-outline-primary reply-btn"
+                                                                        type="button" data-id="{{ $comment->id }}">Trả
+                                                                        lời</button>
+
+                                                                @endif
 
                                                             </div>
 
@@ -297,10 +308,17 @@
                                                                     <small
                                                                         class="text-muted">{{ $reply->created_at->diffForHumans() }}</small>
                                                                     <p class="mt-2">{{ $reply->comment }}</p>
-                                                                    <button
-                                                                        class="btn btn-sm btn-outline-primary reply-btn"
-                                                                        type="button" data-id="{{ $comment->id }}">Trả
-                                                                        lời</button>
+                                                                    @if (Auth::check())
+
+                                                                        <button
+                                                                            class="btn btn-sm btn-outline-primary reply-btn"
+                                                                            type="button"
+                                                                            data-id="{{ $comment->id }}">Trả
+                                                                            lời</button>
+
+                                                                    @else
+                                                                        <hr width="1200px">
+                                                                    @endif
                                                                 </div>
 
                                                             </div>
@@ -612,4 +630,33 @@
             </div>
         </form>
     </div>
+@endsection
+@section('script')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Lấy tất cả các nút trả lời
+            const replyButtons = document.querySelectorAll(".reply-btn");
+
+            // Lặp qua từng nút và thêm sự kiện click
+            replyButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    // Lấy ID của comment
+                    const commentId = this.getAttribute("data-id");
+                    // Tìm form trả lời tương ứng với comment
+                    const replyForm = document.getElementById(`reply-form-${commentId}`);
+                    // Toggle lớp d-none để hiện/ẩn form trả lời
+                    replyForm.classList.toggle("d-none");
+                });
+            });
+
+            // Hủy form trả lời khi nhấn nút Hủy
+            const cancelButtons = document.querySelectorAll(".cancel-btn");
+            cancelButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    const replyForm = this.closest(".reply-form");
+                    replyForm.classList.add("d-none");
+                });
+            });
+        });
+    </script>
 @endsection

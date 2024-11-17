@@ -39,7 +39,7 @@ class HomeController extends Controller
 
         $products = Product::latest('id')->take(10)->get();
         // $products =Product::query()->get();
-        $blogs = Blog::with('user')->latest()->paginate(5);
+        $blogs = Blog::with('user')->latest()->get();
         // dd($products->toArray());
 
 
@@ -75,6 +75,7 @@ class HomeController extends Controller
             ->get();
         // Lấy tất cả các thuộc tính để hiển thị
         $attributes = Attribute::with('values')->get();
+        $product->increment('view');
 
         // Trả về view với thông tin sản phẩm và sản phẩm liên quan
         return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes'));
