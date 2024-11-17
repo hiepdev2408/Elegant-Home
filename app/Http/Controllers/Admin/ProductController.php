@@ -45,7 +45,7 @@ class ProductController extends Controller
     {
         // dd($request->all());
         try {
-            DB::transaction(function ()use ($request) {
+            DB::transaction(function () use ($request) {
                 $dataProduct = $request->except(['product_galleries', 'variants', 'categories']);
 
                 // dd($dataProduct);
@@ -55,13 +55,13 @@ class ProductController extends Controller
                 $dataProduct['is_show_home'] = isset($dataProduct['is_show_home']) ? 1 : 0;
                 $dataProduct['slug'] = Str::slug($dataProduct['name']);
 
-                if($request->hasFile('img_thumbnail')){
+                if ($request->hasFile('img_thumbnail')) {
                     $dataProduct['img_thumbnail'] = Storage::put('products', $request->file('img_thumbnail'));
                 }
 
                 $product = Product::query()->create($dataProduct);
 
-                if(!empty($request->product_galleries)){
+                if (!empty($request->product_galleries)) {
                     foreach ($request->product_galleries as $imageGallery) {
                         Gallery::query()->create([
                             'product_id' => $product->id,
@@ -80,11 +80,11 @@ class ProductController extends Controller
                             'image' => Storage::put('variants', $variantData['image']),
                         ]);
                     }
-                    
+
                     if (!empty($variantData['attributes'])) {
                         foreach ($variantData['attributes'] as $key => $value) {
                             // dd($value);
-                            if($value){
+                            if ($value) {
                                 $variant->attributes()->create([
                                     'attribute_id' => $key,
                                     'attribute_value_id' => $value,
@@ -109,7 +109,13 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id) {}
+    public function show(string $id)
+    {
+        $product = Product::query()->findOrFail($id);
+        $attributes = Attribute::with('values')->get(); // Lấy tất cả thuộc tính và giá trị
+        $product->load(['galleries', 'variants.attributes', 'comments']);
+        return view('admin.products.show', compact('product', 'attributes'));
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -127,10 +133,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-
-    }
+    public function update(Request $request, string $id) {}
 
     /**
      * Remove the specified resource from storage.
