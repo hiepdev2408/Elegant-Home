@@ -16,11 +16,13 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    const OBJECT = 'products';
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->authorize('modules', '' . self::OBJECT . '.' .__FUNCTION__);
         $products = Product::with([
             'variants.attributes' => function ($query) {
                 $query->with('attribute', 'attributeValue');

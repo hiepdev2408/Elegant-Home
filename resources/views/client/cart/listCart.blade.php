@@ -27,14 +27,14 @@
                                         </tr>
                                     </thead>
 
-                                    @foreach ($carts as $item)
-                                        @foreach ($item->cartDetails as $cart)
+                                    @foreach ($carts as $cart)
+                                    {{-- @dd($cart) --}}
                                             <tbody>
                                                 <tr>
                                                     <td colspan="2" class="prod-column">
                                                         <div class="column-box">
                                                             <figure class="prod-thumb">
-                                                                <form action="{{ route('destroy', $cart->id) }}"
+                                                                <form action=""
                                                                     method="post">
                                                                     @csrf
                                                                     @method('DELETE')
@@ -42,22 +42,21 @@
                                                                         class="cross-icon flaticon-cancel-1">
                                                                     </button>
                                                                 </form>
-                                                                <a href="#"><img
+                                                                {{-- <a href="#"><img
                                                                         src="{{ Storage::url($cart->variant->image) }}"
-                                                                        alt=""></a>
+                                                                        alt=""></a> --}}
                                                             </figure>
-                                                            <h6 class="prod-title">{{ $cart->variant->product->name }}</h6>
+                                                            <h6 class="prod-title"></h6>
                                                             <div class="prod-text">Color : Brown <br> Quantity :
                                                                 {{ $cart->quantity }}</div>
                                                         </div>
                                                     </td>
 
                                                     <td class="price">
-                                                        {{ number_format($cart->variant->product->price_sale, 0, ',', '.') }}
                                                     </td>
                                                     <!-- Quantity Box -->
                                                     <td class="quantity-box">
-                                                        <form action="{{ route('cart.update', $cart->id) }}" method="post">
+                                                        {{-- <form action="{{ route('cart.update', $cart->id) }}" method="post">
                                                             @csrf
                                                             @method('PUT')
                                                             <div class="item-quantity">
@@ -68,14 +67,13 @@
                                                                 value="{{ $cart->id }}">
                                                             <input type="hidden" name="price_sale"
                                                                 value="{{ $cart->variant->product->price_sale }}">
-                                                        </form>
+                                                        </form> --}}
                                                     </td>
 
                                                     <td class="sub-total">
                                                         {{ number_format($cart->total_amount, 0, ',', '.') }}</td>
                                                 </tr>
                                             </tbody>
-                                        @endforeach
                                     @endforeach
 
                                 </table>
