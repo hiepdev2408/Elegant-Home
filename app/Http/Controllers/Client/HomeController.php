@@ -60,7 +60,7 @@ class HomeController extends Controller
                 }
             ])
             ->firstOrFail();
-            
+
         // dd($product->variants);
         // Lấy danh mục của sản phẩm hiện tại
         $categoryIds = $product->categories->pluck('id');
@@ -73,7 +73,6 @@ class HomeController extends Controller
             ->distinct()
             ->limit(4)
             ->get();
-
         // Lấy tất cả các thuộc tính để hiển thị
         $attributes = Attribute::with('values')->get();
 
@@ -125,5 +124,4 @@ class HomeController extends Controller
 
         return back();
     }
-
 }
