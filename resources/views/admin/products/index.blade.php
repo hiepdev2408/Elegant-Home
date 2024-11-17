@@ -100,6 +100,7 @@
                                     @endif
                                 </td>
                                 <td>
+                                    <a href="{{ route('products.show', $product->id) }}" class="btn btn-success">Chi thiết</a>
                                     <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Chỉnh
                                         sửa</a>
                                     <form action="{{ route('products.destroy', $product->id) }}" method="POST"

@@ -140,6 +140,7 @@
         </div> --}}
         
         <!-- Trending Widget -->
+        @if ($productnew->isNotEmpty())
         <div class="sidebar-widget trending-widget">
             <div class="widget-content">
                
@@ -158,6 +159,8 @@
                
             </div>
         </div>
+        @endif
+       
         
         <!-- Tags Widget -->
         <div class="sidebar-widget-two tags-widget">
