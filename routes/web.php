@@ -58,9 +58,8 @@ Route::group(['prefix' => 'account'], function () {
     Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
     //favorite
     Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
-    Route::get('/favourite/count',[AccountController::class,'favouriteCount'])->name('favouriteCount');
+    Route::get('/favourite/count', [AccountController::class, 'favouriteCount'])->name('favouriteCount');
     Route::delete('/deleteFavorite/{id}', [AccountController::class, 'deleteFavorite'])->name('deleteFavorite');
-
 });
 
 Route::group(['prefix' => 'contact'], function () {
@@ -92,3 +91,4 @@ Route::group([
 
 // Search sản phẩm cùng danh mục
 Route::get('search/{id}', [HomeController::class, 'search'])->name('search');
+

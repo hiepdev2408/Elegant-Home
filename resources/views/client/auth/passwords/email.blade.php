@@ -54,16 +54,12 @@
                                 @csrf
                                 <div class="form-group">
                                     <label>Email address</label>
-                                    <input type="email" name="email" value="{{ old('email') }}"
-                                        placeholder="Enter Email Adress">
+                                    <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter Email Address" required>
                                     @error('email')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-
-
-
-
+                            
                                 <div class="form-group">
                                     <button type="submit" class="theme-btn btn-style-one">
                                         Send
