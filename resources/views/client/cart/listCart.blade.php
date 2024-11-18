@@ -19,7 +19,7 @@
                                 <table class="cart-table">
                                     <thead class="cart-header">
                                         <tr>
-                                            <th class="prod-column">product</th>
+                                            <th class="prod-column">Product</th>
                                             <th>&nbsp;</th>
                                             <th>Price</th>
                                             <th>Quantity</th>
@@ -28,7 +28,6 @@
                                     </thead>
 
                                     @foreach ($carts as $cart)
-                                    {{-- @dd($cart) --}}
                                             <tbody>
                                                 <tr>
                                                     <td colspan="2" class="prod-column">

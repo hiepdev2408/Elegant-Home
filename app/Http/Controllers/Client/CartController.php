@@ -58,7 +58,7 @@ class CartController extends Controller
 
         if (!$matchingVariant) {
             // Nếu không tìm thấy biến thể khớp hoàn toàn
-            return back()->with('error', 'Sản phẩm hiện không có hàng này');
+            return back()->with('error', 'Sản phẩm không còn hàng đó vui lòng chọn sản phẩm khác!');
         }
 
         // Biến thể hợp lệ - kiểm tra xem nó đã có trong giỏ hàng hay chưa
@@ -66,18 +66,22 @@ class CartController extends Controller
             ->where('variant_id', $matchingVariant->id)
             ->first();
 
+        $totalAmountVariant = $variant->price_modifier;
+
         if ($cartDetail) {
             // Nếu đã tồn tại, cập nhật số lượng và tổng tiền
             $cartDetail->quantity += $quantity;
-            $cartDetail->total_amount += $totalAmount;
-            $cartDetail->save();
+            // dd($variant);
+            $totalAmountVariant = $variant->price_modifier;
+            $cartDetail->total_amount += $totalAmountVariant;
+            $cartDetail->create();
         } else {
             // Nếu chưa tồn tại, thêm mới chi tiết giỏ hàng
             CartDetail::create([
                 'cart_id' => $cart->id,
                 'variant_id' => $matchingVariant->id,
                 'quantity' => $quantity,
-                'total_amount' => $totalAmount,
+                'total_amount' => $totalAmountVariant,
             ]);
         }
     } else {
@@ -102,14 +106,14 @@ class CartController extends Controller
         }
     }
 
-    return back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng');
+    return back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
 }
 
 
 
     public function listCart()
     {
-        $carts = CartDetail::with('product')->get();
+        $carts = CartDetail::with(['product', 'variant'])->get();
 
         return view('client.cart.listCart', compact('carts'));
     }
