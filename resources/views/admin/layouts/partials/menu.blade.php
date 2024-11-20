@@ -34,7 +34,67 @@
                 <div data-i18n="Trò chuyện">Trò chuyện</div>
             </a>
         </li>
-
+        <li class="menu-item @yield('menu-item-account')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons mdi mdi-account-outline"></i>
+                <div data-i18n="Account">Account</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item @yield('menu-sub-customer')">
+                    <a href="{{ route('account.listCustomer') }}" class="menu-link">
+                        <div data-i18n="Customers">Customer</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-staff')">
+                    <a href="{{ route('account.listStaff') }}" class="menu-link">
+                        <div data-i18n="Staffs">Staffs</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-admin')">
+                    <a href="{{ route('account.listAdmin') }}" class="menu-link">
+                        <div data-i18n="Admins">Admins</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-role')">
+                    <a href="{{ route('roles.index') }}" class="menu-link">
+                        <div data-i18n="Roles">Roles</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-permission')">
+                    <a href="{{ route('permissions.index') }}" class="menu-link">
+                        <div data-i18n="Permissions">Permissions</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item @yield('menu-item-product')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon tf-icons mdi mdi-atlassian'></i>
+                <div data-i18n="Quản lý kho hàng">Quản lý kho hàng</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item @yield('menu-sub-create-warehouse')">
+                    <a href="{{route('warehouses.create')}}" class="menu-link">
+                        <div data-i18n="Thêm nhập kho">Thêm nhập kho</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-index-warehouse')">
+                    <a href="{{route('warehouses.index')}}" class="menu-link">
+                        <div data-i18n="Danh sách nhập kho">Danh sách nhập kho</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-create-exportwarehouses')">
+                    <a href="{{route('exportwarehouses.create')}}" class="menu-link">
+                        <div data-i18n="Thêm xuất kho">Thêm xuất kho</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-index-exportwarehouses')">
+                    <a href="{{route('exportwarehouses.index')}}" class="menu-link">
+                        <div data-i18n="Danh sách xuất kho">Danh sách xuất kho</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
         <li class="menu-item @yield('menu-item-product')">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons mdi mdi-atlassian'></i>
