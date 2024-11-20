@@ -2,11 +2,11 @@
 @section('title')
     Danh sách tài khoản
 @endsection
-@section('menu-item-customer')
+@section('menu-item-account')
     open
 @endsection
 
-@section('menu-sub-index-customer')
+@section('menu-sub-customer')
     active
 @endsection
 @section('content')

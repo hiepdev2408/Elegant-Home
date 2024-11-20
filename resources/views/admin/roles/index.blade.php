@@ -3,35 +3,32 @@
 @section('title')
     Danh sách role
 @endsection
-@section('menu-item-role')
+@section('menu-item-account')
     open
 @endsection
 
-@section('menu-sub-index-role')
+@section('menu-sub-role')
     active
 @endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
-            <span class="text-muted fw-light">Quản lý role /</span> Danh sách
+            <span class="text-muted fw-light">Quản Lý Vai Trò /</span> Danh sách
         </h4>
         @if (session()->has('success'))
             <div class="alert alert-success fw-bold">
                 {{ session()->get('success') }}
             </div>
         @endif
-        <div class="row">
+        <div class="card-header d-flex justify-content-end align-items-center mb-3 gap-3">
             @if (Auth::check() && Auth::user()->role_id == 1)
-                <div class="card-header d-flex justify-content-end align-items-center mb-3">
-                    <a class="btn btn-warning" href="{{ route('permissions.gant') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>
-                        Cấp quyền</a>
-                </div>
+                <a class="btn btn-info" href="{{ route('permissions.gant') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>
+                    Cấp quyền</a>
             @endif
-            <div class="card-header d-flex justify-content-end align-items-center mb-3">
-                <a class="btn btn-primary" href="{{ route('permissions.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>
-                    Thêm mới</a>
-            </div>
+            <a class="btn btn-primary" href="{{ route('permissions.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>
+                Thêm mới</a>
         </div>
+
         <div class="card">
             <div class="card-body">
                 <table id="example"
