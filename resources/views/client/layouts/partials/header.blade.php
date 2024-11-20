@@ -13,8 +13,8 @@
                 </div>
 
                 <!-- Logo -->
-                <div class="logo"><a href="{{ route('home') }}"><img src="{{ asset('themes/clients/images/logo.png') }}"
-                            alt="" title=""></a></div>
+                <div class="logo"><a href="{{ route('home') }}"><img
+                            src="{{ asset('themes/clients/images/logo.png') }}" alt="" title=""></a></div>
             </div>
             <div class="nav-outer clearfix">
 
@@ -70,13 +70,13 @@
 
                     <!-- User Box -->
                     @if (Auth::check())
-                        <li><a href="contact.html">{{ Auth::user()->name }}</a></li>
+                        <li><a href="{{ route('profile.user') }}">{{ Auth::user()->name }}</a></li>
                     @else
                         <a class="user-box flaticon-user-3" href="{{ route('login') }}"></a>
                     @endif
 
                     <!-- Like Box -->
-                    <div class="like-box">
+                    <div class="like-box ms-3">
                         <a class="user-box flaticon-heart" href="contact.html"></a>
                         <span class="total-like">0</span>
                     </div>
@@ -114,8 +114,8 @@
         <div class="d-flex justify-content-between align-items-center">
             <!-- Logo -->
             <div class="logo">
-                <a href="{{ route('home') }}" title=""><img src="{{ asset('themes/clients/images/logo-small.png') }}"
-                        alt="" title=""></a>
+                <a href="{{ route('home') }}" title=""><img
+                        src="{{ asset('themes/clients/images/logo-small.png') }}" alt="" title=""></a>
             </div>
 
             <!-- Right Col -->

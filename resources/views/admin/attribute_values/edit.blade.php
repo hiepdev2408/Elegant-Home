@@ -4,13 +4,8 @@
     Chỉnh sửa thuộc tính
 @endsection
 
-@section('menu-item-attribute')
-    open
-@endsection
-
-@section('menu-sub-create-attribute_value')
-    active
-@endsection
+@section('menu-item-attribute', 'open')
+@section('menu-sub-attribute-value', 'active')
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -32,7 +27,8 @@
                 </div>
             </div>
 
-            <form id="edit-attribute-value-form" action="{{ route('attribute_values.update', $attributeValue->id) }}" method="POST">
+            <form id="edit-attribute-value-form" action="{{ route('attribute_values.update', $attributeValue->id) }}"
+                method="POST">
                 @csrf
                 @method('PUT')
 
@@ -47,7 +43,8 @@
                                     <select class="form-control" name="attribute_id" id="attribute_id">
                                         <option value="">Chọn một thuộc tính</option>
                                         @foreach ($attributes as $id => $name)
-                                            <option @selected($id == $attributeValue->attribute_id) value="{{ $id }}" >{{ $name }}</option>
+                                            <option @selected($id == $attributeValue->attribute_id) value="{{ $id }}">
+                                                {{ $name }}</option>
                                         @endforeach
                                     </select>
                                     <label for="attribute_id">Thuộc tính</label>
@@ -57,7 +54,8 @@
                                 </div>
 
                                 <div class="form-floating form-floating-outline">
-                                    <input type="text" class="form-control" placeholder="Giá trị" name="value" id="value" value="{{ $attributeValue->value }}">
+                                    <input type="text" class="form-control" placeholder="Giá trị" name="value"
+                                        id="value" value="{{ $attributeValue->value }}">
                                     <label for="value">Giá trị</label>
                                     @error('value')
                                         <span class="text-danger">{{ $message }}</span>
