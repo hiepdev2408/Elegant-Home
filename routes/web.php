@@ -87,6 +87,8 @@ Route::group([
 ], function () {
     Route::post('addToCart', [CartController::class, 'addToCart'])->name('addToCart');
     Route::get('listCart', [CartController::class, 'listCart'])->name('listCart');
+    Route::put('cart/update', [CartController::class, 'updateCartQuantity'])->name( 'updateCartQuantity');
+    Route::post('cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.applyVoucher');
 });
 
 // Search sản phẩm cùng danh mục

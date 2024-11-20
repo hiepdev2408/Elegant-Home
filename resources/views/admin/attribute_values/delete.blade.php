@@ -5,12 +5,8 @@
 @endsection
 
 @section('menu-item-attribute')
-    open
-@endsection
 
-@section('menu-sub-create-attribute_value')
-    active
-@endsection
+@section('menu-sub-create-attribute_value', 'open')
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -35,18 +31,19 @@
                     <tbody>
                         @foreach ($attributeValues as $attributeValue)
                             <tr>
-                                <td>{{ $key + 1  }}</td>
+                                <td>{{ $key + 1 }}</td>
                                 <td>{{ $value->attribute->name }}</td>
                                 <td>{{ $value->value }}</td>
                                 <td>
-                                    <form action="{{ route('attributes.restore', $value->id) }}"
-                                        method="POST" class="d-inline">
+                                    <form action="{{ route('attributes.restore', $value->id) }}" method="POST"
+                                        class="d-inline">
                                         @csrf
                                         <button type="submit" class="btn btn-success btn-sm"
-                                            onclick="return confirm('Bạn có chắc chắn muốn khôi phục thuộc tính này không?')">Khôi Phục</button>
+                                            onclick="return confirm('Bạn có chắc chắn muốn khôi phục thuộc tính này không?')">Khôi
+                                            Phục</button>
                                     </form>
-                                    <form action="{{ route('attributes.forceDelete', $value->id) }}"
-                                        method="POST" class="d-inline">
+                                    <form action="{{ route('attributes.forceDelete', $value->id) }}" method="POST"
+                                        class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm"

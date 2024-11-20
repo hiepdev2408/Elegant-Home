@@ -3,11 +3,11 @@
 @section('title')
     Danh sách permission
 @endsection
-@section('menu-item-permission')
+@section('menu-item-account')
     open
 @endsection
 
-@section('menu-sub-index-permission')
+@section('menu-sub-permission')
     active
 @endsection
 @section('content')

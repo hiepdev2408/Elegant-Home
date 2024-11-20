@@ -1,16 +1,11 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách giá trị thuộc tính
+    Giá trị thuộc tính
 @endsection
 
-@section('menu-item-attribute')
-    open
-@endsection
-
-@section('menu-sub-create-attribute_value')
-    active
-@endsection
+@section('menu-item-attribute', 'open')
+@section('menu-sub-attribute-value', 'active')
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -45,13 +40,16 @@
                                 <td>{{ $attributeValue->value }}</td>
                                 <td>
                                     <div class="d-flex justify-content-center">
-                                        <a href="{{ route('attribute_values.edit', $attributeValue->id) }}" class="btn btn-warning btn-sm me-1">
+                                        <a href="{{ route('attribute_values.edit', $attributeValue->id) }}"
+                                            class="btn btn-warning btn-sm me-1">
                                             <i class="mdi mdi-pencil"></i>
                                         </a>
 
-                                        <form id="delete-form-{{ $attributeValue->id }}" action="{{ route('attribute_values.destroy', $attributeValue->id) }}" method="post">
+                                        <form id="delete-form-{{ $attributeValue->id }}"
+                                            action="{{ route('attribute_values.destroy', $attributeValue->id) }}"
+                                            method="post">
                                             @csrf
-                                            @method("delete")
+                                            @method('delete')
                                             <button type="button" data-bs-toggle="tooltip" data-bs-placement="top"
                                                 data-bs-title="Delete" class="btn btn-danger btn-sm me-1"
                                                 onclick="confirmDelete({{ $attributeValue->id }})">
@@ -70,24 +68,24 @@
 @endsection
 
 @section('script-libs')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function confirmDelete(id) {
-        Swal.fire({
-            title: 'Bạn có chắc chắn muốn xóa?',
-            text: "Điều này không thể khôi phục!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Có, xóa nó!',
-            cancelButtonText: 'Hủy'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('delete-form-' + id).submit();
-            }
-        });
-    }
-</script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn xóa?',
+                text: "Điều này không thể khôi phục!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Có, xóa nó!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+    </script>
 @endsection

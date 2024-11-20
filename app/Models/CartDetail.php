@@ -48,4 +48,5 @@ class CartDetail extends Model
     public function variant(){
         return $this->belongsTo(Variant::class);
     }
+    
 }

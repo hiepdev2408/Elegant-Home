@@ -58,4 +58,7 @@ class Product extends Model
     public function orderDetails(){
         return $this->hasMany(OrderDetail::class);
     }
+    public function vouchers(){
+        return $this->belongsToMany(Vouchers::class, 'product_voucher','voucher_id','product_id');
+    }
 }
