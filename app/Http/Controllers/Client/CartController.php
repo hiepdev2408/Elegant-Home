@@ -89,7 +89,7 @@ class CartController extends Controller
                     'cart_id' => $cart->id,
                     'product_id' => $productId,
                     'quantity' => $quantity,
-                    'total_amount' => $totalAmount,
+                    'total_amount' => $totalAmount * $quantity,
                 ]);
             }
         }
@@ -128,56 +128,56 @@ class CartController extends Controller
         $request->validate([
             'voucher_code' => 'required|string|max:255',
         ]);
-    
+
         // Lấy giỏ hàng của người dùng
         $cart = Cart::where('user_id', auth()->id())->first();
-    
+
         // Kiểm tra nếu giỏ hàng không tồn tại
         if (!$cart) {
             return back()->withErrors(['voucher_code' => 'Giỏ hàng không tồn tại.']);
         }
-    
+
         // Lấy chi tiết giỏ hàng
         $cartDetails = CartDetail::where('cart_id', $cart->id)->get();
-    
+
         // Tính giá trị tổng ban đầu
         $currentTotalAmount = $this->calculateTotal($cartDetails, null);
         session(['original_total_amount' => $currentTotalAmount]); // Lưu giá trị ban đầu
-    
+
         // Lấy voucher từ cơ sở dữ liệu
         $voucher = Vouchers::where('code', $request->voucher_code)->first();
-    
+
         // Kiểm tra tính hợp lệ của voucher
         if (!$voucher || !$voucher->isValid()) {
             session()->forget('totalAmount'); // Xóa session
             session(['totalAmount' => $currentTotalAmount]); // Khôi phục giá trị cũ
             return redirect()->route('listCart')->withErrors(['voucher_code' => 'Voucher không hợp lệ.']);
         }
-    
+
         // Kiểm tra nếu voucher đã được sử dụng bởi tài khoản này chưa
         $usedVoucher = UserVoucher::where('user_id', auth()->id())
             ->where('voucher_id', $voucher->id)
             ->first();
-    
+
             if ($usedVoucher) {
                 return redirect()->route('listCart')->withErrors(['voucher_code' => 'Bạn đã sử dụng voucher này rồi.']);
             }
-        
-    
+
+
         // Kiểm tra nếu không có chi tiết giỏ hàng nào
         if ($cartDetails->isEmpty()) {
             session(['totalAmount' => $currentTotalAmount]);
             return redirect()->route('listCart')->withErrors(['voucher_code' => 'Giỏ hàng không có sản phẩm.']);
         }
-    
+
         $isValidForCart = false;
         $appliedProducts = [];
-    
+
         foreach ($cartDetails as $item) {
             $variant = Variant::find($item->variant_id);
             if ($variant) {
                 $productId = $variant->product_id;
-    
+
                 // Kiểm tra xem voucher có áp dụng cho sản phẩm này không
                 if ($voucher->products()->where('products.id', $productId)->exists()) {
                     $isValidForCart = true;
@@ -185,29 +185,29 @@ class CartController extends Controller
                 }
             }
         }
-    
+
         if (!$isValidForCart) {
             session()->forget('totalAmount');
             session(['totalAmount' => $currentTotalAmount]);
             return redirect()->route('listCart')->withErrors(['voucher_code' => 'Voucher không áp dụng cho sản phẩm trong giỏ hàng.']);
         }
-    
+
         // Lưu voucher vào session
         session(['voucher_code' => $voucher->code]);
-    
+
         // Tăng số lượt sử dụng của voucher
         $voucher->increment('used_count');
-    
+
         // Lưu thông tin voucher đã sử dụng vào bảng UsedVouchers
         UserVoucher::create([
             'user_id' => auth()->id(),
             'voucher_id' => $voucher->id,
         ]);
-    
+
         // Tính tổng số tiền với giảm giá
         $totalAmount = $this->calculateTotal($cartDetails, $voucher);
         session(['totalAmount' => $totalAmount]); // Lưu tổng vào session
-    
+
         return redirect()->route('listCart')->with('success', 'Voucher đã được áp dụng!');
     }
 
@@ -258,5 +258,4 @@ protected function calculateTotal($cartDetails, $voucher)
 }
 
 }
-   
-   
+
