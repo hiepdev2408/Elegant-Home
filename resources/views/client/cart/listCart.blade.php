@@ -77,6 +77,7 @@
                                                     {{ number_format($money, 0, ',', '.') }}VNĐ
                                                 </td>
                                         </tbody>
+                                        
                                     @endforeach
 
                                 </table>
