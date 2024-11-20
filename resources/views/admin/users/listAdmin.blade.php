@@ -2,11 +2,11 @@
 @section('title')
     Danh sách tài khoản
 @endsection
-@section('menu-item-admin')
+@section('menu-item-account')
     open
 @endsection
 
-@section('menu-sub-index-admin')
+@section('menu-sub-admin')
     active
 @endsection
 @section('content')

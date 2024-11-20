@@ -17,12 +17,14 @@ use Illuminate\Support\Str;
 class ProductController extends Controller
 {
     const OBJECT = 'products';
+
+    const PATH_VIEW = 'admin.products.';
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $this->authorize('modules', '' . self::OBJECT . '.' .__FUNCTION__);
+        // $this->authorize('modules', '' . self::OBJECT . '.' . __FUNCTION__);
         $products = Product::with([
             'variants.attributes' => function ($query) {
                 $query->with('attribute', 'attributeValue');
@@ -60,7 +62,7 @@ class ProductController extends Controller
                 if ($request->hasFile('img_thumbnail')) {
                     $dataProduct['img_thumbnail'] = Storage::put('products', $request->file('img_thumbnail'));
                 }
-              
+
                 $product = Product::query()->create($dataProduct);
 
                 if (!empty($request->product_galleries)) {
@@ -78,7 +80,7 @@ class ProductController extends Controller
                             'product_id' => $product->id,
                             'sku' => $variantData['sku'] ?? 0,
                             'stock' => $variantData['stock'],
-                            'price_modifier' =>  $variantData['price_modifier'] ?? 0,
+                            'price_modifier' => $variantData['price_modifier'] ?? 0,
                             'image' => Storage::put('variants', $variantData['image']),
                         ]);
                     }
@@ -135,7 +137,9 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id) {}
+    public function update(Request $request, string $id)
+    {
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -165,5 +169,16 @@ class ProductController extends Controller
 
             return back();
         }
+    }
+
+    public function warehouse()
+    {
+        $products = Product::with([
+            'variants.attributes' => function ($query) {
+                $query->with('attribute', 'attributeValue');
+            }
+        ])->get();
+        dd($products);
+        return view(self::PATH_VIEW . __FUNCTION__);
     }
 }

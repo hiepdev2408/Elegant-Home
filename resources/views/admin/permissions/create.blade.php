@@ -3,11 +3,11 @@
     Thêm quyền
 @endsection
 
-@section('menu-item-permission')
+@section('menu-item-account')
     open
 @endsection
 
-@section('menu-sub-create-permission')
+@section('menu-sub-permission')
     active
 @endsection
 
@@ -50,7 +50,8 @@
                                 </div>
                                 <div class="col-6">
                                     <label for="">Quyền</label>
-                                    <span class="text-danger" style="margin-left: 125px">* Trường này nhập theo định dạng (Table . function)</span>
+                                    <span class="text-danger" style="margin-left: 125px">* Trường này nhập theo định dạng
+                                        (Table . function)</span>
                                     <input type="text" name="slug" id="slug" class="form-control">
                                 </div>
                             </div>
