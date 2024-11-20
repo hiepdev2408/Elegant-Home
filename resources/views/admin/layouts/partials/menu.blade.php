@@ -55,6 +55,25 @@
             </ul>
         </li>
 
+        <li class="menu-item @yield('menu-item-voucher')">
+            <a class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons mdi mdi-sale-outline"></i>
+                <div data-i18n="Khuyến Mãi">Khuyến Mãi</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item @yield('menu-sub-create-voucher')">
+                    <a href="{{ route('vouchers.create') }}" class="menu-link">
+                        <div data-i18n="Thêm voucher">Thêm voucher</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-index-voucher')">
+                    <a href="{{ route('vouchers.index') }}" class="menu-link">
+                        <div data-i18n="Danh sách voucher">Danh sách voucher</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <li class="menu-item @yield('menu-item-categories')">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons mdi mdi-notebook-outline'></i>
@@ -81,7 +100,7 @@
 
         <li class="menu-item @yield('menu-item-product')">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons mdi mdi-atlassian'></i>
+                <i class='menu-icon tf-icons mdi mdi-unity'></i>
                 <div data-i18n="Sản phẩm">Sản phẩm</div>
             </a>
             <ul class="menu-sub">
@@ -102,6 +121,36 @@
                 </li>
             </ul>
         </li>
+
+        {{--
+        <li class="menu-item @yield('menu-item-product')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon tf-icons mdi mdi-atlassian'></i>
+                <div data-i18n="Kho hàng">Kho hàng</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item @yield('menu-sub-create-warehouse')">
+                    <a href="{{ route('warehouses.create') }}" class="menu-link">
+                        <div data-i18n="Thêm nhập kho">Thêm nhập kho</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-index-warehouse')">
+                    <a href="{{ route('warehouses.index') }}" class="menu-link">
+                        <div data-i18n="Danh sách nhập kho">Danh sách nhập kho</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-create-exportwarehouses')">
+                    <a href="{{ route('exportwarehouses.create') }}" class="menu-link">
+                        <div data-i18n="Thêm xuất kho">Thêm xuất kho</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-index-exportwarehouses')">
+                    <a href="{{ route('exportwarehouses.index') }}" class="menu-link">
+                        <div data-i18n="Danh sách xuất kho">Danh sách xuất kho</div>
+                    </a>
+                </li>
+            </ul>
+        </li> --}}
 
         <li class="menu-item @yield('menu-item-attribute')">
             <a class="menu-link menu-toggle">
@@ -159,13 +208,6 @@
                     </a>
                 </li>
             </ul>
-        </li>
-
-        <li class="menu-item @yield('menu-item-sale')">
-            <a href="javascript:void(0);" class="menu-link">
-                <i class="menu-icon tf-icons mdi mdi-sale-outline"></i>
-                <div data-i18n="Khuyến Mãi">Khuyến Mãi</div>
-            </a>
         </li>
 
         <li class="menu-item @yield('menu-item-contact')">

@@ -48,7 +48,7 @@
                             </a>
 
                         </td>
-                        <td>{{ number_format($item->product->base_price, 0, '', '') }}VND/{{ number_format($item->product->price_sale, 0, '', '') }}VND
+                        <td>{{ number_format($item->product->base_price, 0, ',', '.') }}VND/{{ number_format($item->product->price_sale, 0, ',', '.') }}VND
                         </td>
                         <td>{{ $item->created_at->format('d/m/Y') }}</td>
 

@@ -24,7 +24,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // $this->authorize('modules', '' . self::OBJECT . '.' . __FUNCTION__);
+        $this->authorize('modules', '' . self::OBJECT . '.' .__FUNCTION__);
+
         $products = Product::with([
             'variants.attributes' => function ($query) {
                 $query->with('attribute', 'attributeValue');
@@ -39,6 +40,7 @@ class ProductController extends Controller
      */
     public function create(Request $request)
     {
+        $this->authorize('modules', '' . self::OBJECT . '.' .__FUNCTION__);
         $attributes = Attribute::all();
         $category = Category::query()->pluck('name', 'id')->all();
 

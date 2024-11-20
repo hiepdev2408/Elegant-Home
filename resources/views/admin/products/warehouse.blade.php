@@ -13,7 +13,7 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
-            <span class="text-muted fw-light">Quản lý kho /</span> Danh sách
+            <span class="text-muted fw-light">Quản Sản Phẩm /</span> Kho háng
         </h4>
         @if (session()->has('success'))
             <div class="alert alert-success fw-bold">

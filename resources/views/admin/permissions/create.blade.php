@@ -30,7 +30,7 @@
                         <button type="reset" class="btn btn-outline-primary">Nhập Lại</button>
                         <a href="{{ route('attributes.index') }}" class="btn btn-info">Hủy bỏ</a>
                         <button type="submit" class="btn btn-primary">
-                            Tạo
+                            Xuất bản
                         </button>
                     </div>
                 </div>
