@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách role
+    Vai trò
 @endsection
 @section('menu-item-account')
     open
