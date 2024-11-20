@@ -96,11 +96,41 @@
                             <div class="title-box">
                                 <h6>Cart Totals</h6>
                             </div>
+                            @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+                            
+
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <div class="cart-total-box">
                                 <ul class="cart-totals">
-                                    <li>Subtotals : <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</li>
-                                    <li>Totals : <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
+                                    <li>Subtotals : <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span></li>
+                                    <li>
+                                        <form action="{{ route('cart.applyVoucher') }}" method="POST">
+                                            @csrf
+                                            <li>Nhập mã voucher</li>
+                                            <div class="row">
+                                                <div class="form-group col-8">
+                                                    <input type="text" class="form-control" id="voucher_code" name="voucher_code" required>
+                                                </div>
+                                                <div class="col-4">
+                                                    <button type="submit" class="btn btn-primary">Áp Dụng</button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </li>
+                                    <br>
+                                    <li>Totals : <span>{{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }} VNĐ</span></li>
                                 </ul>
                                 <div class="check-box">
                                     <input type="checkbox" name="remember-password" id="type-1">
@@ -109,7 +139,7 @@
                                 <!-- Buttons Box -->
                                 <div class="buttons-box">
                                     <a href="contact.html" class="theme-btn proceed-btn">
-                                        Procced To Cheackout
+                                        Proceed To Checkout
                                     </a>
                                 </div>
                             </div>

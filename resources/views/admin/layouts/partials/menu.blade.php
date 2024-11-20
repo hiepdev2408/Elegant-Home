@@ -177,11 +177,24 @@
             </ul>
         </li>
 
-        <li class="menu-item @yield('menu-item-sale')">
-            <a href="javascript:void(0);" class="menu-link">
+      
+        <li class="menu-item @yield('menu-item-voucher')">
+            <a  class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons mdi mdi-sale-outline"></i>
                 <div data-i18n="Khuyến Mãi">Khuyến Mãi</div>
             </a>
+            <ul class="menu-sub">
+                <li class="menu-item @yield('menu-sub-create-voucher')">
+                    <a href="{{ route('vouchers.create') }}" class="menu-link">
+                        <div data-i18n="Thêm voucher">Thêm voucher</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-index-voucher')">
+                    <a href="{{ route('vouchers.index') }}" class="menu-link">
+                        <div data-i18n="Danh sách voucher">Danh sách voucher</div>
+                    </a>
+                </li>
+            </ul>
         </li>
 
         <li class="menu-item @yield('menu-item-post')">
@@ -202,5 +215,6 @@
                 </li>
             </ul>
         </li>
+       
     </ul>
 </aside>
