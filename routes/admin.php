@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ExportWarehouseController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\VouchersController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Client\ContactFormController;
 use App\Helpers\Mail\ContactFormMail;
@@ -140,6 +141,20 @@ Route::prefix('admin')
                 Route::put('update/{id}', [AttributeValueController::class, 'update'])->name('update');
                 Route::delete('destroy/{id}', [AttributeValueController::class, 'destroy'])->name('destroy');
             });
+
+        // Vouchers
+        Route::prefix('vouchers')
+        ->as('vouchers.')
+        ->group( function(){
+            Route::get('/', [VouchersController::class, 'index'])->name('index');
+            Route::get('create', [VouchersController::class, 'create'])->name('create');
+            Route::post('store', [VouchersController::class, 'store'])->name('store');
+            Route::get('edit/{id}', [VouchersController::class, 'edit'])->name('edit');
+            Route::get('show/{id}', [VouchersController::class, 'show'])->name('show');
+            Route::put('update/{id}', [VouchersController::class, 'update'])->name('update');
+            Route::delete('destroy/{id}', [VouchersController::class, 'destroy'])->name('destroy');
+
+        });
 
         // Contact
         Route::prefix('contact')
