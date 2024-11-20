@@ -78,7 +78,7 @@
                     <!-- Like Box -->
                     <div class="like-box">
                         <a class="user-box flaticon-heart" href="contact.html"></a>
-                        <span class="total-like">0</span>
+                        <span class="total-like">{{$favouritecount}}</span>
                     </div>
 
                 </div>

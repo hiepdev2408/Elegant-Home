@@ -68,7 +68,34 @@
                 </li>
             </ul>
         </li>
-
+        <li class="menu-item @yield('menu-item-product')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon tf-icons mdi mdi-atlassian'></i>
+                <div data-i18n="Quản lý kho hàng">Quản lý kho hàng</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item @yield('menu-sub-create-warehouse')">
+                    <a href="{{route('warehouses.create')}}" class="menu-link">
+                        <div data-i18n="Thêm nhập kho">Thêm nhập kho</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-index-warehouse')">
+                    <a href="{{route('warehouses.index')}}" class="menu-link">
+                        <div data-i18n="Danh sách nhập kho">Danh sách nhập kho</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-create-exportwarehouses')">
+                    <a href="{{route('exportwarehouses.create')}}" class="menu-link">
+                        <div data-i18n="Thêm xuất kho">Thêm xuất kho</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-index-exportwarehouses')">
+                    <a href="{{route('exportwarehouses.index')}}" class="menu-link">
+                        <div data-i18n="Danh sách xuất kho">Danh sách xuất kho</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
         <li class="menu-item @yield('menu-item-product')">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons mdi mdi-atlassian'></i>

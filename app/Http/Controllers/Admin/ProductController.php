@@ -22,7 +22,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $this->authorize('modules', '' . self::OBJECT . '.' .__FUNCTION__);
+        // $this->authorize('modules', '' . self::OBJECT . '.' .__FUNCTION__);
         $products = Product::with([
             'variants.attributes' => function ($query) {
                 $query->with('attribute', 'attributeValue');
@@ -60,7 +60,7 @@ class ProductController extends Controller
                 if ($request->hasFile('img_thumbnail')) {
                     $dataProduct['img_thumbnail'] = Storage::put('products', $request->file('img_thumbnail'));
                 }
-              
+
                 $product = Product::query()->create($dataProduct);
 
                 if (!empty($request->product_galleries)) {
