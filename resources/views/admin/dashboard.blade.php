@@ -14,9 +14,10 @@
                     <div class="row">
                         <div class="col-12 col-md-6">
                             <div class="card-body">
-                                <h4 class="card-title mb-4 text-truncate">Congratulations John! 🎉</h4>
-                                <p class="mb-0">You have done 72% 😎 more sales today.<br> Check your
-                                    new raising badge in your profile.</p>
+                                <h4 class="card-title mb-3 text-truncate">Xin chào {{ Auth::user()->name }} 🎉</h4>
+                                <p class="mb-0">Bạn đã tăng thêm 72% 😎 doanh số bán hàng trong ngày hôm nay.<br>Kiểm tra
+                                    huy hiệu tăng cấp mới của
+                                    bạn trong hồ sơ của bạn.</p>
                             </div>
                         </div>
                         <div class="col-12 col-md-6 position-relative text-center">
@@ -51,12 +52,12 @@
                                 </div>
                             </div>
                             <div class="card-body pt-0">
-                                <h6 class="mb-2">Transactions</h6>
+                                <h6 class="mb-2">Giao dịch</h6>
                                 <div class="d-flex flex-wrap mb-2 gap-2 pb-1 align-items-center">
                                     <h4 class="mb-0">1.2k</h4>
                                     <small class="text-success mt-1">+38%</small>
                                 </div>
-                                <small>Daily Transactions</small>
+                                <small>Giao dịch hàng ngày</small>
                             </div>
                         </div>
                     </div>
@@ -81,12 +82,12 @@
                                 </div>
                             </div>
                             <div class="card-body pt-0">
-                                <h6 class="mb-2">Revenue</h6>
+                                <h6 class="mb-2">Doanh thu</h6>
                                 <div class="d-flex flex-wrap mb-2 pb-1 align-items-center gap-2">
                                     <h4 class="mb-0">$95.2k</h4>
                                     <small class="text-success mt-1">+12%</small>
                                 </div>
-                                <small>Revenue Increase</small>
+                                <small>Tăng doanh thu</small>
                             </div>
                         </div>
                     </div>
@@ -99,7 +100,7 @@
                     <div class="row">
                         <div class="col-md-7 pe-md-0">
                             <div class="card-header">
-                                <h5 class="mb-0">Total Profit</h5>
+                                <h5 class="mb-0">Tổng lợi nhuận</h5>
                             </div>
                             <div class="card-body">
                                 <div id="totalProfitChart"></div>
@@ -126,7 +127,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <p class="text-body mb-0">Last month balance $234.40k</p>
+                                <p class="text-body mb-0">Số dư tháng trước $234.40k</p>
                             </div>
                             <div class="card-body pt-3">
                                 <div class="d-flex align-items-center mb-3 pb-1">
@@ -137,7 +138,7 @@
                                     </div>
                                     <div class="ms-3 d-flex flex-column">
                                         <h6 class="mb-1">$48,568.20</h6>
-                                        <small>Total Profit</small>
+                                        <small>Tổng lợi nhuận</small>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center mb-3 pb-1">
@@ -148,7 +149,7 @@
                                     </div>
                                     <div class="ms-3 d-flex flex-column">
                                         <h6 class="mb-1">$38,453.25</h6>
-                                        <small>Total Income</small>
+                                        <small>Tổng thu nhập</small>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center mb-3 pb-1">
@@ -159,12 +160,11 @@
                                     </div>
                                     <div class="ms-3 d-flex flex-column">
                                         <h6 class="mb-1">$2,453.45</h6>
-                                        <small>Total Expense</small>
+                                        <small>Tổng chi phí</small>
                                     </div>
                                 </div>
                                 <div class="d-grid">
-                                    <button class="btn btn-primary" type="button">View
-                                        Report</button>
+                                    <button class="btn btn-primary" type="button">Xem báo cáo</button>
                                 </div>
                             </div>
                         </div>
@@ -181,8 +181,8 @@
                             <div
                                 class="card-body d-flex justify-content-between align-items-center flex-xl-nowrap flex-wrap">
                                 <div class="me-3">
-                                    <h5 class="mb-4">Total Sales</h5>
-                                    <div class="small mb-1">Calculated in last 7 days</div>
+                                    <h5 class="mb-4">Tổng doanh số</h5>
+                                    <div class="small mb-1">Tính trong 7 ngày qua</div>
                                     <div class="d-flex align-items-center gap-2">
                                         <h4 class="mb-0">$25,980</h4>
                                         <small class="text-success lh-sm">+15.6%</small>
@@ -201,7 +201,7 @@
                             </div>
                             <div class="card-body">
                                 <div id="totalRevenueChart" class="mb-3"></div>
-                                <h6 class="text-center mb-0">Total Revenue</h6>
+                                <h6 class="text-center mb-0">Tổng doanh thu</h6>
                             </div>
                         </div>
                     </div>
@@ -214,7 +214,7 @@
                             </div>
                             <div class="card-body">
                                 <div id="totalSalesSemiDonutChart" class="mb-4"></div>
-                                <h6 class="text-center mb-0">Total Sales</h6>
+                                <h6 class="text-center mb-0">Tổng doanh số</h6>
                             </div>
                         </div>
                     </div>

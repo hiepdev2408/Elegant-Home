@@ -180,7 +180,21 @@ class ProductController extends Controller
                 $query->with('attribute', 'attributeValue');
             }
         ])->get();
-        dd($products);
-        return view(self::PATH_VIEW . __FUNCTION__);
+        return view(self::PATH_VIEW . __FUNCTION__, compact('products'));
     }
+
+    public function UpdateStock(Variant $variant, Request $request)
+    {
+        // dd($request->all());
+        // lấy số lượng hiện tại
+        $currentStock = $variant->stock;
+        $addlStock = $request->input('stock');
+
+        // Cập nhật số lượng tồn kho mới
+        $variant->stock = $currentStock + $addlStock;
+        $variant->save();
+
+        return redirect()->back()->with('success', 'Cập nhật số lượng thành công!');
+    }
+
 }
