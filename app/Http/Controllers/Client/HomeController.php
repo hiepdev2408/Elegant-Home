@@ -73,7 +73,6 @@ class HomeController extends Controller
             ->distinct()
             ->limit(4)
             ->get();
-
         // Lấy tất cả các thuộc tính để hiển thị
         $attributes = Attribute::with('values')->get();
         $product->increment('view');
@@ -126,5 +125,4 @@ class HomeController extends Controller
 
         return back();
     }
-
 }
