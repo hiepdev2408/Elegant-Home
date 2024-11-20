@@ -20,7 +20,7 @@ class WarehouseController extends Controller
     public function create()
     {
         $product = Product::pluck('name', 'id')->all();
-        $user = User::pluck('name', 'id')->all();
+        $user = auth()->user();
         return view('admin.warehouses.create', compact('product', 'user'));
     }
     public function store(Request $request)

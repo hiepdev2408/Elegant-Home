@@ -25,11 +25,7 @@
             <!-- User ID -->
            <div class="mb-3">
                 <label for="title" class="form-label">Người nhập kho</label>
-                @foreach ($user as $id => $name)
-                <select name="user_id" id="user_id" class="form-control">
-                        <option value="{{ $id }}">{{ $name }}</option>
-                </select>
-                @endforeach
+                   <input type="text" class="form-control" id="date_import" name="user_id" value="{{$user->name}}">
             </div>
 
 
