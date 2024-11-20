@@ -71,6 +71,7 @@ Route::prefix('admin')
             Route::put('update/{id}', [ProductController::class, 'update'])->name('update');
             Route::delete('destroy/{id}', [ProductController::class, 'destroy'])->name('destroy');
             Route::get('/warehouse', [ProductController::class, 'warehouse'])->name('warehouse');
+            Route::put('updateStock/{variant}', [ProductController::class, 'updateStock'])->name('updateStock');
         });
 
         // Category

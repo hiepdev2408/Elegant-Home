@@ -13,17 +13,16 @@
             <span class="text-muted fw-light">Thuộc Tính /</span> Danh sách giá trị thuộc tính
         </h4>
 
+        <div class="card-header d-flex justify-content-end align-items-center mb-3">
+            <a class="btn btn-primary me-2" href="{{ route('attribute_values.create') }}">
+                <i class="mdi mdi-plus me-0 me-sm-1"></i>
+                Thêm mới giá trị thuộc tính</a>
+        </div>
         <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Danh sách giá trị thuộc tính</h5>
-            </div>
-            <div class="card-header d-flex justify-content-end align-items-center mb-3">
-                <a class="btn btn-primary me-2" href="{{ route('attribute_values.create') }}">
-                    <i class="mdi mdi-plus me-0 me-sm-1"></i>
-                    Thêm mới giá thuộc tính</a>
-            </div>
             <div class="card-body">
-                <table class="table table-striped">
+                <table id="example"
+                    class=" text-center table table-bordered dt-responsive nowrap table-striped align-middle"
+                    style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -67,7 +66,7 @@
     </div>
 @endsection
 
-@section('script-libs')
+@section('style-libs')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -81,6 +80,60 @@
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Có, xóa nó!',
                 cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+    </script>
+    <style>
+        .swal2-container {
+            z-index: 9999 !important;
+        }
+    </style>
+    <!--datatable css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+@endsection
+
+@section('script-libs')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!--datatable js-->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+    <script>
+        new DataTable("#example", {
+            order: [
+                [1, 'asc']
+            ]
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Bạn có chắc không?',
+                text: "Hành động này sẽ xóa vĩnh viễn thuộc tính!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Có, xóa nó!',
+                cancelButtonText: 'Hủy bỏ'
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('delete-form-' + id).submit();
