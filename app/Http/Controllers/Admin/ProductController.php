@@ -128,12 +128,13 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = Product::query()->findOrFail($id);
+        $product = Product::query()->with(['galleries', 'variants.attributes'])->findOrFail($id);
 
-        $attributes = Attribute::with('values')->get(); // Lấy tất cả thuộc tính và giá trị
-        $product->load(['galleries', 'variants.attributes']);
+        $category = Category::query()->pluck('name', 'id')->all();
+        $attributes = Attribute::with('values')->get();
+        $categoryProduct = $product->categories->pluck('id')->all();
 
-        return view('admin.products.edit', compact('product', 'attributes'));
+        return view('admin.products.edit', compact('product', 'attributes', 'category', 'categoryProduct'));
     }
 
     /**
