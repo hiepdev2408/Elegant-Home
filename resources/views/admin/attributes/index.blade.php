@@ -23,7 +23,7 @@
         <div class="card-header d-flex justify-content-end align-items-center mb-3">
             <a class="btn btn-primary me-2" href="{{ route('attributes.create') }}">
                 <i class="mdi mdi-plus me-0 me-sm-1"></i>
-                Thêm mới thuộc tính</a>
+                Thêm thuộc tính</a>
         </div>
         <div class="card">
             <div class="card-body">

@@ -29,25 +29,13 @@
                     <li>
                         <a class="dropdown-item" href="javascript:void(0);" data-language="en"
                             data-text-direction="ltr">
+                            <span class="align-middle">Việt Nam</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="javascript:void(0);" data-language="en"
+                            data-text-direction="ltr">
                             <span class="align-middle">English</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="javascript:void(0);" data-language="fr"
-                            data-text-direction="ltr">
-                            <span class="align-middle">French</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="javascript:void(0);" data-language="ar"
-                            data-text-direction="rtl">
-                            <span class="align-middle">Arabic</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="javascript:void(0);" data-language="de"
-                            data-text-direction="ltr">
-                            <span class="align-middle">German</span>
                         </a>
                     </li>
                 </ul>
@@ -395,7 +383,7 @@
                                 </div>
                                 <div class="flex-grow-1">
                                     <h6 class="mb-0"></h6>
-                                    <small class="text-muted">Admin</small>
+                                    <small class="text-muted">{{ Auth::user()->name }}</small>
                                 </div>
                             </div>
                         </a>
@@ -406,13 +394,13 @@
                     <li>
                         <a class="dropdown-item" href="pages-profile-user.html">
 
-                            <span class="align-middle">My Profile</span>
+                            <span class="align-middle">Hồ sơ của tôi</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" href="pages-account-settings-account.html">
                             <i class="mdi mdi-cog-outline me-1 mdi-20px"></i>
-                            <span class="align-middle">Settings</span>
+                            <span class="align-middle">Cài đặt</span>
                         </a>
                     </li>
 
@@ -422,28 +410,31 @@
                     <li>
                         <a class="dropdown-item" href="pages-faq.html">
                             <i class="mdi mdi-help-circle-outline me-1 mdi-20px"></i>
-                            <span class="align-middle">FAQ</span>
+                            <span class="align-middle">Câu hỏi thường gặp</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" href="pages-pricing.html">
                             <i class="mdi mdi-currency-usd me-1 mdi-20px"></i>
-                            <span class="align-middle">Pricing</span>
+                            <span class="align-middle">Giá cả</span>
                         </a>
                     </li>
-                    <li>
-                        <div class="dropdown-divider my-1"></div>
-                    </li>
+
                     <li>
                         <a class="dropdown-item" href="{{ route('home') }}">
                             <span class="d-flex align-items-center align-middle">
-                                <i class="mdi mdi-logout me-1 mdi-20px"></i>
-                                <span class="flex-grow-1 align-middle ms-1">Quay lại trang người dùng</span>
+                                <i class="mdi mdi-car-brake-low-pressure me-1 mdi-20px"></i>
+                                <span class="flex-grow-1 align-middle ms-1">Trang người dùng</span>
                                 <span
-                                    class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                                    class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">5</span>
                             </span>
                         </a>
                     </li>
+
+                    <li>
+                        <div class="dropdown-divider my-1"></div>
+                    </li>
+
                     <li>
                         <a class="dropdown-item" href="{{ route('logout') }}" target="_blank">
                             <i class="mdi mdi-logout me-1 mdi-20px"></i>

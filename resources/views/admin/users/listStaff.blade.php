@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @section('title')
-    Danh sách tài khoản
+    Nhân viên
 @endsection
 @section('menu-item-account')
     open
@@ -12,7 +12,7 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
-            <span class="text-muted fw-light">Staff /</span> Danh sách tài khoản
+            <span class="text-muted fw-light">Tài Khoản /</span> Nhân Viên
         </h4>
         @if (session()->has('success'))
             <div class="alert alert-success fw-bold">

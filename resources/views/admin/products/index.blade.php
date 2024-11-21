@@ -13,7 +13,7 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
-            <span class="text-muted fw-light">Quản lý loại tin /</span> Danh sách
+            <span class="text-muted fw-light">Sản Phẩm /</span> Danh sách
         </h4>
         @if (session()->has('success'))
             <div class="alert alert-success fw-bold">
@@ -100,7 +100,8 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('products.show', $product->id) }}" class="btn btn-success">Chi thiết</a>
+                                    <a href="{{ route('products.show', $product->id) }}" class="btn btn-success">Chi
+                                        thiết</a>
                                     <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Chỉnh
                                         sửa</a>
                                     <form action="{{ route('products.destroy', $product->id) }}" method="POST"

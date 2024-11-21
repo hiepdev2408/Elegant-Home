@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách role
+    Vai trò
 @endsection
 @section('menu-item-account')
     open
@@ -10,10 +10,11 @@
 @section('menu-sub-role')
     active
 @endsection
+
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
-            <span class="text-muted fw-light">Quản Lý Vai Trò /</span> Danh sách
+            <span class="text-muted fw-light">Tài Khoản /</span> Vai trò
         </h4>
         @if (session()->has('success'))
             <div class="alert alert-success fw-bold">
