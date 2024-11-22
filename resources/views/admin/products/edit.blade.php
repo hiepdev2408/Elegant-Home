@@ -81,12 +81,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card mb-4">
+                        <div class="card mb-4" >
                             <div class="card-header">
                                 <h5 class="card-title mb-0">Album ảnh</h5>
                             </div>
                             <div class="card-body">
-                                <div class="row gy-3" id="gallery-container">
+                                <div class="row gy-3" id="gallery-container" style="min-height: 500px">
                                     @foreach ($product->galleries as $gallery)
                                         <div id="gallery_1">
                                             <label for="gallery_input_{{ $loop->iteration }}" class="form-label">Gallery
@@ -116,14 +116,14 @@
 
                                 <!-- Biến thể sản phẩm (ẩn theo mặc định) -->
                                 @foreach ($product->variants as $variant)
-                                    @foreach ($variant->attributes as $variantAttribute)
+
                                         <div id="variantsSection" style="display: none;">
                                             <div id="variants" class="mb-4">
                                                 <div class="variant">
                                                     <h5 class="mt-3">Thuộc Tính 1</h5>
                                                     <div class="form-floating form-floating-outline mb-4">
                                                         <input type="text" id="variant_sku_0" name="variants[0][sku]"
-                                                            placeholder="Mã biến thể" class="form-control">
+                                                            placeholder="Mã biến thể" class="form-control" value="{{ $variant->sku }}">
                                                         <label for="variant_sku_0">Mã biến thể</label>
                                                     </div>
 
@@ -144,6 +144,7 @@
                                                         <input type="file" id="variant_image_0"
                                                             name="variants[0][image]" class="form-control">
                                                     </div>
+                                                    @foreach ($variant->attributes as $variantAttribute)
                                                     <!-- Thuộc tính của biến thể -->
                                                     <div id="attributesSection_0 mb-4">
                                                         @foreach ($attributes as $attribute)
