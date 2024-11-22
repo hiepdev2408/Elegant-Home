@@ -24,10 +24,10 @@ return new class extends Migration
             $table->string('phone_person');
 
             $table->boolean('status')->default(false);
-            $table->string('name_receiver');
-            $table->string('email_receiver');
-            $table->string('address_receiver');
-            $table->string('phone_receiver');
+            $table->string('name_receiver')->nullable();
+            $table->string('email_receiver')->nullable();
+            $table->string('address_receiver')->nullable();
+            $table->string('phone_receiver')->nullable();
             $table->unsignedBigInteger('total_amount');
 
             $table->boolean('status_orders');

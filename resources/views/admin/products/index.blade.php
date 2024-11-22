@@ -86,7 +86,7 @@
                                                                 <ul>
                                                                     @foreach ($variant->attributes as $attribute)
                                                                         <li>{{ $attribute->attribute->name }}:
-                                                                            {{ $attribute->attributeValue->value }}</li>
+                                                                            {{ Str::limit($attribute->attributeValue->value, 15) }}</li>
                                                                     @endforeach
                                                                 </ul>
                                                             @else
