@@ -147,26 +147,11 @@
                             <div class="title-box">
                                 <h6>Cart Totals</h6>
                             </div>
-                            @if (session('success'))
-                                <div class="alert alert-success">
-                                    {{ session('success') }}
-                                </div>
-                            @endif
-
-
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
+                           
                             <div class="cart-total-box">
                                 <ul class="cart-totals">
                                     <li>Subtotals : <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span></li>
-                                    <li>
+                                    {{-- <li>
                                         <form action="{{ route('cart.applyVoucher') }}" method="POST">
                                             @csrf
                                             <li>Nhập mã voucher</li>
@@ -179,9 +164,9 @@
                                                 </div>
                                             </div>
                                         </form>
-                                    </li>
+                                    </li> --}}
                                     <br>
-                                    <li>Totals : <span>{{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }} VNĐ</span></li>
+                                    <li>Totals : <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span></li>
                                 </ul>
                                 <div class="check-box">
                                     <input type="checkbox" name="remember-password" id="type-1">
@@ -189,7 +174,7 @@
                                 </div>
                                 <!-- Buttons Box -->
                                 <div class="buttons-box">
-                                    <a href="contact.html" class="theme-btn proceed-btn">
+                                    <a href="{{ route('index.Order')}}" class="theme-btn proceed-btn">
                                         Proceed To Checkout
                                     </a>
                                 </div>
