@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\ContactFormController;
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\ShopController;
 use Illuminate\Support\Facades\Route;
 
@@ -88,7 +89,9 @@ Route::group([
     Route::post('addToCart', [CartController::class, 'addToCart'])->name('addToCart');
     Route::get('listCart', [CartController::class, 'listCart'])->name('listCart');
     Route::put('cart/update', [CartController::class, 'updateCartQuantity'])->name( 'updateCartQuantity');
-    Route::post('cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.applyVoucher');
+    Route::get('order', [OrderController::class, 'index' ])->name('index.Order');
+    Route::post('order/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.applyVoucher');
+    Route::post('payment', [OrderController::class, 'checkout'])->name('checkout');
 });
 
 // Search sản phẩm cùng danh mục

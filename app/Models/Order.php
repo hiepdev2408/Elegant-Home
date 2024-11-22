@@ -15,6 +15,7 @@ class Order extends Model
         'name_person',
         'email_person',
         'address_person',
+        'current_address',
         'phone_person',
         'status',
         'name_receiver',
