@@ -20,6 +20,14 @@
                 {{ session()->get('success') }}
             </div>
         @endif
+
+        {{-- @if (session('low_stock'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ session('low_stock') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif --}}
+
         <div class="card-header d-flex justify-content-end align-items-center mb-3">
             <a class="btn btn-info" href="{{ route('products.index') }}">Xem sản phẩm</a>
         </div>
@@ -62,7 +70,7 @@
                                             @csrf
                                             @method('PUT')
                                             <input name="stock" type="number" class="form-control d-inline-block"
-                                                value="0" min="0" style="width: 60px;">
+                                                value="0" style="width: 60px;">
                                             <button class="btn btn-primary ms-2 d-inline-block">Lưu</button>
                                         </form>
                                     </td>

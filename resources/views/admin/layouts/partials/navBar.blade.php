@@ -182,24 +182,26 @@
                     </li>
                     <li class="dropdown-notifications-list scrollable-container">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar me-1">
-                                            <img src="{{ asset('themes') }}/admin/img/avatars/1.png" alt
-                                                class="w-px-40 h-auto rounded-circle">
+                            @foreach ($notifications as $notification)
+                                <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="flex-shrink-0">
+                                            <div class="avatar me-1">
+                                                <img src="{{ asset('themes') }}/admin/img/avatars/1.png" alt
+                                                    class="w-px-40 h-auto rounded-circle">
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-250">
+                                            <h6 class="mb-1 text-truncate">{{ $notification->title }}🔔</h6>
+                                            <small class="text-truncate text-body">{{ $notification->message }}</small>
+                                        </div>
+                                        <div class="flex-shrink-0 dropdown-notifications-actions">
+                                            <small
+                                                class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
                                         </div>
                                     </div>
-                                    <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-250">
-                                        <h6 class="mb-1 text-truncate">Congratulation Lettie 🎉</h6>
-                                        <small class="text-truncate text-body">Won the monthly best
-                                            seller gold badge</small>
-                                    </div>
-                                    <div class="flex-shrink-0 dropdown-notifications-actions">
-                                        <small class="text-muted">1h ago</small>
-                                    </div>
-                                </div>
-                            </li>
+                                </li>
+                            @endforeach
                             <li class="list-group-item list-group-item-action dropdown-notifications-item">
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="flex-shrink-0">

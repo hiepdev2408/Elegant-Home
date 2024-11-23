@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Gallery;
+use App\Models\Notification;
 use App\Models\Product;
 use App\Models\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use Illuminate\View\View;
 
 class ProductController extends Controller
 {
@@ -24,7 +25,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $this->authorize('modules', '' . self::OBJECT . '.' .__FUNCTION__);
+        $this->authorize('modules', '' . self::OBJECT . '.' . __FUNCTION__);
 
         $products = Product::with([
             'variants.attributes' => function ($query) {
@@ -40,7 +41,7 @@ class ProductController extends Controller
      */
     public function create(Request $request)
     {
-        $this->authorize('modules', '' . self::OBJECT . '.' .__FUNCTION__);
+        $this->authorize('modules', '' . self::OBJECT . '.' . __FUNCTION__);
         $attributes = Attribute::all();
         $category = Category::query()->pluck('name', 'id')->all();
 
@@ -196,7 +197,20 @@ class ProductController extends Controller
         $variant->stock = $currentStock + $addlStock;
         $variant->save();
 
+        if ($variant->stock < 5) {
+            Notification::create([
+                'title' => 'Tồn kho dưới định mức',
+                'message' => "Sản phẩm: {$variant->product->name} sắp hết hàng! Số lượng: {$variant->quantity}",
+            ]);
+        }
+
         return redirect()->back()->with('success', 'Cập nhật số lượng thành công!');
+    }
+
+    public function compose(View $view)
+    {
+        $notifications = Notification::orderByDesc('created_at')->get();
+        $view->with('notifications', $notifications);
     }
 
 }
