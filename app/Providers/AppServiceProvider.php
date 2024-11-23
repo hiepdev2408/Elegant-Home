@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Client\HomeController;
+use App\Models\Variant;
+use App\Observers\VariantObserver;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('admin.layouts.partials.menu', DashboardController::class);
         View::composer('client.layouts.partials.header', HomeController::class);
+        View::composer('admin.layouts.partials.navBar', ProductController::class);
+        // Variant::observe(VariantObserver::class);
 
     }
 
