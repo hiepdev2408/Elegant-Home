@@ -10,178 +10,189 @@
             <div class="row clearfix">
 
                 <!-- Cart Column -->
-                <div class="cart-column col-lg-8 col-md-12 col-sm-12">
-                    <div class="inner-column">
+                @if ($carts)
+                    <div class="cart-column col-lg-8 col-md-12 col-sm-12">
+                        <div class="inner-column">
 
-                        <!--Cart Outer-->
-                        <div class="cart-outer">
-                            <div class="table-outer">
-                                <table class="cart-table">
-                                    <thead class="cart-header">
-                                        <tr>
-                                            <th class="prod-column">Product</th>
-                                            <th>&nbsp;</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-                                    @php
-                                        $totalAmount = 0;
-                                    @endphp
-                                    @foreach ($carts as $cart)
-                                        @if ($cart->variant)
-                                        <tbody>
+                            <!--Cart Outer-->
+                            <div class="cart-outer">
+                                <div class="table-outer">
+                                    <table class="cart-table">
+                                        <thead class="cart-header">
                                             <tr>
-                                                <td colspan="2" class="prod-column">
-                                                    <div class="column-box">
-                                                        <figure class="prod-thumb">
-                                                            <form action="" method="post">
+                                                <th class="prod-column">Product</th>
+                                                <th>&nbsp;</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        @php
+                                            $totalAmount = 0;
+                                        @endphp
+                                        @foreach ($carts as $cart)
+                                            @if ($cart->variant)
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="2" class="prod-column">
+                                                            <div class="column-box">
+                                                                <figure class="prod-thumb">
+                                                                    <form action="" method="post">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit"
+                                                                            class="cross-icon flaticon-cancel-1">
+                                                                        </button>
+                                                                    </form>
+                                                                    <a href="#"><img
+                                                                            src="{{ Storage::url($cart->variant->image) }}"
+                                                                            alt=""></a>
+                                                                </figure>
+                                                                <h6 class="prod-title"></h6>
+                                                                <div class="prod-text">Tên sản phẩm :
+                                                                    {{ Str::limit($cart->variant->product->name, 10) }} <br>
+                                                                    Quantity :
+                                                                    {{ $cart->quantity }}</div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td class="price">
+                                                            {{ number_format($cart->variant->price_modifier, 0, ',', '.') }}
+                                                            VNĐ
+                                                        </td>
+                                                        <!-- Quantity Box -->
+                                                        <td class="quantity-box">
+                                                            <form action="{{ route('updateCartQuantity') }}" method="post">
                                                                 @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="cross-icon flaticon-cancel-1">
-                                                                </button>
+                                                                @method('PATCH')
+                                                                <div class="item-quantity">
+                                                                    <input class="qty-spinner" type="text"
+                                                                        value="{{ $cart->quantity }}" name="quantity"
+                                                                        readonly>
+                                                                </div>
+                                                                <input type="hidden" name="cart_id"
+                                                                    value="{{ $cart->id }}">
+                                                                <input type="hidden" name="price_sale"
+                                                                    value="{{ $cart->variant->product->price_sale }}">
                                                             </form>
-                                                            <a href="#"><img
-                                                                    src="{{ Storage::url($cart->variant->image) }}"
-                                                                    alt=""></a>
-                                                        </figure>
-                                                        <h6 class="prod-title"></h6>
-                                                        <div class="prod-text">Tên sản phẩm : {{ Str::limit($cart->variant->product->name, 10) }} <br> Quantity :
-                                                            {{ $cart->quantity }}</div>
-                                                    </div>
-                                                </td>
+                                                        </td>
 
-                                                <td class="price">
-                                                    {{ number_format($cart->variant->price_modifier, 0, ',', '.') }} VNĐ
-                                                </td>
-                                                <!-- Quantity Box -->
-                                                <td class="quantity-box">
-                                                    <form action="{{ route('updateCartQuantity') }}" method="post">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <div class="item-quantity">
-                                                            <input class="qty-spinner" type="text"
-                                                                value="{{ $cart->quantity }}" name="quantity" readonly>
-                                                        </div>
-                                                        <input type="hidden" name="cart_id" value="{{ $cart->id }}">
-                                                        <input type="hidden" name="price_sale"
-                                                            value="{{ $cart->variant->product->price_sale }}">
-                                                    </form>
-                                                </td>
+                                                        <td>
+                                                            @php
+                                                                $money = $cart->total_amount;
+                                                                $totalAmount += $money;
+                                                            @endphp
+                                                            {{ number_format($money, 0, ',', '.') }}VNĐ
+                                                        </td>
+                                                </tbody>
+                                            @elseif ($cart->product)
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="2" class="prod-column">
+                                                            <div class="column-box">
+                                                                <figure class="prod-thumb">
+                                                                    <form action="" method="post">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit"
+                                                                            class="cross-icon flaticon-cancel-1">
+                                                                        </button>
+                                                                    </form>
+                                                                    <a href="#"><img
+                                                                            src="{{ Storage::url($cart->product->img_thumbnail) }}"
+                                                                            alt=""></a>
+                                                                </figure>
+                                                                <h6 class="prod-title"></h6>
+                                                                <div class="prod-text">Tên sản phẩm :
+                                                                    {{ Str::limit($cart->product->name) }} <br> Quantity :
+                                                                    {{ $cart->quantity }}</div>
+                                                            </div>
+                                                        </td>
 
-                                                <td>
-                                                    @php
-                                                        $money = $cart->total_amount;
-                                                        $totalAmount += $money;
-                                                    @endphp
-                                                    {{ number_format($money, 0, ',', '.') }}VNĐ
-                                                </td>
-                                        </tbody>
-                                        @elseif ($cart->product)
-                                        <tbody>
-                                            <tr>
-                                                <td colspan="2" class="prod-column">
-                                                    <div class="column-box">
-                                                        <figure class="prod-thumb">
-                                                            <form action="" method="post">
+                                                        <td class="price">
+                                                            {{ number_format($cart->product->price_sale, 0, ',', '.') }}
+                                                            VNĐ
+                                                        </td>
+                                                        <!-- Quantity Box -->
+                                                        <td class="quantity-box">
+                                                            <form action="{{ route('updateCartQuantity') }}"
+                                                                method="post">
                                                                 @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="cross-icon flaticon-cancel-1">
-                                                                </button>
+                                                                @method('PATCH')
+                                                                <div class="item-quantity">
+                                                                    <input class="qty-spinner" type="text"
+                                                                        value="{{ $cart->quantity }}" name="quantity"
+                                                                        readonly>
+                                                                </div>
+                                                                <input type="hidden" name="cart_id"
+                                                                    value="{{ $cart->id }}">
+                                                                <input type="hidden" name="price_sale"
+                                                                    value="{{ $cart->product->price_sale }}">
                                                             </form>
-                                                            <a href="#"><img
-                                                                    src="{{ Storage::url($cart->product->img_thumbnail) }}"
-                                                                    alt=""></a>
-                                                        </figure>
-                                                        <h6 class="prod-title"></h6>
-                                                        <div class="prod-text">Tên sản phẩm : {{ Str::limit($cart->product->name) }} <br> Quantity :
-                                                            {{ $cart->quantity }}</div>
-                                                    </div>
-                                                </td>
+                                                        </td>
 
-                                                <td class="price">
-                                                    {{ number_format($cart->product->price_sale, 0, ',', '.') }} VNĐ
-                                                </td>
-                                                <!-- Quantity Box -->
-                                                <td class="quantity-box">
-                                                    <form action="{{ route('updateCartQuantity') }}" method="post">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <div class="item-quantity">
-                                                            <input class="qty-spinner" type="text"
-                                                                value="{{ $cart->quantity }}" name="quantity" readonly>
-                                                        </div>
-                                                        <input type="hidden" name="cart_id" value="{{ $cart->id }}">
-                                                        <input type="hidden" name="price_sale"
-                                                            value="{{ $cart->product->price_sale }}">
-                                                    </form>
-                                                </td>
+                                                        <td>
+                                                            @php
+                                                                $money = $cart->total_amount;
+                                                                $totalAmount += $money;
+                                                            @endphp
+                                                            {{ number_format($money, 0, ',', '.') }}VNĐ
+                                                        </td>
+                                                </tbody>
+                                            @endif
+                                        @endforeach
 
-                                                <td>
-                                                    @php
-                                                        $money = $cart->total_amount;
-                                                        $totalAmount += $money;
-                                                    @endphp
-                                                    {{ number_format($money, 0, ',', '.') }}VNĐ
-                                                </td>
-                                        </tbody>
-                                        @endif
-
-                                    @endforeach
-
-                                </table>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Total Column -->
-                <div class="total-column col-lg-4 col-md-12 col-sm-12">
-                    <div class="inner-column">
-
-                        <!-- Cart Total Outer -->
-                        <div class="cart-total-outer">
-                            <!-- Title Box -->
-                            <div class="title-box">
-                                <h6>Cart Totals</h6>
-                            </div>
-
-                            <div class="cart-total-box">
-                                <ul class="cart-totals">
-                                    <li>Subtotals : <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span></li>
-                                    {{-- <li>
-                                        <form action="{{ route('cart.applyVoucher') }}" method="POST">
-                                            @csrf
-                                            <li>Nhập mã voucher</li>
-                                            <div class="row">
-                                                <div class="form-group col-8">
-                                                    <input type="text" class="form-control" id="voucher_code" name="voucher_code" required>
-                                                </div>
-                                                <div class="col-4">
-                                                    <button type="submit" class="btn btn-primary">Áp Dụng</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </li> --}}
-                                    <br>
-                                    <li>Totals : <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span></li>
-                                </ul>
-                                <div class="check-box">
-                                    <input type="checkbox" name="remember-password" id="type-1">
-                                    <label for="type-1">Shipping & taxes calculated at checkout</label>
-                                </div>
-                                <!-- Buttons Box -->
-                                <div class="buttons-box">
-                                    <a href="{{ route('index.Order')}}" class="theme-btn proceed-btn">
-                                        Proceed To Checkout
-                                    </a>
+                                    </table>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-                </div>
+
+                    <!-- Total Column -->
+                    <div class="total-column col-lg-4 col-md-12 col-sm-12">
+                        <div class="inner-column">
+
+                            <!-- Cart Total Outer -->
+                            <div class="cart-total-outer">
+                                <!-- Title Box -->
+                                <div class="title-box">
+                                    <h6>Cart Totals</h6>
+                                </div>
+
+                                <div class="cart-total-box">
+                                    <ul class="cart-totals">
+                                        <li>Subtotals : <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
+                                        </li>
+                                        <br>
+                                        <li>Totals : <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span></li>
+                                    </ul>
+                                    <div class="check-box">
+                                        <input type="checkbox" name="remember-password" id="type-1">
+                                        <label for="type-1">Shipping & taxes calculated at checkout</label>
+                                    </div>
+                                    <!-- Buttons Box -->
+                                    <div class="buttons-box">
+                                        <a href="{{ route('index.Order') }}" class="theme-btn proceed-btn">
+                                            Proceed To Checkout
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="empty-cart-box text-center"
+                        style="padding: 20px; border: 1px solid #ddd; border-radius: 8px; width: 300px; margin: 50px auto; background: #f9f9f9;">
+                        <img src="{{ asset('images/empty-cart-icon.svg') }}" alt="Empty Cart"
+                            style="width: 80px; margin-bottom: 10px;">
+                        <h4 class="text-secondary" style="font-size: 18px; font-weight: 600;">Giỏ hàng trống</h4>
+                        <p style="font-size: 14px; color: #888;">Hãy thêm sản phẩm để trải nghiệm mua sắm.</p>
+                        <a href="{{ route('products.index') }}" class="btn btn-sm btn-outline-primary mt-2">
+                            <i class="fas fa-plus"></i> Mua sắm ngay
+                        </a>
+                    </div>
+                @endif
 
             </div>
         </div>
@@ -300,4 +311,13 @@
                 });
         }
     </script>
+@endsection
+@section('style')
+    <style>
+        .empty-cart-box:hover {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
 @endsection

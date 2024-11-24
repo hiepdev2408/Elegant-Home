@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Order;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -16,21 +17,24 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(Payment::class)->nullable()->constrained();
 
-            $table->string('name_person');
-            $table->string('email_person');
-            $table->string('address_person');
-            $table->string('phone_person');
+            $table->string('user_name');
+            $table->string('user_email');
+            $table->string('user_phone');
+            $table->string('user_address');
+            $table->string('user_address_all');
+            $table->string('user_note')->nullable();
 
-            $table->boolean('status')->default(false);
-            $table->string('name_receiver')->nullable();
-            $table->string('email_receiver')->nullable();
-            $table->string('address_receiver')->nullable();
-            $table->string('phone_receiver')->nullable();
+            $table->string('is_ship_user_same_user');
+            $table->string('ship_user_name')->nullable();
+            $table->string('ship_user_email')->nullable();
+            $table->string('ship_user_phone')->nullable();
+            $table->string('ship_user_address')->nullable();
+            $table->string('ship_user_note')->nullable();
+
+            $table->string('status_order')->default(Order::STATUS_ORDER_PENDING);
+            $table->string('status_payment')->default(Order::STATUS_PAYMENT_UNPAID);
             $table->unsignedBigInteger('total_amount');
-
-            $table->boolean('status_orders')->default(false);
             $table->timestamps();
         });
     }
