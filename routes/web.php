@@ -4,6 +4,7 @@ use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ContactFormController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\OrderController;
@@ -91,7 +92,12 @@ Route::group([
     Route::put('cart/update', [CartController::class, 'updateCartQuantity'])->name( 'updateCartQuantity');
     Route::get('order', [OrderController::class, 'index' ])->name('index.Order');
     Route::post('order/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.applyVoucher');
-    Route::post('payment', [OrderController::class, 'checkout'])->name('checkout');
+    // Web routes
+    Route::get('/districts/{provinceCode}', [OrderController::class, 'getDistrictsByProvince']);
+    Route::get('/wards/{districtCode}', [OrderController::class, 'getWardsByDistrict']);
+
+    // Checkout
+    Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
 });
 
 // Search sản phẩm cùng danh mục

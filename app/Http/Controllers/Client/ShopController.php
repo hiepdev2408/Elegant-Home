@@ -10,29 +10,30 @@ class ShopController extends Controller
  {
     public function shop() {
 
+        $totalCart = getCartItemCount();
         $categories = Category::with('children')->whereNull('parent_id')->get();
 
         $products = Product::query()->latest('id')->paginate(12);
 
         $productnew = Product::query()->latest('id')->take(3)->get();
-        // dd($categories, $products, $productnew);
 
-        return view('client.shops.shopProduct', compact(['categories','products', 'productnew']));
+        return view('client.shops.shopProduct', compact(['categories','products', 'productnew', 'totalCart']));
     }
 
     public function gird() {
-
+        $totalCart = getCartItemCount();
         $products = Product::query()->latest('id')->paginate(8);
 
         $productnew = Product::query()->latest('id')->take(3)->get();
 
-        return view('client.shops.gird', compact(['products', 'productnew']));
+        return view('client.shops.gird', compact(['products', 'productnew','totalCart']));
 
     }
 
 
     public function shopFilter(Request $request, $category_id = null)
     {
+        $totalCart = getCartItemCount();
         $categories = Category::with('children')->whereNull('parent_id')->get();
 
         $productnew = Product::query()->latest('id')->take(3)->get();
@@ -49,7 +50,7 @@ class ShopController extends Controller
 
             $products->where('name', 'like', '%' . $request->input('search') . '%');
         }
-      
+
         if ($category_id) {
             $products->whereHas('categories', function ($query) use ($category_id) {
                 $query->where('category_id', $category_id);
@@ -67,6 +68,6 @@ class ShopController extends Controller
         }
         $products = $products->paginate(8);
 
-        return view('client.shops.shopProduct', compact('categories', 'products','productnew'));
+        return view('client.shops.shopProduct', compact('categories', 'products','productnew', 'totalCart'));
     }
 }

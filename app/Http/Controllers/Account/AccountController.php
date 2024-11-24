@@ -18,7 +18,8 @@ class AccountController extends Controller
 {
     public function login()
     {
-        return view('client.auth.login');
+        $totalCart = getCartItemCount();
+        return view('client.auth.login', compact('totalCart'));
     }
     public function check_login(Request $request)
     {
@@ -48,7 +49,8 @@ class AccountController extends Controller
     }
     public function register()
     {
-        return view('client.auth.register');
+        $totalCart = getCartItemCount();
+        return view('client.auth.register', compact('totalCart'));
     }
     public function check_register(Request $request)
     {
@@ -105,7 +107,8 @@ class AccountController extends Controller
 
     public function showForgotPasswordForm()
     {
-        return view('client.auth.passwords.email');
+        $totalCart = getCartItemCount();
+        return view('client.auth.passwords.email', compact('totalCart'));
     }
 
     public function sendResetLinkEmail(Request $request)
@@ -122,7 +125,9 @@ class AccountController extends Controller
 
     public function showResetForm($token)
     {
-        return view('client.auth.passwords.reset')->with(['token' => $token]);
+        $totalCart = getCartItemCount();
+
+        return view('client.auth.passwords.reset', compact('totalCart'))->with(['token' => $token]);
     }
 
 
@@ -158,9 +163,10 @@ class AccountController extends Controller
     // Favorite
     public function showFavorite()
     {
+        $totalCart = getCartItemCount();
         $favorite = auth()->user()->favorites;
 
-        return view('client.auth.favorite', compact('favorite'));
+        return view('client.auth.favorite', compact('favorite', 'totalCart'));
     }
     public function deleteFavorite($id)
     {

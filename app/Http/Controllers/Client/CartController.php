@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Helpers\CartHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\CartDetail;
@@ -101,12 +102,16 @@ class CartController extends Controller
 
     public function listCart()
     {
-        $carts = CartDetail::with(['product', 'variant'])->get();
+        $totalCart = getCartItemCount();
 
-        return view('client.cart.listCart', compact('carts'));
+        $cart = Cart::where('user_id', Auth::user()->id)->first();
+        $carts = $cart ? $cart->cartDetails()->with(['product', 'variant'])->get() : [];
+
+        return view('client.cart.listCart', compact('carts', 'totalCart'));
     }
 
-    public function updateCartQuantity(Request $request){
+    public function updateCartQuantity(Request $request)
+    {
 
         // Lấy thông tin giỏ hàng
         $cartDetail = CartDetail::findOrFail($request->cart_id);
@@ -124,4 +129,3 @@ class CartController extends Controller
         ]);
     }
 }
-
