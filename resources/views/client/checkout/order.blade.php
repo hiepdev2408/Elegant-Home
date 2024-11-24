@@ -15,145 +15,133 @@
     </section>
     <!-- Checkout Section -->
     <section class="checkout-section">
-        <div class="auto-container">
-            <form action="{{ route('checkout') }}" method="post">
-                @csrf
-                <div class="row clearfix">
-
-                    <!-- Form Column -->
-                    <div class="form-column col-lg-8 col-md-12 col-sm-12">
-                        <div class="inner-column">
-                            <h4>Thông tin cá nhân</h4>
-                            <!-- Shipping Form -->
-                            <div class="shipping-form ">
-                                <div class="col-9 mt-2">
-                                    <label for="">Họ và tên</label>
-                                    <input type="text" name="name" class="form-control mt-2"
+        <div class="auto-container my-5">
+            <div class="row">
+                <!-- Form Column -->
+                <div class="form-column col-lg-8 col-md-12 col-sm-12">
+                    <form action="{{ route('checkout') }}" method="post" class="p-4 border rounded shadow">
+                        @csrf
+                        <h4 class="mb-4">Thông tin cá nhân</h4>
+                        <!-- Shipping Form -->
+                        <div class="shipping-form">
+                            <!-- Row 1: Họ và Tên + Email -->
+                            <div class="row">
+                                <div class="col-md-6 mt-3">
+                                    <label for="user_name" class="form-label">Họ và tên</label>
+                                    <input type="text" name="user_name" class="form-control"
                                         value="{{ Auth::user()->name }}" placeholder="Vui lòng nhập họ và tên">
                                 </div>
-                                <div class="col-9 mt-3">
-                                    <label for="">Địa chỉ email</label>
-                                    <input type="text" name="email" class="form-control mt-2"
+                                <div class="col-md-6 mt-3">
+                                    <label for="user_email" class="form-label">Địa chỉ email</label>
+                                    <input type="text" name="user_email" class="form-control"
                                         value="{{ Auth::user()->email }}" placeholder="Vui lòng nhập địa chỉ email">
                                 </div>
-                                <div class="col-9 mt-3">
-                                    <label for="">Số điện thoại</label>
-                                    <input type="text" name="phone" class="form-control mt-2"
+                            </div>
+
+                            <!-- Row 2: Số điện thoại + Thành phố / Tỉnh -->
+                            <div class="row">
+                                <div class="col-md-6 mt-3">
+                                    <label for="user_phone" class="form-label">Số điện thoại</label>
+                                    <input type="text" name="user_phone" class="form-control"
                                         value="{{ Auth::user()->phone }}" placeholder="Vui lòng nhập số điện thoại">
                                 </div>
-                                <div class="col-9 mt-3">
-                                    <label for="province">Thành phố / Tỉnh</label>
-                                    <select name="province_id" id="province" class="form-control">
-                                        <option value="">Chọn thành phố</option>
-                                        @foreach ($province as $code => $name)
-                                            <option value="{{ $code }}">{{ $name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="col-9 mt-3">
-                                    <label for="district">Quận / Huyện</label>
-                                    <select name="district_id" id="district" class="form-control">
-                                        <option value="">Chọn quận</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-9 mt-3">
-                                    <label for="ward">Phường / Xã</label>
-                                    <select name="ward_id" id="ward" class="form-control">
-                                        <option value="">Chọn phường</option>
-                                    </select>
-                                </div>
-                                <div class="col-9 mt-3">
-                                    <label for="">Địa chỉ cụ thể</label>
-                                    <input type="text" name="address" class="form-control mt-2"
+                                <div class="col-md-6 mt-3">
+                                    <label for="user_address" class="form-label">Địa chỉ</label>
+                                    <input type="text" name="user_address" class="form-control"
                                         value="{{ Auth::user()->address }}" placeholder="Vui lòng nhập địa chỉ">
                                 </div>
                             </div>
-                            <h4 class="mt-3">Phương thức thanh toán</h4>
-                            <div class="col-9">
-                                <div class="form-check">
+
+                            <!-- Row 3: Địa chỉ chi tiết -->
+                            <div class="col-12 mt-3">
+                                <label for="user_address_all" class="form-label">Địa chỉ chi tiết</label>
+                                @if (Auth::check() && Auth::user()->ward && Auth::user()->district && Auth::user()->province &&
+                                     Auth::user()->ward->name && Auth::user()->district->name && Auth::user()->province->name)
+                                    <input type="text" name="user_address_all" class="form-control"
+                                        value="{{ Auth::user()->ward->name . ', ' . Auth::user()->district->name . ', ' . Auth::user()->province->name }}"
+                                        required>
+                                @else
+                                    <input type="text" name="user_address_all" class="form-control" value=""
+                                        required>
+                                @endif
+                            </div>
+
+                            <!-- Row 4: Ghi chú -->
+                            <div class="col-12 mt-3">
+                                <label for="user_note" class="form-label">Ghi chú</label>
+                                <textarea name="user_note" id="" cols="30" rows="4" class="form-control"
+                                    placeholder="Thêm ghi chú..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Phương thức thanh toán -->
+                        <h4 class="mt-4">Phương thức thanh toán</h4>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-check mt-2">
                                     <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMomo">
                                     <label class="form-check-label" for="paymentMomo">Thanh toán MOMO</label>
                                 </div>
-                                <div class="form-check">
+                                <div class="form-check mt-2">
                                     <input class="form-check-input" type="radio" name="paymentMethod" id="paymentPaypal">
                                     <label class="form-check-label" for="paymentPaypal">Thanh toán PayPal</label>
                                 </div>
-                                <div class="form-check">
+                                <div class="form-check mt-2">
                                     <input class="form-check-input" type="radio" name="paymentMethod" id="paymentVnp">
                                     <label class="form-check-label" for="paymentVnp">Thanh toán VNP</label>
                                 </div>
-                                <div class="form-check">
+                                <div class="form-check mt-2">
                                     <input class="form-check-input" type="radio" name="paymentMethod" id="paymentQr">
                                     <label class="form-check-label" for="paymentQr">Thanh toán QR CODE</label>
                                 </div>
-                                <div class="form-check">
+                                <div class="form-check mt-2">
                                     <input class="form-check-input" type="radio" name="paymentMethod"
                                         id="paymentCashOnDelivery">
-                                    <label class="form-check-label" for="paymentCashOnDelivery">Thanh toán khi nhận hàng</label>
+                                    <label class="form-check-label" for="paymentCashOnDelivery">Thanh toán khi nhận
+                                        hàng</label>
                                 </div>
                             </div>
-
+                            <input type="hidden" name="is_ship_user_same_user" value="0">
                         </div>
-                    </div>
-
-                    <!-- Order Column -->
-                    <div class="order-column col-lg-4 col-md-12 col-sm-12">
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-
-
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                        <div class="inner-column">
-                            <h4>Order Summery</h4>
-                            <!-- Order Box -->
-                            <div class="order-box">
-                                <ul class="order-totals">
-                                    <li>Subtotal<span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span></li>
-                                    <li>Shipping Fee<span>0VNĐ</span></li>
-                                </ul>
-
-                                <!-- Voucher Box -->
-                                <div class="voucher-box">
-                                    <form method="post" action="{{ route('order.applyVoucher') }}">
-                                        @csrf
-                                        <div class="form-group">
-                                            <input type="text" name="voucher_code" value=""
-                                                placeholder="Enter voucher Code">
-                                            <button type="submit" class="theme-btn apply-btn">Apply code</button>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <!-- Order Total -->
-                                <div class="order-total">Total
-                                    <span>{{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }} VNĐ</span>
-                                </div>
-
-                                <div class="button-box">
-                                    <input type="hidden" name="total_amount" value="{{ $totalAmount }}">
-                                    <button type="submit" class="theme-btn pay-btn">Proceed to pay</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
+                        <input type="hidden" name="total_amount" value="{{ session('totalAmount', $totalAmount) }}">
+                        <button type="submit" class="btn btn-primary mt-4 w-100">Xác nhận thanh toán</button>
+                    </form>
                 </div>
-            </form>
+
+                <!-- Order Column -->
+                <div class="order-column col-lg-4 col-md-12 col-sm-12 mt-4 mt-lg-0">
+                    <div class="p-4 border rounded shadow">
+                        <h4 class="mb-4">Tóm tắt đơn hàng</h4>
+                        <!-- Order Box -->
+                        <div class="order-box">
+                            <ul class="list-group mb-3">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Subtotal</span>
+                                    <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Shipping Fee</span>
+                                    <span>0 VNĐ</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between fw-bold">
+                                    <span>Total</span>
+                                    <span>{{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }} VNĐ</span>
+                                </li>
+                            </ul>
+
+                            <!-- Voucher Box -->
+                            <form method="post" action="{{ route('order.applyVoucher') }}" class="d-flex">
+                                @csrf
+                                <input type="text" name="voucher_code" class="form-control me-2"
+                                    placeholder="Enter voucher code">
+                                <button type="submit" class="btn btn-success">Apply</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
     </section>
     <!-- End Checkout Section -->
 

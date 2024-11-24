@@ -103,6 +103,7 @@ Route::group([
 
     // Checkout
     Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::get('defaultView', [CheckoutController::class, 'defaultView'])->name('defaultView');
 });
 
 // Search sản phẩm cùng danh mục

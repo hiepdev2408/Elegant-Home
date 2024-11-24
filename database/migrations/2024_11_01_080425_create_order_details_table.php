@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(Product::class)->nullable()->constrained();
             $table->foreignIdFor(Variant::class)->nullable()->constrained();
             $table->unsignedBigInteger('quantity');
-            $table->unsignedDecimal('total_amount');
+            $table->unsignedBigInteger('total_amount');
             $table->timestamps();
         });
     }
