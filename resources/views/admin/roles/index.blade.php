@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Vai trò
+    Vai trò người dùng
 @endsection
 @section('menu-item-account')
     open
@@ -20,57 +20,50 @@
         <!-- Role cards -->
         <div class="row g-4">
             @foreach ($roles as $item)
-                <div class="col-xl-4 col-lg-6 col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <p class="mb-0">Tổng cộng {{ $item->users->count() }} người dùng</p>
-                                <ul class="list-unstyled d-flex align-items-center avatar-group mb-0">
-                                    @foreach ($item->users as $user)
-                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                                            title="{{ $user->name }}" class="avatar pull-up">
-                                            <img class="rounded-circle" src="{{ asset('themes') }}/admin/img/avatars/5.png"
-                                                alt="Avatar">
-                                        </li>
-                                    @endforeach
+                @if ($item->name !== 'Customer')
+                    <div class="col-xl-4 col-lg-6 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <p class="mb-0">Tổng cộng {{ $item->users->count() }} người dùng</p>
+                                    <ul class="list-unstyled d-flex align-items-center avatar-group mb-0">
+                                        @foreach ($item->users as $user)
+                                            <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                                                title="{{ $user->name }}" class="avatar pull-up">
+                                                <img class="rounded-circle"
+                                                    src="{{ asset('themes') }}/admin/img/avatars/5.png" alt="Avatar">
+                                            </li>
+                                        @endforeach
 
-                                    {{-- <li class="avatar">
+                                        {{-- <li class="avatar">
                                         <span class="avatar-initial rounded-circle pull-up bg-lighter text-body"
                                             data-bs-toggle="tooltip" data-bs-placement="bottom" title="3 more">+3</span>
                                     </li> --}}
-                                </ul>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-end">
-                                <div class="role-heading">
-                                    @if ($item->name == 'Administrator')
-                                        <h5 class="mb-1">Quản Trị Viên</h5>
-                                    @else
-                                        <h5 class="mb-1">{{ $item->name }}</h5>
-                                    @endif
-                                    @if ($item->name == 'Administrator')
-                                        <a href="javascript:;" class="role-edit-modal">
-                                            <span class="disabled">Có tất cả quyền</span>
-                                        </a>
-                                    @else
-                                        {{-- <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#addRoleModal"
-                                            data-id="{{ $item->id }}" class="role-edit-modal">
-                                            <span>Chỉnh sửa vai
-                                                trò</span> --}}
-                                        <a href="{{ route('permissions.access', $item->id) }}" data-id="{{ $item->id }}"
-                                            class="role-edit-modal">
-                                            <span>Chỉnh sửa quyền truy cập</span>
-                                        </a>
-                                    @endif
-
+                                    </ul>
                                 </div>
-                                <a href="javascript:void(0);" class="text-muted"><i
-                                        class="mdi mdi-content-copy mdi-20px"></i></a>
+                                <div class="d-flex justify-content-between align-items-end">
+                                    <div class="role-heading">
+                                        <h5 class="mb-1">{{ $item->name }}</h5>
+                                        @if ($item->name == 'Admin')
+                                            <a href="javascript:;" class="role-edit-modal">
+                                                <span class="disabled">Có tất cả quyền</span>
+                                            </a>
+                                        @else
+                                            <a href="{{ route('permissions.access', $item->id) }}"
+                                                data-id="{{ $item->id }}" class="role-edit-modal">
+                                                <span>Chỉnh sửa quyền truy cập</span>
+                                            </a>
+                                        @endif
+
+                                    </div>
+                                    <a href="javascript:void(0);" class="text-muted"><i
+                                            class="mdi mdi-content-copy mdi-20px"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
             @endforeach
-
             <div class="col-xl-4 col-lg-6 col-md-6">
                 <div class="card h-100">
                     <div class="row h-100">
@@ -119,23 +112,29 @@
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->email }}</td>
                                             <td>
-                                                @if ($item->role->name == 'Administrator')
+                                                @if ($item->role->name == 'Admin')
                                                     <span
                                                         class="d-flex align-items-center text-heading justify-content-center">
                                                         <i class="mdi mdi-laptop text-danger me-2"></i>
                                                         {{ $item->role->name }}
                                                     </span>
-                                                @elseif ($item->role->name == 'Nhân Viên')
+                                                @elseif ($item->role->name == 'Staff')
                                                     <span
                                                         class="d-flex align-items-center text-heading justify-content-center">
                                                         <i
-                                                            class="mdi mdi-account-multiple-check-outline text-danger me-2"></i>
+                                                            class="mdi mdi-account-multiple-check-outline text-success me-2"></i>
+                                                        {{ $item->role->name }}
+                                                    </span>
+                                                @elseif($item->role->name == 'Editor')
+                                                    <span
+                                                        class="d-flex align-items-center text-heading justify-content-center">
+                                                        <i class="mdi mdi-square-edit-outline text-warning me-2"></i>
                                                         {{ $item->role->name }}
                                                     </span>
                                                 @else
                                                     <span
                                                         class="d-flex align-items-center text-heading justify-content-center">
-                                                        <i class="mdi mdi-account-outline text-danger me-2"></i>
+                                                        <i class="mdi mdi-account-outline text-info me-2"></i>
                                                         {{ $item->role->name }}
                                                     </span>
                                                 @endif
@@ -175,10 +174,9 @@
             </div>
         </div>
         <!--/ Role cards -->
-
         <!--  Modal -->
         <!-- Add Role Modal -->
-        <div class="modal fade" id="addRoleModal" tabindex="-1" aria-hidden="true">
+        {{-- <div class="modal fade" id="addRoleModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-add-new-role">
                 <div class="modal-content p-3 p-md-5">
                     <button type="button" class="btn-close btn-pinned" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -343,83 +341,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!--/ Add Role Modal -->
-
-        <!-- /  Modal -->
+        </div> --}}
     </div>
 @endsection
-{{-- @section('content')
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <h4>
-            <span class="text-muted fw-light">Tài Khoản /</span> Vai trò
-        </h4>
-        @if (session()->has('success'))
-            <div class="alert alert-success fw-bold">
-                {{ session()->get('success') }}
-            </div>
-        @endif
-        <div class="card-header d-flex justify-content-end align-items-center mb-3 gap-3">
-            @if (Auth::check() && Auth::user()->role_id == 1)
-                <a class="btn btn-info" href="{{ route('permissions.gant') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>
-                    Cấp quyền</a>
-            @endif
-            <a class="btn btn-primary" href="{{ route('permissions.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>
-                Thêm mới</a>
-        </div>
-
-        <div class="card">
-            <div class="card-body">
-                <table id="example"
-                    class=" text-center table table-bordered dt-responsive nowrap table-striped align-middle"
-                    style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Tên vai trò</th>
-                            <th>Số tài khoản</th>
-                            <th>Ngày tạo</th>
-                            <th>Ngày cập nhật</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($roles as $value)
-                            <tr>
-                                <td>{{ $value->id }}</td>
-                                <td>{{ $value->name }}</td>
-                                <td><span class="badge bg-success">{{ $value->users->count() }}</span></td>
-                                <td>{{ $value->created_at ? $value->created_at->format('d/m/Y') : '' }}</td>
-                                <td>{{ $value->created_at ? $value->updated_at->format('d/m/Y') : '' }}</td>
-                                <td>
-                                    <div class="d-flex justify-content-center">
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Update"
-                                            class="btn btn-warning btn-sm me-1"
-                                            href="{{ route('permissions.edit', $value->id) }}">
-                                            <i class="mdi mdi-pencil"></i>
-                                        </a>
-
-                                        <form id="delete-form-{{ $value->id }}"
-                                            action="{{ route('permissions.destroy', $value->id) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="button" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                data-bs-title="Delete" class="btn btn-danger btn-sm me-1"
-                                                onclick="confirmDelete({{ $value->id }})">
-                                                <i class="mdi mdi-delete-circle"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-@endsection --}}
 
 @section('style-libs')
     <!--datatable css-->

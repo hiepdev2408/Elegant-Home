@@ -70,15 +70,17 @@
 
                     <!-- User Box -->
                     @if (Auth::check())
-                        <li><a href="{{ route('profile.user') }}">{{ Auth::user()->name }}</a></li>
+                        <li style="margin-top: -4px">
+                            <a href="{{ route('profile.user') }}" class="fw-bold">{{ Auth::user()->name }}</a>
+                        </li>
                     @else
                         <a class="user-box flaticon-user-3" href="{{ route('login') }}"></a>
                     @endif
 
                     <!-- Like Box -->
                     <div class="like-box ms-3">
-                        <a class="user-box flaticon-heart" href="contact.html"></a>
-                        <span class="total-like">{{$favouritecount}}</span>
+                        <a class="user-box flaticon-heart" href="{{ route('show.favorite') }}"></a>
+                        <span class="total-like">{{ $favouritecount }}</span>
                     </div>
 
                 </div>

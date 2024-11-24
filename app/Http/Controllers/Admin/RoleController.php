@@ -12,7 +12,6 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::query()->with(['users'])->get();
-        $roleProduct = Permission::whereIn('slug', ['products.index', 'products.create', 'products.edit'])->get();
-        return view('admin.roles.index', compact('roles', 'roleProduct'));
+        return view('admin.roles.index', compact('roles'));
     }
 }
