@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer('admin.layouts.partials.menu', DashboardController::class);
         View::composer('client.layouts.partials.header', HomeController::class);
         View::composer('admin.layouts.partials.navBar', ProductController::class);
-        // Variant::observe(VariantObserver::class);
+        Variant::observe(VariantObserver::class);
 
     }
 

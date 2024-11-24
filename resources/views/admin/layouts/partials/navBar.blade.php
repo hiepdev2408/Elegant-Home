@@ -170,29 +170,32 @@
                     href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside"
                     aria-expanded="false">
                     <i class="mdi mdi-bell-outline mdi-24px"></i>
-                    <span
-                        class="position-absolute top-0 start-50 translate-middle-y badge badge-dot bg-danger mt-2 border"></span>
+                    @if ($unread != 0)
+                        <span
+                            class="position-absolute top-0 start-50 translate-middle-y badge badge-dot bg-danger mt-2 border"></span>
+                    @endif
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end py-0">
                     <li class="dropdown-menu-header border-bottom">
                         <div class="dropdown-header d-flex align-items-center py-3">
-                            <h6 class="fw-normal mb-0 me-auto">Notification</h6>
-                            <span class="badge rounded-pill bg-label-primary">8 New</span>
+                            <h6 class="fw-normal mb-0 me-auto">Thông báo</h6>
+                            <span class="badge rounded-pill bg-label-primary">{{ $unread }} Thông Báo Mới</span>
                         </div>
                     </li>
                     <li class="dropdown-notifications-list scrollable-container">
                         <ul class="list-group list-group-flush">
                             @foreach ($notifications as $notification)
-                                <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                <li
+                                    class="list-group-item list-group-item-action dropdown-notifications-item {{ $notification->is_read == 0 ? ' bg-label-primary' : '' }}">
                                     <div class="d-flex align-items-center gap-2">
                                         <div class="flex-shrink-0">
                                             <div class="avatar me-1">
-                                                <img src="{{ asset('themes') }}/admin/img/avatars/1.png" alt
-                                                    class="w-px-40 h-auto rounded-circle">
+                                                <span class="avatar-initial rounded-circle bg-label-danger"><i
+                                                        class="mdi mdi-unity mdi-24px"></i></span>
                                             </div>
                                         </div>
                                         <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-250">
-                                            <h6 class="mb-1 text-truncate">{{ $notification->title }}🔔</h6>
+                                            <h6 class="mb-1 text-truncate">{{ $notification->title }}</h6>
                                             <small class="text-truncate text-body">{{ $notification->message }}</small>
                                         </div>
                                         <div class="flex-shrink-0 dropdown-notifications-actions">
@@ -202,163 +205,15 @@
                                     </div>
                                 </li>
                             @endforeach
-                            <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar me-1">
-                                            <span class="avatar-initial rounded-circle bg-label-danger">CF</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-250">
-                                        <h6 class="mb-1 text-truncate">Charles Franklin</h6>
-                                        <small class="text-truncate text-body">Accepted your
-                                            connection</small>
-                                    </div>
-                                    <div class="flex-shrink-0 dropdown-notifications-actions">
-                                        <small class="text-muted">12hr ago</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li
-                                class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar me-1">
-                                            <img src="{{ asset('themes') }}/admin/img/avatars/2.png" alt
-                                                class="w-px-40 h-auto rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-250">
-                                        <h6 class="mb-1 text-truncate">New Message ✉️</h6>
-                                        <small class="text-truncate text-body">You have new message
-                                            from
-                                            Natalie</small>
-                                    </div>
-                                    <div class="flex-shrink-0 dropdown-notifications-actions">
-                                        <small class="text-muted">1h ago</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar me-1">
-                                            <span class="avatar-initial rounded-circle bg-label-success"><i
-                                                    class="mdi mdi-cart-outline"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-250">
-                                        <h6 class="mb-1 text-truncate">Whoo! You have new order 🛒
-                                        </h6>
-                                        <small class="text-truncate text-body">ACME Inc. made new order
-                                            $1,154</small>
-                                    </div>
-                                    <div class="flex-shrink-0 dropdown-notifications-actions">
-                                        <small class="text-muted">1 day ago</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li
-                                class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar me-1">
-                                            <img src="{{ asset('themes') }}/admin/img/avatars/9.png" alt
-                                                class="w-px-40 h-auto rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-250">
-                                        <h6 class="mb-1 text-truncate">Application has been approved 🚀
-                                        </h6>
-                                        <small class="text-truncate text-body">Your ABC project
-                                            application has been approved.</small>
-                                    </div>
-                                    <div class="flex-shrink-0 dropdown-notifications-actions">
-                                        <small class="text-muted">2 days ago</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li
-                                class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar me-1">
-                                            <span class="avatar-initial rounded-circle bg-label-success"><i
-                                                    class="mdi mdi-chart-pie-outline"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-250">
-                                        <h6 class="mb-1 text-truncate">Monthly report is generated</h6>
-                                        <small class="text-truncate text-body">July monthly financial
-                                            report is generated </small>
-                                    </div>
-                                    <div class="flex-shrink-0 dropdown-notifications-actions">
-                                        <small class="text-muted">3 days ago</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li
-                                class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar me-1">
-                                            <img src="{{ asset('themes') }}/admin/img/avatars/5.png" alt
-                                                class="w-px-40 h-auto rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-250">
-                                        <h6 class="mb-1 text-truncate">Send connection request</h6>
-                                        <small class="text-truncate text-body">Peter sent you
-                                            connection
-                                            request</small>
-                                    </div>
-                                    <div class="flex-shrink-0 dropdown-notifications-actions">
-                                        <small class="text-muted">4 days ago</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item list-group-item-action dropdown-notifications-item">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar me-1">
-                                            <img src="{{ asset('themes') }}/admin/img/avatars/6.png" alt
-                                                class="w-px-40 h-auto rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-250">
-                                        <h6 class="mb-1 text-truncate">New message from Jane</h6>
-                                        <small class="text-truncate text-body">Your have new message
-                                            from Jane</small>
-                                    </div>
-                                    <div class="flex-shrink-0 dropdown-notifications-actions">
-                                        <small class="text-muted">5 days ago</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li
-                                class="list-group-item list-group-item-action dropdown-notifications-item marked-as-read">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar me-1">
-                                            <span class="avatar-initial rounded-circle bg-label-warning"><i
-                                                    class="mdi mdi-alert-circle-outline"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-250">
-                                        <h6 class="mb-1">CPU is running high</h6>
-                                        <small class="text-truncate text-body">CPU Utilization Percent
-                                            is currently at 88.63%,</small>
-                                    </div>
-                                    <div class="flex-shrink-0 dropdown-notifications-actions">
-                                        <small class="text-muted">5 days ago</small>
-                                    </div>
-                                </div>
-                            </li>
                         </ul>
                     </li>
                     <li class="dropdown-menu-footer border-top p-3">
-                        <a href="javascript:void(0);" class="btn btn-primary d-flex justify-content-center">Read all
-                            notifications</a>
+                        <form action="{{ route('mark-read') }}" method="post">
+                            @csrf
+                            <button class="btn btn-primary w-100">Đọc
+                                tất cả
+                                thông báo</button>
+                        </form>
                     </li>
                 </ul>
             </li>
