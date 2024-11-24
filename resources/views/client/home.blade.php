@@ -49,9 +49,9 @@
                             <div class="title">2022 Collection</div>
                             <h1>Furniture <br> Collection</h1>
                             <div class="price">Starting From <span>$560.99</span></div>
-                            <a href="shop-detail.html" class="shop-now">Shop Now</a>
+                            <a href="{{ route('shop') }}" class="shop-now">Shop Now</a>
                             <!-- Arrival Box -->
-                            <a href="shop.html" class="arrival-box">New Arrival</a>
+                            <a href="{{ route('shop') }}" class="arrival-box">New Arrival</a>
                             <!-- Arrival Box -->
                         </div>
                     </div>
@@ -101,9 +101,9 @@
                             <div class="title">2022 Collection</div>
                             <h1>Furniture <br> Collection</h1>
                             <div class="price">Starting From <span>$560.99</span></div>
-                            <a href="shop-detail.html" class="shop-now">Shop Now</a>
+                            <a href="{{ route('shop') }}" class="shop-now">Shop Now</a>
                             <!-- Arrival Box -->
-                            <a href="shop.html" class="arrival-box">New Arrival</a>
+                            <a href="{{ route('shop') }}" class="arrival-box">New Arrival</a>
                             <!-- Arrival Box -->
                         </div>
                     </div>
@@ -889,7 +889,7 @@
                         col-lg-3 col-md-6 col-sm-12">
                             <div class="inner-box">
                                 <div class="image">
-                                    <a href="{{ route('productDetail', ['slug', $product->slug]) }}">
+                                    <a href="{{ route('productDetail', ['slug' => $product->slug]) }}">
                                         @if ($product->img_thumbnail)
                                             <img src="{{ Storage::url($product->img_thumbnail) }}" alt="" />
                                         @endif
@@ -923,7 +923,7 @@
                 </div>
 
                 <div class="button-box text-center">
-                    <a href="shop.html" class="theme-btn btn-style-one">
+                    <a href="{{ route('shop') }}" class="theme-btn btn-style-one">
                         Shop Now <span class="icon flaticon-right-arrow"></span>
                     </a>
                 </div>

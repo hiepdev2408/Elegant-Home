@@ -147,7 +147,7 @@
                             <div class="title-box">
                                 <h6>Cart Totals</h6>
                             </div>
-                           
+
                             <div class="cart-total-box">
                                 <ul class="cart-totals">
                                     <li>Subtotals : <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span></li>
@@ -180,28 +180,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Shipping Total Outer -->
-                        <div class="shipping-outer">
-                            <!-- Title Box -->
-                            <div class="title-box">
-                                <h6>Calculate Shipping</h6>
-                            </div>
-                            <div class="cart-shipping-box">
-                                <ul class="shipping-list">
-                                    <li>Bangladesh</li>
-                                    <li>Mirpur Dohs Dhaka-1200</li>
-                                    <li>Postal Code</li>
-                                </ul>
-                                <!-- Buttons Box -->
-                                <div class="buttons-box">
-                                    <a href="contact.html" class="theme-btn btn-style-one">
-                                        Calculate Shiping
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
 

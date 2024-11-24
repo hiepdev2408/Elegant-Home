@@ -31,21 +31,30 @@
                                 <div class="inner-column">
                                     <div class="carousel-outer">
                                         <!-- Swiper -->
+
                                         <div class="swiper-container content-carousel">
                                             <div class="swiper-wrapper">
-                                                @foreach ($product->galleries as $gallery)
-                                                    @if ($gallery->img_path)
-                                                        <div class="swiper-slide">
-                                                            <figure class="image">
-                                                                <a href="{{ Storage::url($gallery->img_path) }}"
-                                                                    class="lightbox-image">
-                                                                    <img src="{{ Storage::url($gallery->img_path) }}"
-                                                                        alt="">
-                                                                </a>
-                                                            </figure>
-                                                        </div>
-                                                    @endif
-                                                @endforeach
+                                                @if($product->galleries->isNotEmpty())
+                                                    @foreach ($product->galleries as $gallery)
+                                                        @if ($gallery->img_path)
+                                                            <div class="swiper-slide">
+                                                                <figure class="image">
+                                                                    <a href="{{ Storage::url($gallery->img_path) }}" class="lightbox-image">
+                                                                        <img src="{{ Storage::url($gallery->img_path) }}" alt="Hình ảnh sản phẩm">
+                                                                    </a>
+                                                                </figure>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    <div class="swiper-slide">
+                                                        <figure class="image">
+                                                            <a href="{{ Storage::url($product->img_thumbnail) }}" class="lightbox-image">
+                                                                <img src="{{ Storage::url($product->img_thumbnail) }}" alt="Hình ảnh thumbnail sản phẩm">
+                                                            </a>
+                                                        </figure>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
