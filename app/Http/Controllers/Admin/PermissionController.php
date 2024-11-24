@@ -25,7 +25,9 @@ class PermissionController extends Controller
         $permissions = Permission::query()->with(['roles'])->get();
         $role = Role::query()->findOrFail($id);
         $roleProduct = Permission::whereIn('slug', ['products.index', 'products.create', 'products.edit'])->get();
-        return view('admin.roles.grant', compact('permissions', 'role', 'roleProduct'));
+        $roleCategory = Permission::whereIn('slug', ['categories.index', 'categories.create', 'categories.edit'])->get();
+        $roleAttribute = Permission::whereIn('slug', ['attribute_values.index', 'attribute_values.create', 'attribute_values.edit'])->get();
+        return view('admin.roles.grant', compact('permissions', 'role', 'roleProduct', 'roleCategory', 'roleAttribute'));
     }
 
     public function updateGant(Request $request)
