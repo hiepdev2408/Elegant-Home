@@ -13,8 +13,8 @@
                 </div>
 
                 <!-- Logo -->
-                <div class="logo"><a href="{{ route('home') }}"><img src="{{ asset('themes/clients/images/logo.png') }}"
-                            alt="" title=""></a></div>
+                <div class="logo"><a href="{{ route('home') }}"><img
+                            src="{{ asset('themes/clients/images/logo.png') }}" alt="" title=""></a></div>
             </div>
             <div class="nav-outer clearfix">
 
@@ -51,6 +51,16 @@
                                 </ul>
                             </li>
                             <li><a href="{{ route('contact') }}">Contact us</a></li>
+                            @if (Auth::check())
+                                <li>
+                                    <form action="{{ route('chat.create',Auth::user()->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary">Liên Hệ Admin</button>
+                                    </form>
+                                </li>
+                            @endif
+
+
                         </ul>
                     </div>
 
@@ -114,8 +124,8 @@
         <div class="d-flex justify-content-between align-items-center">
             <!-- Logo -->
             <div class="logo">
-                <a href="{{ route('home') }}" title=""><img src="{{ asset('themes/clients/images/logo-small.png') }}"
-                        alt="" title=""></a>
+                <a href="{{ route('home') }}" title=""><img
+                        src="{{ asset('themes/clients/images/logo-small.png') }}" alt="" title=""></a>
             </div>
 
             <!-- Right Col -->

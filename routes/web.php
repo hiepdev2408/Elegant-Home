@@ -3,10 +3,12 @@
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\ContactFormController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ShopController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -88,7 +90,16 @@ Route::group([
     Route::post('addToCart', [CartController::class, 'addToCart'])->name('addToCart');
     Route::get('listCart', [CartController::class, 'listCart'])->name('listCart');
 });
+Route::group([
+    'middleware' => 'auth',
+], function () {
+    Route::post('/chat/create/{receiverId}', [ChatController::class, 'createOrRedirect'])->name('chat.create');
+    Route::get('/chat/{roomId}/{receiverId}', [ChatController::class, 'showChatRoom'])->name('chat.room');
+
+
+    //giửi massage
+    Route::post('/messages/send', [ChatController::class, 'sendMessage']);
+});
 
 // Search sản phẩm cùng danh mục
 Route::get('search/{id}', [HomeController::class, 'search'])->name('search');
-

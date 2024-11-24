@@ -12,6 +12,7 @@ use App\Helpers\Mail\ContactFormMail;
 use App\Http\Controllers\Admin\AttributeValueController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,7 +26,7 @@ Route::prefix('admin')
         // Account
         Route::prefix('account')
             ->as('account.')
-            ->group(function(){
+            ->group(function () {
                 Route::get('listAdmin', [UserController::class, 'listAdmin'])->name('listAdmin');
                 Route::get('listStaff', [UserController::class, 'listStaff'])->name('listStaff');
                 Route::get('listCustomer', [UserController::class, 'listCustomer'])->name('listCustomer');
@@ -33,31 +34,31 @@ Route::prefix('admin')
 
         // Permission
         Route::prefix('permissions')
-        ->as('permissions.')
-        ->group(function(){
-            Route::get('/', [PermissionController::class, 'index'])->name('index');
-            Route::get('create', [PermissionController::class, 'create'])->name('create');
-            Route::get('gant', [PermissionController::class, 'gant'])->name('gant');
-            Route::post('updateGant', [PermissionController::class, 'updateGant'])->name('updateGant');
-            Route::post('store', [PermissionController::class, 'store'])->name('store');
-            Route::get('show/{id}', [PermissionController::class, 'show'])->name('show');
-            Route::get('edit/{id}', [PermissionController::class, 'edit'])->name('edit');
-            Route::put('update/{id}', [PermissionController::class, 'update'])->name('update');
-            Route::delete('destroy/{id}', [PermissionController::class, 'destroy'])->name('destroy');
-        });
+            ->as('permissions.')
+            ->group(function () {
+                Route::get('/', [PermissionController::class, 'index'])->name('index');
+                Route::get('create', [PermissionController::class, 'create'])->name('create');
+                Route::get('gant', [PermissionController::class, 'gant'])->name('gant');
+                Route::post('updateGant', [PermissionController::class, 'updateGant'])->name('updateGant');
+                Route::post('store', [PermissionController::class, 'store'])->name('store');
+                Route::get('show/{id}', [PermissionController::class, 'show'])->name('show');
+                Route::get('edit/{id}', [PermissionController::class, 'edit'])->name('edit');
+                Route::put('update/{id}', [PermissionController::class, 'update'])->name('update');
+                Route::delete('destroy/{id}', [PermissionController::class, 'destroy'])->name('destroy');
+            });
 
         // Role
         Route::prefix('roles')
-        ->as('roles.')
-        ->group(function(){
-            Route::get('/', [RoleController::class, 'index'])->name('index');
-            Route::get('create', [RoleController::class, 'create'])->name('create');
-            Route::post('store', [RoleController::class, 'store'])->name('store');
-            Route::get('show/{id}', [RoleController::class, 'show'])->name('show');
-            Route::get('edit/{id}', [RoleController::class, 'edit'])->name('edit');
-            Route::put('update/{id}', [RoleController::class, 'update'])->name('update');
-            Route::delete('destroy/{id}', [RoleController::class, 'destroy'])->name('destroy');
-        });
+            ->as('roles.')
+            ->group(function () {
+                Route::get('/', [RoleController::class, 'index'])->name('index');
+                Route::get('create', [RoleController::class, 'create'])->name('create');
+                Route::post('store', [RoleController::class, 'store'])->name('store');
+                Route::get('show/{id}', [RoleController::class, 'show'])->name('show');
+                Route::get('edit/{id}', [RoleController::class, 'edit'])->name('edit');
+                Route::put('update/{id}', [RoleController::class, 'update'])->name('update');
+                Route::delete('destroy/{id}', [RoleController::class, 'destroy'])->name('destroy');
+            });
 
         // Products
         Route::prefix('products')
@@ -126,26 +127,24 @@ Route::prefix('admin')
 
         // Attribute values
         Route::prefix('attribute_values')
-        ->as('attribute_values.')
-        ->group(function () {
-            Route::get('/', [AttributeValueController::class, 'index'])->name('index');
-            Route::get('create', [AttributeValueController::class, 'create'])->name('create');
-            Route::post('store', [AttributeValueController::class, 'store'])->name('store');
-            Route::get('edit/{id}', [AttributeValueController::class, 'edit'])->name('edit');
-            Route::put('update/{id}', [AttributeValueController::class, 'update'])->name('update');
-            Route::delete('destroy/{id}', [AttributeValueController::class, 'destroy'])->name('destroy');
-        });
+            ->as('attribute_values.')
+            ->group(function () {
+                Route::get('/', [AttributeValueController::class, 'index'])->name('index');
+                Route::get('create', [AttributeValueController::class, 'create'])->name('create');
+                Route::post('store', [AttributeValueController::class, 'store'])->name('store');
+                Route::get('edit/{id}', [AttributeValueController::class, 'edit'])->name('edit');
+                Route::put('update/{id}', [AttributeValueController::class, 'update'])->name('update');
+                Route::delete('destroy/{id}', [AttributeValueController::class, 'destroy'])->name('destroy');
+            });
 
         // Contact
         Route::prefix('contact')
             ->as('contact.')
             ->group(function () {
-            Route::get('/', [ContactFormController::class, 'index'])->name('index');
-            Route::delete('destroy/{id}', [ContactFormController::class, 'destroy'])->name('destroy');
-        });
+                Route::get('/', [ContactFormController::class, 'index'])->name('index');
+                Route::delete('destroy/{id}', [ContactFormController::class, 'destroy'])->name('destroy');
+            });
 
         // Chatrealtime
-        Route::get('/chat', function () {
-            return view('admin.chat.index');
-        })->name('chat');
+        Route::get('/admin/chat-rooms', [ChatController::class, 'listChatRooms'])->name('chat');
     });
