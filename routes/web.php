@@ -42,6 +42,9 @@ Route::group(['prefix' => 'account'], function () {
     Route::get('/profile/show/{id}', [ProfileController::class, 'show'])
         // ->middleware('auth')
         ->name('profile.show');
+    Route::get('/order', [ProfileController::class, 'order'])
+        // ->middleware('auth')
+        ->name('profile.order');
 
     Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])
         ->name('profile.edit');
@@ -89,6 +92,8 @@ Route::group([
 ], function () {
     Route::post('addToCart', [CartController::class, 'addToCart'])->name('addToCart');
     Route::get('listCart', [CartController::class, 'listCart'])->name('listCart');
+    Route::put('cart/update', [CartController::class, 'updateCartQuantity'])->name('updateCartQuantity');
+    Route::post('cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.applyVoucher');
     Route::put('cart/update', [CartController::class, 'updateCartQuantity'])->name( 'updateCartQuantity');
     Route::get('order', [OrderController::class, 'index' ])->name('index.Order');
     Route::post('order/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.applyVoucher');
