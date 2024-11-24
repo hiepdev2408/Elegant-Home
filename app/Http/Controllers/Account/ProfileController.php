@@ -17,6 +17,10 @@ class ProfileController extends Controller
         return view('client.auth.account.profile', compact('user'));
     }
 
+    public function order()
+    {
+        return view('client.auth.account.order');
+    }
     public function show($id)
     {
         $user = Auth::user();
