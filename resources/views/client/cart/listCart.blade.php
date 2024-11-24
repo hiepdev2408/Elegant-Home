@@ -182,14 +182,15 @@
                         </div>
                     </div>
                 @else
-                    <div class="empty-cart-box text-center"
-                        style="padding: 20px; border: 1px solid #ddd; border-radius: 8px; width: 300px; margin: 50px auto; background: #f9f9f9;">
-                        <img src="{{ asset('images/empty-cart-icon.svg') }}" alt="Empty Cart"
-                            style="width: 80px; margin-bottom: 10px;">
+                    <div class="empty-cart-box text-center">
+                        <img class="mb-4 mt-4"
+                            src="https://static-smember.cellphones.com.vn/smember/_nuxt/img/empty.db6deab.svg"
+                            alt="Empty Cart" width="300px">
                         <h4 class="text-secondary" style="font-size: 18px; font-weight: 600;">Giỏ hàng trống</h4>
-                        <p style="font-size: 14px; color: #888;">Hãy thêm sản phẩm để trải nghiệm mua sắm.</p>
-                        <a href="{{ route('products.index') }}" class="btn btn-sm btn-outline-primary mt-2">
-                            <i class="fas fa-plus"></i> Mua sắm ngay
+                        <p style="font-size: 14px; color: #888;">Giỏ hàng của bạn đang trống.
+                            Hãy chọn thêm sản phẩm để mua sắm nhé</p>
+                        <a href="{{ route('home') }}" class="btn btn-danger mb-5">
+                            Quay Lại Trang Chủ
                         </a>
                     </div>
                 @endif
@@ -311,13 +312,4 @@
                 });
         }
     </script>
-@endsection
-@section('style')
-    <style>
-        .empty-cart-box:hover {
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-            transition: all 0.2s ease-in-out;
-        }
-    </style>
 @endsection
