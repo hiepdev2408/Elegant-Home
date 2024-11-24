@@ -25,7 +25,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $this->authorize('modules', '' . self::OBJECT . '.' . __FUNCTION__);
+        try {
+            $this->authorize('modules', self::OBJECT . '.' . __FUNCTION__);
+            // Thực hiện logic khi có quyền
+        } catch (\Throwable $th) {
+            return response()->view('admin.errors.unauthorized', ['message' => 'Bạn không có quyền truy cập!']);
+        }
 
         $products = Product::with([
             'variants.attributes' => function ($query) {
@@ -41,7 +46,12 @@ class ProductController extends Controller
      */
     public function create(Request $request)
     {
-        $this->authorize('modules', '' . self::OBJECT . '.' . __FUNCTION__);
+        try {
+            $this->authorize('modules', self::OBJECT . '.' . __FUNCTION__);
+            // Thực hiện logic khi có quyền
+        } catch (\Throwable $th) {
+            return response()->view('admin.errors.unauthorized', ['message' => 'Bạn không có quyền truy cập!']);
+        }
         $attributes = Attribute::all();
         $category = Category::query()->pluck('name', 'id')->all();
 
@@ -195,20 +205,19 @@ class ProductController extends Controller
         $variant->stock = $currentStock + $addlStock;
         $variant->save();
 
-        if ($variant->stock < 5) {
-            Notification::create([
-                'title' => 'Tồn kho dưới định mức',
-                'message' => "Sản phẩm: {$variant->product->name} sắp hết hàng! Số lượng: {$variant->quantity}",
-            ]);
-        }
-
         return redirect()->back()->with('success', 'Cập nhật số lượng thành công!');
     }
 
     public function compose(View $view)
     {
         $notifications = Notification::orderByDesc('created_at')->get();
-        $view->with('notifications', $notifications);
+        $unread = Notification::where('is_read', 0)->count();
+        $view->with([
+            'notifications' =>
+                $notifications,
+            'unread' =>
+                $unread
+        ]);
     }
 
 }

@@ -44,7 +44,11 @@
 
     <!-- Page CSS -->
     @yield('style-libs')
-
+    <style>
+        .swal2-container {
+            z-index: 9999 !important;
+        }
+    </style>
     <!-- Helpers -->
     <script src="{{ asset('themes') }}/admin/vendor/js/helpers.js"></script>
     <script src="{{ asset('themes') }}/admin/js/config.js"></script>
@@ -126,7 +130,7 @@
 
     <!-- Page JS -->
 
-    @yield('script-libs') <!-- CÁC JS CÁC CÁC TRANG -->
+    @yield('script-libs') <!-- CÁC JS CÁC TRANG -->
 
 </body>
 
