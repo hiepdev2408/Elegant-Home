@@ -18,10 +18,10 @@ class Ward extends Model
 
     protected $primaryKey = 'code';
 
-    public $incrementing = false;
+    public $incrementing = 'fales';
 
     public function district(){
-        return $this->belongsTo(District::class, 'district_code', 'code');
+        return $this->belongsTo(Ward::class, 'district_code', 'code');
     }
 
     public function users(){

@@ -88,10 +88,12 @@
                     <div class="box-inner">
                         <a href="{{ route('listCart') }}" class="icon-box">
                             <span class="icon flaticon-bag"></span>
-                            <i class="total-cart">0</i>
+                            <i class="total-cart">
+                                {{ $totalCart }}
+                            </i>
                         </a>
                         Phone<br>
-                        <a class="phone" href="tel:88-1900-6789-56">88 1900 6789 56</a>
+                        <a class="phone" href="tel:0382500462">0382500462</a>
                     </div>
                 </div>
                 <!-- End Cart Box -->

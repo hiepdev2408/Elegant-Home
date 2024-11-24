@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(Payment::class)->constrained();
+            $table->foreignIdFor(Payment::class)->nullable()->constrained();
 
             $table->string('name_person');
             $table->string('email_person');
@@ -24,13 +24,13 @@ return new class extends Migration
             $table->string('phone_person');
 
             $table->boolean('status')->default(false);
-            $table->string('name_receiver');
-            $table->string('email_receiver');
-            $table->string('address_receiver');
-            $table->string('phone_receiver');
+            $table->string('name_receiver')->nullable();
+            $table->string('email_receiver')->nullable();
+            $table->string('address_receiver')->nullable();
+            $table->string('phone_receiver')->nullable();
             $table->unsignedBigInteger('total_amount');
 
-            $table->boolean('status_orders');
+            $table->boolean('status_orders')->default(false);
             $table->timestamps();
         });
     }
