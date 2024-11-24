@@ -1,158 +1,156 @@
-<style>
-    .child {
-        width: 250px;
-        margin: 10px;
-        padding: 15px;
-        cursor: pointer;
-    }
-
-    .child a {
-        margin-left: 10px;
-        text-decoration: none;
-        color: #080808;
-        font-size: 1em;
-        font-weight: bold;
-    }
-
-    .child a:hover {
-        color: rgb(38, 0, 253);
-    }
-
-    .child li {
-        list-style: none;
-        display: inline-block;
-    }
-
-    .child .active {
-        color: rgb(255, 21, 0);
-    }
-
-    .product_rights {
-        float: left;
-        width: 300px;
-        border-radius: 10px;
-        box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .1), 0 2px 6px 2px rgba(60, 64, 67, .15);
-    }
-
-    .image_user img {
-        width: 70px;
-        margin-top: 10px;
-    }
-
-    .product_rightst {
-        padding: 10px;
-        width: 100%;
-        box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .1), 0 2px 6px 2px rgba(60, 64, 67, .15);
-        border-radius: 5px;
-    }
-
-    .conts {
-        text-align: center;
-    }
-
-    .conts h4 {
-        text-align: center;
-        font-size: 17px;
-    }
-
-    .conts h3 {
-        margin-bottom: 50px;
-    }
-
-    .smember_info {
-        display: grid;
-        width: 400px;
-        margin-top: -75px;
-        margin-bottom: 30px;
-    }
-
-    .smember {
-        display: flex;
-        justify-content: center;
-    }
-
-    .date,
-    .member_class,
-    .point {
-        text-align: center;
-        font-size: 18px;
-        padding: 15px;
-    }
-
-    .smember i {
-        margin-top: 10px;
-        font-size: 30px;
-        color: red;
-    }
-
-    .smember h6 {
-        margin-top: 12px;
-        font-size: 15px;
-    }
-
-    .active {
-        color: red;
-    }
-</style>
 @extends('client.layouts.master')
 @section('title')
     Thông tin tài khoản
 @endsection
 @section('content')
-    <section style="padding:30px;">
+    <div class="container mt-5 mb-5">
         <div class="row">
-            <div class="col-5">
-                <div class="product_rights">
-                    <div class="child">
-                        <i class="fa-solid fa-house-chimney"></i>
-                        <li><a href="{{ route('profile.user') }}" class="active">Trang Chủ</a></li>
-                    </div>
-                    <div class="child">
-                        {{-- <i class="fa-solid fa-cart-arrow-down"></i> --}}
-                        <li><a href="{{ route('profile.order') }}">Đơn hàng</a></li>
-                    </div>
-                    <div class="child">
-                        {{-- <i class="fa-solid fa-paper-plane"></i> --}}
-                        <li><a href="index.php?action=check_in">Check In</a></li>
-                    </div>
-                    <div class="child">
-                        {{-- <i class="fa-solid fa-user-shield"></i> --}}
-                        <li> <a href="index.php?action=your">Tài khoản của bạn</a></li>
-                    </div>
-                    <div class="child">
-                        {{-- <i class="fa-solid fa-recycle"></i> --}}
-                        <li> <a href="index.php?action=update_user">Cập Nhật Thông Tin</a></li>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="product_rightst">
-                    <div class="conts">
-                        <div class="image_user">
-                            <img src="https://static-smember.cellphones.com.vn/smember/_nuxt/img/Shipper_CPS3.77d4065.png"
-                                alt="">
-                        </div>
-                        <h3>{{ Auth::user()->name }}</h3>
-                    </div>
-                    <div class="smember">
-                        <div class="date">
-                            <h5>Ngày Tham Gia</h5>
-                            <i class="fa-regular fa-calendar-check"></i>
-                            <h6>12/10/2023</h6>
-                        </div>
-                        <div class="member_class">
-                            <h5>Hạng Thành Viên</h5>
-                            <i class="fa-solid fa-medal"></i>
-                            <h6>Null</h6>
-                        </div>
-                        <div class="point">
-                            <h5>Điểm Tích Lũy</h5>
-                            <i class="fa-regular fa-sun"></i>
-                            <h6>0</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <aside class="sidebar col-4">
+                <ul class="menu-list">
+                    <li class="menu-item active">
+                        <i class="fas fa-home"></i> Trang chủ
+                    </li>
+                    <li class="menu-item">
+                        <i class="fas fa-history"></i> Lịch sử mua hàng
+                    </li>
+                    <li class="menu-item">
+                        <i class="fas fa-shield-alt"></i> Tra cứu bảo hành
+                    </li>
+                    <li class="menu-item">
+                        <i class="fas fa-gift"></i> Ưu đãi của bạn
+                    </li>
+                    <li class="menu-item">
+                        <i class="fas fa-graduation-cap"></i> Chương trình S-Student
+                        <span class="badge hot">HOT</span>
+                    </li>
+                    <li class="menu-item">
+                        <i class="fas fa-medal"></i> Hạng thành viên
+                    </li>
+                    <li class="menu-item">
+                        <i class="fas fa-user-circle"></i> Tài khoản của bạn
+                    </li>
+                    <li class="menu-item">
+                        <i class="fas fa-link"></i> Liên kết tài khoản
+                        <span class="badge new">MỚI</span>
+                    </li>
+                    <li class="menu-item">
+                        <i class="fas fa-headset"></i> Hỗ trợ
+                    </li>
+                    <li class="menu-item">
+                        <i class="fas fa-comment-dots"></i> Góp ý - Phản hồi
+                    </li>
+                    <li class="menu-item">
+                        <i class="fas fa-sign-out-alt"></i> Thoát tài khoản
+                    </li>
+                </ul>
+            </aside>
+            <section class="col-8">
+                <!-- Nội dung chính -->
+            </section>
         </div>
-    </section>
+    </div>
+@endsection
+@section('style')
+    <style>
+        /* Reset styles */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 280px;
+            background-color: #f8f9fa;
+            border-right: 1px solid #ddd;
+            height: auto; /* Để chiều cao tự động */
+            padding: 10px 0;
+            position: sticky;
+            top: 20px; /* Khoảng cách từ đỉnh màn hình */
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            color: #333;
+            text-decoration: none;
+            font-size: 15px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .menu-item i {
+            font-size: 18px;
+            margin-right: 12px;
+            color: #666;
+        }
+
+        .menu-item:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+
+        .menu-item.active {
+            background-color: #fff5f5;
+            color: #dc3545;
+            font-weight: bold;
+            border-left: 4px solid #dc3545;
+        }
+
+        .menu-item.active i {
+            color: #dc3545;
+        }
+
+        .badge {
+            margin-left: auto;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .badge.hot {
+            background-color: #dc3545;
+        }
+
+        .badge.new {
+            background-color: #28a745;
+        }
+
+        /* Nội dung chính */
+        .container {
+            display: flex;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+@endsection
+@section('script')
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuItems = document.querySelectorAll(".menu-item");
+
+            menuItems.forEach((item) => {
+                item.addEventListener("click", () => {
+                    const currentActive = document.querySelector(".menu-item.active");
+
+                    // Xóa trạng thái active trước đó
+                    if (currentActive) {
+                        currentActive.classList.remove("active");
+                    }
+
+                    // Thêm trạng thái active vào mục mới được chọn
+                    item.classList.add("active");
+                });
+            });
+        });
+    </script>
 @endsection
