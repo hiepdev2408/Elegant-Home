@@ -106,6 +106,6 @@ Route::group([
     Route::get('defaultView', [CheckoutController::class, 'defaultView'])->name('defaultView');
 });
 
-// Search sản phẩm cùng danh mục
+
 Route::get('search/{id}', [HomeController::class, 'search'])->name('search');
 

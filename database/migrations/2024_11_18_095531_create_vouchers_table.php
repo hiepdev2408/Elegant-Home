@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->decimal('discount_amount', 10, 2)->nullable(); // Giảm giá theo số tiền
-            $table->decimal('discount_percent', 5, 2)->nullable(); // Giảm giá theo phần trăm
+            $table->decimal('discount_percent',5, 2)->nullable(); // Giảm giá theo phần trăm
             $table->dateTime('start_date'); // Thời gian bắt đầu
             $table->dateTime('end_date'); // Thời gian kết thúc
             $table->integer('usage_limit')->nullable(); // Giới hạn sử dụng
