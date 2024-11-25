@@ -15,7 +15,7 @@ class ContactFormController extends Controller
         $totalCart = getCartItemCount();
 
         $data = Contract::query()->get();
-        return view('admin.contacts.index', compact('data', $totalCart));
+        return view('admin.contacts.index', compact('data', 'totalCart'));
     }
     public function contact()
     {

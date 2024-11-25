@@ -15,6 +15,7 @@ use App\Helpers\Mail\ContactFormMail;
 use App\Http\Controllers\Admin\AttributeValueController;
 use App\Http\Controllers\Admin\ExportWarehousesController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\ChatController;
@@ -134,7 +135,7 @@ Route::prefix('admin')
 
             Route::get('listDestroy', [AttributeController::class, 'delete'])->name('delete');
             // Hiển thị danh sách xóa
-    
+
             Route::post('restore/{id}', [AttributeController::class, 'restore'])->name('restore');
             Route::delete('forceDelete/{id}', [AttributeController::class, 'forceDelete'])->name('forceDelete');
         });
@@ -200,5 +201,12 @@ Route::prefix('admin')
             Route::post('store', [ExportWarehouseController::class, 'store'])->name('store');
             Route::get('show/{id}', [ExportWarehouseController::class, 'show'])->name('show');
         });
+
+        // Order
+        Route::prefix('orders')
+            ->as('orders.')
+            ->group(function(){
+                Route::get('/', [OrderController::class, 'index'])->name('index');
+            });
 
     });
