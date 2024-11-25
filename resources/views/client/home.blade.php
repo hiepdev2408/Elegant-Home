@@ -264,7 +264,7 @@
             </div>
             <div class="four-item-carousel owl-carousel owl-theme">
                 @foreach ($products as $product)
-                    <div class="shop-item">
+                    <div class="shop-item shadow rounded border">
                         <div class="inner-box">
                             <div class="image">
                                 <a href="{{ route('productDetail', ['slug' => $product->slug]) }}">
@@ -280,7 +280,7 @@
                                     <a class="cart" href="#">Add to Cart</a>
                                 </div>
                             </div>
-                            <div class="lower-content">
+                            <div class="lower-content p-3">
                                 <div class="rating">
                                     <span class="fa fa-star"></span>
                                     <span class="fa fa-star"></span>
@@ -291,8 +291,8 @@
                                 <h6><a href="shop-detail.html">{{ Str::limit($product->name, 30) }}</a></h6>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="price">
-                                        <span>{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
-                                        {{ number_format($product->price_sale ?? 0, 0, ',', '.' )}}VNĐ
+                                        <span class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                        <span class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.' )}}VNĐ</span>
                                     </div>
                                 </div>
                             </div>
@@ -883,11 +883,11 @@
                 <div class="filter-list row clearfix">
                     @foreach ($products as $product)
                         <div
-                            class="shop-item mix
+                            class="shop-item mix shadow rounded border
                             @foreach ($product->categories as $category)
                                 category-{{ $category->id }} @endforeach
-                        col-lg-3 col-md-6 col-sm-12">
-                            <div class="inner-box">
+                            col-lg-3 col-md-6 col-sm-12 choild">
+                            <div class="inner-box ">
                                 <div class="image">
                                     <a href="{{ route('productDetail', ['slug' => $product->slug]) }}">
                                         @if ($product->img_thumbnail)
@@ -899,7 +899,7 @@
                                         <a class="cart" href="#">Add to Cart</a>
                                     </div>
                                 </div>
-                                <div class="lower-content">
+                                <div class="lower-content p-3">
                                     <div class="rating">
                                         <span class="fa fa-star"></span>
                                         <span class="fa fa-star"></span>
@@ -912,8 +912,8 @@
                                     </h6>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="price">
-                                            <span>{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
-                                            {{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ
+                                            <span class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                            <span class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1151,6 +1151,10 @@
             height: 250px;
             object-fit: cover;
             border-radius: 8px;
+        }
+        .choild{
+            width: calc(25% - 10px);
+            margin: 0 5px;
         }
     </style>
 @endsection

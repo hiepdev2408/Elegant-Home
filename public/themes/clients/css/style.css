@@ -857,24 +857,24 @@
 .shop-item .price span {
     position: relative;
     padding: 5px 5px;
-    color: var(--main-color);
-    text-decoration: line-through;
     margin-right: var(--margin-right-10);
 }
 
-.shop-item .price:before {
-    position: absolute;
-    content: "";
-    right: -10px;
-    top: -6px;
-    bottom: 0px;
-    opacity: 0;
-    width: 74px;
-    height: 32px;
-    background: url(../images/icons/price-curve.png) no-repeat;
+.shop-item .price span.old-price {
+    text-decoration: line-through;
+    color: var(--main-color);
 }
 
-.shop-item .inner-box:hover .price:before {
+.shop-item .new-price:before {
+    position: absolute;
+    content: "";
+   inset: 0;
+    opacity: 0;
+    background: url(../images/icons/price-curve.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+.shop-item .inner-box:hover .new-price:before {
     opacity: 1;
 }
 

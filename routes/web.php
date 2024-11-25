@@ -35,21 +35,20 @@ Route::group(['prefix' => 'account'], function () {
     Route::post('password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
     Route::get('password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
     Route::post('password/reset', [AccountController::class, 'reset'])->name('password.update');
-    Route::get('/profile', [ProfileController::class, 'profile'])
-        // ->middleware('auth')
-        ->name('profile.user');
 
-    Route::get('/profile/show/{id}', [ProfileController::class, 'show'])
-        // ->middleware('auth')
-        ->name('profile.show');
-    Route::get('/order', [ProfileController::class, 'order'])
-        // ->middleware('auth')
-        ->name('profile.order');
-
-    Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
-
-    Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
+    // Profile
+    Route::prefix('profile')
+        ->as('profile.')
+        ->middleware(['auth'])
+        ->group(function(){
+            Route::get('/', [ProfileController::class, 'profile'])->name('user');
+            Route::get('/show/{id}', [ProfileController::class, 'show'])->name('show');
+            Route::get('/edit/{id}', [ProfileController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [ProfileController::class, 'update'])->name('update');
+            Route::get('/order', [ProfileController::class, 'order'])->name('order');
+            Route::post('/order/cancel/{id}', [ProfileController::class, 'cancel'])->name('order.cancel');
+            Route::get('/order/show/{id}', [ProfileController::class, 'showDetailOrder'])->name('order.showDetailOrder');
+        });
 
     Route::get('/users', [UserController::class, 'index'])->name('user.index');
     Route::get('/users', [UserController::class, 'show'])
