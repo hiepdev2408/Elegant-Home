@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\ExportWarehousesController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\ChatController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
 
@@ -38,10 +39,10 @@ Route::prefix('admin')
         Route::prefix('account')
             ->as('account.')
             ->group(function () {
-            Route::get('listAdmin', [UserController::class, 'listAdmin'])->name('listAdmin');
-            Route::get('listStaff', [UserController::class, 'listStaff'])->name('listStaff');
-            Route::get('listCustomer', [UserController::class, 'listCustomer'])->name('listCustomer');
-        });
+                Route::get('listAdmin', [UserController::class, 'listAdmin'])->name('listAdmin');
+                Route::get('listStaff', [UserController::class, 'listStaff'])->name('listStaff');
+                Route::get('listCustomer', [UserController::class, 'listCustomer'])->name('listCustomer');
+            });
 
         // Permission
         Route::prefix('permissions')
@@ -142,6 +143,7 @@ Route::prefix('admin')
         Route::prefix('attribute_values')
             ->as('attribute_values.')
             ->group(function () {
+
             Route::get('/', [AttributeValueController::class, 'index'])->name('index');
             Route::get('create', [AttributeValueController::class, 'create'])->name('create');
             Route::post('store', [AttributeValueController::class, 'store'])->name('store');
@@ -168,11 +170,13 @@ Route::prefix('admin')
         Route::prefix('contact')
             ->as('contact.')
             ->group(function () {
-            Route::get('/', [ContactFormController::class, 'index'])->name('index');
-            Route::delete('destroy/{id}', [ContactFormController::class, 'destroy'])->name('destroy');
-        });
+                Route::get('/', [ContactFormController::class, 'index'])->name('index');
+                Route::delete('destroy/{id}', [ContactFormController::class, 'destroy'])->name('destroy');
+            });
 
         // Chatrealtime
+        Route::get('/admin/chat-rooms', [ChatController::class, 'listChatRooms'])->name('chat');
+
         Route::get('/chat', function () {
             return view('admin.chat.index');
         })->name('chat');

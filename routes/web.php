@@ -3,12 +3,14 @@
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ContactFormController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\ShopController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -136,7 +138,16 @@ Route::group([
     Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
     Route::get('defaultView', [CheckoutController::class, 'defaultView'])->name('defaultView');
 });
+Route::group([
+    'middleware' => 'auth',
+], function () {
+    Route::post('/chat/create/{receiverId}', [ChatController::class, 'createOrRedirect'])->name('chat.create');
+    Route::get('/chat/{roomId}/{receiverId}', [ChatController::class, 'showChatRoom'])->name('chat.room');
+
+
+    //giửi massage
+    Route::post('/messages/send', [ChatController::class, 'sendMessage']);
+});
 
 
 Route::get('search/{id}', [HomeController::class, 'search'])->name('search');
-
