@@ -45,12 +45,16 @@ Route::prefix('account')
 
 Route::prefix('smember')
     ->controller(ProfileController::class)
+    ->as('profile.')
+    ->middleware('auth')
     ->group(function () {
-        Route::get('/', 'profile')->name('profile.user');
-        Route::get('/order', 'order')->name('profile.order');
-        Route::get('/endow', 'endow')->name('profile.endow');
-        Route::get('/info', 'info')->name('profile.info');
-        Route::post('/update/{id}', 'update')->name('profile.update');
+        Route::get('/', 'profile')->name('user');
+        Route::get('/order', 'order')->name('order');
+        Route::get('/endow', 'endow')->name('endow');
+        Route::get('/info', 'info')->name('info');
+        Route::post('/update/{id}', 'update')->name('update');
+        Route::post('/order/cancel/{id}', 'cancel')->name('order.cancel');
+        Route::get('/order/show/{id}', 'showDetailOrder')->name('order.showDetailOrder');
     });
 
 Route::prefix('contact')
@@ -59,42 +63,6 @@ Route::prefix('contact')
         Route::get('/', 'contact')->name('contact');
         Route::post('/', 'submit')->name('contact.submit');
     });
-
-Route::get('/veryfy_account/{email}', [AccountController::class, 'veryfy'])->name('veryfy');
-
-Route::get('password/reset', [AccountController::class, 'showForgotPasswordForm'])->name('password.request');
-Route::post('password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::get('password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
-Route::post('password/reset', [AccountController::class, 'reset'])->name('password.update');
-
-// Profile
-Route::prefix('profile')
-    ->as('profile.')
-    ->middleware(['auth'])
-    ->group(function () {
-        Route::get('/', [ProfileController::class, 'profile'])->name('user');
-        Route::get('/show/{id}', [ProfileController::class, 'show'])->name('show');
-        Route::get('/edit/{id}', [ProfileController::class, 'edit'])->name('edit');
-        Route::post('/update/{id}', [ProfileController::class, 'update'])->name('update');
-        Route::get('/order', [ProfileController::class, 'order'])->name('order');
-        Route::post('/order/cancel/{id}', [ProfileController::class, 'cancel'])->name('order.cancel');
-        Route::get('/order/show/{id}', [ProfileController::class, 'showDetailOrder'])->name('order.showDetailOrder');
-    });
-
-Route::get('/users', [UserController::class, 'index'])->name('user.index');
-Route::get('/users', [UserController::class, 'show'])
-    // ->middleware('users')
-    ->name('users.show');
-
-Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
-
-Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
-Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
-//favorite
-Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
-Route::get('/favourite/count', [AccountController::class, 'favouriteCount'])->name('favouriteCount');
-Route::delete('/deleteFavorite/{id}', [AccountController::class, 'deleteFavorite'])->name('deleteFavorite');
 
 Route::get('categories/{category_id}/product/{id}/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 
@@ -130,16 +98,22 @@ Route::group([
     Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
     Route::get('defaultView', [CheckoutController::class, 'defaultView'])->name('defaultView');
 });
+
 Route::group([
     'middleware' => 'auth',
 ], function () {
-    Route::post('/chat/create/{receiverId}', [ChatController::class, 'createOrRedirect'])->name('chat.create');
-    Route::get('/chat/{roomId}/{receiverId}', [ChatController::class, 'showChatRoom'])->name('chat.room');
+    Route::prefix('chat')
+        ->group(function () {
+            Route::post('/create/{receiverId}', [ChatController::class, 'createOrRedirect'])
+                ->name('chat.create');
+            Route::get('/{roomId}/{receiverId}', [ChatController::class, 'showChatRoom'])
+                ->name('chat.room');
+        });
 
-
-    //giửi massage
-    Route::post('/messages/send', [ChatController::class, 'sendMessage']);
+    Route::post('/messages/send', [ChatController::class, 'sendMessage'])
+        ->name('messages.send');
 });
+
 
 
 Route::get('search/{id}', [HomeController::class, 'search'])->name('search');
