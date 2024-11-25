@@ -9,6 +9,7 @@ use App\Models\OrderDetail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -22,21 +23,16 @@ class ProfileController extends Controller
 
     public function order()
     {
-<<<<<<< HEAD
-        $totalCart = getCartItemCount();
         $orders = Order::query()->where('user_id', Auth::user()->id)->get();
         $orderDetails = OrderDetail::query()
             ->whereIn('order_id', $orders->pluck('id')->toArray())
             ->paginate(5);
 
-        return view('client.auth.account.order', compact('totalCart', 'orderDetails'));
+        return view('client.auth.smember.order', compact('orderDetails'));
     }
 
     public function showDetailOrder($id)
     {
-        // Tổng số lượng sản phẩm trong giỏ hàng
-        $totalCart = getCartItemCount();
-
         // Lấy thông tin chi tiết đơn hàng
         $orderDetails = OrderDetail::with(['order', 'variant', 'product'])
             ->whereHas('order', function ($query) {
@@ -46,7 +42,7 @@ class ProfileController extends Controller
 
         $cart = Cart::where('user_id', Auth::id())->first();
 
-        return view('client.auth.account.showDetailOrder', compact('totalCart', 'orderDetails', 'cart'));
+        return view('client.auth.account.showDetailOrder', compact('orderDetails', 'cart'));
     }
 
 
@@ -65,9 +61,7 @@ class ProfileController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
         }
-=======
         return view(self::PATH_VIEW . __FUNCTION__);
->>>>>>> cfd09edf8d2ed8539bea57ca6c3ee303ea165442
     }
 
     public function endow()
