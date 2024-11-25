@@ -10,15 +10,19 @@
                 <!-- Upper Box -->
                 <div class="upper-box">
                     @if (session()->has('success'))
-                        <div class="alert alert-success fw-bold">
-                            {{ session()->get('success') }}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong> {{ session()->get('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
+
                     @if (session()->has('error'))
-                        <div class="alert alert-danger fw-bold">
-                            {{ session()->get('error') }}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Error!</strong> {{ session()->get('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
+
                     <form action="{{ route('addToCart') }}" method="post">
                         @csrf
                         <div class="row clearfix">
@@ -27,21 +31,30 @@
                                 <div class="inner-column">
                                     <div class="carousel-outer">
                                         <!-- Swiper -->
+
                                         <div class="swiper-container content-carousel">
                                             <div class="swiper-wrapper">
-                                                @foreach ($product->galleries as $gallery)
-                                                    @if ($gallery->img_path)
-                                                        <div class="swiper-slide">
-                                                            <figure class="image">
-                                                                <a href="{{ Storage::url($gallery->img_path) }}"
-                                                                    class="lightbox-image">
-                                                                    <img src="{{ Storage::url($gallery->img_path) }}"
-                                                                        alt="">
-                                                                </a>
-                                                            </figure>
-                                                        </div>
-                                                    @endif
-                                                @endforeach
+                                                @if($product->galleries->isNotEmpty())
+                                                    @foreach ($product->galleries as $gallery)
+                                                        @if ($gallery->img_path)
+                                                            <div class="swiper-slide">
+                                                                <figure class="image">
+                                                                    <a href="{{ Storage::url($gallery->img_path) }}" class="lightbox-image">
+                                                                        <img src="{{ Storage::url($gallery->img_path) }}" alt="Hình ảnh sản phẩm">
+                                                                    </a>
+                                                                </figure>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    <div class="swiper-slide">
+                                                        <figure class="image">
+                                                            <a href="{{ Storage::url($product->img_thumbnail) }}" class="lightbox-image">
+                                                                <img src="{{ Storage::url($product->img_thumbnail) }}" alt="Hình ảnh thumbnail sản phẩm">
+                                                            </a>
+                                                        </figure>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -121,7 +134,7 @@
                                                             data-attribute-name="{{ $attributeName }}">
                                                             <option value="">Chọn biến thể</option>
                                                             @foreach ($values as $value)
-                                                                <option value="{{ $value['id'] }}">{{ $value['name'] }}
+                                                                <option value="{{ $value['id'] }}">{{ Str::limit($value['name'], 15) }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -274,12 +287,10 @@
                                                                 <p class="mt-2">{{ $comment->comment }}</p>
                                                                 <!-- Nút trả lời -->
                                                                 @if (Auth::check())
-
                                                                     <button
                                                                         class="btn btn-sm btn-outline-primary reply-btn"
                                                                         type="button" data-id="{{ $comment->id }}">Trả
                                                                         lời</button>
-
                                                                 @endif
 
                                                             </div>
@@ -309,13 +320,11 @@
                                                                         class="text-muted">{{ $reply->created_at->diffForHumans() }}</small>
                                                                     <p class="mt-2">{{ $reply->comment }}</p>
                                                                     @if (Auth::check())
-
                                                                         <button
                                                                             class="btn btn-sm btn-outline-primary reply-btn"
                                                                             type="button"
                                                                             data-id="{{ $comment->id }}">Trả
                                                                             lời</button>
-
                                                                     @else
                                                                         <hr width="1200px">
                                                                     @endif

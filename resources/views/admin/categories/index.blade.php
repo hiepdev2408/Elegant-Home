@@ -20,8 +20,8 @@
             </div>
         @endif
 
-        <div class="card-header d-flex justify-content-end align-items-center mb-3">
-            <a class="btn btn-primary me-2" href="{{ route('categories.create') }}">
+        <div class="card-header d-flex justify-content-end align-items-center mb-3 gap-3">
+            <a class="btn btn-primary" href="{{ route('categories.create') }}">
                 <i class="mdi mdi-plus me-0 me-sm-1"></i>
                 Thêm mới danh mục</a>
             <a href="{{ route('categories.delete') }}" class="btn btn-danger">Thùng rác</a>

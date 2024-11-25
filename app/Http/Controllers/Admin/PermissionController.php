@@ -17,31 +17,73 @@ class PermissionController extends Controller
 
     public function __construct(
         protected Permission $model
-    ) {}
-
-    public function gant()
-    {
-        $permissions = Permission::query()->with(['roles'])->get();
-        $roles = Role::all();
-
-        return view('admin.roles.grant', compact('permissions', 'roles'));
+    ) {
     }
+
+    public function access(Role $role, string $id)
+    {
+        $role = Role::findOrFail($id);
+
+        // Group permissions by type to reduce queries
+        $permissions = Permission::whereIn('slug', [
+            'products.index',
+            'products.create',
+            'products.edit',
+            'categories.index',
+            'categories.create',
+            'categories.edit',
+            'attributes.index',
+            'attributes.create',
+            'attributes.edit',
+            'attribute_values.index',
+            'attribute_values.create',
+            'attribute_values.edit',
+            'permissions.index',
+            'permissions.create',
+            'permissions.edit',
+        ])->get()->groupBy(function ($permission) {
+            if (str_contains($permission->slug, 'products')) {
+                return 'roleProduct';
+            } elseif (str_contains($permission->slug, 'categories')) {
+                return 'roleCategory';
+            } elseif (str_contains($permission->slug, 'attributes')) {
+                return 'roleAttribute';
+            } elseif (str_contains($permission->slug, 'attribute_values')) {
+                return 'roleAttributeValue';
+            } elseif (str_contains($permission->slug, 'permissions')) {
+                return 'rolePermission';
+            }
+        });
+
+        // Pass grouped permissions to the view
+        return view('admin.roles.grant', [
+            'role' => $role,
+            'roleProduct' => $permissions->get('roleProduct') ?? collect(),
+            'roleCategory' => $permissions->get('roleCategory') ?? collect(),
+            'roleAttribute' => $permissions->get('roleAttribute') ?? collect(),
+            'roleAttribute_value' => $permissions->get('roleAttributeValue') ?? collect(),
+            'rolePermission' => $permissions->get('rolePermission') ?? collect(),
+        ]);
+    }
+
 
     public function updateGant(Request $request)
     {
-        foreach ($request->permissions as $roleId => $permissionIds) {
-            $role = Role::find($roleId);
+        // dd($request->all());
+        if (!empty($request->permissions)) {
+            foreach ($request->permissions as $roleId => $permissionIds) {
+                $role = Role::find($roleId);
 
-            if ($role) {
-                // Lọc chỉ các quyền có giá trị '1' (đã chọn)
-                $selectedPermissions = array_keys(array_filter($permissionIds, function ($value) {
-                    return $value == 1;
-                }));
-
-                // Đồng bộ quyền đã chọn với role
-                $role->permissions()->sync($selectedPermissions);
+                if ($role) {
+                    // Đồng bộ quyền đã chọn với role (sẽ xóa quyền cũ nếu không được chọn)
+                    $role->permissions()->sync($permissionIds);
+                }
             }
+        } else {
+            // Trường hợp không có quyền nào được chọn
+            return back()->with('errors', 'Không có quyền nào được chọn.');
         }
+
 
         return redirect()->back()->with('success', 'Cập nhật quyền thành công!');
     }

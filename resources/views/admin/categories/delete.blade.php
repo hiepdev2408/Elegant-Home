@@ -4,7 +4,7 @@
 @endsection
 @section('menu-item-categories')
     open
->>>>>>> 74112967acda104f9f93ea329d3fa8aa7ec4aed3
+    >>>>>>> 74112967acda104f9f93ea329d3fa8aa7ec4aed3
 @endsection
 
 @section('menu-sub-delete-categories')
@@ -21,10 +21,10 @@
                 {{ session()->get('success') }}
             </div>
         @endif
-        <div class="card-header d-flex justify-content-end align-items-center mb-3">
-            <a class="btn btn-primary me-2" href="{{ route('categories.create') }}">
+        <div class="card-header d-flex justify-content-end align-items-center mb-3 gap-3">
+            <a class="btn btn-primary" href="{{ route('categories.create') }}">
                 <i class="mdi mdi-plus me-0 me-sm-1"></i>
-                Thêm mới danh mục</a>
+                Thêm danh mục</a>
             <a href="{{ route('categories.index') }}" class="btn btn-info">Quay lại</a>
         </div>
         <div class="card">
@@ -145,8 +145,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
     <script>
-
-
         new DataTable("#example", {
             order: [
                 [1, 'asc']
@@ -154,4 +152,3 @@
         });
     </script>
 @endsection
-

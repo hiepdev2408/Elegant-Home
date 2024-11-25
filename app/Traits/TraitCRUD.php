@@ -43,20 +43,20 @@ trait TraitCRUD
 
                 break;
 
-                case 'attribute_values':
-                    $rules = [
-                        'attribute_id' => 'required|exists:attributes,id',
-                        'value' => 'required|string|max:255',
-                    ];
+            case 'attribute_values':
+                $rules = [
+                    'attribute_id' => 'required|exists:attributes,id',
+                    'value' => 'required|string|max:255',
+                ];
 
-                    break;
+                break;
 
-                case 'permissions':
-                    $rules = [
+            case 'permissions':
+                $rules = [
 
-                    ];
+                ];
 
-                    break;
+                break;
 
             default:
                 throw new \Exception("không hợp lệ để xác thực.");
@@ -73,8 +73,7 @@ trait TraitCRUD
         $data = $this->model
             ->when(!empty($this->relations), function (Builder $query) {
                 $query->with($this->relations);
-            })
-            ->latest()->paginate(10);
+            })->latest()->get();
         return view('admin.' . $this->model->getTable() . '.' . __FUNCTION__, compact('data'));
     }
     public function delete()
@@ -124,7 +123,7 @@ trait TraitCRUD
     }
     public function show($id)
     {
-        $this->authorize('modules', '' . $this->model->getTable() . '.' . __FUNCTION__);
+        // $this->authorize('modules', '' . $this->model->getTable() . '.' . __FUNCTION__);
 
         $data = $this->model
             ->when(!empty($this->relations), function (Builder $query) {
@@ -140,7 +139,7 @@ trait TraitCRUD
     }
     public function edit($id)
     {
-        $this->authorize('modules', '' . $this->model->getTable() . '.' . __FUNCTION__);
+        // $this->authorize('modules', '' . $this->model->getTable() . '.' . __FUNCTION__);
 
         $data = $this->model
             ->when(!empty($this->relations), function (Builder $query) {
