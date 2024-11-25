@@ -60,50 +60,42 @@ Route::prefix('contact')
         Route::post('/', 'submit')->name('contact.submit');
     });
 
-<<<<<<< HEAD
-    Route::get('/veryfy_account/{email}', [AccountController::class, 'veryfy'])->name('veryfy');
+Route::get('/veryfy_account/{email}', [AccountController::class, 'veryfy'])->name('veryfy');
 
-    Route::get('password/reset', [AccountController::class, 'showForgotPasswordForm'])->name('password.request');
-    Route::post('password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
-    Route::get('password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
-    Route::post('password/reset', [AccountController::class, 'reset'])->name('password.update');
+Route::get('password/reset', [AccountController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [AccountController::class, 'reset'])->name('password.update');
 
-    // Profile
-    Route::prefix('profile')
-        ->as('profile.')
-        ->middleware(['auth'])
-        ->group(function(){
-            Route::get('/', [ProfileController::class, 'profile'])->name('user');
-            Route::get('/show/{id}', [ProfileController::class, 'show'])->name('show');
-            Route::get('/edit/{id}', [ProfileController::class, 'edit'])->name('edit');
-            Route::post('/update/{id}', [ProfileController::class, 'update'])->name('update');
-            Route::get('/order', [ProfileController::class, 'order'])->name('order');
-            Route::post('/order/cancel/{id}', [ProfileController::class, 'cancel'])->name('order.cancel');
-            Route::get('/order/show/{id}', [ProfileController::class, 'showDetailOrder'])->name('order.showDetailOrder');
-        });
+// Profile
+Route::prefix('profile')
+    ->as('profile.')
+    ->middleware(['auth'])
+    ->group(function () {
+        Route::get('/', [ProfileController::class, 'profile'])->name('user');
+        Route::get('/show/{id}', [ProfileController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [ProfileController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [ProfileController::class, 'update'])->name('update');
+        Route::get('/order', [ProfileController::class, 'order'])->name('order');
+        Route::post('/order/cancel/{id}', [ProfileController::class, 'cancel'])->name('order.cancel');
+        Route::get('/order/show/{id}', [ProfileController::class, 'showDetailOrder'])->name('order.showDetailOrder');
+    });
 
-    Route::get('/users', [UserController::class, 'index'])->name('user.index');
-    Route::get('/users', [UserController::class, 'show'])
-        // ->middleware('users')
-        ->name('users.show');
+Route::get('/users', [UserController::class, 'index'])->name('user.index');
+Route::get('/users', [UserController::class, 'show'])
+    // ->middleware('users')
+    ->name('users.show');
 
-    Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-    Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
+Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
 
-    Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
-    Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
-    //favorite
-    Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
-    Route::get('/favourite/count', [AccountController::class, 'favouriteCount'])->name('favouriteCount');
-    Route::delete('/deleteFavorite/{id}', [AccountController::class, 'deleteFavorite'])->name('deleteFavorite');
-});
+Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
+Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
+//favorite
+Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
+Route::get('/favourite/count', [AccountController::class, 'favouriteCount'])->name('favouriteCount');
+Route::delete('/deleteFavorite/{id}', [AccountController::class, 'deleteFavorite'])->name('deleteFavorite');
 
-Route::group(['prefix' => 'contact'], function () {
-    Route::get('/', [ContactFormController::class, 'contact'])->name('contact');
-    Route::post('/', [ContactFormController::class, 'submit'])->name('contact.submit');
-});
-=======
->>>>>>> cfd09edf8d2ed8539bea57ca6c3ee303ea165442
 Route::get('categories/{category_id}/product/{id}/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 
 Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
