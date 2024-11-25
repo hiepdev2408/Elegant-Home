@@ -18,7 +18,7 @@ class CheckoutController extends Controller
 {
     public function checkout(Request $request)
     {
-        // dd($request->all());
+        
         try {
             DB::transaction(function() use ($request){
                 $user = Auth::user();
@@ -55,6 +55,8 @@ class CheckoutController extends Controller
                 }
 
                 $cart->delete();
+
+                session()->forget(['voucher_code', 'discount_amount', 'totalAmount']);
 
 
             },1);

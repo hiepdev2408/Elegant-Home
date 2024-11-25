@@ -112,6 +112,9 @@
                 <div class="order-column col-lg-4 col-md-12 col-sm-12 mt-4 mt-lg-0">
                     <div class="p-4 border rounded shadow">
                         <h4 class="mb-4">Tóm tắt đơn hàng</h4>
+                        
+                       
+                
                         <!-- Order Box -->
                         <div class="order-box">
                             <ul class="list-group mb-3">
@@ -124,29 +127,35 @@
                                     <span>0 VNĐ</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between fw-bold">
-                                    <span>Total</span>
-                                    <span>{{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }} VNĐ</span>
+                                    <span>Tổng cộng</span>
+                                    <span id="totalAmount">{{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }} VNĐ</span>
                                 </li>
                             </ul>
-
+                
                             <!-- Voucher Box -->
-                            <form method="post" action="{{ route('order.applyVoucher') }}" class="d-flex">
+                            <form id="voucherForm" class="d-flex">
                                 @csrf
-                                <input type="text" name="voucher_code" class="form-control me-2"
-                                    placeholder="Enter voucher code">
-                                <button type="submit" class="btn btn-success">Apply</button>
+                                
+                                <input type="text" name="voucher_code" class="form-control me-2 form-control-sm " placeholder="Nhập mã giảm giá">
+                                <button type="submit" class="btn btn-success btn-sm col-3">Áp dụng</button>
                             </form>
+                            <div id="voucherMessage" class="mt-2"></div>
                         </div>
                     </div>
                 </div>
+                
+               
             </div>
         </div>
 
     </section>
     <!-- End Checkout Section -->
+    
 
 @endsection
+
 @section('script-libs')
+
     <script>
         function toggleReplyForm(commentId) {
             const replyForm = document.getElementById(`replyForm-${commentId}`);
@@ -220,4 +229,32 @@
             });
         });
     </script>
+     <!-- Thêm jQuery -->
+     
+     <script>
+     $(document).ready(function() {
+         $('#voucherForm').on('submit', function(event) {
+             event.preventDefault(); // Ngăn chặn reload trang
+     
+             $.ajax({
+                 url: '{{ route("order.applyVoucher") }}',
+                 method: 'POST',
+                 data: $(this).serialize(),
+                 success: function(response) {
+                    if (response.success) {
+                    $('#voucherMessage').html(`<p class="alert alert-success">${response.message}</p>`);
+                    // Cập nhật tổng giá trị
+                    let newTotal = response.new_total; // Tổng mới từ phản hồi
+                    $('#totalAmount').text(newTotal.toLocaleString('vi-VN') + ' VNĐ');
+                } else {
+                    $('#voucherMessage').html(`<p class="alert alert-danger">${response.message}</p>`);
+                }
+            },
+                 error: function(xhr) {
+                     $('#voucherMessage').html(`<p class="alert alert-danger">Đã có lỗi xảy ra! Vui lòng thử lại.</p>`);
+                 }
+             });
+         });
+     });
+     </script>
 @endsection
