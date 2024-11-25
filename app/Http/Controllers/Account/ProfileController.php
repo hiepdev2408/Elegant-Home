@@ -9,6 +9,7 @@ use App\Models\OrderDetail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -22,7 +23,6 @@ class ProfileController extends Controller
 
     public function order()
     {
-<<<<<<< HEAD
         $totalCart = getCartItemCount();
         $orders = Order::query()->where('user_id', Auth::user()->id)->get();
         $orderDetails = OrderDetail::query()
@@ -65,9 +65,6 @@ class ProfileController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
         }
-=======
-        return view(self::PATH_VIEW . __FUNCTION__);
->>>>>>> cfd09edf8d2ed8539bea57ca6c3ee303ea165442
     }
 
     public function endow()
