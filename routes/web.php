@@ -13,64 +13,51 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-// Route::get('/', function (){
-//     return view('client.layouts.master');
-// });
 
-Route::group(['prefix' => 'account'], function () {
+Route::prefix('account')
+    ->controller(AccountController::class)
+    ->group(function () {
+        // Authentication Routes
+        Route::get('/login', 'login')->name('login');
+        Route::post('/login_check', 'check_login')->name('login.submit');
+        Route::get('/register', 'register')->name('register');
+        Route::post('/register_check', 'check_register')->name('register.submit');
+        Route::get('/logout', 'logout')->name('logout');
+        Route::get('/veryfy_account/{email}', 'veryfy')->name('veryfy');
 
-    Route::get('/login', [AccountController::class, 'login'])->name('login');
-    Route::post('/login_check', [AccountController::class, 'check_login'])->name('login.submit');
+        // Password Reset Routes
+        Route::prefix('password')->group(function () {
+            Route::get('/reset', 'showForgotPasswordForm')->name('password.request');
+            Route::post('/email', 'sendResetLinkEmail')->name('password.email');
+            Route::get('/reset/{token}', 'showResetForm')->name('password.reset');
+            Route::post('/reset', 'reset')->name('password.update');
+        });
 
-    Route::get('/register', [AccountController::class, 'register'])->name('register');
-    Route::post('/register_check', [AccountController::class, 'check_register'])->name('register.submit');
+        // Favorite Routes
+        Route::prefix('favorite')->group(function () {
+            Route::get('/', 'showFavorite')->name('show.favorite');
+            Route::get('/count', 'favouriteCount')->name('favouriteCount');
+            Route::delete('/delete/{id}', 'deleteFavorite')->name('deleteFavorite');
+        });
+    });
 
-    //Logout
-    Route::get('/logout', [AccountController::class, 'logout'])->name('logout');
+Route::prefix('smember')
+    ->controller(ProfileController::class)
+    ->group(function () {
+        Route::get('/', 'profile')->name('profile.user');
+        Route::get('/order', 'order')->name('profile.order');
+        Route::get('/endow', 'endow')->name('profile.endow');
+        Route::get('/info', 'info')->name('profile.info');
+        Route::post('/update/{id}', 'update')->name('profile.update');
+    });
 
+Route::prefix('contact')
+    ->controller(ContactFormController::class)
+    ->group(function () {
+        Route::get('/', 'contact')->name('contact');
+        Route::post('/', 'submit')->name('contact.submit');
+    });
 
-    Route::get('/veryfy_account/{email}', [AccountController::class, 'veryfy'])->name('veryfy');
-
-    Route::get('password/reset', [AccountController::class, 'showForgotPasswordForm'])->name('password.request');
-    Route::post('password/email', [AccountController::class, 'sendResetLinkEmail'])->name('password.email');
-    Route::get('password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
-    Route::post('password/reset', [AccountController::class, 'reset'])->name('password.update');
-    Route::get('/profile', [ProfileController::class, 'profile'])
-        // ->middleware('auth')
-        ->name('profile.user');
-
-    Route::get('/profile/show/{id}', [ProfileController::class, 'show'])
-        // ->middleware('auth')
-        ->name('profile.show');
-    Route::get('/order', [ProfileController::class, 'order'])
-        // ->middleware('auth')
-        ->name('profile.order');
-
-    Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
-
-    Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
-
-    Route::get('/users', [UserController::class, 'index'])->name('user.index');
-    Route::get('/users', [UserController::class, 'show'])
-        // ->middleware('users')
-        ->name('users.show');
-
-    Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-    Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
-
-    Route::get('/password/reset/{token}', [AccountController::class, 'showResetForm'])->name('password.reset');
-    Route::post('/password/reset', [AccountController::class, 'reset'])->name('password.update');
-    //favorite
-    Route::get('/favorite', [AccountController::class, 'showFavorite'])->name('show.favorite');
-    Route::get('/favourite/count', [AccountController::class, 'favouriteCount'])->name('favouriteCount');
-    Route::delete('/deleteFavorite/{id}', [AccountController::class, 'deleteFavorite'])->name('deleteFavorite');
-});
-
-Route::group(['prefix' => 'contact'], function () {
-    Route::get('/', [ContactFormController::class, 'contact'])->name('contact');
-    Route::post('/', [ContactFormController::class, 'submit'])->name('contact.submit');
-});
 Route::get('categories/{category_id}/product/{id}/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 
 Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
@@ -94,8 +81,8 @@ Route::group([
     Route::get('listCart', [CartController::class, 'listCart'])->name('listCart');
     Route::put('cart/update', [CartController::class, 'updateCartQuantity'])->name('updateCartQuantity');
     Route::post('cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.applyVoucher');
-    Route::put('cart/update', [CartController::class, 'updateCartQuantity'])->name( 'updateCartQuantity');
-    Route::get('order', [OrderController::class, 'index' ])->name('index.Order');
+    Route::put('cart/update', [CartController::class, 'updateCartQuantity'])->name('updateCartQuantity');
+    Route::get('order', [OrderController::class, 'index'])->name('index.Order');
     Route::post('order/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.applyVoucher');
     // Web routes
     Route::get('/districts/{provinceCode}', [OrderController::class, 'getDistrictsByProvince']);
