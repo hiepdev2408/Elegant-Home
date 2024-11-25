@@ -119,10 +119,20 @@ class HomeController extends Controller
     }
     public function compose(View $view)
     {
-        $user_id = Auth::id(); // lấy id user
+        $user_id = Auth::id();
         $favouritecount = Favourite::where('user_id', $user_id)->count();
-        // dd($favouritecount);
-        $view->with('favouritecount',  $favouritecount);
+        $totalCart = CartDetail::query()
+            ->where('cart_id', function ($query) {
+                $query->select('id')
+                    ->from('carts')
+                    ->where('user_id', Auth::id())
+                    ->limit(1);
+            })
+            ->count();
+        $view->with([
+            'favouritecount' => $favouritecount,
+            'totalCart' => $totalCart
+        ]);
     }
 
     public function store(Request $request)
