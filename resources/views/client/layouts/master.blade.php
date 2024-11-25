@@ -58,8 +58,6 @@
     <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-arrow-up"></span></div>
 
     @include('client.layouts.partials.script')
-
-    @yield('script-libs')
     @yield('script')
 </body>
 
