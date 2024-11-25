@@ -13,13 +13,15 @@ class ProfileController extends Controller
 {
     public function profile()
     {
+        $totalCart = getCartItemCount();
         $user = Auth::user();
-        return view('client.auth.account.profile', compact('user'));
+        return view('client.auth.account.profile', compact('user', 'totalCart'));
     }
 
     public function order()
     {
-        return view('client.auth.account.order');
+        $totalCart = getCartItemCount();
+        return view('client.auth.account.order', compact('totalCart'));
     }
     public function show($id)
     {
