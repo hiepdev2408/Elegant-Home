@@ -17,8 +17,7 @@ class ProfileController extends Controller
     const PATH_VIEW = 'client.auth.smember.';
     public function profile()
     {
-        $user = Auth::user();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('user'));
+        return view(self::PATH_VIEW . __FUNCTION__);
     }
 
     public function order()
@@ -42,7 +41,7 @@ class ProfileController extends Controller
 
         $cart = Cart::where('user_id', Auth::id())->first();
 
-        return view('client.auth.account.showDetailOrder', compact('orderDetails', 'cart'));
+        return view('client.auth.smember.showDetailOrder', compact('orderDetails', 'cart'));
     }
 
 

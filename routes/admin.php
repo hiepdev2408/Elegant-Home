@@ -39,10 +39,10 @@ Route::prefix('admin')
         Route::prefix('account')
             ->as('account.')
             ->group(function () {
-                Route::get('listAdmin', [UserController::class, 'listAdmin'])->name('listAdmin');
-                Route::get('listStaff', [UserController::class, 'listStaff'])->name('listStaff');
-                Route::get('listCustomer', [UserController::class, 'listCustomer'])->name('listCustomer');
-            });
+            Route::get('listAdmin', [UserController::class, 'listAdmin'])->name('listAdmin');
+            Route::get('listStaff', [UserController::class, 'listStaff'])->name('listStaff');
+            Route::get('listCustomer', [UserController::class, 'listCustomer'])->name('listCustomer');
+        });
 
         // Permission
         Route::prefix('permissions')
@@ -134,7 +134,7 @@ Route::prefix('admin')
 
             Route::get('listDestroy', [AttributeController::class, 'delete'])->name('delete');
             // Hiển thị danh sách xóa
-    
+
             Route::post('restore/{id}', [AttributeController::class, 'restore'])->name('restore');
             Route::delete('forceDelete/{id}', [AttributeController::class, 'forceDelete'])->name('forceDelete');
         });
@@ -170,16 +170,15 @@ Route::prefix('admin')
         Route::prefix('contact')
             ->as('contact.')
             ->group(function () {
-                Route::get('/', [ContactFormController::class, 'index'])->name('index');
-                Route::delete('destroy/{id}', [ContactFormController::class, 'destroy'])->name('destroy');
-            });
+            Route::get('/', [ContactFormController::class, 'index'])->name('index');
+            Route::delete('destroy/{id}', [ContactFormController::class, 'destroy'])->name('destroy');
+        });
 
         // Chatrealtime
-        Route::get('/admin/chat-rooms', [ChatController::class, 'listChatRooms'])->name('chat');
-
-        Route::get('/chat', function () {
-            return view('admin.chat.index');
-        })->name('chat');
+        Route::get('/chat', [ChatController::class, 'listChatRooms'])->name('chat');
+        // Route::get('/chat', function () {
+        //     return view('admin.chat.index');
+        // })->name('chat');
 
 
         //warehouses
