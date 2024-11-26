@@ -100,14 +100,12 @@ class CartController extends Controller
 
 
 
-    public function listCart()
+    public function cart()
     {
-        $totalCart = getCartItemCount();
-
         $cart = Cart::where('user_id', Auth::user()->id)->first();
         $carts = $cart ? $cart->cartDetails()->with(['product', 'variant'])->get() : [];
 
-        return view('client.cart.listCart', compact('carts', 'totalCart'));
+        return view('client.cart.listCart', compact('carts'));
     }
 
     public function updateCartQuantity(Request $request)

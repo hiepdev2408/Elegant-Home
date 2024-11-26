@@ -66,7 +66,7 @@
                 <!-- Cart Box -->
                 <div class="cart-box">
                     <div class="box-inner">
-                        <a href="{{ route('listCart') }}" class="icon-box">
+                        <a href="{{ route('cart') }}" class="icon-box">
                             <span class="icon flaticon-bag"></span>
                             <i class="total-cart">
                                 {{ $totalCart }}

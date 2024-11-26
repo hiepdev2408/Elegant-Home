@@ -18,9 +18,10 @@ class CheckoutController extends Controller
 {
     public function checkout(Request $request)
     {
-        
+        dd($request->all());
+
         try {
-            DB::transaction(function() use ($request){
+            DB::transaction(function () use ($request) {
                 $user = Auth::user();
 
                 // Lấy cart của người dùng này
@@ -59,7 +60,7 @@ class CheckoutController extends Controller
                 session()->forget(['voucher_code', 'discount_amount', 'totalAmount']);
 
 
-            },1);
+            }, 1);
 
             return redirect()->route('defaultView')->with('success', 'Đơn hàng của bạn đã được đặt thành công!');
         } catch (\Exception $exception) {
@@ -69,8 +70,9 @@ class CheckoutController extends Controller
         }
     }
 
-    public function defaultView(){
+    public function defaultView()
+    {
         $totalCart = getCartItemCount();
-        return view('client.payment_method.default', compact('totalCart'));
+        return view('client.order.checkout.default', compact('totalCart'));
     }
 }

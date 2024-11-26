@@ -21,13 +21,12 @@ class OrderController extends Controller
     public function index()
     {
         $province = Province::query()->pluck('name', 'code')->all();
-        $totalCart = getCartItemCount();
         $user = Auth::user();
         $cart = Cart::where('user_id', $user->id)->first();
         $cartDetail = CartDetail::where('cart_id', $cart->id)->get();
         $totalAmount = $cartDetail->sum('total_amount');
 
-        return view('client.cart.checkout', compact('user', 'cart', 'cartDetail', 'totalAmount', 'totalCart', 'province'));
+        return view('client.order.info', compact('user', 'cart', 'cartDetail', 'totalAmount', 'province'));
     }
     public function getDistrictsByProvince($provinceCode)
     {
