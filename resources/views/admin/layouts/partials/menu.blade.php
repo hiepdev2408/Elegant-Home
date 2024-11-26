@@ -42,14 +42,9 @@
                 <div class="badge bg-danger rounded-pill ms-auto">0</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item @yield('menu-sub-create-order')">
-                    <a href="{{ route('attributes.create') }}" class="menu-link">
-                        <div data-i18n="Tạo mới đơn hàng">Tạo mới đơn hàng</div>
-                    </a>
-                </li>
                 <li class="menu-item @yield('menu-sub-index-order')">
-                    <a href="{{ route('attributes.index') }}" class="menu-link">
-                        <div data-i18n="Danh sách đơn hàng">Danh sách đơn hàng</div>
+                    <a href="{{ route('orders.index') }}" class="menu-link">
+                        <div data-i18n="Quản lý đơn hàng">Quản lý đơn hàng</div>
                     </a>
                 </li>
             </ul>
