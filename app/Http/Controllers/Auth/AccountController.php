@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Account;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Helpers\Mail\VerifyAccount;
@@ -16,12 +16,12 @@ use Illuminate\Support\Facades\Mail;
 
 class AccountController extends Controller
 {
-    public function login()
+    const PATH_VIEW = 'client.auth.';
+    public function showFormLogin()
     {
-        $totalCart = getCartItemCount();
-        return view('client.auth.login', compact('totalCart'));
+        return view(self::PATH_VIEW . 'login');
     }
-    public function check_login(Request $request)
+    public function login(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
@@ -47,12 +47,11 @@ class AccountController extends Controller
             'messageError' => 'Email đăng nhập hoặc mật khẩu sai',
         ]);
     }
-    public function register()
+    public function showFormRegister()
     {
-        $totalCart = getCartItemCount();
-        return view('client.auth.register', compact('totalCart'));
+        return view(self::PATH_VIEW . 'register');
     }
-    public function check_register(Request $request)
+    public function register(Request $request)
     {
         // Xác thực dữ liệu
         $request->validate([
@@ -105,7 +104,7 @@ class AccountController extends Controller
         return redirect()->route('login')->with('ok', 'Xác nhận đăng ký thành công');
     }
 
-    public function showForgotPasswordForm()
+    public function showFormForgotPassword()
     {
         $totalCart = getCartItemCount();
         return view('client.auth.passwords.email', compact('totalCart'));
@@ -123,7 +122,7 @@ class AccountController extends Controller
     }
 
 
-    public function showResetForm($token)
+    public function showFormReset($token)
     {
         $totalCart = getCartItemCount();
 

@@ -868,7 +868,7 @@
 .shop-item .new-price:before {
     position: absolute;
     content: "";
-   inset: 0;
+    inset: 0;
     opacity: 0;
     background: url(../images/icons/price-curve.png) no-repeat;
     background-size: 100% 100%;
@@ -7557,7 +7557,7 @@
 
 .register-section {
     position: relative;
-    padding: 110px 0px 80px;
+    padding: 50px 0px 80px;
 }
 
 .register-section .row {
