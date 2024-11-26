@@ -11,9 +11,6 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $query = Order::query();
-
-        // filled: Kiểm tra xem có tồn tai và không rỗng hay không
-        // Tìm kiếm theo ID, tên khách hàng, trạng thái
         if ($request->filled('order_id')) {
             $query->where('id', $request->order_id);
         }

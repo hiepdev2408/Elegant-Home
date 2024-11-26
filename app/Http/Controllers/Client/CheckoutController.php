@@ -18,7 +18,7 @@ class CheckoutController extends Controller
 {
     public function checkout(Request $request)
     {
-        
+
         try {
             DB::transaction(function() use ($request){
                 $user = Auth::user();
@@ -52,6 +52,13 @@ class CheckoutController extends Controller
                         'total_amount' => $cartDetails->total_amount,
                     ]);
                     $cartDetails->delete();
+
+                    $variant = Variant::query()->find($cartDetails->variant_id);
+                    if ($variant) {
+                        $variant->stock -= $cartDetails->quantity;
+
+                        $variant->save();
+                    }
                 }
 
                 $cart->delete();
