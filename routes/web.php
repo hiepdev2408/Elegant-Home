@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Account\AccountController;
-use App\Http\Controllers\Account\ProfileController;
+use App\Http\Controllers\Auth\AccountController;
+use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
@@ -15,23 +15,25 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // ACCOUNT
-Route::prefix('account')
+Route::prefix('auth')
     ->controller(AccountController::class)
     ->group(function () {
         // Authentication Routes
-        Route::get('/login', 'login')->name('login');
-        Route::post('/login_check', 'check_login')->name('login.submit');
-        Route::get('/register', 'register')->name('register');
-        Route::post('/register_check', 'check_register')->name('register.submit');
+        Route::get('/login', 'showFormLogin')->name('auth.login');
+        Route::post('/login', 'login')->name('login');
+        Route::get('/register', 'showFormRegister')->name('auth.register');
+        Route::post('/register', 'register')->name('register');
         Route::get('/logout', 'logout')->name('logout');
         Route::get('/veryfy_account/{email}', 'veryfy')->name('veryfy');
 
         // Password Reset Routes
-        Route::prefix('password')->group(function () {
-            Route::get('/reset', 'showForgotPasswordForm')->name('password.request');
-            Route::post('/email', 'sendResetLinkEmail')->name('password.email');
-            Route::get('/reset/{token}', 'showResetForm')->name('password.reset');
-            Route::post('/reset', 'reset')->name('password.update');
+        Route::prefix('password')
+            ->as('password.')
+            ->group(function () {
+            Route::get('/reset', 'showFormForgotPassword')->name('request');
+            Route::post('/email', 'sendResetLinkEmail')->name('email');
+            Route::get('/reset/{token}', 'showFormReset')->name('reset');
+            Route::post('/reset', 'reset')->name('update');
         });
 
         // Favorite Routes

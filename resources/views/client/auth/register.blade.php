@@ -1,126 +1,99 @@
 @extends('client.layouts.master')
+@section('title')
+    Register
+@endsection
 @section('content')
-<section class="page-title">
-    <div class="auto-container">
-        <h2>Login Page</h2>
-        <ul class="bread-crumb clearfix">
-            <li><a href="index.html">Home</a></li>
-            <li>Pages</li>
-            <li>Register</li>
-        </ul>
-    </div>
-</section>
-<!-- End Page Title -->
+    <!-- Register Section -->
+    <div class="register-section">
+        <div class="auto-container">
+            <div class="inner-container">
+                <div class="row clearfix">
+                    <!-- Column -->
+                    <div class="column col-lg-12 col-md-12 col-sm-12">
+                        <!-- Login Form -->
+                        <div class="text-center mb-0">
+                            <img src="https://account.cellphones.com.vn/_nuxt/img/Shipper_CPS3.77d4065.png" width="150px">
+                        </div>
 
-<!-- Register Section -->
-<div class="register-section">
-    <div class="auto-container">
-        <div class="inner-container">
-            <div class="row clearfix">
-                <!-- Column -->
-                <div class="column col-lg-6 col-md-12 col-sm-12">
-                    <!-- Login Form -->
-                    <div class="styled-form">
-                        <h4>Register</h4>
-                        <form method="post" action="{{ route('register.submit') }}">
-                            @csrf
-                            <div class="form-group">
-                                <label>Your Name</label>
-                                <input type="text" name="name" value="" placeholder="Enter your name*" >
-                                @error('name')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                            </div>
-                            <div class="form-group">
-                                <label>Email address</label>
-                                <input type="email" name="email" value="" placeholder="Enter Email Adress" >
-                                @error('email')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                            </div>
-                            <div class="form-group">
-                                <label>Phone</label>
-                                <input type="text" name="phone" value="" placeholder="Enter phone" >
-                                @error('phone')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                            </div>
-                            <div class="form-group">
-                                <label>Address</label>
-                                <input type="text" name="address" value="" placeholder="Enter Adress" >
-                                @error('address')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                            </div>
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input type="password" name="password" value="" placeholder="Create password" >
-                                @error('password')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                            </div>
-                            <div class="form-group">
-                                <label>Password confirmation</label>
-                                <input type="password" name="password_confirmation" value="" placeholder="Create password" >
-                                @error('password_confirmation')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                            </div>
-                            <div class="form-group">
-                                <div class="check-box">
-                                    <input type="checkbox" name="remember-password" id="type-1">
-                                    <label for="type-1">I agree to al <a href="#">Terms</a> & <a href="#">Condition</a> and Feeds</label>
+                        <div class="d-flex justify-content-center">
+                            <form method="POST" action="{{ route('register') }}" class="w-50">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Your Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" value=""
+                                        placeholder="Enter your name*">
+                                    @error('name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="theme-btn btn-style-one">
-                                    Register
-                                </button>
-                            </div>
-                        </form>
-                        <div class="form-group">
-                            <label for="type-2">Bạn đã tài khoản ?</label>
 
-                            <button type="submit" class="theme-btn btn-style-one">
-                               <a href="{{route('login')}}">Login</a>
-                            </button>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" id="email" name="email" value=""
+                                        placeholder="Enter Email Address">
+                                    @error('email')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" value=""
+                                        placeholder="Enter phone">
+                                    @error('phone')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Address</label>
+                                    <input type="text" class="form-control" id="address" name="address" value=""
+                                        placeholder="Enter Address">
+                                    @error('address')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password"
+                                        value="" placeholder="Create password">
+                                    @error('password')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="password_confirmation" class="form-label">Password confirmation</label>
+                                    <input type="password" class="form-control" id="password_confirmation"
+                                        name="password_confirmation" value="" placeholder="Confirm password">
+                                    @error('password_confirmation')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" name="remember-password"
+                                        id="terms-and-conditions">
+                                    <label class="form-check-label" for="terms-and-conditions">I agree to all <a
+                                            href="#">Terms</a> & <a href="#">Conditions</a> and Feeds</label>
+                                </div>
+
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        Register
+                                    </button>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="mb-3 text-center">
+                            <label for="login" class="form-label">Bạn đã có tài khoản?</label>
+                            <a href="{{ route('login') }}">Login</a>
+                        </div>
                     </div>
                 </div>
-                <!-- Column -->
-                {{-- <div class="column col-lg-6 col-md-12 col-sm-12">
-                    <!-- Login Form -->
-                    <div class="styled-form">
-                        <h4>Login here</h4>
-                        <form action="{{ route('login.submit') }}" method="POST">
-                            @csrf
-                            <div class="form-group">
-                                <label>Email address</label>
-                                <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter Email Adress">
-                                @error('email')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>New Password</label>
-                                <input type="password" name="password" value="" placeholder="Create password">
-                            </div>
-                            <div class="form-group">
-                                <div class="check-box">
-                                    <input type="checkbox" name="remember-password" id="type-2">
-                                    <label for="type-2">Remember Me?</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="theme-btn btn-style-one">
-                                    Login here
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div> --}}
             </div>
         </div>
     </div>
-</div>
 @endsection

@@ -4,8 +4,8 @@
 
             <div class="logo-box d-flex align-items-center">
                 <!-- Logo -->
-                <div class="logo"><a href="{{ route('home') }}"><img
-                            src="{{ asset('themes/clients/images/logo.png') }}" alt="" title=""></a></div>
+                <div class="logo"><a href="{{ route('home') }}"><img src="{{ asset('themes/clients/images/logo.png') }}"
+                            alt="" title=""></a></div>
             </div>
             <div class="nav-outer clearfix">
                 <!-- Main Menu -->
@@ -22,7 +22,7 @@
                             <li><a href="{{ route('contact') }}">Contact us</a></li>
                             @if (Auth::check())
                                 <li>
-                                    <form action="{{ route('chat.create',Auth::user()->id) }}" method="POST">
+                                    <form action="{{ route('chat.create', Auth::user()->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-primary">Liên Hệ Admin</button>
                                     </form>
@@ -52,7 +52,7 @@
                             <a href="{{ route('profile.user') }}" class="fw-bold  me-3">{{ Auth::user()->name }}</a>
                         </li>
                     @else
-                        <a class="user-box flaticon-user-3" href="{{ route('login') }}"></a>
+                        <a class="user-box flaticon-user-3" href="{{ route('auth.login') }}"></a>
                     @endif
 
                     <!-- Like Box -->
