@@ -10,8 +10,7 @@
     @include('client.layouts.partials.fonts.font')
     <link rel="shortcut icon" href="{{ asset('themes') }}/clients/images/favicon.png" type="image/x-icon">
     <link rel="icon" href="{{ asset('themes') }}/clients/images/favicon.png" type="image/x-icon">
-
-    @yield('style')
+    @yield('style-libs')
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
@@ -57,9 +56,8 @@
     <!-- Scroll To Top -->
     <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-arrow-up"></span></div>
 
-
     @include('client.layouts.partials.script')
-    @yield('script')
+    @yield('script-libs')
 </body>
 
 </html>
