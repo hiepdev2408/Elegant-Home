@@ -2,20 +2,19 @@
 
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\ProfileController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ContactFormController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\OrderController;
-use App\Http\Controllers\Client\ShopController;
-use App\Http\Controllers\MessageController;
+use App\Http\Controllers\Client\ProductController;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// ACCOUNT
 Route::prefix('account')
     ->controller(AccountController::class)
     ->group(function () {
@@ -43,6 +42,7 @@ Route::prefix('account')
         });
     });
 
+// SMEMBER
 Route::prefix('smember')
     ->controller(ProfileController::class)
     ->as('profile.')
@@ -57,6 +57,7 @@ Route::prefix('smember')
         Route::get('/order/show/{id}', 'showDetailOrder')->name('order.showDetailOrder');
     });
 
+// CONTACT
 Route::prefix('contact')
     ->controller(ContactFormController::class)
     ->group(function () {
@@ -64,15 +65,15 @@ Route::prefix('contact')
         Route::post('/', 'submit')->name('contact.submit');
     });
 
-Route::get('categories/{category_id}/product/{id}/{slug}', [HomeController::class, 'detail'])->name('productDetail');
-
-Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
-Route::get('/gird', [ShopController::class, 'gird'])->name('gird');
-
-Route::get('/search', [ShopController::class, 'shopFilter'])->name('shop.search');
-Route::get('/categories/{category_id}', [ShopController::class, 'shopFilter'])->name('shop.categoryProduct');
-Route::get('/filter', [ShopController::class, 'shopFilter'])->name('shop.filter');
-
+Route::prefix('products')
+    ->controller(ProductController::class)
+    ->group(function () {
+        Route::get('/', 'shop')->name('shop');
+        Route::get('/gird', 'gird')->name('gird');
+        Route::get('/search', 'shopFilter')->name('shop.search');
+        Route::get('/categories/{category_id}', 'shopFilter')->name('shop.categoryProduct');
+        Route::get('/filter', 'shopFilter')->name('shop.filter');
+    });
 
 Route::get('productDetail/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 Route::post('/comments', [HomeController::class, 'store'])->name('comments');

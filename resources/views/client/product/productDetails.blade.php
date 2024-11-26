@@ -34,13 +34,15 @@
 
                                         <div class="swiper-container content-carousel">
                                             <div class="swiper-wrapper">
-                                                @if($product->galleries->isNotEmpty())
+                                                @if ($product->galleries->isNotEmpty())
                                                     @foreach ($product->galleries as $gallery)
                                                         @if ($gallery->img_path)
                                                             <div class="swiper-slide">
                                                                 <figure class="image">
-                                                                    <a href="{{ Storage::url($gallery->img_path) }}" class="lightbox-image">
-                                                                        <img src="{{ Storage::url($gallery->img_path) }}" alt="Hình ảnh sản phẩm">
+                                                                    <a href="{{ Storage::url($gallery->img_path) }}"
+                                                                        class="lightbox-image">
+                                                                        <img src="{{ Storage::url($gallery->img_path) }}"
+                                                                            alt="Hình ảnh sản phẩm">
                                                                     </a>
                                                                 </figure>
                                                             </div>
@@ -49,8 +51,10 @@
                                                 @else
                                                     <div class="swiper-slide">
                                                         <figure class="image">
-                                                            <a href="{{ Storage::url($product->img_thumbnail) }}" class="lightbox-image">
-                                                                <img src="{{ Storage::url($product->img_thumbnail) }}" alt="Hình ảnh thumbnail sản phẩm">
+                                                            <a href="{{ Storage::url($product->img_thumbnail) }}"
+                                                                class="lightbox-image">
+                                                                <img src="{{ Storage::url($product->img_thumbnail) }}"
+                                                                    alt="Hình ảnh thumbnail sản phẩm">
                                                             </a>
                                                         </figure>
                                                     </div>
@@ -134,7 +138,8 @@
                                                             data-attribute-name="{{ $attributeName }}">
                                                             <option value="">Chọn biến thể</option>
                                                             @foreach ($values as $value)
-                                                                <option value="{{ $value['id'] }}">{{ Str::limit($value['name'], 15) }}
+                                                                <option value="{{ $value['id'] }}">
+                                                                    {{ Str::limit($value['name'], 15) }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -640,7 +645,7 @@
         </form>
     </div>
 @endsection
-@section('script')
+@section('script-libs')
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Lấy tất cả các nút trả lời
