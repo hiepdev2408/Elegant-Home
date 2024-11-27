@@ -1,24 +1,15 @@
 @extends('client.layouts.master')
+@section('title')
+    Reset password
+@endsection
 @section('content')
-    <section class="page-title">
-        <div class="auto-container">
-            <h2>Login Page</h2>
-            <ul class="bread-crumb clearfix">
-                <li><a href="index.html">Home</a></li>
-                <li>Pages</li>
-                <li>EmailReset</li>
-            </ul>
-        </div>
-    </section>
-    <!-- End Page Title -->
-
     <!-- Register Section -->
-    <div class="register-section">
+    <div class="register-section mt-5">
         <div class="auto-container">
             <div class="inner-container">
                 <div class="row clearfix">
 
-                    <div class="column col-lg-6 col-md-12 col-sm-12">
+                    <div class="column col-lg-12 col-md-12 col-sm-12">
                         <style>
                             .alert {
                                 padding: 15px;
@@ -48,48 +39,54 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        <div class="styled-form">
-                            <h4>Email</h4>
-                            <form action="{{ route('password.update') }}" method="POST">
+                        <div class="text-center mb-0">
+                            <img src="https://account.cellphones.com.vn/_nuxt/img/Shipper_CPS3.77d4065.png" width="150px">
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <form action="{{ route('password.update') }}" method="POST" class="w-50 mt-3">
                                 @csrf
                                 <input type="hidden" name="token" value="{{ $token }}">
-                                
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="email" name="email" value="{{ request('email') }}" placeholder="Enter your email" required>
+
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        value="{{ request('email') }}" placeholder="Enter your email" required>
                                     @error('email')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                
-                                <div class="form-group">
-                                    <label>Password</label>
-                                    <input type="password" name="password" placeholder="Enter Password" required>
+
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password"
+                                        placeholder="Enter Password" required>
                                     @error('password')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                
-                                <div class="form-group">
-                                    <label>Confirm Password</label>
-                                    <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+
+                                <div class="mb-3">
+                                    <label for="password_confirmation" class="form-label">Confirm Password</label>
+                                    <input type="password" class="form-control" id="password_confirmation"
+                                        name="password_confirmation" placeholder="Confirm Password" required>
                                     @error('password_confirmation')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                
-                                <div class="form-group">
-                                    <button type="submit" class="theme-btn btn-style-one">Send</button>
+
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary w-100">Send</button>
                                 </div>
                             </form>
                         </div>
 
 
 
-                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection

@@ -23,10 +23,6 @@ class CartController extends Controller
     public function addToCart(Request $request)
     {
         $user = Auth::user();
-        if (!$user) {
-            return back()->with('error', 'Vui lòng đăng nhập để tiếp tục.');
-        }
-
         $cart = Cart::firstOrCreate(['user_id' => $user->id]);
 
         $productId = $request->input('product_id');
@@ -65,6 +61,9 @@ class CartController extends Controller
             $totalAmountVariant = $matchingVariant->price_modifier;
 
             if ($cartDetail) {
+                if ($matchingVariant->stock < $cartDetail->quantity + $quantity) {
+                    return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
+                }
                 $cartDetail->quantity += $quantity;
                 $cartDetail->total_amount += $totalAmountVariant * $quantity;
                 $cartDetail->save();
@@ -77,6 +76,12 @@ class CartController extends Controller
                 ]);
             }
         } else {
+            $product = Product::find($productId);
+
+            if ($product->variants()->stock < $quantity) {
+                return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
+            }
+
             $cartDetail = CartDetail::where('cart_id', $cart->id)
                 ->where('product_id', $productId)
                 ->first();

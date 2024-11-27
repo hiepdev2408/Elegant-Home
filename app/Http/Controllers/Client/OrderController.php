@@ -27,14 +27,16 @@ class OrderController extends Controller
         $cartDetail = CartDetail::where('cart_id', $cart->id)->get();
         $totalAmount = $cartDetail->sum('total_amount');
 
-        return view('client.checkout.order', compact('user', 'cart', 'cartDetail', 'totalAmount', 'totalCart', 'province'));
+        return view('client.cart.order', compact('user', 'cart', 'cartDetail', 'totalAmount', 'totalCart', 'province'));
     }
-    public function getDistrictsByProvince($provinceCode) {
+    public function getDistrictsByProvince($provinceCode)
+    {
         $districts = District::where('province_code', $provinceCode)->pluck('name', 'code');
         return response()->json($districts);
     }
 
-    public function getWardsByDistrict($districtCode) {
+    public function getWardsByDistrict($districtCode)
+    {
         $wards = Ward::where('district_code', $districtCode)->pluck('name', 'code');
         return response()->json($wards);
     }
@@ -50,7 +52,7 @@ class OrderController extends Controller
 
         // Kiểm tra nếu giỏ hàng không tồn tại
         if (!$cart) {
-            return back()->withErrors(['voucher_code' => 'Giỏ hàng không tồn tại.']);
+            return response()->json(['success' => false, 'message' => 'Giỏ hàng không tồn tại.']);
         }
 
         // Lấy chi tiết giỏ hàng
@@ -59,7 +61,6 @@ class OrderController extends Controller
         // Tính giá trị tổng ban đầu
         $currentTotalAmount = $this->calculateTotal($cartDetails, null);
         session(['original_total_amount' => $currentTotalAmount]);
-        // Lưu giá trị ban đầu
 
         // Lấy voucher từ cơ sở dữ liệu
         $voucher = Vouchers::where('code', $request->voucher_code)->first();
@@ -67,10 +68,8 @@ class OrderController extends Controller
         // Kiểm tra tính hợp lệ của voucher
         if (!$voucher || !$voucher->isValid()) {
             session()->forget('totalAmount');
-            // Xóa session
             session(['totalAmount' => $currentTotalAmount]);
-            // Khôi phục giá trị cũ
-            return redirect()->route('index.Order')->withErrors(['voucher_code' => 'Voucher không hợp lệ.']);
+            return response()->json(['success' => false, 'message' => 'Voucher không hợp lệ.']);
         }
 
         // Kiểm tra nếu voucher đã được sử dụng bởi tài khoản này chưa
@@ -79,13 +78,13 @@ class OrderController extends Controller
             ->first();
 
         if ($usedVoucher) {
-            return redirect()->route('index.Order')->withErrors(['voucher_code' => 'Bạn đã sử dụng voucher này rồi.']);
+            return response()->json(['success' => false, 'message' => 'Bạn đã sử dụng voucher này rồi.']);
         }
 
         // Kiểm tra nếu không có chi tiết giỏ hàng nào
         if ($cartDetails->isEmpty()) {
             session(['totalAmount' => $currentTotalAmount]);
-            return redirect()->route('index.Order')->withErrors(['voucher_code' => 'Giỏ hàng không có sản phẩm.']);
+            return response()->json(['success' => false, 'message' => 'Giỏ hàng không có sản phẩm.']);
         }
 
         $isValidForCart = false;
@@ -100,7 +99,6 @@ class OrderController extends Controller
                 if ($voucher->products()->where('products.id', $productId)->exists()) {
                     $isValidForCart = true;
                     $appliedProducts[] = $productId;
-                    // Thêm sản phẩm đã áp dụng voucher vào mảng
                 }
             }
         }
@@ -108,7 +106,7 @@ class OrderController extends Controller
         if (!$isValidForCart) {
             session()->forget('totalAmount');
             session(['totalAmount' => $currentTotalAmount]);
-            return redirect()->route('index.Order')->withErrors(['voucher_code' => 'Voucher không áp dụng cho sản phẩm trong giỏ hàng.']);
+            return response()->json(['success' => false, 'message' => 'Voucher không áp dụng cho sản phẩm trong giỏ hàng.']);
         }
 
         // Lưu voucher vào session
@@ -126,12 +124,14 @@ class OrderController extends Controller
         // Tính tổng số tiền với giảm giá
         $totalAmount = $this->calculateTotal($cartDetails, $voucher);
         session(['totalAmount' => $totalAmount]);
-        // Lưu tổng vào session
-        // dd( $request->all() );
 
-        return redirect()->route('index.Order')->with('success', 'Voucher đã được áp dụng!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Voucher đã được áp dụng!',
+            'discount_amount' => $voucher->discount_amount,
+            'new_total' => $totalAmount,
+        ]);
     }
-
     protected function calculateTotal($cartDetails, $voucher)
     {
         $totalPriceWithVoucher = 0;

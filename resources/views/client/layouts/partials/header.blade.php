@@ -3,63 +3,41 @@
         <div class="inner-container d-flex justify-content-between align-items-center">
 
             <div class="logo-box d-flex align-items-center">
-
-                <div class="nav-toggle-btn a-nav-toggle navSidebar-button">
-                    <span class="hamburger">
-                        <span class="top-bun"></span>
-                        <span class="meat"></span>
-                        <span class="bottom-bun"></span>
-                    </span>
-                </div>
-
                 <!-- Logo -->
-                <div class="logo"><a href="{{ route('home') }}"><img
-                            src="{{ asset('themes/clients/images/logo.png') }}" alt="" title=""></a></div>
+                <div class="logo"><a href="{{ route('home') }}"><img src="{{ asset('themes/clients/images/logo.png') }}"
+                            alt="" title=""></a></div>
             </div>
             <div class="nav-outer clearfix">
-
                 <!-- Main Menu -->
                 <nav class="main-menu show navbar-expand-md">
-                    <div class="navbar-header">
-                        <button class="navbar-toggler" type="button" data-toggle="collapse"
-                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                    </div>
-
                     <div class="navbar-collapse collapse clearfix" id="navbarSupportedContent">
                         <ul class="navigation clearfix">
                             <li><a href="{{ route('home') }}">Home</a></li>
                             <li><a href="about.html">About</a></li>
-                            <li class="dropdown"><a href="{{ route('shop') }}">Shop</a>
-                                <ul>
-                                    <li><a href="{{ route('shop') }}">Our Products</a></li>
-                                    <li><a href="shop-detail.html">Product Single</a></li>
-                                    <li><a href="cart.html">Shoping Cart</a></li>
-                                    <li><a href="checkout.html">CheckOut</a></li>
-                                    <li><a href="register.html">Register</a></li>
-                                </ul>
+                            <li><a href="{{ route('shop') }}">Shop</a>
                             </li>
-                            <li class="dropdown"><a href="#">Blog</a>
-                                <ul>
-                                    <li><a href="blog.html">Our Blog</a></li>
-                                    <li><a href="blog-detail.html">Blog Single</a></li>
-                                    <li><a href="not-found.html">Not Found</a></li>
-                                </ul>
+                            <li><a href="#">Blog</a>
                             </li>
+
                             <li><a href="{{ route('contact') }}">Contact us</a></li>
+                            @if (Auth::check())
+                                <li>
+                                    <form action="{{ route('chat.create', Auth::user()->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary">Liên Hệ Admin</button>
+                                    </form>
+                                </li>
+                            @endif
+
+
+
                         </ul>
                     </div>
-
                 </nav>
                 <!-- Main Menu End-->
             </div>
             <!-- Outer Box -->
             <div class="outer-box d-flex align-items-center">
-
                 <!-- Options Box -->
                 <div class="options-box d-flex align-items-center">
 
@@ -71,14 +49,14 @@
                     <!-- User Box -->
                     @if (Auth::check())
                         <li style="margin-top: -4px">
-                            <a href="{{ route('profile.user') }}" class="fw-bold">{{ Auth::user()->name }}</a>
+                            <a href="{{ route('profile.user') }}" class="fw-bold  me-3">{{ Auth::user()->name }}</a>
                         </li>
                     @else
-                        <a class="user-box flaticon-user-3" href="{{ route('login') }}"></a>
+                        <a class="user-box flaticon-user-3" href="{{ route('auth.login') }}"></a>
                     @endif
 
                     <!-- Like Box -->
-                    <div class="like-box ms-3">
+                    <div class="like-box">
                         <a class="user-box flaticon-heart" href="{{ route('show.favorite') }}"></a>
                         <span class="total-like">{{ $favouritecount }}</span>
                     </div>
@@ -102,7 +80,6 @@
 
                 <!-- Mobile Navigation Toggler -->
                 <div class="mobile-nav-toggler"><span class="icon flaticon-menu"></span></div>
-
             </div>
             <!-- End Outer Box -->
 

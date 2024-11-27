@@ -12,15 +12,12 @@ class ContactFormController extends Controller
 {
     public function index()
     {
-        $totalCart = getCartItemCount();
-
         $data = Contract::query()->get();
-        return view('admin.contacts.index', compact('data', $totalCart));
+        return view('admin.contacts.index', compact('data'));
     }
     public function contact()
     {
-        $totalCart = getCartItemCount();
-        return view('client.emails.contact', compact('totalCart'));
+        return view('client.emails.contact');
     }
     public function submit(Request $request)
     {

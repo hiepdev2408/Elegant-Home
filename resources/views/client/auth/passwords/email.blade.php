@@ -1,24 +1,15 @@
 @extends('client.layouts.master')
+@section('title')
+    Forgot password
+@endsection
 @section('content')
-    <section class="page-title">
-        <div class="auto-container">
-            <h2>Login Page</h2>
-            <ul class="bread-crumb clearfix">
-                <li><a href="index.html">Home</a></li>
-                <li>Pages</li>
-                <li>Email</li>
-            </ul>
-        </div>
-    </section>
-    <!-- End Page Title -->
-
     <!-- Register Section -->
     <div class="register-section">
         <div class="auto-container">
             <div class="inner-container">
                 <div class="row clearfix">
 
-                    <div class="column col-lg-6 col-md-12 col-sm-12">
+                    <div class="column col-lg-12 col-md-12 col-sm-12">
                         <style>
                             .alert {
                                 padding: 15px;
@@ -48,27 +39,27 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        <div class="styled-form">
-                            <h4>Email</h4>
-                            <form action="{{ route('password.email') }}" method="POST">
+                        <div class="text-center mb-3">
+                            <img src="https://account.cellphones.com.vn/_nuxt/img/Shipper_CPS3.77d4065.png" width="150px">
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <form action="{{ route('password.email') }}" method="POST" class="w-50 mb-5">
                                 @csrf
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label>Email address</label>
-                                    <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter Email Address" required>
+                                    <input class="form-control" type="email" name="email" value="{{ old('email') }}"
+                                        placeholder="Enter Email Address" required>
                                     @error('email')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            
+
                                 <div class="form-group">
-                                    <button type="submit" class="theme-btn btn-style-one">
+                                    <button type="submit" class="btn btn-primary w-100">
                                         Send
                                     </button>
                                 </div>
                             </form>
-
-
-
                         </div>
                     </div>
                 </div>

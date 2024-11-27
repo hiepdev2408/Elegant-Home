@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\AttributeController;
+use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -11,37 +12,28 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VouchersController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Client\ContactFormController;
-use App\Helpers\Mail\ContactFormMail;
 use App\Http\Controllers\Admin\AttributeValueController;
-use App\Http\Controllers\Admin\ExportWarehousesController;
-use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
-use App\Models\Notification;
-use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ChatController;
 
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
     ->group(function () {
-        Route::get('/', function () {
-            return view(view: 'admin.dashboard');
-        })->name('admin');
+        Route::get('/', [DashboardController::class, 'dashboard'])->name('admin');
 
-        // Đọc tất cả thông báo
-        Route::prefix('notifications')
-            ->group(function () {
-            Route::post('/mark-read', [NotificationController::class, 'markRead'])->name('mark-read');
-        });
-
+        //ĐỌC THÔNG BÁO
+        Route::post('/mark-read', [DashboardController::class, 'markRead'])->name('mark-read');
         // Account
+    
         Route::prefix('account')
             ->as('account.')
             ->group(function () {
-            Route::get('listAdmin', [UserController::class, 'listAdmin'])->name('listAdmin');
-            Route::get('listStaff', [UserController::class, 'listStaff'])->name('listStaff');
-            Route::get('listCustomer', [UserController::class, 'listCustomer'])->name('listCustomer');
-        });
+                Route::get('listAdmin', [UserController::class, 'listAdmin'])->name('listAdmin');
+                Route::get('listStaff', [UserController::class, 'listStaff'])->name('listStaff');
+                Route::get('listCustomer', [UserController::class, 'listCustomer'])->name('listCustomer');
+            });
 
         // Permission
         Route::prefix('permissions')
@@ -142,6 +134,7 @@ Route::prefix('admin')
         Route::prefix('attribute_values')
             ->as('attribute_values.')
             ->group(function () {
+
             Route::get('/', [AttributeValueController::class, 'index'])->name('index');
             Route::get('create', [AttributeValueController::class, 'create'])->name('create');
             Route::post('store', [AttributeValueController::class, 'store'])->name('store');
@@ -173,10 +166,7 @@ Route::prefix('admin')
         });
 
         // Chatrealtime
-        Route::get('/chat', function () {
-            return view('admin.chat.index');
-        })->name('chat');
-
+        Route::get('/chat', [ChatController::class, 'listChatRooms'])->name('chat');
 
         //warehouses
         Route::prefix('warehouses')
@@ -195,6 +185,13 @@ Route::prefix('admin')
             Route::get('create', [ExportWarehouseController::class, 'create'])->name('create');
             Route::post('store', [ExportWarehouseController::class, 'store'])->name('store');
             Route::get('show/{id}', [ExportWarehouseController::class, 'show'])->name('show');
+        });
+
+        // Order
+        Route::prefix('orders')
+            ->as('orders.')
+            ->group(function () {
+            Route::get('/', [OrderController::class, 'index'])->name('index');
         });
 
     });
