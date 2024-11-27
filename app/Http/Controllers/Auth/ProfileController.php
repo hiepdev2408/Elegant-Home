@@ -26,8 +26,9 @@ class ProfileController extends Controller
         $orderDetails = OrderDetail::query()
             ->whereIn('order_id', $orders->pluck('id')->toArray())
             ->paginate(5);
+        $countOrder = $orders->where('status_order', '!=', 'canceled')->count();
 
-        return view('client.auth.smember.order', compact('orderDetails'));
+        return view('client.auth.smember.order', compact('orderDetails', 'countOrder'));
     }
 
     public function showDetailOrder($id)
@@ -38,7 +39,6 @@ class ProfileController extends Controller
                 $query->where('user_id', Auth::id());
             })
             ->findOrFail($id);
-
         $cart = Cart::where('user_id', Auth::id())->first();
 
         return view('client.auth.smember.showDetailOrder', compact('orderDetails', 'cart'));
