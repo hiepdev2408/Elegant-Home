@@ -58,7 +58,6 @@
                                 <div hidden class="form-floating form-floating-outline mb-4">
                                     <input type="text" class="form-control" id="ecommerce-product-slug"
                                         placeholder="Tên sản phẩm" name="slug" />
-                                    <label for="ecommerce-product-name">Tên sản phẩm</label>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Content

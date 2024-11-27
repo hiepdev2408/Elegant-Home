@@ -80,15 +80,15 @@
 
                     <!-- User Box -->
                     @if (Auth::check())
-                        <li><a href="contact.html">{{ Auth::user()->name }}</a></li>
+                        <li><a href="{{ route('profile.user') }}">{{ Auth::user()->name }}</a></li>
                     @else
                         <a class="user-box flaticon-user-3" href="{{ route('login') }}"></a>
                     @endif
 
                     <!-- Like Box -->
-                    <div class="like-box">
+                    <div class="like-box ms-3">
                         <a class="user-box flaticon-heart" href="contact.html"></a>
-                        <span class="total-like">0</span>
+                        <span class="total-like">{{$favouritecount}}</span>
                     </div>
 
                 </div>
@@ -98,10 +98,12 @@
                     <div class="box-inner">
                         <a href="{{ route('listCart') }}" class="icon-box">
                             <span class="icon flaticon-bag"></span>
-                            <i class="total-cart">0</i>
+                            <i class="total-cart">
+                                {{ $totalCart }}
+                            </i>
                         </a>
                         Phone<br>
-                        <a class="phone" href="tel:88-1900-6789-56">88 1900 6789 56</a>
+                        <a class="phone" href="tel:0382500462">0382500462</a>
                     </div>
                 </div>
                 <!-- End Cart Box -->

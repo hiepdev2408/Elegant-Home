@@ -1,18 +1,18 @@
 @extends('admin.layouts.master')
 @section('title')
-    Danh sách tài khoản
+    Khách hàng
 @endsection
-@section('menu-item-customer')
+@section('menu-item-account')
     open
 @endsection
 
-@section('menu-sub-index-customer')
+@section('menu-sub-customer')
     active
 @endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
-            <span class="text-muted fw-light">Customer /</span> Danh sách tài khoản
+            <span class="text-muted fw-light">Tài Khoản /</span> Khách hàng
         </h4>
         @if (session()->has('success'))
             <div class="alert alert-success fw-bold">

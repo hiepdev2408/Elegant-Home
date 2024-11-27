@@ -7,7 +7,7 @@
     <div class="auto-container">
         <h2>Shop Page</h2>
         <ul class="bread-crumb clearfix">
-            <li><a href="index.html">Home</a></li>
+            <li><a href="{{ route('home') }}">Home</a></li>
             <li>Pages</li>
             <li>Shop Page</li>
         </ul>
@@ -16,7 +16,7 @@
 <div class="sidebar-page-container">
     <div class="auto-container">
         <div class="row clearfix">
-            
+
             <!-- Content Side -->
             <div class="content-side col-lg-9 col-md-12 col-sm-12">
                 <!-- Filter Box -->
@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <!-- End Filter Box -->
-                
+
                 <div class="shops-outer">
                     <div class="row clearfix">
                         @foreach ($products as $product)
@@ -72,26 +72,20 @@
                                     <h6><a href="{{ route('productDetail', ['slug' => $product->slug]) }}">{{$product->name}}</a></h6>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="price"><span>{{ number_format($product->base_price, 0, ',', '.')}}VNĐ</span>{{ number_format($product->price_sale, 0, ',', '.')}}VNĐ</div>
-                                        <!-- Quantity Box -->
-                                        <div class="quantity-box">
-                                            <div class="item-quantity">
-                                                <input class="qty-spinner" type="text" value="1" name="quantity">
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         @endforeach
                         <!-- Shop Item -->
-                        
-                        
-                        
-                        
-                      
-                        
+
+
+
+
+
+
                     </div>
-                
+
                     <!-- Styled Pagination -->
                     <div class="styled-pagination text-center">
                         <ul>
@@ -100,7 +94,7 @@
                             @else
                                 <li class="next"><a href="{{ $products->previousPageUrl() }}"><span class="fa fa-angle-double-left"></span></a></li>
                             @endif
-                    
+
                             @for ($i = 1; $i <= $products->lastPage(); $i++)
                                 @if ($i == $products->currentPage())
                                     <li><a href="#" class="active">{{ $i }}</a></li>
@@ -108,7 +102,7 @@
                                     <li><a href="{{ $products->url($i) }}">{{ $i }}</a></li>
                                 @endif
                             @endfor
-                    
+
                             @if ($products->hasMorePages())
                                 <li class="next"><a href="{{ $products->nextPageUrl() }}"><span class="fa fa-angle-double-right"></span></a></li>
                             @else
@@ -117,13 +111,13 @@
                         </ul>
                     </div>
                     <!-- End Styled Pagination -->
-                
+
                 </div>
-                
+
             </div>
-            
+
           @include('client.shops.partials.sideBarfilter')
-            
+
         </div>
     </div>
 </div>

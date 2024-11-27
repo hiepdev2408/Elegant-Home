@@ -113,7 +113,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label>New Password</label>
+                                <label>Password</label>
                                 <input type="password" name="password" value="" placeholder="Create password">
                             </div>
                             <div class="form-group row container-fluid">
@@ -122,7 +122,7 @@
                                     <label for="type-2">Remember Me?</label>
                                 </div>
                                 <div class="col-sm-6">
-                                    
+
                                     <label for="type-2"><a href="{{route('password.request')}}">Quên mật khẩu</a></label>
                                 </div>
                             </div>

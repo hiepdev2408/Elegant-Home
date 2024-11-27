@@ -6,23 +6,32 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Gallery;
+use App\Models\Notification;
 use App\Models\Product;
 use App\Models\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use Illuminate\View\View;
 
 class ProductController extends Controller
 {
     const OBJECT = 'products';
+
+    const PATH_VIEW = 'admin.products.';
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $this->authorize('modules', '' . self::OBJECT . '.' .__FUNCTION__);
+        try {
+            $this->authorize('modules', self::OBJECT . '.' . __FUNCTION__);
+            // Thực hiện logic khi có quyền
+        } catch (\Throwable $th) {
+            return response()->view('admin.errors.unauthorized', ['message' => 'Bạn không có quyền truy cập!']);
+        }
+
         $products = Product::with([
             'variants.attributes' => function ($query) {
                 $query->with('attribute', 'attributeValue');
@@ -37,6 +46,12 @@ class ProductController extends Controller
      */
     public function create(Request $request)
     {
+        try {
+            $this->authorize('modules', self::OBJECT . '.' . __FUNCTION__);
+            // Thực hiện logic khi có quyền
+        } catch (\Throwable $th) {
+            return response()->view('admin.errors.unauthorized', ['message' => 'Bạn không có quyền truy cập!']);
+        }
         $attributes = Attribute::all();
         $category = Category::query()->pluck('name', 'id')->all();
 
@@ -60,7 +75,7 @@ class ProductController extends Controller
                 if ($request->hasFile('img_thumbnail')) {
                     $dataProduct['img_thumbnail'] = Storage::put('products', $request->file('img_thumbnail'));
                 }
-              
+
                 $product = Product::query()->create($dataProduct);
 
                 if (!empty($request->product_galleries)) {
@@ -78,7 +93,7 @@ class ProductController extends Controller
                             'product_id' => $product->id,
                             'sku' => $variantData['sku'] ?? 0,
                             'stock' => $variantData['stock'],
-                            'price_modifier' =>  $variantData['price_modifier'] ?? 0,
+                            'price_modifier' => $variantData['price_modifier'] ?? 0,
                             'image' => Storage::put('variants', $variantData['image']),
                         ]);
                     }
@@ -124,18 +139,22 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = Product::query()->findOrFail($id);
+        $product = Product::query()->with(['galleries', 'variants.attributes'])->findOrFail($id);
 
-        $attributes = Attribute::with('values')->get(); // Lấy tất cả thuộc tính và giá trị
-        $product->load(['galleries', 'variants.attributes']);
+        $category = Category::query()->pluck('name', 'id')->all();
+        $attributes = Attribute::with('values')->get();
+        $categoryProduct = $product->categories->pluck('id')->all();
 
-        return view('admin.products.edit', compact('product', 'attributes'));
+        return view('admin.products.edit', compact('product', 'attributes', 'category', 'categoryProduct'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id) {}
+    public function update(Request $request, string $id)
+    {
+        
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -166,4 +185,41 @@ class ProductController extends Controller
             return back();
         }
     }
+
+    public function warehouse()
+    {
+        $products = Product::with([
+            'variants.attributes' => function ($query) {
+                $query->with('attribute', 'attributeValue');
+            }
+        ])->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('products'));
+    }
+
+    public function UpdateStock(Variant $variant, Request $request)
+    {
+        // dd($request->all());
+        // lấy số lượng hiện tại
+        $currentStock = $variant->stock;
+        $addlStock = $request->input('stock');
+
+        // Cập nhật số lượng tồn kho mới
+        $variant->stock = $currentStock + $addlStock;
+        $variant->save();
+
+        return redirect()->back()->with('success', 'Cập nhật số lượng thành công!');
+    }
+
+    public function compose(View $view)
+    {
+        $notifications = Notification::orderByDesc('created_at')->get();
+        $unread = Notification::where('is_read', 0)->count();
+        $view->with([
+            'notifications' =>
+                $notifications,
+            'unread' =>
+                $unread
+        ]);
+    }
+
 }

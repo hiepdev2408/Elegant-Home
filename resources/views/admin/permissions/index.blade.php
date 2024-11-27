@@ -1,26 +1,29 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách permission
+    Quyền truy cập
 @endsection
-@section('menu-item-permission')
+@section('menu-item-account')
     open
 @endsection
 
-@section('menu-sub-index-permission')
+@section('menu-sub-permission')
     active
 @endsection
+
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4>
-            <span class="text-muted fw-light">Quản lý permisstion /</span> Danh sách
+            <span class="text-muted fw-light">Tài Khoản /</span> Quyền truy cập
         </h4>
         @if (session()->has('success'))
             <div class="alert alert-success fw-bold">
                 {{ session()->get('success') }}
             </div>
         @endif
-        <div class="card-header d-flex justify-content-end align-items-center mb-3">
+        <div class="card-header d-flex justify-content-end align-items-center mb-3 gap-3">
+            <a class="btn btn-info" href="{{ route('roles.index') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>
+                Vai Trò</a>
             <a class="btn btn-primary" href="{{ route('permissions.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>
                 Tạo quyền</a>
         </div>

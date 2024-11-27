@@ -17,32 +17,29 @@ class PermissionController extends Controller
 
     public function __construct(
         protected Permission $model
-    ) {}
+    ) {
+    }
 
-    public function gant()
+    public function access(Role $role, string $id)
     {
         $permissions = Permission::query()->with(['roles'])->get();
-        $roles = Role::all();
-
-        return view('admin.roles.grant', compact('permissions', 'roles'));
+        $role = Role::query()->findOrFail($id);
+        $roleProduct = Permission::whereIn('slug', ['products.index', 'products.create', 'products.edit'])->get();
+        $roleCategory = Permission::whereIn('slug', ['categories.index', 'categories.create', 'categories.edit'])->get();
+        $roleAttribute = Permission::whereIn('slug', ['attribute_values.index', 'attribute_values.create', 'attribute_values.edit'])->get();
+        return view('admin.roles.grant', compact('permissions', 'role', 'roleProduct', 'roleCategory', 'roleAttribute'));
     }
 
     public function updateGant(Request $request)
     {
+        // dd($request->all());
+
         foreach ($request->permissions as $roleId => $permissionIds) {
             $role = Role::find($roleId);
+            // Đồng bộ quyền đã chọn với role (sẽ xóa quyền cũ nếu không được chọn)
+            $role->permissions()->sync($permissionIds);
 
-            if ($role) {
-                // Lọc chỉ các quyền có giá trị '1' (đã chọn)
-                $selectedPermissions = array_keys(array_filter($permissionIds, function ($value) {
-                    return $value == 1;
-                }));
-
-                // Đồng bộ quyền đã chọn với role
-                $role->permissions()->sync($selectedPermissions);
-            }
         }
-
         return redirect()->back()->with('success', 'Cập nhật quyền thành công!');
     }
 }

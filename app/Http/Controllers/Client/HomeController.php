@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Blog;
+use App\Models\Cart;
+use App\Models\CartDetail;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Favourite;
@@ -32,23 +34,32 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $categories = Category::query()
+            ->whereHas('products')
+            ->take(5)
+            ->get(['id', 'name']);
 
-        $categories = Category::query()->take(5)->has('products')->get();
+        $products = Product::query()
+            ->with('categories')
+            ->latest('id')
+            ->take(10)
+            ->get();
 
-        $products = Product::query()->with('categories')->latest('id')->take(10)->get();
+        $blogs = Blog::query()
+            ->with('user')
+            ->latest()
+            ->take(10)
+            ->get();
 
-        $products = Product::latest('id')->take(10)->get();
-        // $products =Product::query()->get();
-        $blogs = Blog::with('user')->latest()->get();
-        // dd($products->toArray());
+        $totalCart = getCartItemCount();
 
-
-        return view('client.home', compact('categories', 'products', 'blogs'));
+        return view('client.home', compact('categories', 'products', 'blogs', 'totalCart'));
     }
+
 
     public function detail($slug)
     {
-        // Lấy sản phẩm theo id và slug
+        $totalCart = getCartItemCount();
         $product = Product::where([
             ['slug', $slug],
         ])
@@ -73,13 +84,12 @@ class HomeController extends Controller
             ->distinct()
             ->limit(4)
             ->get();
-
         // Lấy tất cả các thuộc tính để hiển thị
         $attributes = Attribute::with('values')->get();
         $product->increment('view');
 
         // Trả về view với thông tin sản phẩm và sản phẩm liên quan
-        return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes'));
+        return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes', 'totalCart'));
     }
 
 
@@ -126,5 +136,4 @@ class HomeController extends Controller
 
         return back();
     }
-
 }
