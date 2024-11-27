@@ -61,7 +61,7 @@ class CartController extends Controller
             $totalAmountVariant = $matchingVariant->price_modifier;
 
             if ($cartDetail) {
-                if ($matchingVariant->stock < $cartDetail->quantity + $quantity) {
+                if ($matchingVariant->stock < $quantity) {
                     return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
                 }
                 $cartDetail->quantity += $quantity;

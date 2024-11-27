@@ -25,7 +25,7 @@
                 </div>
                 <div class="row text-center mb-4 mt-2 box-shadows p-3 rounded-3">
                     <div class="col-6" style="border-right: 1px solid #000;">
-                        <h5 class="mt-3">0</h5>
+                        <h5 class="mt-3"> {{ $countOrder }}</h5>
                         <p class="text-muted">Đơn hàng</p>
                     </div>
                     <div class="col-6">
@@ -79,7 +79,6 @@
                                         @endif
                                     </td>
                                     <td>
-                                    <td>
                                         <div class="order-actions">
                                             @if ($order->order->status_order === 'pending')
                                                 <a href="{{ route('profile.order.showDetailOrder', $order->id) }}"
@@ -115,7 +114,6 @@
                                                 </form>
                                             @endif
                                         </div>
-                                    </td>
                                     </td>
                                 </tr>
                             @endforeach
