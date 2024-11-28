@@ -32,61 +32,22 @@
                                     <div class="carousel-outer">
                                         <!-- Swiper -->
                                         <div class="swiper-container content-carousel">
-                                            <div class="swiper-wrapper">
-                                                @if ($product->galleries->isNotEmpty())
-                                                    <!-- Hiển thị các hình ảnh từ galleries -->
-                                                    @foreach ($product->galleries as $gallery)
-                                                        @if ($gallery->img_path)
-                                                            <div class="swiper-slide">
-                                                                <figure class="image">
-                                                                    <a href="{{ Storage::url($gallery->img_path) }}"
-                                                                        class="lightbox-image">
-                                                                        <img src="{{ Storage::url($gallery->img_path) }}"
-                                                                            alt="Hình ảnh sản phẩm">
-                                                                    </a>
-                                                                </figure>
-                                                            </div>
-                                                        @endif
-                                                    @endforeach
-                                                @else
-                                                    <!-- Hiển thị hình ảnh từ img_thumbnail nếu không có galleries -->
-                                                    <div class="swiper-slide">
-                                                        <figure class="image">
-                                                            <a href="{{ Storage::url($product->img_thumbnail) }}"
-                                                                class="lightbox-image">
-                                                                <img src="{{ Storage::url($product->img_thumbnail) }}"
-                                                                    alt="Hình ảnh thumbnail sản phẩm">
-                                                            </a>
-                                                        </figure>
-                                                    </div>
-                                                @endif
-                                            </div>
+                                            <img src="{{ Storage::url($product->img_thumbnail) }}" alt="">
                                         </div>
-
                                         <!-- Thumbnail Carousel -->
                                         <div class="swiper-container thumbs-carousel">
                                             <div class="swiper-wrapper">
-                                                @if ($product->galleries->isNotEmpty())
-                                                    <!-- Hiển thị các thumbnail từ galleries -->
-                                                    @foreach ($product->galleries as $gallery)
-                                                        @if ($gallery->img_path)
-                                                            <div class="swiper-slide mb-5">
-                                                                <figure class="thumb">
-                                                                    <img src="{{ Storage::url($gallery->img_path) }}"
-                                                                        style="height: 100px" alt="Thumbnail sản phẩm">
-                                                                </figure>
-                                                            </div>
-                                                        @endif
-                                                    @endforeach
-                                                @else
-                                                    <!-- Hiển thị thumbnail từ img_thumbnail nếu không có galleries -->
-                                                    <div class="swiper-slide mb-5">
-                                                        <figure class="thumb">
-                                                            <img src="{{ Storage::url($product->img_thumbnail) }}"
-                                                                style="height: 100px" alt="Thumbnail sản phẩm">
-                                                        </figure>
-                                                    </div>
-                                                @endif
+                                                <!-- Hiển thị các thumbnail từ galleries -->
+                                                @foreach ($product->galleries as $gallery)
+                                                    @if ($gallery->img_path)
+                                                        <div class="swiper-slide mb-5">
+                                                            <figure class="thumb">
+                                                                <img src="{{ Storage::url($gallery->img_path) }}"
+                                                                    style="height: 100px" alt="Thumbnail sản phẩm">
+                                                            </figure>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
