@@ -22,16 +22,6 @@ class PermissionController extends Controller
 
     public function access(Role $role, string $id)
     {
-        $permissions = Permission::query()->with(['roles'])->get();
-        $role = Role::query()->findOrFail($id);
-        $roleProduct = Permission::whereIn('slug', ['products.index', 'products.create', 'products.edit'])->get();
-        $roleCategory = Permission::whereIn('slug', ['categories.index', 'categories.create', 'categories.edit'])->get();
-        $roleAttribute = Permission::whereIn('slug', ['attribute_values.index', 'attribute_values.create', 'attribute_values.edit'])->get();
-        return view('admin.roles.grant', compact('permissions', 'role', 'roleProduct', 'roleCategory', 'roleAttribute'));
-    }
-
-    public function access(Role $role, string $id)
-    {
         $role = Role::findOrFail($id);
 
         // Group permissions by type to reduce queries
