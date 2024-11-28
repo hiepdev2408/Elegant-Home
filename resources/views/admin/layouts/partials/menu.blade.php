@@ -35,21 +35,35 @@
             </a>
         </li>
 
-        <li class="menu-item @yield('menu-item-order')">
-            <a class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons mdi mdi-order-bool-descending-variant'></i>
-                <div data-i18n="Đơn Hàng">Đơn Hàng</div>
-                <div class="badge bg-danger rounded-pill ms-auto">0</div>
+        <li class="menu-item @yield('menu-item-account')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons mdi mdi-account-outline"></i>
+                <div data-i18n="Account">Account</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item @yield('menu-sub-create-order')">
-                    <a href="{{ route('attributes.create') }}" class="menu-link">
-                        <div data-i18n="Tạo mới đơn hàng">Tạo mới đơn hàng</div>
+                <li class="menu-item @yield('menu-sub-customer')">
+                    <a href="{{ route('account.listCustomer') }}" class="menu-link">
+                        <div data-i18n="Customers">Customer</div>
                     </a>
                 </li>
-                <li class="menu-item @yield('menu-sub-index-order')">
-                    <a href="{{ route('attributes.index') }}" class="menu-link">
-                        <div data-i18n="Danh sách đơn hàng">Danh sách đơn hàng</div>
+                <li class="menu-item @yield('menu-sub-staff')">
+                    <a href="{{ route('account.listStaff') }}" class="menu-link">
+                        <div data-i18n="Staffs">Staffs</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-admin')">
+                    <a href="{{ route('account.listAdmin') }}" class="menu-link">
+                        <div data-i18n="Admins">Admins</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-role')">
+                    <a href="{{ route('roles.index') }}" class="menu-link">
+                        <div data-i18n="Roles">Roles</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-permission')">
+                    <a href="{{ route('permissions.index') }}" class="menu-link">
+                        <div data-i18n="Permissions">Permissions</div>
                     </a>
                 </li>
             </ul>

@@ -7,7 +7,7 @@
     open
 @endsection
 
-@section('menu-sub-permission')
+@section('menu-sub-role')
     active
 @endsection
 @section('content')
@@ -19,6 +19,15 @@
             <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050; margin-top: 50px">
                 <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>Thành Công!</strong> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
+
+        @if (session('errors'))
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050; margin-top: 50px">
+                <div id="success-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Thất bại!</strong> {{ session('errors') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>
@@ -151,9 +160,19 @@
                                             'products.edit' => 'Sửa',
                                         ];
                                         $attribute = [
+                                            'attributes.index' => 'Xem',
+                                            'attributes.create' => 'Thêm',
+                                            'attributes.edit' => 'Sửa',
+                                        ];
+                                        $attribute_value = [
                                             'attribute_values.index' => 'Xem',
                                             'attribute_values.create' => 'Thêm',
                                             'attribute_values.edit' => 'Sửa',
+                                        ];
+                                        $permissions = [
+                                            'permissions.index' => 'Xem',
+                                            'permissions.create' => 'Thêm',
+                                            'permissions.edit' => 'Sửa',
                                         ];
                                     @endphp
                                     <tr>
@@ -208,12 +227,30 @@
                                             @endforeach
                                         @endforeach
                                     </tr>
+                                    <tr>
+                                        <td class="text-nowrap text-heading">Quản lý giá trị thuộc tính</td>
+                                        @foreach ($attribute_value as $slug => $label)
+                                            @foreach ($roleAttribute_value as $item)
+                                                {{-- @dd($item) --}}
+                                                @if ($item->slug == $slug)
+                                                    <td>
+                                                        <div class="form-check mb-0 d-flex justify-content-center">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                {{ $item->roles->contains($role->id) ? 'checked' : '' }}
+                                                                name="permissions[{{ $role->id }}][]"
+                                                                value="{{ $item->id }}" />
+                                                        </div>
+                                                    </td>
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="card-body">
                             <button type="submit" class="btn btn-primary me-2">Lưu Lại</button>
-                            <a href="{{ route('permissions.index') }}" class="btn btn-info me-2"> Quyền Truy Cập</a>
+                            <a href="{{ route('roles.index') }}" class="btn btn-info me-2"> Quay lai</a>
                             <button type="reset" class="btn btn-outline-secondary">Đăt lại</button>
                         </div>
                         <!-- /Notifications -->

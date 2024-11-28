@@ -153,7 +153,9 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
+
+
+
     }
 
     /**
@@ -208,18 +210,6 @@ class ProductController extends Controller
         $variant->save();
 
         return redirect()->back()->with('success', 'Cập nhật số lượng thành công!');
-    }
-
-    public function compose(View $view)
-    {
-        $notifications = Notification::orderByDesc('created_at')->get();
-        $unread = Notification::where('is_read', 0)->count();
-        $view->with([
-            'notifications' =>
-                $notifications,
-            'unread' =>
-                $unread
-        ]);
     }
 
 }

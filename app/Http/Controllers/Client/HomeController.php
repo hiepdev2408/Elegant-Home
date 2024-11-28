@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers\Client;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\View\View;
+
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Blog;
-use App\Models\Cart;
+
+
 use App\Models\CartDetail;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Favourite;
 use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
+
+
 
 class HomeController extends Controller
 {
@@ -51,9 +55,8 @@ class HomeController extends Controller
             ->take(10)
             ->get();
 
-        $totalCart = getCartItemCount();
+        return view('client.home', compact('categories', 'products', 'blogs'));
 
-        return view('client.home', compact('categories', 'products', 'blogs', 'totalCart'));
     }
 
 
@@ -117,13 +120,6 @@ class HomeController extends Controller
             return redirect()->back()->with('success', ' yêu thích sản phẩm thành công');
         }
     }
-    public function compose(View $view)
-    {
-        $user_id = Auth::id(); // lấy id user
-        $favouritecount = Favourite::where('user_id', $user_id)->count();
-        // dd($favouritecount);
-        $view->with('favouritecount',  $favouritecount);
-    }
 
     public function store(Request $request)
     {
@@ -136,4 +132,23 @@ class HomeController extends Controller
 
         return back();
     }
+
+
+    public function compose(View $view)
+    {
+        $userId = Auth::id();
+        $favouritecount = $userId ? Favourite::where('user_id', $userId)->count() : 0;
+        $totalCart = $userId ? CartDetail::query()->where('cart_id', function ($query) use ($userId) {
+            $query->select('id')
+                ->from('carts')
+                ->where('user_id', $userId)
+                ->limit(1);
+        })->count() : 0;
+
+        $view->with([
+            'favouritecount' => $favouritecount,
+            'totalCart' => $totalCart
+        ]);
+    }
+
 }

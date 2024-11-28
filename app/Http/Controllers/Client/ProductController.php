@@ -6,9 +6,10 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-class ShopController extends Controller
- {
-    public function shop() {
+class ProductController extends Controller
+{
+    public function shop()
+    {
 
         $totalCart = getCartItemCount();
         $categories = Category::with('children')->whereNull('parent_id')->get();
@@ -17,16 +18,17 @@ class ShopController extends Controller
 
         $productnew = Product::query()->latest('id')->take(3)->get();
 
-        return view('client.shops.shopProduct', compact(['categories','products', 'productnew', 'totalCart']));
+        return view('client.shops.shopProduct', compact(['categories', 'products', 'productnew', 'totalCart']));
     }
 
-    public function gird() {
+    public function gird()
+    {
         $totalCart = getCartItemCount();
         $products = Product::query()->latest('id')->paginate(8);
 
         $productnew = Product::query()->latest('id')->take(3)->get();
 
-        return view('client.shops.gird', compact(['products', 'productnew','totalCart']));
+        return view('client.shops.gird', compact(['products', 'productnew', 'totalCart']));
 
     }
 
@@ -41,12 +43,14 @@ class ShopController extends Controller
         $products = Product::query();
 
         if ($request->input('search')) {
-            $request->validate([
-                'search' => 'required|string|min:1'
-            ],
-        [
-            'search.string' => 'Vui lòng nhập chữ',
-        ]);
+            $request->validate(
+                [
+                    'search' => 'required|string|min:1'
+                ],
+                [
+                    'search.string' => 'Vui lòng nhập chữ',
+                ]
+            );
 
             $products->where('name', 'like', '%' . $request->input('search') . '%');
         }
@@ -57,17 +61,17 @@ class ShopController extends Controller
             });
         }
 
-        if($request->input('min_price') || $request->input('max_price')){
-            if($request->input('min_price')){
-                $products->where('price_sale','>=',  $request->input('min_price'));
+        if ($request->input('min_price') || $request->input('max_price')) {
+            if ($request->input('min_price')) {
+                $products->where('price_sale', '>=', $request->input('min_price'));
             }
-            if($request->input('max_price')){
-                $products->where('price_sale','<=',  $request->input('max_price'));
+            if ($request->input('max_price')) {
+                $products->where('price_sale', '<=', $request->input('max_price'));
             }
 
         }
         $products = $products->paginate(8);
 
-        return view('client.shops.shopProduct', compact('categories', 'products','productnew', 'totalCart'));
+        return view('client.shops.shopProduct', compact('categories', 'products', 'productnew'));
     }
 }

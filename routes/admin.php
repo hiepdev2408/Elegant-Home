@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\AttributeController;
+use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -11,32 +12,22 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VouchersController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Client\ContactFormController;
-use App\Helpers\Mail\ContactFormMail;
 use App\Http\Controllers\Admin\AttributeValueController;
-use App\Http\Controllers\Admin\ExportWarehousesController;
-use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 
 use App\Http\Controllers\ChatController;
 
-use Illuminate\Support\Facades\Route;
-
-
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
     ->group(function () {
-        Route::get('/', function () {
-            return view(view: 'admin.dashboard');
-        })->name('admin');
+        Route::get('/', [DashboardController::class, 'dashboard'])->name('admin');
 
-        // Đọc tất cả thông báo
-        Route::prefix('notifications')
-            ->group(function () {
-            Route::post('/mark-read', [NotificationController::class, 'markRead'])->name('mark-read');
-        });
-
+        //ĐỌC THÔNG BÁO
+        Route::post('/mark-read', [DashboardController::class, 'markRead'])->name('mark-read');
         // Account
+
         Route::prefix('account')
             ->as('account.')
             ->group(function () {
@@ -51,7 +42,6 @@ Route::prefix('admin')
         Route::prefix('permissions')
             ->as('permissions.')
             ->group(function () {
-
             Route::get('/', [PermissionController::class, 'index'])->name('index');
             Route::get('create', [PermissionController::class, 'create'])->name('create');
             Route::get('access/{id}', [PermissionController::class, 'access'])->name('access');
@@ -63,12 +53,10 @@ Route::prefix('admin')
             Route::delete('destroy/{id}', [PermissionController::class, 'destroy'])->name('destroy');
         });
 
-
         // Role
         Route::prefix('roles')
             ->as('roles.')
             ->group(function () {
-
             Route::get('/', [RoleController::class, 'index'])->name('index');
             Route::get('create', [RoleController::class, 'create'])->name('create');
             Route::post('store', [RoleController::class, 'store'])->name('store');
@@ -77,7 +65,6 @@ Route::prefix('admin')
             Route::put('update/{id}', [RoleController::class, 'update'])->name('update');
             Route::delete('destroy/{id}', [RoleController::class, 'destroy'])->name('destroy');
         });
-
 
         // Products
         Route::prefix('products')
@@ -141,7 +128,6 @@ Route::prefix('admin')
 
             Route::get('listDestroy', [AttributeController::class, 'delete'])->name('delete');
             // Hiển thị danh sách xóa
-
             Route::post('restore/{id}', [AttributeController::class, 'restore'])->name('restore');
             Route::delete('forceDelete/{id}', [AttributeController::class, 'forceDelete'])->name('forceDelete');
         });
@@ -158,7 +144,6 @@ Route::prefix('admin')
             Route::put('update/{id}', [AttributeValueController::class, 'update'])->name('update');
             Route::delete('destroy/{id}', [AttributeValueController::class, 'destroy'])->name('destroy');
         });
-
 
         // Vouchers
         Route::prefix('vouchers')
@@ -178,9 +163,9 @@ Route::prefix('admin')
         Route::prefix('contact')
             ->as('contact.')
             ->group(function () {
-                Route::get('/', [ContactFormController::class, 'index'])->name('index');
-                Route::delete('destroy/{id}', [ContactFormController::class, 'destroy'])->name('destroy');
-            });
+            Route::get('/', [ContactFormController::class, 'index'])->name('index');
+            Route::delete('destroy/{id}', [ContactFormController::class, 'destroy'])->name('destroy');
+        });
 
         // Chatrealtime
 
@@ -207,5 +192,11 @@ Route::prefix('admin')
             Route::get('show/{id}', [ExportWarehouseController::class, 'show'])->name('show');
         });
 
+        // Order
+        Route::prefix('orders')
+            ->as('orders.')
+            ->group(function () {
+            Route::get('/', [OrderController::class, 'index'])->name('index');
+        });
 
     });

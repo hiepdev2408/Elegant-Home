@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class ChatController extends Controller
 {
     //người dùng click để thêm phòng
-    public function createOrRedirect(Request $request,$receiverId)
+    public function createOrRedirect(Request $request, $receiverId)
     {
         $room = Room::firstOrCreate(
             ['user_id' => auth()->id()]
@@ -22,11 +22,12 @@ class ChatController extends Controller
     //đi đến phòng chat đang hoạt động
     public function listChatRooms()
     {
-        $rooms = Room::all();
+        $rooms = Room::query()->get();
+        // dd($rooms);
         return view('admin.chat.index', compact('rooms'));
     }
     //hiển thị chat trang admin
-    public function showChatRoom($roomId,$receiverId)
+    public function showChatRoom($roomId, $receiverId)
     {
         // $room = Room::findOrFail($roomId);
 
