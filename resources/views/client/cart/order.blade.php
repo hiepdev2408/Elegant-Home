@@ -242,7 +242,8 @@
                  data: $(this).serialize(),
                  success: function(response) {
                     if (response.success) {
-                    $('#voucherMessage').html(`<p class="alert alert-success">${response.message}</p>`);
+                    $('#voucherMessage').html(`
+                    <p class="alert alert-success">${response.message}</p>`);
                     // Cập nhật tổng giá trị
                     let newTotal = response.new_total; // Tổng mới từ phản hồi
                     $('#totalAmount').text(newTotal.toLocaleString('vi-VN') + ' VNĐ');

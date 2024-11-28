@@ -12,11 +12,12 @@ class ProductController extends Controller
     {
 
         $totalCart = getCartItemCount();
-        $categories = Category::with('children')->whereNull('parent_id')->get();
+        $categories = Category::with('children')->where('is_active', 1)->get();
 
         $products = Product::query()->latest('id')->paginate(12);
 
         $productnew = Product::query()->latest('id')->take(3)->get();
+        // dd($categories);
 
         return view('client.shops.shopProduct', compact(['categories', 'products', 'productnew', 'totalCart']));
     }
@@ -35,7 +36,7 @@ class ProductController extends Controller
 
     public function shopFilter(Request $request, $category_id = null)
     {
-        $categories = Category::with('children')->whereNull('parent_id')->get();
+        $categories = Category::with('children')->where('is_active', 1)->get();
 
         $productnew = Product::query()->latest('id')->take(3)->get();
         //khởi tạo product
