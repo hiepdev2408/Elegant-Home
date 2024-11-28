@@ -43,16 +43,20 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             @endforeach
                             <!-- Shop Item -->
                         </div>
+
+
                         <!-- Styled Pagination -->
                         <div class="styled-pagination text-center">
                             <ul>
                                 @if ($products->onFirstPage())
                                     <li class="next disabled"><span class="fa fa-angle-double-left"></span></li>
+
                                 @else
                                     <li class="next"><a href="{{ $products->previousPageUrl() }}"><span
                                                 class="fa fa-angle-double-left"></span></a></li>

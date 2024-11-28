@@ -38,7 +38,6 @@ class OrderController extends Controller
 
     public function getWardsByDistrict($districtCode)
     {
-
         $wards = Ward::where('district_code', $districtCode)->pluck('name', 'code');
         return response()->json($wards);
     }
@@ -69,7 +68,6 @@ class OrderController extends Controller
             session()->forget('totalAmount');
             session(['totalAmount' => $currentTotalAmount]);
             return response()->json(['success' => false, 'message' => 'Voucher không hợp lệ.']);
-
         }
 
         // Kiểm tra nếu voucher đã được sử dụng bởi tài khoản này chưa
@@ -79,14 +77,12 @@ class OrderController extends Controller
 
         if ($usedVoucher) {
             return response()->json(['success' => false, 'message' => 'Bạn đã sử dụng voucher này rồi.']);
-
         }
 
         // Kiểm tra nếu không có chi tiết giỏ hàng nào
         if ($cartDetails->isEmpty()) {
             session(['totalAmount' => $currentTotalAmount]);
             return response()->json(['success' => false, 'message' => 'Giỏ hàng không có sản phẩm.']);
-
         }
 
         $isValidForCart = false;
@@ -109,7 +105,6 @@ class OrderController extends Controller
             session()->forget('totalAmount');
             session(['totalAmount' => $currentTotalAmount]);
             return response()->json(['success' => false, 'message' => 'Voucher không áp dụng cho sản phẩm trong giỏ hàng.']);
-
         }
 
         // Lưu voucher vào session
@@ -135,7 +130,6 @@ class OrderController extends Controller
             'new_total' => $totalAmount,
         ]);
     }
-
     protected function calculateTotal($cartDetails, $voucher)
     {
         $totalPriceWithVoucher = 0;

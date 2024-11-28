@@ -60,6 +60,7 @@ Route::prefix('smember')
         Route::get('/order/show/{id}', 'showDetailOrder')->name('order.showDetailOrder');
     });
 
+
 // CONTACT
 Route::prefix('contact')
     ->controller(ContactFormController::class)
@@ -124,6 +125,8 @@ Route::group([
                 ->name('chat.create');
             Route::get('/{roomId}/{receiverId}', [ChatController::class, 'showChatRoom'])
                 ->name('chat.room');
+            Route::post('/outChat/{roomid}', [ChatController::class, 'outChat'])
+            ->name('outChat');
         });
 
     Route::post('/messages/send', [ChatController::class, 'sendMessage'])

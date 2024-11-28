@@ -78,9 +78,10 @@ class CartController extends Controller
         } else {
             $product = Product::find($productId);
 
-            if ($product->variants()->stock < $quantity) {
-                return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
-            }
+            // if ($product->variants()->stock < $quantity) {
+            //     return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
+            // }
+
 
             $cartDetail = CartDetail::where('cart_id', $cart->id)
                 ->where('product_id', $productId)
