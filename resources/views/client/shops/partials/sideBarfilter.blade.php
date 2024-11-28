@@ -51,13 +51,6 @@
 
                   </div>
               </div>
-
-
-
-
-
-
-
           </div>
 
           <!--Price Widget -->

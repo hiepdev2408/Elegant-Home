@@ -35,6 +35,7 @@ class ProductController extends Controller
 
     public function shopFilter(Request $request, $category_id = null)
     {
+        $totalCart = getCartItemCount();
         $categories = Category::with('children')->whereNull('parent_id')->get();
 
         $productnew = Product::query()->latest('id')->take(3)->get();

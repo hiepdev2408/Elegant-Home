@@ -35,6 +35,7 @@ class CheckoutController extends Controller
             }
 
             DB::transaction(function () use ($cart, $request, $user) {
+
                 $order = Order::query()->create([
                     'user_id' => $user->id,
                     'user_name' => $request->user_name,

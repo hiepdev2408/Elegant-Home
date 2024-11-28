@@ -173,7 +173,7 @@
                                     </div>
                                     <!-- Buttons Box -->
                                     <div class="buttons-box">
-                                        <a href="{{ route('order') }}" class="theme-btn proceed-btn">
+                                        <a href="{{ route('index.Order') }}" class="theme-btn proceed-btn">
                                             Proceed To Checkout
                                         </a>
                                     </div>
