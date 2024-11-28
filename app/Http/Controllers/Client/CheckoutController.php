@@ -9,6 +9,8 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\Variant;
+use App\Models\Vouchers;
+use App\Models\UserVoucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -64,20 +66,39 @@ class CheckoutController extends Controller
                     }
                     $cartDetails->delete();
                 }
+
+                $voucherCode = session( 'voucher_code' );
+                if ($voucherCode) {
+                    $voucher = Vouchers::where('code', $voucherCode)->first();
+                    if ($voucher) {
+                        // Lưu voucher vào database
+                        UserVoucher::create( [
+                            'user_id' => auth()->id(),
+                            'voucher_id' => $voucher->id,
+                        ] );
+
+                        // Tăng số lượt sử dụng của voucher
+                        $voucher->increment( 'used_count' );
+                    }
+                }
+
+
                 $cart->delete();
 
-                session()->forget(['voucher_code', 'discount_amount', 'totalAmount']);
-            }, 1);
+                session()->forget( [ 'voucher_code', 'discount_amount', 'totalAmount' ] );
+            }
+            , 1 );
 
-            return redirect()->route('defaultView')->with('success', 'Đơn hàng của bạn đã được đặt thành công!');
-        } catch (\Exception $exception) {
-            return back()->with('error', 'Đã xảy ra lỗi khi đặt hàng: ' . $exception->getMessage());
+            return redirect()->route( 'defaultView' )->with( 'success', 'Đơn hàng của bạn đã được đặt thành công!' );
+        } catch ( \Exception $exception ) {
+            Log::error( $exception->getMessage() );
+
+            return back()->with( 'error', 'Có lỗi xảy ra, vui lòng thử lại.' );
         }
     }
 
-    public function defaultView()
-    {
+    public function defaultView() {
         $totalCart = getCartItemCount();
-        return view('client.order.checkout.default', compact('totalCart'));
+        return view( 'client.payment_method.default', compact( 'totalCart' ) );
     }
 }

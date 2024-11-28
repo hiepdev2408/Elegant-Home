@@ -220,4 +220,33 @@
             });
         });
     </script>
+     <!-- Thêm jQuery -->
+
+     <script>
+     $(document).ready(function() {
+         $('#voucherForm').on('submit', function(event) {
+             event.preventDefault(); // Ngăn chặn reload trang
+
+             $.ajax({
+                 url: '{{ route("order.applyVoucher") }}',
+                 method: 'POST',
+                 data: $(this).serialize(),
+                 success: function(response) {
+                    if (response.success) {
+                    $('#voucherMessage').html(`
+                    <p class="alert alert-success">${response.message}</p>`);
+                    // Cập nhật tổng giá trị
+                    let newTotal = response.new_total; // Tổng mới từ phản hồi
+                    $('#totalAmount').text(newTotal.toLocaleString('vi-VN') + ' VNĐ');
+                } else {
+                    $('#voucherMessage').html(`<p class="alert alert-danger">${response.message}</p>`);
+                }
+            },
+                 error: function(xhr) {
+                     $('#voucherMessage').html(`<p class="alert alert-danger">Đã có lỗi xảy ra! Vui lòng thử lại.</p>`);
+                 }
+             });
+         });
+     });
+     </script>
 @endsection
