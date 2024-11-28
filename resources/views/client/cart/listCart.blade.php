@@ -64,7 +64,7 @@
                                                         <td class="quantity-box">
                                                             <form action="{{ route('updateCartQuantity') }}" method="post">
                                                                 @csrf
-                                                                @method('PATCH')
+                                                                @method('PUT')
                                                                 <div class="item-quantity">
                                                                     <input class="qty-spinner" type="text"
                                                                         value="{{ $cart->quantity }}" name="quantity"
@@ -173,7 +173,7 @@
                                     </div>
                                     <!-- Buttons Box -->
                                     <div class="buttons-box">
-                                        <a href="{{ route('index.Order') }}" class="theme-btn proceed-btn">
+                                        <a href="{{ route('order') }}" class="theme-btn proceed-btn">
                                             Proceed To Checkout
                                         </a>
                                     </div>
