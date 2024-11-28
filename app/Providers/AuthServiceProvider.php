@@ -29,7 +29,7 @@ class AuthServiceProvider extends ServiceProvider
             // $permissionName: Đại diện cho tên quyền cần kiểm tra
 
             // Nếu người dùng có vai trò admin, cho phép tất cả quyền
-            if ($user->role->name === 'Admin') {
+            if ($user->role->name === 'Administrator') {
                 return true;
             }
 

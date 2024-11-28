@@ -103,42 +103,45 @@
 
                         </div>
 
-<<<<<<< HEAD
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input type="password" name="password" value="" placeholder="Create password">
-                            </div>
-                            <div class="form-group row container-fluid">
-                                <div class="check-box col-sm-6 ">
-                                    <input type="checkbox" name="remember-password" id="type-2">
-                                    <label for="type-2">Remember Me?</label>
-                                </div>
-                                <div class="col-sm-6">
+                        <div class="mb-5 text-center">
+                            <label for="register" class="form-label">Bạn chưa có tài khoản?</label>
+                            <a href="{{ route('auth.register') }}">Register</a>
+                        </div>
 
-                                    <label for="type-2"><a href="{{route('password.request')}}">Quên mật khẩu</a></label>
-                                </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" name="password" value="" placeholder="Create password">
+                        </div>
+                        <div class="form-group row container-fluid">
+                            <div class="check-box col-sm-6 ">
+                                <input type="checkbox" name="remember-password" id="type-2">
+                                <label for="type-2">Remember Me?</label>
                             </div>
+                            <div class="col-sm-6">
 
-                            <div class="form-group">
-                                <button type="submit" class="theme-btn btn-style-one">
-                                    Login here
-                                </button>
+                                <label for="type-2"><a href="{{ route('password.request') }}">Quên mật khẩu</a></label>
                             </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="theme-btn btn-style-one">
+                                Login here
+                            </button>
+                        </div>
                         </form>
                         <div class="form-group">
                             <label for="type-2">Bạn chưa có tài khoản ?</label>
 
                             <button type="submit" class="theme-btn btn-style-one">
-                               <a href="{{route('register')}}">Register</a>
+                                <a href="{{ route('register') }}">Register</a>
                             </button>
-=======
-                        <div class="mb-5 text-center">
-                            <label for="register" class="form-label">Bạn chưa có tài khoản?</label>
-                            <a href="{{ route('auth.register') }}">Register</a>
+                            <div class="mb-5 text-center">
+                                <label for="register" class="form-label">Bạn chưa có tài khoản?</label>
+                                <a href="{{ route('auth.register') }}">Register</a>
+                            </div>
+
                         </div>
->>>>>>> fb11c8b095388d6e51c66ca83d91c9e5d5da6681
                     </div>
                 </div>
             </div>
-        </div>
-    @endsection
+        @endsection

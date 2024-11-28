@@ -31,10 +31,10 @@
                                 <div class="inner-column">
                                     <div class="carousel-outer">
                                         <!-- Swiper -->
-
                                         <div class="swiper-container content-carousel">
                                             <div class="swiper-wrapper">
                                                 @if ($product->galleries->isNotEmpty())
+                                                    <!-- Hiển thị các hình ảnh từ galleries -->
                                                     @foreach ($product->galleries as $gallery)
                                                         @if ($gallery->img_path)
                                                             <div class="swiper-slide">
@@ -49,6 +49,7 @@
                                                         @endif
                                                     @endforeach
                                                 @else
+                                                    <!-- Hiển thị hình ảnh từ img_thumbnail nếu không có galleries -->
                                                     <div class="swiper-slide">
                                                         <figure class="image">
                                                             <a href="{{ Storage::url($product->img_thumbnail) }}"
@@ -61,21 +62,35 @@
                                                 @endif
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="swiper-container thumbs-carousel">
-                                        <div class="swiper-wrapper">
-                                            @foreach ($product->galleries as $gallery)
-                                                @if ($gallery->img_path)
+                                        <!-- Thumbnail Carousel -->
+                                        <div class="swiper-container thumbs-carousel">
+                                            <div class="swiper-wrapper">
+                                                @if ($product->galleries->isNotEmpty())
+                                                    <!-- Hiển thị các thumbnail từ galleries -->
+                                                    @foreach ($product->galleries as $gallery)
+                                                        @if ($gallery->img_path)
+                                                            <div class="swiper-slide mb-5">
+                                                                <figure class="thumb">
+                                                                    <img src="{{ Storage::url($gallery->img_path) }}"
+                                                                        style="height: 100px" alt="Thumbnail sản phẩm">
+                                                                </figure>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    <!-- Hiển thị thumbnail từ img_thumbnail nếu không có galleries -->
                                                     <div class="swiper-slide mb-5">
-                                                        <figure class="thumb"><img
-                                                                src="{{ Storage::url($gallery->img_path) }}"
-                                                                style="height: 100px" alt=""></figure>
+                                                        <figure class="thumb">
+                                                            <img src="{{ Storage::url($product->img_thumbnail) }}"
+                                                                style="height: 100px" alt="Thumbnail sản phẩm">
+                                                        </figure>
                                                     </div>
                                                 @endif
-                                            @endforeach
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                             <!-- Content Column -->
@@ -139,7 +154,7 @@
                                                             <option value="">Chọn biến thể</option>
                                                             @foreach ($values as $value)
                                                                 <option value="{{ $value['id'] }}">
-                                                                    {{ Str::limit($value['name'], 15) }}
+                                                                    {{ Str::limit($value['name'], 30) }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -673,4 +688,37 @@
             });
         });
     </script>
+@endsection
+@section('style')
+    <style>
+        .swiper-container {
+            width: 100%;
+            /* Đảm bảo container chiếm đầy đủ chiều rộng */
+            overflow: hidden;
+        }
+
+        .swiper-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            /* Cho phép các phần tử nằm trong dòng mới nếu không đủ không gian */
+            gap: 10px;
+            /* Tạo khoảng cách giữa các ảnh */
+            justify-content: center;
+            /* Căn giữa các ảnh */
+        }
+
+        .swiper-slide {
+            flex: 0 1 calc(25% - 10px);
+            /* 4 ảnh mỗi dòng (25% mỗi ảnh trừ khoảng cách) */
+            box-sizing: border-box;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            /* Đảm bảo ảnh vừa khung */
+            height: auto;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+    </style>
 @endsection

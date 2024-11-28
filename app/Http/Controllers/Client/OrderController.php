@@ -27,8 +27,7 @@ class OrderController extends Controller
         $cartDetail = CartDetail::where('cart_id', $cart->id)->get();
         $totalAmount = $cartDetail->sum('total_amount');
 
-
-        return view('client.cart.order', compact('user', 'cart', 'cartDetail', 'totalAmount', 'totalCart', 'province'));
+        return view('client.order.info', compact('user', 'cart', 'cartDetail', 'totalAmount', 'province'));
     }
     public function getDistrictsByProvince($provinceCode)
     {
@@ -57,14 +56,11 @@ class OrderController extends Controller
             return response()->json(['success' => false, 'message' => 'Giỏ hàng không tồn tại.']);
         }
 
-        // Lấy chi tiết giỏ hàng
         $cartDetails = CartDetail::where('cart_id', $cart->id)->get();
 
-        // Tính giá trị tổng ban đầu
         $currentTotalAmount = $this->calculateTotal($cartDetails, null);
         session(['original_total_amount' => $currentTotalAmount]);
 
-        // Lấy voucher từ cơ sở dữ liệu
         $voucher = Vouchers::where('code', $request->voucher_code)->first();
 
         // Kiểm tra tính hợp lệ của voucher

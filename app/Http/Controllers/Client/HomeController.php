@@ -9,8 +9,6 @@ use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Blog;
-
-
 use App\Models\CartDetail;
 use App\Models\Category;
 use App\Models\Comment;
@@ -56,7 +54,6 @@ class HomeController extends Controller
             ->get();
 
         return view('client.home', compact('categories', 'products', 'blogs'));
-
     }
 
 
@@ -133,7 +130,6 @@ class HomeController extends Controller
         return back();
     }
 
-
     public function compose(View $view)
     {
         $userId = Auth::id();
@@ -150,5 +146,4 @@ class HomeController extends Controller
             'totalCart' => $totalCart
         ]);
     }
-
 }

@@ -3,23 +3,12 @@
     Order
 @endsection
 @section('content')
-    <section class="page-title">
-        <div class="auto-container">
-            <h2>Shop Page</h2>
-            <ul class="bread-crumb clearfix">
-                <li><a href="index.html">Home</a></li>
-                <li>Pages</li>
-                <li>Checkout</li>
-            </ul>
-        </div>
-    </section>
-    <!-- Checkout Section -->
     <section class="checkout-section">
         <div class="auto-container my-5">
             <div class="row">
                 <!-- Form Column -->
                 <div class="form-column col-lg-8 col-md-12 col-sm-12">
-                    <form action="{{ route('checkout') }}" method="post" class="p-4 border rounded shadow">
+                    <form action="{{ route('vnpay') }}" method="post" class="p-4 border rounded shadow">
                         @csrf
                         <h4 class="mb-4">Thông tin cá nhân</h4>
                         <!-- Shipping Form -->
@@ -55,8 +44,13 @@
                             <!-- Row 3: Địa chỉ chi tiết -->
                             <div class="col-12 mt-3">
                                 <label for="user_address_all" class="form-label">Địa chỉ chi tiết</label>
-                                @if (Auth::check() && Auth::user()->ward && Auth::user()->district && Auth::user()->province &&
-                                     Auth::user()->ward->name && Auth::user()->district->name && Auth::user()->province->name)
+                                @if (Auth::check() &&
+                                        Auth::user()->ward &&
+                                        Auth::user()->district &&
+                                        Auth::user()->province &&
+                                        Auth::user()->ward->name &&
+                                        Auth::user()->district->name &&
+                                        Auth::user()->province->name)
                                     <input type="text" name="user_address_all" class="form-control"
                                         value="{{ Auth::user()->ward->name . ', ' . Auth::user()->district->name . ', ' . Auth::user()->province->name }}"
                                         required>
@@ -87,8 +81,9 @@
                                     <label class="form-check-label" for="paymentPaypal">Thanh toán PayPal</label>
                                 </div>
                                 <div class="form-check mt-2">
-                                    <input class="form-check-input" type="radio" name="paymentMethod" id="paymentVnp">
-                                    <label class="form-check-label" for="paymentVnp">Thanh toán VNP</label>
+                                    <input class="form-check-input" type="radio" name="vnpay" id="paymentVnp"
+                                        value="NCB">
+                                    <label class="form-check-label" for="paymentVnp">Thanh toán VNPAY</label>
                                 </div>
                                 <div class="form-check mt-2">
                                     <input class="form-check-input" type="radio" name="paymentMethod" id="paymentQr">
@@ -104,7 +99,8 @@
                             <input type="hidden" name="is_ship_user_same_user" value="0">
                         </div>
                         <input type="hidden" name="total_amount" value="{{ session('totalAmount', $totalAmount) }}">
-                        <button type="submit" class="btn btn-primary mt-4 w-100">Xác nhận thanh toán</button>
+                        <button type="submit" name="redirect" class="btn btn-primary mt-4 w-100">Xác nhận thanh
+                            toán</button>
                     </form>
                 </div>
 
@@ -112,9 +108,6 @@
                 <div class="order-column col-lg-4 col-md-12 col-sm-12 mt-4 mt-lg-0">
                     <div class="p-4 border rounded shadow">
                         <h4 class="mb-4">Tóm tắt đơn hàng</h4>
-                        
-                       
-                
                         <!-- Order Box -->
                         <div class="order-box">
                             <ul class="list-group mb-3">
@@ -128,34 +121,32 @@
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between fw-bold">
                                     <span>Tổng cộng</span>
-                                    <span id="totalAmount">{{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }} VNĐ</span>
+                                    <span
+                                        id="totalAmount">{{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }}
+                                        VNĐ</span>
                                 </li>
                             </ul>
-                
+
                             <!-- Voucher Box -->
                             <form id="voucherForm" class="d-flex">
                                 @csrf
-                                
-                                <input type="text" name="voucher_code" class="form-control me-2 form-control-sm " placeholder="Nhập mã giảm giá">
+
+                                <input type="text" name="voucher_code" class="form-control me-2 form-control-sm "
+                                    placeholder="Nhập mã giảm giá">
                                 <button type="submit" class="btn btn-success btn-sm col-3">Áp dụng</button>
                             </form>
                             <div id="voucherMessage" class="mt-2"></div>
                         </div>
                     </div>
                 </div>
-                
-               
             </div>
         </div>
 
     </section>
     <!-- End Checkout Section -->
-    
-
 @endsection
 
 @section('script-libs')
-
     <script>
         function toggleReplyForm(commentId) {
             const replyForm = document.getElementById(`replyForm-${commentId}`);
@@ -229,32 +220,36 @@
             });
         });
     </script>
-     <!-- Thêm jQuery -->
-     
-     <script>
-     $(document).ready(function() {
-         $('#voucherForm').on('submit', function(event) {
-             event.preventDefault(); // Ngăn chặn reload trang
-     
-             $.ajax({
-                 url: '{{ route("order.applyVoucher") }}',
-                 method: 'POST',
-                 data: $(this).serialize(),
-                 success: function(response) {
-                    if (response.success) {
-                    $('#voucherMessage').html(`<p class="alert alert-success">${response.message}</p>`);
-                    // Cập nhật tổng giá trị
-                    let newTotal = response.new_total; // Tổng mới từ phản hồi
-                    $('#totalAmount').text(newTotal.toLocaleString('vi-VN') + ' VNĐ');
-                } else {
-                    $('#voucherMessage').html(`<p class="alert alert-danger">${response.message}</p>`);
-                }
-            },
-                 error: function(xhr) {
-                     $('#voucherMessage').html(`<p class="alert alert-danger">Đã có lỗi xảy ra! Vui lòng thử lại.</p>`);
-                 }
-             });
-         });
-     });
-     </script>
+    <!-- Thêm jQuery -->
+
+    <script>
+        $(document).ready(function() {
+            $('#voucherForm').on('submit', function(event) {
+                event.preventDefault(); // Ngăn chặn reload trang
+
+                $.ajax({
+                    url: '{{ route('order.applyVoucher') }}',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            $('#voucherMessage').html(
+                                `<p class="alert alert-success">${response.message}</p>`);
+                            // Cập nhật tổng giá trị
+                            let newTotal = response.new_total; // Tổng mới từ phản hồi
+                            $('#totalAmount').text(newTotal.toLocaleString('vi-VN') + ' VNĐ');
+                        } else {
+                            $('#voucherMessage').html(
+                                `<p class="alert alert-danger">${response.message}</p>`);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#voucherMessage').html(
+                            `<p class="alert alert-danger">Đã có lỗi xảy ra! Vui lòng thử lại.</p>`
+                        );
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

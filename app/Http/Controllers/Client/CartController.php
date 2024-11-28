@@ -23,7 +23,6 @@ class CartController extends Controller
     public function addToCart(Request $request)
     {
         $user = Auth::user();
-
         $cart = Cart::firstOrCreate(['user_id' => $user->id]);
 
         $productId = $request->input('product_id');
@@ -55,7 +54,6 @@ class CartController extends Controller
                 return back()->with('error', 'Sản phẩm không còn hàng đó vui lòng chọn sản phẩm khác!');
             }
 
-
             $cartDetail = CartDetail::where('cart_id', $cart->id)
                 ->where('variant_id', $matchingVariant->id)
                 ->first();
@@ -63,11 +61,9 @@ class CartController extends Controller
             $totalAmountVariant = $matchingVariant->price_modifier;
 
             if ($cartDetail) {
-
-                if ($matchingVariant->stock < $cartDetail->quantity + $quantity) {
+                if ($matchingVariant->stock < $quantity) {
                     return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
                 }
-
                 $cartDetail->quantity += $quantity;
                 $cartDetail->total_amount += $totalAmountVariant * $quantity;
                 $cartDetail->save();
@@ -80,7 +76,6 @@ class CartController extends Controller
                 ]);
             }
         } else {
-
             $product = Product::find($productId);
 
             // if ($product->variants()->stock < $quantity) {
@@ -109,34 +104,52 @@ class CartController extends Controller
         return back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
 
-
-
-    public function listCart()
+    public function cart()
     {
-        $totalCart = getCartItemCount();
+        $cart = Cart::where('user_id', Auth::user()->id)->first();
+        $carts = $cart ? $cart->cartDetails()->with(['product', 'variant'])->get() : [];
 
         $cart = Cart::where('user_id', Auth::user()->id)->first();
         $carts = $cart ? $cart->cartDetails()->with(['product', 'variant'])->get() : [];
 
-        return view('client.cart.listCart', compact('carts', 'totalCart'));
+        return view('client.cart.listCart', compact('carts'));
     }
 
-    public function updateCartQuantity(Request $request)
-    {
+    // public function updateCartQuantity(Request $request)
+    // {
 
-        // Lấy thông tin giỏ hàng
-        $cartDetail = CartDetail::findOrFail($request->cart_id);
+    //     // Lấy thông tin giỏ hàng
+    //     $cartDetail = CartDetail::findOrFail($request->cart_id);
 
-        // Cập nhật số lượng và tổng tiền
-        $cartDetail->quantity = $request->quantity;
-        $cartDetail->total_amount = $cartDetail->quantity * $cartDetail->variant->price_modifier;
-        $cartDetail->save();
+    //     // Cập nhật số lượng và tổng tiền
+    //     $cartDetail->quantity = $request->quantity;
+    //     $cartDetail->total_amount = $cartDetail->quantity * $cartDetail->variant->price_modifier;
+    //     $cartDetail->save();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Cập nhật số lượng thành công!',
-            'subTotal' => number_format($cartDetail->total_amount, 0, ',', '.'),
-            'quantity' => $cartDetail->quantity,
-        ]);
-    }
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Cập nhật số lượng thành công!',
+    //         'subTotal' => number_format($cartDetail->total_amount, 0, ',', '.'),
+    //         'quantity' => $cartDetail->quantity,
+    //     ]);
+    // }
+
+    // public function updateCartQuantity(Request $request)
+    // {
+
+    //     // Lấy thông tin giỏ hàng
+    //     $cartDetail = CartDetail::findOrFail($request->cart_id);
+
+    //     // Cập nhật số lượng và tổng tiền
+    //     $cartDetail->quantity = $request->quantity;
+    //     $cartDetail->total_amount = $cartDetail->quantity * $cartDetail->variant->price_modifier;
+    //     $cartDetail->save();
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Cập nhật số lượng thành công!',
+    //         'subTotal' => number_format($cartDetail->total_amount, 0, ',', '.'),
+    //         'quantity' => $cartDetail->quantity,
+    //     ]);
+    // }
 }

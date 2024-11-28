@@ -8,6 +8,7 @@ use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ContactFormController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\OrderController;
+use App\Http\Controllers\Client\PaymentController;
 use App\Http\Controllers\Client\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -84,23 +85,35 @@ Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
 
 //cart
+Route::prefix('cart')
+    ->middleware('auth')
+    ->controller(CartController::class)
+    ->group(function () {
+        Route::post('addToCart', 'addToCart')->name('addToCart');
+        Route::get('/', 'cart')->name('cart');
+        Route::put('update', 'updateCartQuantity')->name('updateCartQuantity');
+    });
+
+//ORDER
+Route::prefix('order')
+    ->middleware('auth')
+    ->controller(OrderController::class)
+    ->group(function () {
+        Route::get('/info', 'index')->name('order');
+        Route::post('order/apply-voucher', 'applyVoucher')->name('order.applyVoucher');
+        // Checkout
+        // Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
+        Route::post('payment', [PaymentController::class, 'vnpay'])->name('vnpay');
+        Route::get('/checkout/thank', [PaymentController::class, 'thank'])->name('thank');
+        Route::get('defaultView', [CheckoutController::class, 'defaultView'])->name('defaultView');
+    });
+
 Route::group([
     'middleware' => 'auth',
 ], function () {
-    Route::post('addToCart', [CartController::class, 'addToCart'])->name('addToCart');
-    Route::get('listCart', [CartController::class, 'listCart'])->name('listCart');
-    Route::put('cart/update', [CartController::class, 'updateCartQuantity'])->name('updateCartQuantity');
-    Route::post('cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.applyVoucher');
-    Route::put('cart/update', [CartController::class, 'updateCartQuantity'])->name('updateCartQuantity');
-    Route::get('order', [OrderController::class, 'index'])->name('index.Order');
-    Route::post('order/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.applyVoucher');
     // Web routes
     Route::get('/districts/{provinceCode}', [OrderController::class, 'getDistrictsByProvince']);
     Route::get('/wards/{districtCode}', [OrderController::class, 'getWardsByDistrict']);
-
-    // Checkout
-    Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
-    Route::get('defaultView', [CheckoutController::class, 'defaultView'])->name('defaultView');
 });
 
 Route::group([

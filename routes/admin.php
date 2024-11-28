@@ -16,7 +16,7 @@ use App\Http\Controllers\Admin\AttributeValueController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
-
+use App\Http\Controllers\Admin\TopSellController;
 use App\Http\Controllers\ChatController;
 
 Route::prefix('admin')
@@ -198,5 +198,6 @@ Route::prefix('admin')
             ->group(function () {
             Route::get('/', [OrderController::class, 'index'])->name('index');
         });
-
+        //Top sell
+        Route::get('top_sell', [TopSellController::class, 'index'])->name('top_sell.index');
     });

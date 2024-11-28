@@ -69,7 +69,6 @@ class PermissionController extends Controller
     public function updateGant(Request $request)
     {
         // dd($request->all());
-
         if (!empty($request->permissions)) {
             foreach ($request->permissions as $roleId => $permissionIds) {
                 $role = Role::find($roleId);
