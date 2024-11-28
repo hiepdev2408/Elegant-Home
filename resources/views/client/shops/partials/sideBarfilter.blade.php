@@ -81,8 +81,7 @@
                   <div class="mb-3">
                       @foreach ($categories as $category)
                           <div class="mb-3">
-
-                              @if ($category->children->isNotEmpty())
+                              
                                   <select id="subcategorySelect" onchange="location = this.value;"
                                       style="font-size: 16px; width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
                                       <option value="{{ route('shop.categoryProduct', $category->id) }}">
@@ -92,7 +91,7 @@
                                               {{ $child->name }}</option>
                                       @endforeach
                                   </select>
-                              @endif
+                              
                           </div>
                       @endforeach
 
