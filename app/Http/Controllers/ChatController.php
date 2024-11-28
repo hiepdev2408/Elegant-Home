@@ -29,18 +29,15 @@ class ChatController extends Controller
     //hiển thị chat trang admin
     public function showChatRoom($roomId, $receiverId)
     {
-        // $room = Room::findOrFail($roomId);
-
-        // // Cập nhật trạng thái phòng chat khi người dùng tham gia
-        // if (auth()->user()->role !== 'admin' && $room->user_id === auth()->id()) {
-        //     $room->update(['is_active' => true]);
-
-        //     // Phát event tới admin
+        $room = Room::findOrFail($roomId);
+        $messages = Message::where('room_id', $roomId)->get();
+        $room->update([
+            'is_active' => true
+        ]);
 
 
-        // }
 
-        return view('client.chat.room', compact('roomId', 'receiverId'));
+        return view('client.chat.room', compact('roomId', 'receiverId', 'messages'));
     }
 
     //giửi tin nhắn lưu vào cơ sở dữ liệu
@@ -57,5 +54,12 @@ class ChatController extends Controller
         broadcast(new MessageSent($message, roomId: $request->room_id))->toOthers();
 
         return response()->json(['message' => $message]);
+    }
+    public function outChat($roomId){
+        $room = Room::findOrFail($roomId);
+        $room->update([
+            'is_active' => false
+        ]);
+        return redirect()->route('home');
     }
 }

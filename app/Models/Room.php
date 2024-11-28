@@ -10,10 +10,13 @@ class Room extends Model
 
     use HasFactory;
 
-    protected $fillable = ['user_id', 'is_active','is_joined'];
+    protected $fillable = ['user_id', 'is_active'];
 
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }

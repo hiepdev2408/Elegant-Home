@@ -169,7 +169,7 @@ Route::prefix('admin')
 
         // Chatrealtime
 
-        Route::get('/admin/chat-rooms', [ChatController::class, 'listChatRooms'])->name('chat');
+        Route::get('/chat-rooms', [ChatController::class, 'listChatRooms'])->name('chat');
 
 
 
