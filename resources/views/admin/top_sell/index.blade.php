@@ -28,7 +28,7 @@ Danh sách các sản phẩm bán chạy nhất
             <button type="submit" class="btn btn-primary">Xem</button>
         </div>
     </form>
-    <h2>Kết Quả cho
+    <h2>Sản phẩm bán chạy nhất
         @if($type == 'day')
 
         ngày {{ \Carbon\Carbon::parse($date)->format('d-m-Y')}}
