@@ -21,6 +21,7 @@ class OrderController extends Controller
     public function index()
     {
         $province = Province::query()->pluck('name', 'code')->all();
+        $totalCart = getCartItemCount();
         $user = Auth::user();
         $cart = Cart::where('user_id', $user->id)->first();
         $cartDetail = CartDetail::where('cart_id', $cart->id)->get();
@@ -30,12 +31,14 @@ class OrderController extends Controller
     }
     public function getDistrictsByProvince($provinceCode)
     {
+
         $districts = District::where('province_code', $provinceCode)->pluck('name', 'code');
         return response()->json($districts);
     }
 
     public function getWardsByDistrict($districtCode)
     {
+
         $wards = Ward::where('district_code', $districtCode)->pluck('name', 'code');
         return response()->json($wards);
     }
@@ -54,14 +57,11 @@ class OrderController extends Controller
             return response()->json(['success' => false, 'message' => 'Giỏ hàng không tồn tại.']);
         }
 
-        // Lấy chi tiết giỏ hàng
         $cartDetails = CartDetail::where('cart_id', $cart->id)->get();
 
-        // Tính giá trị tổng ban đầu
         $currentTotalAmount = $this->calculateTotal($cartDetails, null);
         session(['original_total_amount' => $currentTotalAmount]);
 
-        // Lấy voucher từ cơ sở dữ liệu
         $voucher = Vouchers::where('code', $request->voucher_code)->first();
 
         // Kiểm tra tính hợp lệ của voucher
@@ -69,6 +69,7 @@ class OrderController extends Controller
             session()->forget('totalAmount');
             session(['totalAmount' => $currentTotalAmount]);
             return response()->json(['success' => false, 'message' => 'Voucher không hợp lệ.']);
+
         }
 
         // Kiểm tra nếu voucher đã được sử dụng bởi tài khoản này chưa
@@ -78,12 +79,14 @@ class OrderController extends Controller
 
         if ($usedVoucher) {
             return response()->json(['success' => false, 'message' => 'Bạn đã sử dụng voucher này rồi.']);
+
         }
 
         // Kiểm tra nếu không có chi tiết giỏ hàng nào
         if ($cartDetails->isEmpty()) {
             session(['totalAmount' => $currentTotalAmount]);
             return response()->json(['success' => false, 'message' => 'Giỏ hàng không có sản phẩm.']);
+
         }
 
         $isValidForCart = false;
@@ -106,6 +109,7 @@ class OrderController extends Controller
             session()->forget('totalAmount');
             session(['totalAmount' => $currentTotalAmount]);
             return response()->json(['success' => false, 'message' => 'Voucher không áp dụng cho sản phẩm trong giỏ hàng.']);
+
         }
 
         // Lưu voucher vào session
@@ -131,6 +135,7 @@ class OrderController extends Controller
             'new_total' => $totalAmount,
         ]);
     }
+
     protected function calculateTotal($cartDetails, $voucher)
     {
         $totalPriceWithVoucher = 0;

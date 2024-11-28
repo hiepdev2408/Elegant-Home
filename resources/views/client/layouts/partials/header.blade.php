@@ -54,11 +54,10 @@
                     @else
                         <a class="user-box flaticon-user-3" href="{{ route('auth.login') }}"></a>
                     @endif
-
-                    <!-- Like Box -->
                     <div class="like-box">
                         <a class="user-box flaticon-heart" href="{{ route('show.favorite') }}"></a>
                         <span class="total-like">{{ $favouritecount }}</span>
+
                     </div>
 
                 </div>

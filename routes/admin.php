@@ -31,10 +31,12 @@ Route::prefix('admin')
         Route::prefix('account')
             ->as('account.')
             ->group(function () {
-                Route::get('listAdmin', [UserController::class, 'listAdmin'])->name('listAdmin');
-                Route::get('listStaff', [UserController::class, 'listStaff'])->name('listStaff');
-                Route::get('listCustomer', [UserController::class, 'listCustomer'])->name('listCustomer');
-            });
+
+            Route::get('listAdmin', [UserController::class, 'listAdmin'])->name('listAdmin');
+            Route::get('listStaff', [UserController::class, 'listStaff'])->name('listStaff');
+            Route::get('listCustomer', [UserController::class, 'listCustomer'])->name('listCustomer');
+        });
+
 
         // Permission
         Route::prefix('permissions')
@@ -167,7 +169,10 @@ Route::prefix('admin')
         });
 
         // Chatrealtime
-        Route::get('/chat', [ChatController::class, 'listChatRooms'])->name('chat');
+
+        Route::get('/admin/chat-rooms', [ChatController::class, 'listChatRooms'])->name('chat');
+
+
 
         //warehouses
         Route::prefix('warehouses')

@@ -103,10 +103,40 @@
 
                         </div>
 
+<<<<<<< HEAD
                         <div class="mb-5 text-center">
                             <label for="register" class="form-label">Bạn chưa có tài khoản?</label>
                             <a href="{{ route('auth.register') }}">Register</a>
                         </div>
+=======
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" name="password" value="" placeholder="Create password">
+                            </div>
+                            <div class="form-group row container-fluid">
+                                <div class="check-box col-sm-6 ">
+                                    <input type="checkbox" name="remember-password" id="type-2">
+                                    <label for="type-2">Remember Me?</label>
+                                </div>
+                                <div class="col-sm-6">
+
+                                    <label for="type-2"><a href="{{route('password.request')}}">Quên mật khẩu</a></label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="theme-btn btn-style-one">
+                                    Login here
+                                </button>
+                            </div>
+                        </form>
+                        <div class="form-group">
+                            <label for="type-2">Bạn chưa có tài khoản ?</label>
+
+                            <button type="submit" class="theme-btn btn-style-one">
+                               <a href="{{route('register')}}">Register</a>
+                            </button>
+>>>>>>> 16ba6a6e3e7a77c51a760569a7c61fca37128f80
                     </div>
                 </div>
             </div>
