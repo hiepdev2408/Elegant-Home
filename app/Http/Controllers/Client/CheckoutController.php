@@ -34,7 +34,6 @@ class CheckoutController extends Controller
                 }
             }
 
-
             DB::transaction(function () use ($cart, $request, $user) {
                 $order = Order::query()->create([
                     'user_id' => $user->id,
@@ -67,16 +66,17 @@ class CheckoutController extends Controller
                 $cart->delete();
 
                 session()->forget(['voucher_code', 'discount_amount', 'totalAmount']);
-            });
+            }, 1);
 
             return redirect()->route('defaultView')->with('success', 'Đơn hàng của bạn đã được đặt thành công!');
         } catch (\Exception $exception) {
             return back()->with('error', 'Đã xảy ra lỗi khi đặt hàng: ' . $exception->getMessage());
         }
     }
+
     public function defaultView()
     {
         $totalCart = getCartItemCount();
-        return view('client.payment_method.default', compact('totalCart'));
+        return view('client.order.checkout.default', compact('totalCart'));
     }
 }
