@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\AttributeValueController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\TopSellController;
 use App\Http\Controllers\ChatController;
 
 Route::prefix('admin')
@@ -26,7 +27,7 @@ Route::prefix('admin')
         //ĐỌC THÔNG BÁO
         Route::post('/mark-read', [DashboardController::class, 'markRead'])->name('mark-read');
         // Account
-    
+
         Route::prefix('account')
             ->as('account.')
             ->group(function () {
@@ -125,7 +126,7 @@ Route::prefix('admin')
 
             Route::get('listDestroy', [AttributeController::class, 'delete'])->name('delete');
             // Hiển thị danh sách xóa
-    
+
             Route::post('restore/{id}', [AttributeController::class, 'restore'])->name('restore');
             Route::delete('forceDelete/{id}', [AttributeController::class, 'forceDelete'])->name('forceDelete');
         });
@@ -193,5 +194,6 @@ Route::prefix('admin')
             ->group(function () {
             Route::get('/', [OrderController::class, 'index'])->name('index');
         });
-
+        //Top sell
+        Route::get('top_sell', [TopSellController::class, 'index'])->name('top_sell.index');
     });
