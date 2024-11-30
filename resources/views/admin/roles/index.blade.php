@@ -216,15 +216,34 @@
                                                 <td>
                                                     <div class="d-flex">
                                                         @php
-                                                            $permissions = [
-                                                                'products.index' => 'Đọc',
+                                                            $category = [
+                                                                'categories.index' => 'Xem',
+                                                                'categories.create' => 'Thêm',
+                                                                'categories.edit' => 'Sửa',
+                                                            ];
+                                                            $products = [
+                                                                'products.index' => 'Xem',
                                                                 'products.create' => 'Thêm',
                                                                 'products.edit' => 'Sửa',
+                                                            ];
+                                                            $attribute = [
+                                                                'attributes.index' => 'Xem',
+                                                                'attributes.create' => 'Thêm',
+                                                                'attributes.edit' => 'Sửa',
+                                                            ];
+                                                            $attribute_value = [
+                                                                'attribute_values.index' => 'Xem',
+                                                                'attribute_values.create' => 'Thêm',
+                                                                'attribute_values.edit' => 'Sửa',
+                                                            ];
+                                                            $permissions = [
+                                                                'permissions.index' => 'Xem',
+                                                                'permissions.create' => 'Thêm',
+                                                                'permissions.edit' => 'Sửa',
                                                             ];
                                                         @endphp
 
                                                         @foreach ($permissions as $slug => $label)
-                                                            @foreach ($roleProduct as $item)
                                                                 @if ($item->slug == $slug)
                                                                     <div class="form-check me-3 me-lg-5">
                                                                         <input class="form-check-input" id="role_id"
@@ -238,7 +257,7 @@
                                                                         </label>
                                                                     </div>
                                                                 @endif
-                                                            @endforeach
+
                                                         @endforeach
 
                                                     </div>

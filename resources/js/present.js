@@ -21,11 +21,13 @@ window.Echo.join(`chat.${roomId}`)
         console.log("==============joining============");
         console.table(user);
         document.getElementById("user-status").textContent = "Online";
+        document.getElementById("user-status").style.color = "green";
     })
     .leaving((user) => {
         console.log("==============leaving============");
         console.table(user);
         document.getElementById("user-status").textContent = "Offline";
+        document.getElementById("user-status").style.color = "red";
     })
     .listen("MessageSent", (event) => {
         console.log(event.message);
