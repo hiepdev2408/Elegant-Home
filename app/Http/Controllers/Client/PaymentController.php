@@ -17,7 +17,7 @@ class PaymentController extends Controller
         $vnp_TxnRef = rand(1000, 9999);
         $vnp_OrderInfo = 'Thanh toán hóa đơn';
         $vnp_OrderType = 'order_type';
-        $vnp_Amount = $request->input('total_amount') * 100;
+        $vnp_Amount = $request->input('10000') * 100;
         $vnp_Locale = 'vn';
         $vnp_BankCode = $request->input('vnpay');
         $vnp_IpAddr = $request->ip();

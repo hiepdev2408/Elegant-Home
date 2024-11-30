@@ -89,7 +89,7 @@ class CheckoutController extends Controller
             }
             , 1 );
 
-            return redirect()->route( 'defaultView' )->with( 'success', 'Đơn hàng của bạn đã được đặt thành công!' );
+            return redirect()->route( 'thank' )->with( 'success', 'Đơn hàng của bạn đã được đặt thành công!' );
         } catch ( \Exception $exception ) {
             Log::error( $exception->getMessage() );
 
