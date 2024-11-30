@@ -22,12 +22,23 @@ class ChatController extends Controller
     //đi đến phòng chat đang hoạt động
     public function listChatRooms()
     {
-        $rooms = Room::query()->get();
-        // dd($rooms);
+        // Lấy tất cả các phòng chat, sắp xếp theo thời gian gần nhất
+        $rooms = Room::with('user')->orderBy('updated_at', 'desc')->get();
+
+        // Trả về view với danh sách phòng và tin nhắn
         return view('admin.chat.index', compact('rooms'));
     }
-    //hiển thị chat trang admin
-    public function showChatRoom($roomId, $receiverId)
+
+
+
+    public function showChatAdmin($roomId, $receiverId)
+    {
+        $room = Room::findOrFail($roomId);
+        $messages = Message::where('room_id', $roomId)->get();
+        return view('admin.chat.chat', compact('roomId', 'receiverId', 'messages'));
+    }
+    //giửi tin nhắn lưu vào cơ sở dữ liệu
+  public function showChatRoom($roomId, $receiverId)
     {
         $room = Room::findOrFail($roomId);
         $messages = Message::where('room_id', $roomId)->get();
@@ -39,9 +50,6 @@ class ChatController extends Controller
 
         return view('client.chat.room', compact('roomId', 'receiverId', 'messages'));
     }
-
-    //giửi tin nhắn lưu vào cơ sở dữ liệu
-
     public function sendMessage(Request $request)
     {
         $message = Message::create([
@@ -55,7 +63,8 @@ class ChatController extends Controller
 
         return response()->json(['message' => $message]);
     }
-    public function outChat($roomId){
+    public function outChat($roomId)
+    {
         $room = Room::findOrFail($roomId);
         $room->update([
             'is_active' => false
