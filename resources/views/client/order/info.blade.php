@@ -8,7 +8,7 @@
             <div class="row">
                 <!-- Form Column -->
                 <div class="form-column col-lg-8 col-md-12 col-sm-12">
-                    <form action="{{ route('vnpay') }}" method="post" class="p-4 border rounded shadow">
+                    <form action="{{ route('checkout') }}" method="post" class="p-4 border rounded shadow">
                         @csrf
                         <h4 class="mb-4">Thông tin cá nhân</h4>
                         <!-- Shipping Form -->
