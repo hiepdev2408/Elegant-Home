@@ -10,12 +10,12 @@
 
 @section('content')
     <div class="container mt-5">
-        <h3>Active Chat Rooms</h3>
+        <h3>Phòng Chat</h3>
         <ul class="list-group">
             @foreach ($rooms as $room)
                 <li class="list-group-item d-flex justify-content-between align-items-center"
                     data-room-id="{{ $room->id }}">
-                    Room ID: {{ $room->id }} - User ID: {{ $room->user_id }}
+                    Room ID: {{ $room->id }} - Tên khách hàng: {{ $room->user->name }}
                     <span class="badge {{ $room->is_active ? 'bg-success' : 'bg-danger' }}">
                         {{ $room->is_active ? 'Hoạt Động' : 'Không Hoạt Động' }}
                     </span>

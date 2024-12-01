@@ -39,7 +39,13 @@
             <a class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons mdi mdi-order-bool-descending-variant'></i>
                 <div data-i18n="Đơn Hàng">Đơn Hàng</div>
-                <div class="badge bg-danger rounded-pill ms-auto">0</div>
+                <div class="badge bg-danger rounded-pill ms-auto">
+                    @if ($order)
+                        {{ $order }}
+                    @else
+                        0
+                    @endif
+                </div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item @yield('menu-sub-index-order')">
@@ -203,6 +209,12 @@
                     </a>
                 </li>
             </ul>
+        </li>
+        <li class="menu-item @yield('menu-item-contact')">
+            <a href="{{ route('top_sell.index') }}" class="menu-link">
+                <i class='menu-icon tf-icons mdi mdi-card-account-mail-outline'></i>
+                <div data-i18n="Top Bán Chạy">Top Bán Chạy</div>
+            </a>
         </li>
 
         <li class="menu-item @yield('menu-item-contact')">

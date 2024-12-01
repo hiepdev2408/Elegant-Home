@@ -33,7 +33,6 @@
             </div>
         @endif
 
-
         <div class="row">
             <!-- User Sidebar -->
             <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
@@ -251,6 +250,7 @@
                         <div class="card-body">
                             <button type="submit" class="btn btn-primary me-2">Lưu Lại</button>
                             <a href="{{ route('roles.index') }}" class="btn btn-info me-2"> Quay lai</a>
+                            <a href="{{ route('permissions.index') }}" class="btn btn-info me-2"> Quyền Truy Cập</a>
                             <button type="reset" class="btn btn-outline-secondary">Đăt lại</button>
                         </div>
                         <!-- /Notifications -->

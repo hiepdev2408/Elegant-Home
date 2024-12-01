@@ -3,6 +3,16 @@
     Products
 @endsection
 @section('content')
+<section class="page-title">
+    <div class="auto-container">
+        <h2>Shop Page</h2>
+        <ul class="bread-crumb clearfix">
+            <li><a href="index.html">Home</a></li>
+            <li>Pages</li>
+            <li>Shops</li>
+        </ul>
+    </div>
+</section>
     <div class="sidebar-page-container">
         <div class="auto-container">
             <div class="row clearfix">
@@ -43,16 +53,20 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             @endforeach
                             <!-- Shop Item -->
                         </div>
+
+
                         <!-- Styled Pagination -->
                         <div class="styled-pagination text-center">
                             <ul>
                                 @if ($products->onFirstPage())
                                     <li class="next disabled"><span class="fa fa-angle-double-left"></span></li>
+
                                 @else
                                     <li class="next"><a href="{{ $products->previousPageUrl() }}"><span
                                                 class="fa fa-angle-double-left"></span></a></li>
@@ -77,7 +91,7 @@
                         <!-- End Styled Pagination -->
                     </div>
                 </div>
-                @include('client.shops.partials.sideBarfilter')
+                @include('client.shops.partials.sideBarfilter',['categories' => $categories] )
             </div>
         </div>
     </div>

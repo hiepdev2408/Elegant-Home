@@ -3,12 +3,23 @@
     Order
 @endsection
 @section('content')
+    <section class="page-title">
+        <div class="auto-container">
+            <h2>Shop Page</h2>
+            <ul class="bread-crumb clearfix">
+                <li><a href="index.html">Home</a></li>
+                <li>Pages</li>
+                <li>Checkout</li>
+            </ul>
+        </div>
+    </section>
+    <!-- Checkout Section -->
     <section class="checkout-section">
         <div class="auto-container my-5">
             <div class="row">
                 <!-- Form Column -->
                 <div class="form-column col-lg-8 col-md-12 col-sm-12">
-                    <form action="{{ route('vnpay') }}" method="post" class="p-4 border rounded shadow">
+                    <form action="{{ route('checkout') }}" method="post" class="p-4 border rounded shadow">
                         @csrf
                         <h4 class="mb-4">Thông tin cá nhân</h4>
                         <!-- Shipping Form -->
@@ -98,25 +109,14 @@
                             <input type="hidden" name="is_ship_user_same_user" value="0">
                         </div>
                         <input type="hidden" name="total_amount" value="{{ session('totalAmount', $totalAmount) }}">
-                        <button type="submit" name="redirect" class="btn btn-primary mt-4 w-100">Xác nhận thanh
-                            toán</button>
+                        <button type="submit" class="btn btn-primary mt-4 w-100">Xác nhận thanh toán</button>
                     </form>
                 </div>
 
-
+                <!-- Order Column -->
                 <div class="order-column col-lg-4 col-md-12 col-sm-12 mt-4 mt-lg-0">
                     <div class="p-4 border rounded shadow">
                         <h4 class="mb-4">Tóm tắt đơn hàng</h4>
-                        @if (session()->has('error'))
-                            <div class="alert alert-danger fw-bold">
-                                {{ session()->get('error') }}
-                            </div>
-                        @endif
-                        @if (session()->has('success'))
-                            <div class="alert alert-success fw-bold">
-                                {{ session()->get('success') }}
-                            </div>
-                        @endif
                         <!-- Order Box -->
                         <div class="order-box">
                             <ul class="list-group mb-3">
@@ -129,22 +129,18 @@
                                     <span>0 VNĐ</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between fw-bold">
-                                    <span>Tổng cộng</span>
-                                    <span
-                                        id="totalAmount">{{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }}
-                                        VNĐ</span>
+                                    <span>Total</span>
+                                    <span>{{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }} VNĐ</span>
                                 </li>
                             </ul>
 
                             <!-- Voucher Box -->
-                            <form id="voucherForm" class="d-flex">
+                            <form method="post" action="{{ route('order.applyVoucher') }}" class="d-flex">
                                 @csrf
-
-                                <input type="text" name="voucher_code" class="form-control me-2 form-control-sm "
-                                    placeholder="Nhập mã giảm giá">
-                                <button type="submit" class="btn btn-success btn-sm col-3">Áp dụng</button>
+                                <input type="text" name="voucher_code" class="form-control me-2"
+                                    placeholder="Enter voucher code">
+                                <button type="submit" class="btn btn-success">Apply</button>
                             </form>
-                            <div id="voucherMessage" class="mt-2"></div>
                         </div>
                     </div>
                 </div>
@@ -154,7 +150,6 @@
     </section>
     <!-- End Checkout Section -->
 @endsection
-
 @section('script-libs')
     <script>
         function toggleReplyForm(commentId) {
@@ -242,8 +237,8 @@
                     data: $(this).serialize(),
                     success: function(response) {
                         if (response.success) {
-                            $('#voucherMessage').html(
-                                `<p class="alert alert-success">${response.message}</p>`);
+                            $('#voucherMessage').html(`
+                    <p class="alert alert-success">${response.message}</p>`);
                             // Cập nhật tổng giá trị
                             let newTotal = response.new_total; // Tổng mới từ phản hồi
                             $('#totalAmount').text(newTotal.toLocaleString('vi-VN') + ' VNĐ');
@@ -255,7 +250,7 @@
                     error: function(xhr) {
                         $('#voucherMessage').html(
                             `<p class="alert alert-danger">Đã có lỗi xảy ra! Vui lòng thử lại.</p>`
-                        );
+                            );
                     }
                 });
             });

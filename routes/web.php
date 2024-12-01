@@ -60,6 +60,7 @@ Route::prefix('smember')
         Route::get('/order/show/{id}', 'showDetailOrder')->name('order.showDetailOrder');
     });
 
+
 // CONTACT
 Route::prefix('contact')
     ->controller(ContactFormController::class)
@@ -104,6 +105,7 @@ Route::prefix('order')
         Route::post('vnpay_payment', [PaymentController::class, 'vnpay'])->name('vnpay');
         Route::get('vnpayReturn', [PaymentController::class, 'vnpayReturn'])->name('vnpayReturn');
         Route::post('momo_payment', [PaymentController::class, 'momo'])->name('momo_payment');
+        Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
         Route::get('/checkout/thank', [PaymentController::class, 'thank'])->name('thank');
         Route::post('/notify', [PaymentController::class, 'notify'])->name('notify');
     });
@@ -125,6 +127,8 @@ Route::group([
                 ->name('chat.create');
             Route::get('/{roomId}/{receiverId}', [ChatController::class, 'showChatRoom'])
                 ->name('chat.room');
+            Route::post('/outChat/{roomid}', [ChatController::class, 'outChat'])
+                ->name('outChat');
         });
 
     Route::post('/messages/send', [ChatController::class, 'sendMessage'])

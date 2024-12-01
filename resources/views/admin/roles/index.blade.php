@@ -20,50 +20,57 @@
         <!-- Role cards -->
         <div class="row g-4">
             @foreach ($roles as $item)
-                @if ($item->name !== 'Customer')
-                    <div class="col-xl-4 col-lg-6 col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <p class="mb-0">Tổng cộng {{ $item->users->count() }} người dùng</p>
-                                    <ul class="list-unstyled d-flex align-items-center avatar-group mb-0">
-                                        @foreach ($item->users as $user)
-                                            <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                                                title="{{ $user->name }}" class="avatar pull-up">
-                                                <img class="rounded-circle"
-                                                    src="{{ asset('themes') }}/admin/img/avatars/5.png" alt="Avatar">
-                                            </li>
-                                        @endforeach
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <p class="mb-0">Tổng cộng {{ $item->users->count() }} người dùng</p>
+                                <ul class="list-unstyled d-flex align-items-center avatar-group mb-0">
+                                    @foreach ($item->users as $user)
+                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                                            title="{{ $user->name }}" class="avatar pull-up">
+                                            <img class="rounded-circle" src="{{ asset('themes') }}/admin/img/avatars/5.png"
+                                                alt="Avatar">
+                                        </li>
+                                    @endforeach
 
-                                        {{-- <li class="avatar">
+                                    {{-- <li class="avatar">
                                         <span class="avatar-initial rounded-circle pull-up bg-lighter text-body"
                                             data-bs-toggle="tooltip" data-bs-placement="bottom" title="3 more">+3</span>
                                     </li> --}}
-                                    </ul>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-end">
-                                    <div class="role-heading">
+                                </ul>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div class="role-heading">
+                                    @if ($item->name == 'Administrator')
+                                        <h5 class="mb-1">Quản Trị Viên</h5>
+                                    @else
                                         <h5 class="mb-1">{{ $item->name }}</h5>
-                                        @if ($item->name == 'Admin')
-                                            <a href="javascript:;" class="role-edit-modal">
-                                                <span class="disabled">Có tất cả quyền</span>
-                                            </a>
-                                        @else
-                                            <a href="{{ route('permissions.access', $item->id) }}"
-                                                data-id="{{ $item->id }}" class="role-edit-modal">
-                                                <span>Chỉnh sửa quyền truy cập</span>
-                                            </a>
-                                        @endif
+                                    @endif
+                                    @if ($item->name == 'Administrator')
+                                        <a href="javascript:;" class="role-edit-modal">
+                                            <span class="disabled">Có tất cả quyền</span>
+                                        </a>
+                                    @else
+                                        {{-- <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#addRoleModal"
+                                            data-id="{{ $item->id }}" class="role-edit-modal">
+                                            <span>Chỉnh sửa vai
+                                                trò</span> --}}
+                                        <a href="{{ route('permissions.access', $item->id) }}" data-id="{{ $item->id }}"
+                                            class="role-edit-modal">
+                                            <span>Chỉnh sửa quyền truy cập</span>
+                                        </a>
+                                    @endif
 
-                                    </div>
-                                    <a href="javascript:void(0);" class="text-muted"><i
-                                            class="mdi mdi-content-copy mdi-20px"></i></a>
                                 </div>
+                                <a href="javascript:void(0);" class="text-muted"><i
+                                        class="mdi mdi-content-copy mdi-20px"></i></a>
                             </div>
                         </div>
                     </div>
-                @endif
+                </div>
             @endforeach
+
             <div class="col-xl-4 col-lg-6 col-md-6">
                 <div class="card h-100">
                     <div class="row h-100">
@@ -112,29 +119,23 @@
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->email }}</td>
                                             <td>
-                                                @if ($item->role->name == 'Admin')
+                                                @if ($item->role->name == 'Administrator')
                                                     <span
                                                         class="d-flex align-items-center text-heading justify-content-center">
                                                         <i class="mdi mdi-laptop text-danger me-2"></i>
                                                         {{ $item->role->name }}
                                                     </span>
-                                                @elseif ($item->role->name == 'Staff')
+                                                @elseif ($item->role->name == 'Nhân Viên')
                                                     <span
                                                         class="d-flex align-items-center text-heading justify-content-center">
                                                         <i
-                                                            class="mdi mdi-account-multiple-check-outline text-success me-2"></i>
-                                                        {{ $item->role->name }}
-                                                    </span>
-                                                @elseif($item->role->name == 'Editor')
-                                                    <span
-                                                        class="d-flex align-items-center text-heading justify-content-center">
-                                                        <i class="mdi mdi-square-edit-outline text-warning me-2"></i>
+                                                            class="mdi mdi-account-multiple-check-outline text-danger me-2"></i>
                                                         {{ $item->role->name }}
                                                     </span>
                                                 @else
                                                     <span
                                                         class="d-flex align-items-center text-heading justify-content-center">
-                                                        <i class="mdi mdi-account-outline text-info me-2"></i>
+                                                        <i class="mdi mdi-account-outline text-danger me-2"></i>
                                                         {{ $item->role->name }}
                                                     </span>
                                                 @endif
@@ -174,9 +175,10 @@
             </div>
         </div>
         <!--/ Role cards -->
+
         <!--  Modal -->
         <!-- Add Role Modal -->
-        {{-- <div class="modal fade" id="addRoleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="addRoleModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-add-new-role">
                 <div class="modal-content p-3 p-md-5">
                     <button type="button" class="btn-close btn-pinned" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -214,15 +216,34 @@
                                                 <td>
                                                     <div class="d-flex">
                                                         @php
-                                                            $permissions = [
-                                                                'products.index' => 'Đọc',
+                                                            $category = [
+                                                                'categories.index' => 'Xem',
+                                                                'categories.create' => 'Thêm',
+                                                                'categories.edit' => 'Sửa',
+                                                            ];
+                                                            $products = [
+                                                                'products.index' => 'Xem',
                                                                 'products.create' => 'Thêm',
                                                                 'products.edit' => 'Sửa',
+                                                            ];
+                                                            $attribute = [
+                                                                'attributes.index' => 'Xem',
+                                                                'attributes.create' => 'Thêm',
+                                                                'attributes.edit' => 'Sửa',
+                                                            ];
+                                                            $attribute_value = [
+                                                                'attribute_values.index' => 'Xem',
+                                                                'attribute_values.create' => 'Thêm',
+                                                                'attribute_values.edit' => 'Sửa',
+                                                            ];
+                                                            $permissions = [
+                                                                'permissions.index' => 'Xem',
+                                                                'permissions.create' => 'Thêm',
+                                                                'permissions.edit' => 'Sửa',
                                                             ];
                                                         @endphp
 
                                                         @foreach ($permissions as $slug => $label)
-                                                            @foreach ($roleProduct as $item)
                                                                 @if ($item->slug == $slug)
                                                                     <div class="form-check me-3 me-lg-5">
                                                                         <input class="form-check-input" id="role_id"
@@ -236,7 +257,7 @@
                                                                         </label>
                                                                     </div>
                                                                 @endif
-                                                            @endforeach
+
                                                         @endforeach
 
                                                     </div>
@@ -341,9 +362,10 @@
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
     </div>
 @endsection
+
 
 @section('style-libs')
     <!--datatable css-->
