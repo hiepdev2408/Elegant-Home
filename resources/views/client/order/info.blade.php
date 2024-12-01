@@ -4,12 +4,11 @@
 @endsection
 @section('content')
     <section class="checkout-section">
-        <div class="auto-container my-5">
+        <div class="auto-container">
             <div class="row">
                 <!-- Form Column -->
                 <div class="form-column col-lg-8 col-md-12 col-sm-12">
-                    <form action="{{ route('checkout') }}" method="post" class="p-4 border rounded shadow">
-                        @csrf
+                    <div class="p-4 border rounded shadow">
                         <h4 class="mb-4">Thông tin cá nhân</h4>
                         <!-- Shipping Form -->
                         <div class="shipping-form">
@@ -17,12 +16,12 @@
                             <div class="row">
                                 <div class="col-md-6 mt-3">
                                     <label for="user_name" class="form-label">Họ và tên</label>
-                                    <input type="text" name="user_name" class="form-control"
+                                    <input type="text" id="user_name" name="user_name" class="form-control"
                                         value="{{ Auth::user()->name }}" placeholder="Vui lòng nhập họ và tên">
                                 </div>
                                 <div class="col-md-6 mt-3">
                                     <label for="user_email" class="form-label">Địa chỉ email</label>
-                                    <input type="text" name="user_email" class="form-control"
+                                    <input type="text" id="user_email" name="user_email" class="form-control"
                                         value="{{ Auth::user()->email }}" placeholder="Vui lòng nhập địa chỉ email">
                                 </div>
                             </div>
@@ -31,12 +30,12 @@
                             <div class="row">
                                 <div class="col-md-6 mt-3">
                                     <label for="user_phone" class="form-label">Số điện thoại</label>
-                                    <input type="text" name="user_phone" class="form-control"
+                                    <input type="text" id="user_phone" name="user_phone" class="form-control"
                                         value="{{ Auth::user()->phone }}" placeholder="Vui lòng nhập số điện thoại">
                                 </div>
                                 <div class="col-md-6 mt-3">
                                     <label for="user_address" class="form-label">Địa chỉ</label>
-                                    <input type="text" name="user_address" class="form-control"
+                                    <input type="text" id="user_address" name="user_address" class="form-control"
                                         value="{{ Auth::user()->address }}" placeholder="Vui lòng nhập địa chỉ">
                                 </div>
                             </div>
@@ -51,57 +50,79 @@
                                         Auth::user()->ward->name &&
                                         Auth::user()->district->name &&
                                         Auth::user()->province->name)
-                                    <input type="text" name="user_address_all" class="form-control"
+                                    <input type="text" id="user_address_all" name="user_address_all" class="form-control"
                                         value="{{ Auth::user()->ward->name . ', ' . Auth::user()->district->name . ', ' . Auth::user()->province->name }}"
                                         required>
                                 @else
-                                    <input type="text" name="user_address_all" class="form-control" value=""
-                                        required>
+                                    <input type="text" id="user_address_all" name="user_address_all" class="form-control"
+                                        value="" required>
                                 @endif
                             </div>
 
                             <!-- Row 4: Ghi chú -->
                             <div class="col-12 mt-3">
                                 <label for="user_note" class="form-label">Ghi chú</label>
-                                <textarea name="user_note" id="" cols="30" rows="4" class="form-control"
+                                <textarea name="user_note" id="user_note" cols="30" rows="4" class="form-control"
                                     placeholder="Thêm ghi chú..."></textarea>
                             </div>
                         </div>
 
                         <!-- Phương thức thanh toán -->
                         <h4 class="mt-4">Phương thức thanh toán</h4>
+                        <div id="alert-container" class="alert alert-danger d-none" role="alert">
+                            Vui lòng chọn một phương thức thanh toán trước khi tiếp tục!
+                        </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-check mt-2">
-                                    <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMomo">
-                                    <label class="form-check-label" for="paymentMomo">Thanh toán MOMO</label>
-                                </div>
-                                <div class="form-check mt-2">
-                                    <input class="form-check-input" type="radio" name="paymentMethod" id="paymentPaypal">
-                                    <label class="form-check-label" for="paymentPaypal">Thanh toán PayPal</label>
-                                </div>
-                                <div class="form-check mt-2">
-                                    <input class="form-check-input" type="radio" name="vnpay" id="paymentVnp"
-                                        value="NCB">
-                                    <label class="form-check-label" for="paymentVnp">Thanh toán VNPAY</label>
-                                </div>
-                                <div class="form-check mt-2">
-                                    <input class="form-check-input" type="radio" name="paymentMethod" id="paymentQr">
-                                    <label class="form-check-label" for="paymentQr">Thanh toán QR CODE</label>
-                                </div>
-                                <div class="form-check mt-2">
-                                    <input class="form-check-input" type="radio" name="paymentMethod"
-                                        id="paymentCashOnDelivery">
-                                    <label class="form-check-label" for="paymentCashOnDelivery">Thanh toán khi nhận
-                                        hàng</label>
-                                </div>
+                                <!-- Form MOMO -->
+                                <form id="momo-form" action="{{ route('momo_payment') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="total_amount"
+                                        value="{{ session('totalAmount', $totalAmount) }}">
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input" type="radio" name="paymentMethodMomo"
+                                            id="paymentMomo" value="momo">
+                                        <label class="form-check-label" for="paymentMomo">Thanh toán MOMO</label>
+                                    </div>
+                                </form>
+                                <!-- Form VNPAY -->
+                                <form id="vnpay-form" action="{{ route('vnpay') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="total_amount"
+                                        value="{{ session('totalAmount', $totalAmount) }}">
+                                    <input type="hidden" name="is_ship_user_same_user" value="0">
+                                    <input type="hidden" id="out_user_name" name="user_name">
+                                    <input type="hidden" id="out_user_email" name="user_email">
+                                    <input type="hidden" id="out_user_phone" name="user_phone">
+                                    <input type="hidden" id="out_user_address" name="user_address">
+                                    <input type="hidden" id="out_user_address_all" name="user_address_all">
+                                    <input type="hidden" id="out_user_note" name="user_note">
+                                    <div class="form-check mt-2">
+
+                                        <input class="form-check-input" type="radio" name="paymentMethodVnpay"
+                                            id="paymentVnp" value="vnpay">
+                                        <label class="form-check-label" for="paymentVnp">Thanh toán VNPAY</label>
+                                    </div>
+                                </form>
+
+                                <!-- Form COD -->
+                                <form id="cod-form" action="{{ route('thank') }}" method="post">
+                                    @csrf
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input" type="radio" name="paymentMethodCod"
+                                            id="paymentCod">
+                                        <label class="form-check-label" for="paymentCod">Thanh toán khi nhận
+                                            hàng</label>
+                                    </div>
+                                </form>
                             </div>
-                            <input type="hidden" name="is_ship_user_same_user" value="0">
                         </div>
                         <input type="hidden" name="total_amount" value="{{ session('totalAmount', $totalAmount) }}">
-                        <button type="submit" name="redirect" class="btn btn-primary mt-4 w-100">Xác nhận thanh
+                        <button type="submit" id="external-submit-btn" name="redirect"
+                            class="btn btn-primary mt-4 w-100">Xác nhận thanh
                             toán</button>
-                    </form>
+
+                    </div>
                 </div>
 
                 <!-- Order Column -->
@@ -147,6 +168,50 @@
 @endsection
 
 @section('script-libs')
+    <script>
+        // Lấy đối tượng input ban đầu và input hiển thị
+        const user_name = document.getElementById('user_name');
+        const user_email = document.getElementById('user_email');
+        const user_phone = document.getElementById('user_phone');
+        const user_address = document.getElementById('user_address');
+        const user_address_all = document.getElementById('user_address_all');
+        const user_note = document.getElementById('user_note');
+
+        const out_user_name = document.getElementById('out_user_name');
+        const out_user_email = document.getElementById('out_user_email');
+        const out_user_phone = document.getElementById('out_user_phone');
+        const out_user_address = document.getElementById('out_user_address');
+        const out_user_address_all = document.getElementById('out_user_address_all');
+        const out_user_note = document.getElementById('out_user_note');
+
+        // Cập nhật ngay nội dung của input hiển thị với giá trị của input ban đầu
+        out_user_name.value = user_name.value;
+        out_user_email.value = user_email.value;
+        out_user_phone.value = user_phone.value;
+        out_user_address.value = user_address.value;
+        out_user_address_all.value = user_address_all.value;
+        out_user_note.value = user_note.value;
+
+        // Gắn sự kiện input để lấy dữ liệu mỗi khi người dùng thay đổi giá trị
+        user_name.addEventListener('input', function() {
+            out_user_name.value = user_name.value;
+        });
+        user_email.addEventListener('input', function() {
+            out_user_email.value = user_email.value;
+        });
+        user_phone.addEventListener('input', function() {
+            out_user_phone.value = user_phone.value;
+        });
+        user_address.addEventListener('input', function() {
+            out_user_address.value = user_address.value;
+        });
+        user_address_all.addEventListener('input', function() {
+            out_user_address_all.value = user_address_all.value;
+        });
+        user_note.addEventListener('input', function() {
+            out_user_note.value = user_note.value;
+        });
+    </script>
     <script>
         function toggleReplyForm(commentId) {
             const replyForm = document.getElementById(`replyForm-${commentId}`);
@@ -250,6 +315,53 @@
                     }
                 });
             });
+        });
+    </script>
+    <script>
+        // Lấy các radio button
+        const momoRadio = document.getElementById('paymentMomo');
+        const vnpayRadio = document.getElementById('paymentVnp');
+        const codRadio = document.getElementById('paymentCod');
+
+        // Khi chọn MOMO, bỏ chọn VNPAY, COD
+        momoRadio.addEventListener('change', function() {
+            if (momoRadio.checked) {
+                vnpayRadio.checked = false;
+                codRadio.checked = false;
+            }
+        });
+
+        // Khi chọn VNPAY, bỏ chọn MOMO, COD
+        vnpayRadio.addEventListener('change', function() {
+            if (vnpayRadio.checked) {
+                momoRadio.checked = false;
+                codRadio.checked = false;
+            }
+        });
+
+        // Khi chọn COD, bỏ chọn MOMO, VNPAY
+        codRadio.addEventListener('change', function() {
+            if (codRadio.checked) {
+                momoRadio.checked = false;
+                vnpayRadio.checked = false;
+            }
+        });
+
+
+        // Nút submit xử lý form phù hợp
+        document.getElementById('external-submit-btn').addEventListener('click', function() {
+            if (momoRadio.checked) {
+                document.getElementById('momo-form').submit();
+            } else if (vnpayRadio.checked) {
+                document.getElementById('vnpay-form').submit();
+            } else if (codRadio.checked) {
+                document.getElementById('cod-form').submit();
+            } else {
+                const alertContainer = document.getElementById('alert-container');
+                alertContainer.classList.remove('d-none'); // Hiển thị thông báo
+                setTimeout(() => alertContainer.classList.add('d-none'), 4000); // Ẩn sau 3 giây
+            }
+
         });
     </script>
 @endsection

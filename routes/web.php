@@ -102,10 +102,12 @@ Route::prefix('order')
         Route::get('/info', 'index')->name('order');
         Route::post('order/apply-voucher', 'applyVoucher')->name('order.applyVoucher');
         // Checkout
+        Route::post('vnpay_payment', [PaymentController::class, 'vnpay'])->name('vnpay');
+        Route::get('vnpayReturn', [PaymentController::class, 'vnpayReturn'])->name('vnpayReturn');
+        Route::post('momo_payment', [PaymentController::class, 'momo'])->name('momo_payment');
         Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
-        // Route::post('payment', [PaymentController::class, 'vnpay'])->name('vnpay');
         Route::get('/checkout/thank', [PaymentController::class, 'thank'])->name('thank');
-        Route::get('defaultView', [CheckoutController::class, 'defaultView'])->name('defaultView');
+        Route::post('/notify', [PaymentController::class, 'notify'])->name('notify');
     });
 
 Route::group([
@@ -126,7 +128,7 @@ Route::group([
             Route::get('/{roomId}/{receiverId}', [ChatController::class, 'showChatRoom'])
                 ->name('chat.room');
             Route::post('/outChat/{roomid}', [ChatController::class, 'outChat'])
-            ->name('outChat');
+                ->name('outChat');
         });
 
     Route::post('/messages/send', [ChatController::class, 'sendMessage'])
