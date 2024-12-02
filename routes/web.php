@@ -55,9 +55,13 @@ Route::prefix('smember')
         Route::get('/order', 'order')->name('order');
         Route::get('/endow', 'endow')->name('endow');
         Route::get('/info', 'info')->name('info');
+        Route::get('info/show/{id}', 'showProfile')->name('info.showProfile');
         Route::post('/update/{id}', 'update')->name('update');
         Route::post('/order/cancel/{id}', 'cancel')->name('order.cancel');
+        Route::post('/order/completed/{id}', 'completed')->name('order.completed');
         Route::get('/order/show/{id}', 'showDetailOrder')->name('order.showDetailOrder');
+        Route::get('/districts/{provinceCode}', [OrderController::class, 'getDistrictsByProvince']);
+        Route::get('/wards/{districtCode}', [OrderController::class, 'getWardsByDistrict']);
     });
 
 
@@ -101,13 +105,17 @@ Route::prefix('order')
     ->group(function () {
         Route::get('/info', 'index')->name('order');
         Route::post('order/apply-voucher', 'applyVoucher')->name('order.applyVoucher');
+
+        Route::post('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+        Route::get('/thank', [PaymentController::class, 'thank'])->name('thank');
+
         // Checkout
-        Route::post('vnpay_payment', [PaymentController::class, 'vnpay'])->name('vnpay');
-        Route::get('vnpayReturn', [PaymentController::class, 'vnpayReturn'])->name('vnpayReturn');
-        Route::post('momo_payment', [PaymentController::class, 'momo'])->name('momo_payment');
-        Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
-        Route::get('/checkout/thank', [PaymentController::class, 'thank'])->name('thank');
-        Route::post('/notify', [PaymentController::class, 'notify'])->name('notify');
+        // Route::post('vnpay_payment', [PaymentController::class, 'vnpay'])->name('vnpay');
+        // Route::get('vnpayReturn', [PaymentController::class, 'vnpayReturn'])->name('vnpayReturn');
+        // Route::post('momo_payment', [PaymentController::class, 'momo'])->name('momo_payment');
+        // Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
+        // Route::post('/checkout/thank', [PaymentController::class, 'thank'])->name('thank');
+        // Route::post('/notify', [PaymentController::class, 'notify'])->name('notify');
     });
 
 Route::group([

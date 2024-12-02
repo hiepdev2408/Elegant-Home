@@ -109,47 +109,6 @@ class CartController extends Controller
         $cart = Cart::where('user_id', Auth::user()->id)->first();
         $carts = $cart ? $cart->cartDetails()->with(['product', 'variant'])->get() : [];
 
-        $cart = Cart::where('user_id', Auth::user()->id)->first();
-        $carts = $cart ? $cart->cartDetails()->with(['product', 'variant'])->get() : [];
-
         return view('client.cart.listCart', compact('carts'));
     }
-
-    // public function updateCartQuantity(Request $request)
-    // {
-
-    //     // Lấy thông tin giỏ hàng
-    //     $cartDetail = CartDetail::findOrFail($request->cart_id);
-
-    //     // Cập nhật số lượng và tổng tiền
-    //     $cartDetail->quantity = $request->quantity;
-    //     $cartDetail->total_amount = $cartDetail->quantity * $cartDetail->variant->price_modifier;
-    //     $cartDetail->save();
-
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => 'Cập nhật số lượng thành công!',
-    //         'subTotal' => number_format($cartDetail->total_amount, 0, ',', '.'),
-    //         'quantity' => $cartDetail->quantity,
-    //     ]);
-    // }
-
-    // public function updateCartQuantity(Request $request)
-    // {
-
-    //     // Lấy thông tin giỏ hàng
-    //     $cartDetail = CartDetail::findOrFail($request->cart_id);
-
-    //     // Cập nhật số lượng và tổng tiền
-    //     $cartDetail->quantity = $request->quantity;
-    //     $cartDetail->total_amount = $cartDetail->quantity * $cartDetail->variant->price_modifier;
-    //     $cartDetail->save();
-
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => 'Cập nhật số lượng thành công!',
-    //         'subTotal' => number_format($cartDetail->total_amount, 0, ',', '.'),
-    //         'quantity' => $cartDetail->quantity,
-    //     ]);
-    // }
 }

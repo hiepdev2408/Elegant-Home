@@ -195,6 +195,9 @@ Route::prefix('admin')
             ->as('orders.')
             ->group(function () {
                 Route::get('/', [OrderController::class, 'index'])->name('index');
+                Route::post('confirmed/{id}', [OrderController::class, 'confirmed'])->name('confirmed');
+                Route::post('shipping/{id}', [OrderController::class, 'shipping'])->name('shipping');
+                Route::post('delivered/{id}', [OrderController::class, 'delivered'])->name('delivered');
             });
         //Top sell
         Route::get('top_sell', [TopSellController::class, 'index'])->name('top_sell.index');

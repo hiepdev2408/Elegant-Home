@@ -12,8 +12,9 @@ class Order extends Model
     const STATUS_ORDER = [
         'pending'   => 'Chờ xác nhận',
         'comfirmed' => 'Đã xác nhận',
-        'shipping'  => 'Đang giao hàng',
-        'delivered' => 'Đã giao hàng',
+        'shipping'  => 'Chờ giao hàng',
+        'delivered' => 'Đang giao hàng',
+        'completed' => 'Đã nhận hàng',
         'canceled'  => 'Đơn hàng đã hủy',
     ];
 
@@ -26,6 +27,7 @@ class Order extends Model
     const STATUS_ORDER_COMFIRMED = 'comfirmed';
     const STATUS_ORDER_SHIPPING = 'shipping';
     const STATUS_ORDER_DELIVERED = 'delivered';
+    const STATUS_ORDER_COMPLETED = 'completed';
     const STATUS_ORDER_CANCELED = 'canceled';
     const STATUS_PAYMENT_UNPAID = 'unpaid';
     const STATUS_PAYMENT_PAID = 'paid';

@@ -40,25 +40,30 @@
             <div class="outer-box d-flex align-items-center">
                 <!-- Options Box -->
                 <div class="options-box d-flex align-items-center">
-
-                    <!-- Search Box -->
-                    <div class="search-box-outer">
-                        <div class="search-box-btn"><span class="flaticon-search-1"></span></div>
-                    </div>
-
-                    <!-- User Box -->
                     @if (Auth::check())
-                        <li style="margin-top: -4px">
-                            <a href="{{ route('profile.user') }}" class="fw-bold  me-3">{{ Auth::user()->name }}</a>
-                        </li>
+                        <div class="dropdown">
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                                id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ Auth::user()->name }}
+                            </a>
+                            @if (Auth::user()->role->id == 1 || Auth::user()->role->id == 2)
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item mt-2" href="{{ route('profile.info') }}">Thông tin cá nhân</a></li>
+                                    <li><a class="dropdown-item mt-2" href="{{ route('admin') }}">Đến trang quản trị</a></li>
+                                    <li><a class="dropdown-item mt-2" href="{{ route('profile.order') }}">Đơn hàng</a></li>
+                                    <li><a class="dropdown-item mt-2" href="{{ route('logout') }}">Đăng xuất</a></li>
+                                </ul>
+                            @else
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li><a class="dropdown-item mt-2" href="{{ route('profile.info') }}">Thông tin cá nhân</a></li>
+                                <li><a class="dropdown-item mt-2" href="{{ route('profile.order') }}">Đơn hàng</a></li>
+                                <li><a class="dropdown-item mt-2" href="{{ route('logout') }}">Đăng xuất</a></li>
+                            </ul>
+                            @endif
+                        </div>
                     @else
-                        <a class="user-box flaticon-user-3" href="{{ route('auth.login') }}"></a>
+                    <a class="user-box flaticon-user-3" href="{{ route('auth.login') }}"></a>
                     @endif
-                    <div class="like-box">
-                        <a class="user-box flaticon-heart" href="{{ route('show.favorite') }}"></a>
-                        <span class="total-like">{{ $favouritecount }}</span>
-
-                    </div>
 
                 </div>
 
