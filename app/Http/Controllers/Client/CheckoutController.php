@@ -71,17 +71,14 @@ class CheckoutController extends Controller
                 if ($voucherCode) {
                     $voucher = Vouchers::where('code', $voucherCode)->first();
                     if ($voucher) {
-                        // Lưu voucher vào database
                         UserVoucher::create( [
                             'user_id' => auth()->id(),
                             'voucher_id' => $voucher->id,
                         ] );
 
-                        // Tăng số lượt sử dụng của voucher
                         $voucher->increment( 'used_count' );
                     }
                 }
-
 
                 $cart->delete();
 
