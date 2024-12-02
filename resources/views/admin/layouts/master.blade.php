@@ -133,6 +133,7 @@
 
     @yield('script-libs') <!-- CÁC JS CÁC TRANG -->
     @vite('resources/js/present.js')
+    @vite('resources/js/list.js')
 
 </body>
 

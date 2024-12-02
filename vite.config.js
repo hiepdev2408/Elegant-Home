@@ -9,6 +9,7 @@ export default defineConfig({
                 "resources/css/app.css",
                 "resources/js/app.js",
                 "resources/js/present.js",
+                "resources/js/list.js",
                 "resources/css/chat.css",
             ],
             refresh: true,
