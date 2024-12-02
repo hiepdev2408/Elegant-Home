@@ -19,7 +19,7 @@
                     <span class="badge {{ $room->is_active ? 'bg-success' : 'bg-danger' }}">
                         {{ $room->is_active ? 'Hoạt Động' : 'Không Hoạt Động' }}
                     </span>
-                    <a href="{{ route('chat.room', ['roomId' => $room->id, 'receiverId' => Auth::user()->id]) }}"
+                    <a href="{{ route('chat.admin', ['roomId' => $room->id, 'receiverId' => Auth::user()->id]) }}"
                         class="btn btn-primary btn-sm">Vào phòng chat</a>
                 </li>
             @endforeach
