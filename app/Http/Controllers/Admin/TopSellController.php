@@ -18,7 +18,6 @@ class TopSellController extends Controller
     {
         $type = $request->input('type', 'day');
         $date = $request->input('date', Carbon::today()->format('Y-m-d'));
-
         // Xử lý thống kê
         switch($type) {
             case 'month':
@@ -50,6 +49,7 @@ class TopSellController extends Controller
                     ->get();
                 break;
         }
+        dd($topProduct);
 
         return view('admin.top_sell.index', compact('topProduct', 'type', 'date'));
     }

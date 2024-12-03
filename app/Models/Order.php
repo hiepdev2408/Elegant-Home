@@ -51,7 +51,12 @@ class Order extends Model
         'total_amount'
     ];
 
-    public function orderDetails(){
+    public function orderDetails()
+    {
         return $this->hasMany(OrderDetail::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
