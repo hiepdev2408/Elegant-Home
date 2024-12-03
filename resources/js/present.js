@@ -13,8 +13,13 @@ window.Echo.join(`chat.${roomId}`)
             document.getElementById("user-status").textContent = "Online";
             document.getElementById("user-status").style.color = "green";
         } else {
-            document.getElementById("user-status").textContent = "Offline";
-            document.getElementById("user-status").style.color = "red";
+            if (roleId === 3) {
+                document.getElementById("user-status").textContent = "Vui lòng đợi ...";
+                document.getElementById("user-status").style.color = "red";
+            } else {
+                document.getElementById("user-status").textContent = "Offline";
+                document.getElementById("user-status").style.color = "red";
+            }
         }
     })
     .joining((user) => {
@@ -77,7 +82,8 @@ function appendMessage(message, senderId) {
             messageElement.innerHTML = "<strong>Bạn: </strong>" + message; // Sử dụng innerHTML để hỗ trợ HTML
         } else {
             messageElement.classList.add("received"); // Tin nhắn của khách hàng
-            messageElement.innerHTML = "<strong>Khách hàng: </strong>" + message;
+            messageElement.innerHTML =
+                "<strong>Khách hàng: </strong>" + message;
         }
     } else if (roleId === 3) {
         if (senderId === userId) {
@@ -85,7 +91,8 @@ function appendMessage(message, senderId) {
             messageElement.innerHTML = "<strong>Bạn: </strong>" + message;
         } else {
             messageElement.classList.add("received"); // Tin nhắn của quản trị viên
-            messageElement.innerHTML = "<strong>Quản trị viên: </strong>" + message;
+            messageElement.innerHTML =
+                "<strong>Quản trị viên: </strong>" + message;
         }
     }
 

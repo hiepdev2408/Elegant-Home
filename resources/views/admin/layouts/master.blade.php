@@ -52,7 +52,7 @@
     <!-- Helpers -->
     <script src="{{ asset('themes') }}/admin/vendor/js/helpers.js"></script>
     <script src="{{ asset('themes') }}/admin/js/config.js"></script>
-    @vite('resources/css/chat.css')
+
 
 </head>
 
@@ -132,8 +132,7 @@
     <!-- Page JS -->
 
     @yield('script-libs') <!-- CÁC JS CÁC TRANG -->
-    @vite('resources/js/present.js')
-    @vite('resources/js/list.js')
+    
 
 </body>
 

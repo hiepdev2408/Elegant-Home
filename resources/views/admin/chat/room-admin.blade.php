@@ -1,5 +1,7 @@
 @extends('admin.layouts.master')
-
+@section('style-libs')
+    @vite('resources/css/chat.css')
+@endsection
 @section('content')
     <div id="app" class="container py-4">
         <div class="row">
@@ -16,9 +18,8 @@
                                     class="d-flex justify-content-between align-items-center text-decoration-none">
                                     <div class="d-flex align-items-center">
                                         @if ($item->user->image)
-                                            <img src="{{ Storage::url($item->user->image) }}"
-                                                alt="{{ $item->user->name }}" class="rounded-circle me-3"
-                                                style="width: 40px; height: 40px;">
+                                            <img src="{{ Storage::url($item->user->image) }}" alt="{{ $item->user->name }}"
+                                                class="rounded-circle me-3" style="width: 40px; height: 40px;">
                                         @else
                                             <img src="{{ asset('themes/image/logo.jpg') }}" alt="{{ $item->user->name }}"
                                                 class="rounded-circle me-3" style="width: 40px; height: 40px;">
@@ -43,7 +44,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
                         <!-- Thay "Khung chat" thành tên khách hàng -->
-                        <h5 class="mb-0">{{  $room->user->name}}</h5>
+                        <h5 class="mb-0">{{ $room->user->name }}</h5>
                         <span id="user-status">Đang kiểm tra...</span>
                     </div>
                     <div class="card-body">
@@ -98,11 +99,13 @@
     </div>
 @endsection
 
-@section('style-libs')
+@section('script-libs')
     <script>
         let userId = {{ auth()->id() }};
         let receiverId = {{ $receiverId }};
         let roomId = {{ $roomId }};
         let roleId = {{ auth()->user()->role_id }};
     </script>
+    @vite('resources/js/present.js')
+    @vite('resources/js/list.js')
 @endsection
