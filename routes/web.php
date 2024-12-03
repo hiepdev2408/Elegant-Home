@@ -126,6 +126,7 @@ Route::group([
     Route::get('/wards/{districtCode}', [OrderController::class, 'getWardsByDistrict']);
 });
 
+//chat realtime
 Route::group([
     'middleware' => 'auth',
 ], function () {

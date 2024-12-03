@@ -20,17 +20,6 @@
                             </li>
 
                             <li><a href="{{ route('contact') }}">Contact us</a></li>
-                            @if (Auth::check())
-                                <li>
-                                    <form action="{{ route('chat.create', Auth::user()->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="btn btn-primary">Liên Hệ Admin</button>
-                                    </form>
-                                </li>
-                            @endif
-
-
-
                         </ul>
                     </div>
                 </nav>

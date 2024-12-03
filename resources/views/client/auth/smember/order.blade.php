@@ -38,7 +38,16 @@
                     </ul>
                 </div>
 
-                <div class="card-footer text-right">
+                <div class="card-footer text-right d-inline-flex">
+
+
+                    @if ($order->status_order != 'canceled')
+                        <form action="{{ route('chat.create', Auth::user()->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-outline-warning">Liên Hệ Admin</button>
+                        </form>
+                    @endif
+
                     <a href="" class="btn btn-sm btn-outline-primary">Xem chi tiết</a>
                     {{-- <a href="">{{$order->productVariant->id}}</a> --}}
 
