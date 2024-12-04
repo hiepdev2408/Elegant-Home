@@ -146,7 +146,7 @@
                                                 <button type="submit" class="btn btn-danger">Xác nhận</button>
                                             </form>
                                         @elseif ($order->status_order == 'return_approved')
-                                            <form action="{{ route('orders.return_approved', $order->id) }}" method="post">
+                                            <form action="{{ route('orders.returned_item_received', $order->id) }}" method="post">
                                                 @csrf
                                                 <button type="submit" class="btn btn-danger">Đã nhận được hàng</button>
                                             </form>
