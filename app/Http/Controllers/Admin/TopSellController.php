@@ -49,7 +49,6 @@ class TopSellController extends Controller
                     ->get();
                 break;
         }
-        dd($topProduct);
 
         return view('admin.top_sell.index', compact('topProduct', 'type', 'date'));
     }
