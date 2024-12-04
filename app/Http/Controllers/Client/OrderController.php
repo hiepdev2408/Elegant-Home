@@ -16,6 +16,17 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+<<<<<<< HEAD
+
+    public function index()
+    {
+        $province = Province::query()->pluck('name', 'code')->all();
+        $totalCart = getCartItemCount();
+        $user = Auth::user();
+        $cart = Cart::where('user_id', $user->id)->first();
+        $cartDetail = CartDetail::where('cart_id', $cart->id)->get();
+        $totalAmount = $cartDetail->sum('total_amount');
+=======
 
     public function index()
     {
@@ -23,6 +34,7 @@ class OrderController extends Controller
 
         $user = Auth::user();
         $cart = Cart::firstWhere('user_id', $user->id);
+>>>>>>> 5fb704b8e50824d6b1e06b2a8940f279e4970d7b
 
         $cartDetails = $cart ? CartDetail::where('cart_id', $cart->id)->get() : collect();
         $totalAmount = $cartDetails->sum('total_amount');
@@ -36,7 +48,10 @@ class OrderController extends Controller
         ]);
     }
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 5fb704b8e50824d6b1e06b2a8940f279e4970d7b
     public function getDistrictsByProvince($provinceCode)
     {
         $districts = District::where('province_code', $provinceCode)->pluck('name', 'code');
@@ -182,5 +197,13 @@ class OrderController extends Controller
 
         // Đảm bảo tổng tiền không âm
         return max(0, $totalWithDiscount + $totalPriceWithoutVoucher);
+<<<<<<< HEAD
+
+
+
+
+
+=======
+>>>>>>> 5fb704b8e50824d6b1e06b2a8940f279e4970d7b
     }
 }

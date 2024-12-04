@@ -31,11 +31,11 @@ Route::prefix('auth')
         Route::prefix('password')
             ->as('password.')
             ->group(function () {
-                Route::get('/reset', 'showFormForgotPassword')->name('request');
-                Route::post('/email', 'sendResetLinkEmail')->name('email');
-                Route::get('/reset/{token}', 'showFormReset')->name('reset');
-                Route::post('/reset', 'reset')->name('update');
-            });
+            Route::get('/reset', 'showFormForgotPassword')->name('request');
+            Route::post('/email', 'sendResetLinkEmail')->name('email');
+            Route::get('/reset/{token}', 'showFormReset')->name('reset');
+            Route::post('/reset', 'reset')->name('update');
+        });
 
         // Favorite Routes
         Route::prefix('favorite')->group(function () {
@@ -113,12 +113,14 @@ Route::prefix('order')
         Route::get('/thank', [PaymentController::class, 'thank'])->name('thank');
 
         // Checkout
-        // Route::post('vnpay_payment', [PaymentController::class, 'vnpay'])->name('vnpay');
-        // Route::get('vnpayReturn', [PaymentController::class, 'vnpayReturn'])->name('vnpayReturn');
-        // Route::post('momo_payment', [PaymentController::class, 'momo'])->name('momo_payment');
-        // Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
-        // Route::post('/checkout/thank', [PaymentController::class, 'thank'])->name('thank');
-        // Route::post('/notify', [PaymentController::class, 'notify'])->name('notify');
+        Route::post('vnpay_payment', [PaymentController::class, 'vnpay'])->name('vnpay');
+        Route::get('vnpayReturn', [PaymentController::class, 'vnpayReturn'])->name('vnpayReturn');
+        Route::post('momo_payment', [PaymentController::class, 'momo'])->name('momo_payment');
+        Route::post('cod', [PaymentController::class, 'cod'])->name('cod');
+        Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
+        Route::get('/checkout/thank', [PaymentController::class, 'thank'])->name('thank');
+        Route::get('/checkout/error', [PaymentController::class, 'error'])->name('error');
+        Route::post('/notify', [PaymentController::class, 'notify'])->name('notify');
     });
 
 Route::group([
