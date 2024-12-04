@@ -59,17 +59,16 @@
 
                 <div class="card-footer text-end d-inline-flex">
                     <!-- Liên hệ admin -->
-                    @if (!in_array($order->status_order, ['canceled', 'return_request']))
+                    @if (!in_array($order->status_order, ['canceled', 'return_request', 'return_approved', 'returned_item_received']))
                         <form action="{{ route('chat.create', Auth::user()->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-sm btn-outline-warning mx-2">Liên Hệ Admin</button>
                         </form>
                     @endif
 
-                    <!-- Tùy chọn khác dựa trên trạng thái -->
+                    <a href="{{ route('profile.order.showDetailOrder', $order->id) }}"
+                        class="btn btn-sm btn-outline-primary mx-2">Xem chi tiết</a>
                     @if ($order->status_order == 'pending')
-                        <a href="{{ route('profile.order.showDetailOrder', $order->id) }}"
-                            class="btn btn-sm btn-outline-primary mx-2">Xem chi tiết</a>
                         <form id="cancel-order-form-{{ $order->id }}"
                             action="{{ route('profile.order.cancel', $order->id) }}" method="POST" style="display: none;">
                             @csrf
@@ -105,7 +104,7 @@
                     @endif
 
                     @if ($order->status_order == 'returned_item_received')
-                        <span class="badge text-black bg-info">Đã nhận hàng trả lại</span>
+                        <span class="badge text-black bg-info">Đơn hàng đã trở về nhà cung cấp</span>
                     @endif
 
                     @if ($order->status_order == 'refund_completed')
