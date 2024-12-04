@@ -59,7 +59,6 @@ class CartController extends Controller
                 ->first();
 
             $totalAmountVariant = $matchingVariant->price_modifier;
-
             if ($cartDetail) {
                 if ($matchingVariant->stock < $quantity) {
                     return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
@@ -68,6 +67,9 @@ class CartController extends Controller
                 $cartDetail->total_amount += $totalAmountVariant * $quantity;
                 $cartDetail->save();
             } else {
+                if ($matchingVariant->stock < $quantity) {
+                    return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
+                }
                 CartDetail::create([
                     'cart_id' => $cart->id,
                     'variant_id' => $matchingVariant->id,
