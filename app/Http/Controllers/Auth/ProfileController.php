@@ -23,6 +23,10 @@ class ProfileController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__);
     }
 
+    public function policy(){
+        return view('client.policy.policy');
+    }
+
     public function order()
     {
         $orders = Order::query()->where('user_id', Auth::user()->id)->get();
@@ -33,15 +37,9 @@ class ProfileController extends Controller
 
     public function showDetailOrder($id)
     {
-        // Lấy thông tin chi tiết đơn hàng
-        $orderDetails = OrderDetail::with(['order', 'variant', 'product'])
-            ->whereHas('order', function ($query) {
-                $query->where('user_id', Auth::id());
-            })
-            ->findOrFail($id);
-        $cart = Cart::where('user_id', Auth::id())->first();
+        $order = Order::query()->findOrFail($id);
 
-        return view('client.auth.smember.showDetailOrder', compact('orderDetails', 'cart'));
+        return view('client.auth.smember.showDetailOrder', compact('order'));
     }
 
 
@@ -59,6 +57,15 @@ class ProfileController extends Controller
         $order = Order::query()->findOrFail($id);
         $order->update([
             'status_order' => 'completed',
+        ]);
+
+        return back();
+    }
+    public function return_request(Request $request, $id)
+    {
+        $order = Order::query()->findOrFail($id);
+        $order->update([
+            'status_order' => 'return_request',
         ]);
 
         return back();
