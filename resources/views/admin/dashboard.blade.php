@@ -54,10 +54,10 @@
                             <div class="card-body pt-0">
                                 <h6 class="mb-2">Giao dịch</h6>
                                 <div class="d-flex flex-wrap mb-2 gap-2 pb-1 align-items-center">
-                                    <h4 class="mb-0">1.2k</h4>
-                                    <small class="text-success mt-1">+38%</small>
+                                    <h4 class="mb-0">{{$tongGiaoDichHomNay}}</h4>
+                                    <small class="{{$mau}} mt-1">{{ $dau}}%</small>
                                 </div>
-                                <small>Giao dịch hàng ngày</small>
+                                <small>Giao dịch hôm nay</small>
                             </div>
                         </div>
                     </div>
