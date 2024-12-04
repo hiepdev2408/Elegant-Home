@@ -55,7 +55,11 @@ Danh sách các sản phẩm bán chạy nhất
             @foreach($topProduct as $item)
             <tr>
                 <td>
-                    <img src="{{ Storage::url($item->product->img_thumbnail) }}" alt="{{ $item->product->name }}" style="width: 50px; height: auto;">
+                    @if($item && $item->img_thumbnail)
+                    <img src="{{ Storage::url($item->img_thumbnail) }}" alt="Thumbnail">
+                    @else
+                    <p>Không có hình ảnh.</p>
+                    @endif
                 </td>
                 <td>{{ $item->product->name }}</td>
                 <td>{{ $item->tong_so_luong }}</td>

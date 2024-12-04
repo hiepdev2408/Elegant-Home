@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+<<<<<<< HEAD
 
     public function index()
     {
@@ -25,10 +26,32 @@ class OrderController extends Controller
         $cart = Cart::where('user_id', $user->id)->first();
         $cartDetail = CartDetail::where('cart_id', $cart->id)->get();
         $totalAmount = $cartDetail->sum('total_amount');
+=======
 
-        return view('client.order.info', compact('user', 'cart', 'cartDetail', 'totalAmount', 'province'));
+    public function index()
+    {
+        $provinces = Province::pluck('name', 'code');
+
+        $user = Auth::user();
+        $cart = Cart::firstWhere('user_id', $user->id);
+>>>>>>> 5fb704b8e50824d6b1e06b2a8940f279e4970d7b
+
+        $cartDetails = $cart ? CartDetail::where('cart_id', $cart->id)->get() : collect();
+        $totalAmount = $cartDetails->sum('total_amount');
+
+        return view('client.checkout.order', [
+            'user' => $user,
+            'cart' => $cart,
+            'cartDetails' => $cartDetails,
+            'totalAmount' => $totalAmount,
+            'provinces' => $provinces,
+        ]);
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5fb704b8e50824d6b1e06b2a8940f279e4970d7b
     public function getDistrictsByProvince($provinceCode)
     {
         $districts = District::where('province_code', $provinceCode)->pluck('name', 'code');
@@ -174,10 +197,13 @@ class OrderController extends Controller
 
         // Đảm bảo tổng tiền không âm
         return max(0, $totalWithDiscount + $totalPriceWithoutVoucher);
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> 5fb704b8e50824d6b1e06b2a8940f279e4970d7b
     }
 }

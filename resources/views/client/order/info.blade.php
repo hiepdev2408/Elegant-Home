@@ -128,8 +128,7 @@
                         </div>
                         <input type="hidden" name="total_amount" value="{{ session('totalAmount', $totalAmount) }}">
                         <button type="submit" id="external-submit-btn" name="redirect"
-                            class="btn btn-primary mt-4 w-100">Xác nhận thanh
-                            toán</button>
+                            class="btn btn-primary mt-4 w-100">Xác nhận</button>
 
                     </div>
                 </div>

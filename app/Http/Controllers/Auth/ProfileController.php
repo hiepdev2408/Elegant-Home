@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\District;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Province;
 use App\Models\User;
+use App\Models\Ward;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,47 +23,52 @@ class ProfileController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__);
     }
 
+    public function policy(){
+        return view('client.policy.policy');
+    }
+
     public function order()
     {
         $orders = Order::query()->where('user_id', Auth::user()->id)->get();
-        $orderDetails = OrderDetail::query()
-            ->whereIn('order_id', $orders->pluck('id')->toArray())
-            ->paginate(5);
         $countOrder = $orders->where('status_order', '!=', 'canceled')->count();
 
-        return view('client.auth.smember.order', compact('orderDetails', 'countOrder'));
+        return view('client.auth.smember.order', compact('orders', 'countOrder'));
     }
 
     public function showDetailOrder($id)
     {
-        // Lấy thông tin chi tiết đơn hàng
-        $orderDetails = OrderDetail::with(['order', 'variant', 'product'])
-            ->whereHas('order', function ($query) {
-                $query->where('user_id', Auth::id());
-            })
-            ->findOrFail($id);
-        $cart = Cart::where('user_id', Auth::id())->first();
+        $order = Order::query()->findOrFail($id);
 
-        return view('client.auth.smember.showDetailOrder', compact('orderDetails', 'cart'));
+        return view('client.auth.smember.showDetailOrder', compact('order'));
     }
 
 
     public function cancel(Request $request, $id)
     {
-        $orderDetails = OrderDetail::findOrFail($id);
-        // dd($orderDetails);
-        try {
-            DB::transaction(function () use ($request, $orderDetails) {
-                $orderDetails->order()->update([
-                    'status_order' => 'canceled',
-                ]);
-            });
+        $order = Order::query()->findOrFail($id);
+        $order->update([
+            'status_order' => 'canceled',
+        ]);
 
-            return back()->with('success', 'Hủy đơn hàng thành công!');
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-        return view(self::PATH_VIEW . __FUNCTION__);
+        return back()->with('success', 'Đơn hàng đã hủy thành công!');
+    }
+    public function completed(Request $request, $id)
+    {
+        $order = Order::query()->findOrFail($id);
+        $order->update([
+            'status_order' => 'completed',
+        ]);
+
+        return back();
+    }
+    public function return_request(Request $request, $id)
+    {
+        $order = Order::query()->findOrFail($id);
+        $order->update([
+            'status_order' => 'return_request',
+        ]);
+
+        return back();
     }
 
     public function endow()
@@ -72,31 +80,27 @@ class ProfileController extends Controller
         return view('client.auth.smember.info');
     }
 
+    public function showProfile(){
+        $user = Auth::user();
+        $provinces = Province::pluck('name', 'code')->all();
+
+        return view('client.auth.smember.showProfile', compact('user', 'provinces'));
+    }
+
+    public function getDistrictsByProvince($provinceCode)
+    {
+        $districts = District::where('province_code', $provinceCode)->pluck('name', 'code');
+        return response()->json($districts);
+    }
+
+    public function getWardsByDistrict($districtCode)
+    {
+        $wards = Ward::where('district_code', $districtCode)->pluck('name', 'code');
+        return response()->json($wards);
+    }
+
     public function update(Request $request, $id)
     {
-        // dd($request->all());
-        $user = User::findOrFail($id);
-
-        // $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|string|email|max:255|unique:users,email,'.$id,
-        //     'phone' => 'nullable|string|max:15',
-        //     'address' => 'nullable|string|max:255',
-        //     'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        // ]);
-
-        $auth = $request->except('avatar');
-
-        $currentAvatar = 'user/' . $request->avatar;
-
-        if ($request->hasFile('avatar')) {
-            $auth['avatar'] = Storage::put('user', $request->file('avatar'));
-        }
-        $user->update($auth);
-
-        if ($currentAvatar && Storage::exists($currentAvatar)) {
-            Storage::delete($currentAvatar);
-        }
-        return redirect()->back()->with('success', 'Thông tin đã được cập nhật!');
+        dd($request->all());
     }
 }
