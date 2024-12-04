@@ -54,4 +54,31 @@ class OrderController extends Controller
 
         return back();
     }
+    public function return_request($id){
+        $order = Order::findOrFail($id);
+
+        $order->update([
+            'status_order' => 'return_approved',
+        ]);
+
+        return back();
+    }
+    public function returned_item_received($id){
+        $order = Order::findOrFail($id);
+
+        $order->update([
+            'status_order' => 'returned_item_received',
+        ]);
+
+        return back();
+    }
+    public function refund_completed($id){
+        $order = Order::findOrFail($id);
+
+        $order->update([
+            'status_order' => 'refund_completed',
+        ]);
+
+        return back();
+    }
 }

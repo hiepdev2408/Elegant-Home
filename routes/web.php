@@ -31,11 +31,11 @@ Route::prefix('auth')
         Route::prefix('password')
             ->as('password.')
             ->group(function () {
-            Route::get('/reset', 'showFormForgotPassword')->name('request');
-            Route::post('/email', 'sendResetLinkEmail')->name('email');
-            Route::get('/reset/{token}', 'showFormReset')->name('reset');
-            Route::post('/reset', 'reset')->name('update');
-        });
+                Route::get('/reset', 'showFormForgotPassword')->name('request');
+                Route::post('/email', 'sendResetLinkEmail')->name('email');
+                Route::get('/reset/{token}', 'showFormReset')->name('reset');
+                Route::post('/reset', 'reset')->name('update');
+            });
 
         // Favorite Routes
         Route::prefix('favorite')->group(function () {
@@ -59,11 +59,14 @@ Route::prefix('smember')
         Route::post('/update/{id}', 'update')->name('update');
         Route::post('/order/cancel/{id}', 'cancel')->name('order.cancel');
         Route::post('/order/completed/{id}', 'completed')->name('order.completed');
+        Route::post('/order/return_request/{id}', 'return_request')->name('order.return_request');
         Route::get('/order/show/{id}', 'showDetailOrder')->name('order.showDetailOrder');
         Route::get('/districts/{provinceCode}', [OrderController::class, 'getDistrictsByProvince']);
         Route::get('/wards/{districtCode}', [OrderController::class, 'getWardsByDistrict']);
     });
 
+// POLICY
+Route::get('policy', [ProfileController::class, 'policy'])->name('policy');
 
 // CONTACT
 Route::prefix('contact')
