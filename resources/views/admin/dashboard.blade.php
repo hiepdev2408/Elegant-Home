@@ -184,8 +184,8 @@
                                     <h5 class="mb-4">Tổng doanh số</h5>
                                     <div class="small mb-1">Tính trong 7 ngày qua</div>
                                     <div class="d-flex align-items-center gap-2">
-                                        <h4 class="mb-0">$25,980</h4>
-                                        <small class="text-success lh-sm">+15.6%</small>
+                                        <h4 class="mb-0">{{ number_format($tongDoanhSo, 0, ',', '.') }} VND</h4>
+                                        <small class="text-success lh-sm">{{ number_format($phamTrams, 1) }}%</small>
                                     </div>
                                 </div>
                                 <div id="totalSalesDonutChart" class="mt-3 mt-md-0"></div>
@@ -523,23 +523,15 @@
                             <thead class="table-light">
                                 <tr>
                                     <th class="text-truncate"># ID</th>
-                                    <th class="text-truncate"><span class="mdi mdi-arrow-up"></span>
-                                    </th>
-                                    <th class="text-truncate">Client</th>
-                                    <th class="text-truncate">Total</th>
-                                    <th class="text-truncate">Balance</th>
+                                    <th class="text-truncate">Khách hàng</th>
+                                    <th class="text-truncate">Số tiền đã mua</th>
+                                    <th class="text-truncate">Số đơn hàng đã mua</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($users as $item)
                                 <tr>
-                                    <td class="text-primary">#4910</td>
-                                    <td>
-                                        <div class="avatar avatar-sm">
-                                            <div class="avatar-initial bg-label-success rounded-circle">
-                                                <i class="mdi mdi-check mdi-18px"></i>
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <td class="text-primary">{{ $item->user_id}}</td>
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div class="avatar avatar-sm me-3">
@@ -547,188 +539,17 @@
                                                     class="rounded-circle">
                                             </div>
                                             <div>
-                                                <h6 class="mb-0 text-truncate">Jordan Stevenson</h6>
-                                                <small class="text-truncate">Layne_Kuvalis@gmail.com</small>
+                                                <h6 class="mb-0 text-truncate">{{ $item->name}}</h6>
+                                                <small class="text-truncate">{{ $item->email}}</small>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="text-truncate">$3428</td>
-                                    <td><span class="badge bg-label-success rounded-pill fw-normal">Paid</span>
+                                    <td class="text-truncate">{{ number_format($item->gia_mua_hang, 0, ',', '.') }} VND</td>
+                                    <td><span class="badge bg-label-success rounded-pill fw-normal">{{$item->tong_don_hang}}</span>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td class="text-primary">#4909</td>
-                                    <td>
-                                        <div class="avatar avatar-sm">
-                                            <div class="avatar-initial bg-label-success rounded-circle">
-                                                <i class="mdi mdi-check mdi-18px"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-sm me-3">
-                                                <img src="{{ asset('themes') }}/admin/img/avatars/2.png" alt="Avatar"
-                                                    class="rounded-circle">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0 text-truncate">Richard Payne</h6>
-                                                <small class="text-truncate">richard_payne@gmail.com</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-truncate">$2872</td>
-                                    <td class="text-heading">$883</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-primary">#4908</td>
-                                    <td>
-                                        <div class="avatar avatar-sm">
-                                            <div class="avatar-initial bg-label-info rounded-circle">
-                                                <i class="mdi mdi-arrow-down mdi-18px"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-sm me-3">
-                                                <img src="{{ asset('themes') }}/admin/img/avatars/3.png" alt="Avatar"
-                                                    class="rounded-circle">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0 text-truncate">Jennifer Summers</h6>
-                                                <small class="text-truncate">jennifer_summers@gmail.com</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-truncate">$4077</td>
-                                    <td><span class="badge bg-label-success rounded-pill fw-normal">Paid</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-primary">#4907</td>
-                                    <td>
-                                        <div class="avatar avatar-sm">
-                                            <div class="avatar-initial bg-label-secondary rounded-circle">
-                                                <i class="mdi mdi-email-outline mdi-18px"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-sm me-3">
-                                                <img src="{{ asset('themes') }}/admin/img/avatars/4.png" alt="Avatar"
-                                                    class="rounded-circle">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0 text-truncate">Mr. Justin Richardson
-                                                </h6>
-                                                <small class="text-truncate">justin_richardson@gmail.com</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-truncate">$2060</td>
-                                    <td class="text-heading">$361</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-primary">#4906</td>
-                                    <td>
-                                        <div class="avatar avatar-sm">
-                                            <div class="avatar-initial bg-label-warning rounded-circle">
-                                                <i class="mdi mdi-chart-pie-outline mdi-18px"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-sm me-3">
-                                                <img src="{{ asset('themes') }}/admin/img/avatars/5.png" alt="Avatar"
-                                                    class="rounded-circle">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0 text-truncate">Nicholas Tanner</h6>
-                                                <small class="text-truncate">nicholas_tanner@gmail.com</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-truncate">$3128</td>
-                                    <td><span class="badge bg-label-success rounded-pill fw-normal">Paid</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-primary">#4905</td>
-                                    <td>
-                                        <div class="avatar avatar-sm">
-                                            <div class="avatar-initial bg-label-secondary rounded-circle">
-                                                <i class="mdi mdi-email-outline mdi-18px"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-sm me-3">
-                                                <img src="{{ asset('themes') }}/admin/img/avatars/6.png" alt="Avatar"
-                                                    class="rounded-circle">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0 text-truncate">Crystal Mays</h6>
-                                                <small class="text-truncate">crystal_mays@gmail.com</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-truncate">$2032</td>
-                                    <td><span class="badge bg-label-success rounded-pill fw-normal">Paid</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-primary">#4904</td>
-                                    <td>
-                                        <div class="avatar avatar-sm">
-                                            <div class="avatar-initial bg-label-success rounded-circle">
-                                                <i class="mdi mdi-check mdi-18px"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-sm me-3">
-                                                <img src="{{ asset('themes') }}/admin/img/avatars/7.png" alt="Avatar"
-                                                    class="rounded-circle">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0 text-truncate">Mary Garcia</h6>
-                                                <small class="text-truncate">mary_garcia@gmail.com</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-truncate">$2230</td>
-                                    <td class="text-heading">-$253</td>
-                                </tr>
-                                <tr class="border-transparent">
-                                    <td class="text-primary">#4903</td>
-                                    <td>
-                                        <div class="avatar avatar-sm">
-                                            <div class="avatar-initial bg-label-info rounded-circle">
-                                                <i class="mdi mdi-arrow-down mdi-18px"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-sm me-3">
-                                                <img src="{{ asset('themes') }}/admin/img/avatars/8.png" alt="Avatar"
-                                                    class="rounded-circle">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0 text-truncate">Megan Roberts</h6>
-                                                <small class="text-truncate">megan_roberts@gmail.com</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-truncate">$5612</td>
-                                    <td><span class="badge bg-label-success rounded-pill fw-normal">Paid</span>
-                                    </td>
-                                </tr>
+                                @endforeach
+
                             </tbody>
                         </table>
                     </div>
