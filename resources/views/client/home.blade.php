@@ -5,6 +5,15 @@
 @endsection
 
 @section('content')
+    @if (session('alert'))
+        <script>
+            Swal.fire({
+                icon: 'error', // or 'success', 'warning', 'info', etc.
+                title: 'Oops...',
+                text: 'Product is out of stock',
+            });
+        </script>
+    @endif
     <section class="main-slider">
         <div class="main-slider-carousel owl-carousel owl-theme">
 
@@ -273,7 +282,8 @@
                                     @endif
                                 </a>
                                 @if (Auth::check())
-                                <a href="{{route('favourite',$product->id)}}"><span class="tag flaticon-heart"></span></a>
+                                    <a href="{{ route('favourite', $product->id) }}"><span
+                                            class="tag flaticon-heart"></span></a>
                                 @endif
 
                                 <div class="cart-box text-center">
@@ -291,8 +301,10 @@
                                 <h6><a href="shop-detail.html">{{ Str::limit($product->name, 30) }}</a></h6>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="price">
-                                        <span class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
-                                        <span class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.' )}}VNĐ</span>
+                                        <span
+                                            class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                        <span
+                                            class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ</span>
                                     </div>
                                 </div>
                             </div>
@@ -912,8 +924,10 @@
                                     </h6>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="price">
-                                            <span class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
-                                            <span class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ</span>
+                                            <span
+                                                class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                            <span
+                                                class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1011,23 +1025,26 @@
         <div class="auto-container">
             <div class="news-carousel owl-carousel owl-theme">
                 <!-- News Block -->
-                 @foreach($blogs as $item)
-                <div class="news-block">
-                    <div class="inner-box">
-                        <div class="image">
-                            <div class="tag">bedroom</div>
-                            <a href="blog-detail.html"><img
-                                    src="https://tse1.mm.bing.net/th?id=OIP.Tn60vMqPKD9zgRwdL5qHeAHaGR&pid=Api" alt="" /></a>
-                        </div>
-                        <div class="lower-content">
-                            <div class="author">
-                                <img src="https://tse1.mm.bing.net/th?id=OIP.Tn60vMqPKD9zgRwdL5qHeAHaGR&pid=Api" alt="" />
+                @foreach ($blogs as $item)
+                    <div class="news-block">
+                        <div class="inner-box">
+                            <div class="image">
+                                <div class="tag">bedroom</div>
+                                <a href="blog-detail.html"><img
+                                        src="https://tse1.mm.bing.net/th?id=OIP.Tn60vMqPKD9zgRwdL5qHeAHaGR&pid=Api"
+                                        alt="" /></a>
                             </div>
-                            <h5><a href="blog-detail.html">{{$item->title}}</a></h5>
-                            <div class="info">By: <span>{{$item->user->name}}</span> <i>{{$item->created_at}}</i></div>
+                            <div class="lower-content">
+                                <div class="author">
+                                    <img src="https://tse1.mm.bing.net/th?id=OIP.Tn60vMqPKD9zgRwdL5qHeAHaGR&pid=Api"
+                                        alt="" />
+                                </div>
+                                <h5><a href="blog-detail.html">{{ $item->title }}</a></h5>
+                                <div class="info">By: <span>{{ $item->user->name }}</span>
+                                    <i>{{ $item->created_at }}</i></div>
+                            </div>
                         </div>
                     </div>
-                </div>
                 @endforeach
             </div>
         </div>
@@ -1152,7 +1169,8 @@
             object-fit: cover;
             border-radius: 8px;
         }
-        .choild{
+
+        .choild {
             width: calc(25% - 10px);
             margin: 0 5px;
         }

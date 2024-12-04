@@ -12,9 +12,10 @@
     <link rel="icon" href="{{ asset('themes') }}/clients/images/favicon.png" type="image/x-icon">
     @yield('style-libs')
     @yield('style')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-   
+
 </head>
 
 <body>
