@@ -77,7 +77,7 @@
                                 <!-- Form MOMO -->
                                 <form id="momo-form" action="{{ route('momo_payment') }}" method="post">
                                     @csrf
-                                    <input type="hidden" name="total_amount"
+                                    <input type="text" class="totalAmounts d-none" name="total_amount"
                                         value="{{ session('totalAmount', $totalAmount) }}">
                                     <div class="form-check mt-2">
                                         <input class="form-check-input" type="radio" name="paymentMethodMomo"
@@ -88,7 +88,7 @@
                                 <!-- Form VNPAY -->
                                 <form id="vnpay-form" action="{{ route('vnpay') }}" method="post">
                                     @csrf
-                                    <input type="hidden" name="total_amount"
+                                    <input type="text" class="totalAmounts d-none" name="total_amount"
                                         value="{{ session('totalAmount', $totalAmount) }}">
                                     <input type="hidden" name="is_ship_user_same_user" value="0">
                                     <input type="hidden" id="out_user_name" name="user_name">
@@ -106,8 +106,17 @@
                                 </form>
 
                                 <!-- Form COD -->
-                                <form id="cod-form" action="{{ route('thank') }}" method="post">
+                                <form id="cod-form" action="{{ route('cod') }}" method="post">
                                     @csrf
+                                    <input type="text" class="totalAmounts d-none" name="total_amount"
+                                        value="{{ session('totalAmount', $totalAmount) }}">
+                                    <input type="hidden" name="is_ship_user_same_user" value="0">
+                                    <input type="hidden" id="cod_out_user_name" name="user_name">
+                                    <input type="hidden" id="cod_out_user_email" name="user_email">
+                                    <input type="hidden" id="cod_out_user_phone" name="user_phone">
+                                    <input type="hidden" id="cod_out_user_address" name="user_address">
+                                    <input type="hidden" id="cod_out_user_address_all" name="user_address_all">
+                                    <input type="hidden" id="cod_out_user_note" name="user_note">
                                     <div class="form-check mt-2">
                                         <input class="form-check-input" type="radio" name="paymentMethodCod"
                                             id="paymentCod">
@@ -143,15 +152,15 @@
                                 <li class="list-group-item d-flex justify-content-between fw-bold">
                                     <span>Tổng cộng</span>
                                     <span
-                                        id="totalAmount">{{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }}
+                                        class="totalAmounts">{{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }}
                                         VNĐ</span>
+
                                 </li>
                             </ul>
 
                             <!-- Voucher Box -->
                             <form id="voucherForm" class="d-flex">
                                 @csrf
-
                                 <input type="text" name="voucher_code" class="form-control me-2 form-control-sm "
                                     placeholder="Nhập mã giảm giá">
                                 <button type="submit" class="btn btn-success btn-sm col-3">Áp dụng</button>
@@ -169,49 +178,71 @@
 
 @section('script-libs')
     <script>
-        // Lấy đối tượng input ban đầu và input hiển thị
-        const user_name = document.getElementById('user_name');
-        const user_email = document.getElementById('user_email');
-        const user_phone = document.getElementById('user_phone');
-        const user_address = document.getElementById('user_address');
-        const user_address_all = document.getElementById('user_address_all');
-        const user_note = document.getElementById('user_note');
+        // Định nghĩa các cặp input chính và hidden input trong hai form
+        const fields = [{
+                main: 'user_name',
+                vnpay: 'out_user_name',
+                cod: 'cod_out_user_name'
+            },
+            {
+                main: 'user_email',
+                vnpay: 'out_user_email',
+                cod: 'cod_out_user_email'
+            },
+            {
+                main: 'user_phone',
+                vnpay: 'out_user_phone',
+                cod: 'cod_out_user_phone'
+            },
+            {
+                main: 'user_address',
+                vnpay: 'out_user_address',
+                cod: 'cod_out_user_address'
+            },
+            {
+                main: 'user_address_all',
+                vnpay: 'out_user_address_all',
+                cod: 'cod_out_user_address_all'
+            },
+            {
+                main: 'user_note',
+                vnpay: 'out_user_note',
+                cod: 'cod_out_user_note'
+            },
+        ];
 
-        const out_user_name = document.getElementById('out_user_name');
-        const out_user_email = document.getElementById('out_user_email');
-        const out_user_phone = document.getElementById('out_user_phone');
-        const out_user_address = document.getElementById('out_user_address');
-        const out_user_address_all = document.getElementById('out_user_address_all');
-        const out_user_note = document.getElementById('out_user_note');
+        // Hàm đồng bộ dữ liệu từ input chính vào hai form
+        function syncToForms() {
+            fields.forEach(({
+                main,
+                vnpay,
+                cod
+            }) => {
+                const mainInput = document.getElementById(main);
+                const vnpayInput = document.getElementById(vnpay);
+                const codInput = document.getElementById(cod);
 
-        // Cập nhật ngay nội dung của input hiển thị với giá trị của input ban đầu
-        out_user_name.value = user_name.value;
-        out_user_email.value = user_email.value;
-        out_user_phone.value = user_phone.value;
-        out_user_address.value = user_address.value;
-        out_user_address_all.value = user_address_all.value;
-        out_user_note.value = user_note.value;
+                if (!mainInput || !vnpayInput || !codInput) {
+                    console.error(`Không tìm thấy phần tử: ${main}, ${vnpay}, hoặc ${cod}`);
+                    return;
+                }
 
-        // Gắn sự kiện input để lấy dữ liệu mỗi khi người dùng thay đổi giá trị
-        user_name.addEventListener('input', function() {
-            out_user_name.value = user_name.value;
-        });
-        user_email.addEventListener('input', function() {
-            out_user_email.value = user_email.value;
-        });
-        user_phone.addEventListener('input', function() {
-            out_user_phone.value = user_phone.value;
-        });
-        user_address.addEventListener('input', function() {
-            out_user_address.value = user_address.value;
-        });
-        user_address_all.addEventListener('input', function() {
-            out_user_address_all.value = user_address_all.value;
-        });
-        user_note.addEventListener('input', function() {
-            out_user_note.value = user_note.value;
-        });
+                // Cập nhật giá trị ban đầu
+                vnpayInput.value = mainInput.value;
+                codInput.value = mainInput.value;
+
+                // Gắn sự kiện lắng nghe thay đổi
+                mainInput.addEventListener('input', () => {
+                    vnpayInput.value = mainInput.value;
+                    codInput.value = mainInput.value;
+                });
+            });
+        }
+
+        // Gọi hàm để khởi tạo đồng bộ
+        syncToForms();
     </script>
+
     <script>
         function toggleReplyForm(commentId) {
             const replyForm = document.getElementById(`replyForm-${commentId}`);
@@ -222,10 +253,6 @@
             }
         }
     </script>
-    <button id="scroll__top"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"
-                d="M112 244l144-144 144 144M256 120v292" />
-        </svg></button>
     <script src="{{ asset('themes/client/assets/js/plugins/swiper-bundle.min.js') }}" defer="defer"></script>
     <script src="{{ asset('themes/client/assets/js/plugins/glightbox.min.js') }}" defer="defer"></script>
 
@@ -299,13 +326,23 @@
                     success: function(response) {
                         if (response.success) {
                             $('#voucherMessage').html(
-                                `<p class="alert alert-success">${response.message}</p>`);
-                            // Cập nhật tổng giá trị
-                            let newTotal = response.new_total; // Tổng mới từ phản hồi
-                            $('#totalAmount').text(newTotal.toLocaleString('vi-VN') + ' VNĐ');
+                                `<p class="alert alert-success">${response.message}</p>`
+                            );
+
+                            let newTotal = response.new_total; // Giá trị tổng mới từ server
+
+                            // Cập nhật giá trị vào input (số nguyên)
+                            $('.totalAmounts[type="text"]').val(newTotal);
+
+                            // Cập nhật giá trị vào span (định dạng kèm VNĐ)
+                            $('.totalAmounts:not([type="text"])').text(
+                                newTotal.toLocaleString('vi-VN') + ' VNĐ'
+                            );
                         } else {
                             $('#voucherMessage').html(
-                                `<p class="alert alert-danger">${response.message}</p>`);
+                                `<p class="alert alert-danger">${response.message}</p>`
+                            );
+                            let newTotal = response.new_total; // Giá trị tổng mới từ server
                         }
                     },
                     error: function(xhr) {
