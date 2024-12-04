@@ -301,10 +301,15 @@
                                 <h6><a href="shop-detail.html">{{ Str::limit($product->name, 30) }}</a></h6>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="price">
-                                        <span
-                                            class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
-                                        <span
-                                            class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ</span>
+                                        @if ($product->price_sale == '')
+                                            <span
+                                                class="new-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                        @else
+                                            <span
+                                                class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                            <span
+                                                class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -898,7 +903,7 @@
                             class="shop-item mix shadow rounded border
                             @foreach ($product->categories as $category)
                                 category-{{ $category->id }} @endforeach
-                            col-lg-3 col-md-6 col-sm-12 choild">
+                            col-lg-3 col-md-6 col-sm-12 choild  mt-2">
                             <div class="inner-box ">
                                 <div class="image">
                                     <a href="{{ route('productDetail', ['slug' => $product->slug]) }}">
@@ -924,10 +929,15 @@
                                     </h6>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="price">
-                                            <span
-                                                class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
-                                            <span
-                                                class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ</span>
+                                            @if ($product->price_sale == '')
+                                                <span
+                                                    class="new-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                            @else
+                                                <span
+                                                    class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                                <span
+                                                    class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -1041,7 +1051,8 @@
                                 </div>
                                 <h5><a href="blog-detail.html">{{ $item->title }}</a></h5>
                                 <div class="info">By: <span>{{ $item->user->name }}</span>
-                                    <i>{{ $item->created_at }}</i></div>
+                                    <i>{{ $item->created_at }}</i>
+                                </div>
                             </div>
                         </div>
                     </div>

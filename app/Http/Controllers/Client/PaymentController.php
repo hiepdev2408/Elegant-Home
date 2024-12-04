@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Product;
 use App\Models\UserVoucher;
 use App\Models\Variant;
 use App\Models\Vouchers;
@@ -338,17 +339,22 @@ class PaymentController extends Controller
 
                 foreach ($cart->cartDetails as $cartDetail) {
                     $variant = Variant::find($cartDetail->variant_id);
+                    $product = Product::find($cartDetail->product_id);
+
                     if ($variant) {
                         $variant->decrement('stock', $cartDetail->quantity);
+                    } elseif ($product) {
+                        foreach ($product->variants as $v) {
+                            $v->decrement('stock', $cartDetail->quantity);
+                        }
                     }
                 }
 
-                // Xử lý voucher
                 $voucherCode = session('voucher_code');
                 if ($voucherCode) {
                     $voucher = Vouchers::where('code', $voucherCode)
-                        ->where('end_date', '>=', now()) // Kiểm tra hết hạn
-                        ->whereRaw('usage_limit > used_count') // Kiểm tra lượt sử dụng còn lại
+                        ->where('end_date', '>=', now())
+                        ->whereRaw('usage_limit > used_count')
                         ->first();
 
                     if ($voucher) {
