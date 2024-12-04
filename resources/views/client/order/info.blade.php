@@ -176,6 +176,28 @@
 @endsection
 
 @section('script-libs')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $.ajax({
+            url: '{{ route('vnpay') }}',
+            method: 'POST',
+            data: requestData,
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr) {
+                if (xhr.status === 400) {
+                    const alertData = xhr.responseJSON;
+                    Swal.fire({
+                        title: alertData.title || 'Thông Báo',
+                        text: alertData.text || 'Có lỗi xảy ra!',
+                        icon: alertData.icon || 'info',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        });
+    </script>
     <script>
         // Định nghĩa các cặp input chính và hidden input trong hai form
         const fields = [{

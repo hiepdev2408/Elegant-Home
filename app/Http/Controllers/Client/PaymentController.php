@@ -9,7 +9,6 @@ use App\Models\OrderDetail;
 use App\Models\UserVoucher;
 use App\Models\Variant;
 use App\Models\Vouchers;
-use Illuminate\Console\View\Components\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,29 +18,35 @@ class PaymentController extends Controller
 {
     public function vnpay(Request $request)
     {
+        // Kiểm tra xác thực
         $user = Auth::id();
-        $cart = Cart::query()->where('user_id', $user)->first();
-        foreach ($cart->cartDetails as $cartDetails) {
-            $variant = Variant::query()->find($cartDetails->variant_id);
-            if ($variant && $variant->stock < $cartDetails->quantity) {
-                $cartDetails->delete();
-
-                return back()->with(
-                    'error',
-                    "Sản phẩm {$variant->product->name} đã hết hàng và đã bị xóa khỏi giỏ hàng."
-                );
-            }
-        }
         if (!$user) {
             return response()->json(['error' => 'Người dùng chưa được xác thực'], 401);
         }
 
-        // Lấy giỏ hàng của người dùng
-        $cart = Cart::query()->where('user_id', $user)->first();
+        // Lấy giỏ hàng
+        $cart = Cart::with('cartDetails')->where('user_id', $user)->first();
         if (!$cart) {
             return response()->json(['error' => 'Không tìm thấy giỏ hàng'], 404);
         }
 
+        // Lấy danh sách variant ID từ giỏ hàng
+        $variantIds = $cart->cartDetails->pluck('variant_id')->toArray();
+
+        // Lấy thông tin các variant liên quan
+        $variants = Variant::whereIn('id', $variantIds)->get()->keyBy('id');
+
+        // Kiểm tra tồn kho và xử lý
+        foreach ($cart->cartDetails as $cartDetail) {
+            $variant = $variants->get($cartDetail->variant_id);
+
+            if (!$variant || $variant->stock < $cartDetail->quantity) {
+                $cartDetail->delete(); // Xóa chi tiết giỏ hàng
+                $cart->delete(); // Xóa giỏ hàng
+                return redirect()->route('home')->with('alert', 'Lỗi');
+
+            }
+        }
         // Tính tổng giá trị đơn hàng
         $totalAmount = $request->total_amount;
         if ($totalAmount <= 0) {
@@ -184,6 +189,11 @@ class PaymentController extends Controller
             return redirect()->route('thank');
 
         } else if ($secureHash === $vnp_SecureHash && $request->vnp_ResponseCode == '24') {
+            $order = Order::find($vnp_TxnRef);
+            if ($order) {
+                $order->status_payment = 'Cancel payment'; // Chuyển trạng thái thanh
+                $order->save();
+            }
             return redirect()->route('error');
         } else {
             dd(1);
@@ -370,7 +380,6 @@ class PaymentController extends Controller
             return back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
         }
     }
-
 
     public function thank()
     {
