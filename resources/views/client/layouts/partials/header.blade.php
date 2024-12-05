@@ -13,7 +13,7 @@
                     <div class="navbar-collapse collapse clearfix" id="navbarSupportedContent">
                         <ul class="navigation clearfix">
                             <li><a href="{{ route('home') }}">Home</a></li>
-                            <li><a href="about.html">About</a></li>
+                            <li><a href="{{ route('policy') }}">Policy</a></li>
                             <li><a href="{{ route('shop') }}">Shop</a>
                             </li>
                             <li><a href="#">Blog</a>

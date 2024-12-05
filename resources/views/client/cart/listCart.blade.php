@@ -110,7 +110,7 @@
                                                         </td>
 
                                                         <td class="price">
-                                                            {{ number_format($cart->product->price_sale, 0, ',', '.') }}
+                                                            {{ number_format($cart->product->base_price, 0, ',', '.') }}
                                                             VNĐ
                                                         </td>
                                                         <!-- Quantity Box -->
