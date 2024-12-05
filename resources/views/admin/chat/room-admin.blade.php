@@ -135,7 +135,7 @@
                                                 </h6>
                                                 @if ($item->messages->isNotEmpty())
                                                     <p class="chat-contact-status text-truncate mb-0 text-muted">
-                                                        {{ formatTimeForZalo($item->messages->first()->created_at) }}
+                                                        {{ $item->messages->first()->created_at }}
                                                     </p>
                                                 @else
                                                     <p class="chat-contact-status text-truncate mb-0 text-muted">No

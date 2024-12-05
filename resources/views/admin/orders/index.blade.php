@@ -68,6 +68,18 @@
                                     </td>
                                     <td>
                                         @foreach ($order->orderDetails as $details)
+                                            @if ($details->product)
+                                            <div class="product-details mb-3">
+                                                <strong>Tên:</strong> {{ $details->product->name }}<br>
+                                                <strong>Giá:</strong>
+                                                @if ($details->product->price_sale == '')
+                                                {{ number_format($details->product->base_price, 0, ',', '.') }} VNĐ<br>
+                                                @else
+                                                {{ number_format($details->product->price_sale, 0, ',', '.') }} VNĐ<br>
+                                                @endif
+                                                <strong>Số lượng:</strong> {{ $details->quantity }}<br>
+                                            </div>
+                                            @else
                                             <div class="product-details mb-3">
                                                 <strong>Tên:</strong> {{ $details->variant->product->name }}<br>
                                                 <strong>Giá:</strong>
@@ -81,6 +93,7 @@
                                                     @endforeach
                                                 </ul>
                                             </div>
+                                            @endif
                                             <hr>
                                         @endforeach
                                     </td>

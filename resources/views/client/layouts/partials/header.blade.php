@@ -40,12 +40,14 @@
                                     <li><a class="dropdown-item mt-2" href="{{ route('profile.info') }}">Thông tin cá nhân</a></li>
                                     <li><a class="dropdown-item mt-2" href="{{ route('admin') }}">Đến trang quản trị</a></li>
                                     <li><a class="dropdown-item mt-2" href="{{ route('profile.order') }}">Đơn hàng</a></li>
+                                    <li><a class="dropdown-item mt-2" href="{{ route('show.favorite') }}">Yêu thích</a></li>
                                     <li><a class="dropdown-item mt-2" href="{{ route('logout') }}">Đăng xuất</a></li>
                                 </ul>
                             @else
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item mt-2" href="{{ route('profile.info') }}">Thông tin cá nhân</a></li>
                                 <li><a class="dropdown-item mt-2" href="{{ route('profile.order') }}">Đơn hàng</a></li>
+                                <li><a class="dropdown-item mt-2" href="{{ route('show.favorite') }}">Yêu thích</a></li>
                                 <li><a class="dropdown-item mt-2" href="{{ route('logout') }}">Đăng xuất</a></li>
                             </ul>
                             @endif
