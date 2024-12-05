@@ -132,8 +132,8 @@
     <!-- Page JS -->
 
     @yield('script-libs') <!-- CÁC JS CÁC TRANG -->
-    
 
+    @vite('resources/js/list.js')
 </body>
 
 </html>
