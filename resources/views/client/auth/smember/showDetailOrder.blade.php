@@ -31,10 +31,31 @@
                 <ul class="list-group">
                     @foreach ($order->orderDetails as $item)
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>({{ $item->quantity }}x) - {{ $item->variant->product->name }} </span>
-                            <span>
-                                <img src="{{ Storage::url($item->variant->product->img_thumbnail) }}" width="150px" alt="">
-                                {{ number_format($item->total_amount, 0, ',', '.') }} VND</span>
+                            @if ($item->product)
+                                <span>({{ $item->quantity }}x) - {{ $item->product->name }}</span>
+                                <span>
+                                    @if ($item->product->img_thumbnail)
+                                        <img src="{{ Storage::url($item->product->img_thumbnail) }}" width="150px"
+                                            alt="">
+                                    @else
+                                        <img src="{{ asset('images/default-thumbnail.png') }}" width="150px"
+                                            alt="Default Image">
+                                    @endif
+                                    {{ number_format($item->total_amount, 0, ',', '.') }} VND
+                                </span>
+                            @else
+                                <span>({{ $item->quantity }}x) - {{ optional($item->variant)->product->name }}</span>
+                                <span>
+                                    @if ($item->variant && $item->variant->product->img_thumbnail)
+                                        <img src="{{ Storage::url($item->variant->product->img_thumbnail) }}"
+                                            width="150px" alt="">
+                                    @else
+                                        <img src="{{ asset('images/default-thumbnail.png') }}" width="150px"
+                                            alt="Default Image">
+                                    @endif
+                                    {{ number_format($item->total_amount, 0, ',', '.') }} VND
+                                </span>
+                            @endif
                         </li>
                     @endforeach
                 </ul>

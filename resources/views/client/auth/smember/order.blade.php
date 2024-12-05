@@ -16,7 +16,8 @@
                 <div class="card-body">
                     <p><strong>Tổng tiền:</strong> {{ number_format($order->total_amount, 0, ',', '.') }} VND</p>
                     <p><strong>Trạng thái:</strong>
-                        <span class="badge
+                        <span
+                            class="badge
                             @switch($order->status_order)
                                 @case('pending') bg-secondary text-dark @break
                                 @case('confirmed') bg-success text-white @break
@@ -49,10 +50,17 @@
                     <h5 class="mt-3">Chi tiết sản phẩm:</h5>
                     <ul class="list-group">
                         @foreach ($order->orderDetails as $item)
+                            @if ($item->product)
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span>({{ $item->quantity }}x) - {{ $item->variant->product->name }}</span>
+                                <span>({{ $item->quantity }}x) - {{ $item->product->name }}</span>
                                 <span>{{ number_format($item->total_amount, 0, ',', '.') }} VND</span>
                             </li>
+                            @else
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>({{ $item->quantity }}x) - {{ $item->variant->product->name }}</span>
+                                    <span>{{ number_format($item->total_amount, 0, ',', '.') }} VND</span>
+                                </li>
+                            @endif
                         @endforeach
                     </ul>
                 </div>
@@ -87,12 +95,13 @@
                     @endif
 
                     @if ($order->status_order == 'completed')
-                        <form id="return-form-{{ $order->id }}" action="{{ route('profile.order.return_request', $order->id) }}"
-                            method="POST" style="display: none;">
+                        <form id="return-form-{{ $order->id }}"
+                            action="{{ route('profile.order.return_request', $order->id) }}" method="POST"
+                            style="display: none;">
                             @csrf
                         </form>
-                        <button class="btn btn-sm btn-outline-secondary"
-                            onclick="confirmReturn({{ $order->id }})">Trả hàng</button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="confirmReturn({{ $order->id }})">Trả
+                            hàng</button>
                     @endif
 
                     @if ($order->status_order == 'return_request')

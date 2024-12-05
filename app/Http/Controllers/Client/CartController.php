@@ -79,11 +79,11 @@ class CartController extends Controller
             }
         } else {
             $product = Product::find($productId);
-
-            // if ($product->variants()->stock < $quantity) {
-            //     return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
-            // }
-
+            foreach ($product->variants as $variant) {
+                if ($variant->stock < $quantity) {
+                    return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
+                }
+            }
 
             $cartDetail = CartDetail::where('cart_id', $cart->id)
                 ->where('product_id', $productId)
@@ -94,6 +94,11 @@ class CartController extends Controller
                 $cartDetail->total_amount += $totalAmount;
                 $cartDetail->save();
             } else {
+                foreach ($product->variants as $variant) {
+                    if ($variant->stock < $quantity) {
+                        return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
+                    }
+                }
                 CartDetail::create([
                     'cart_id' => $cart->id,
                     'product_id' => $productId,
