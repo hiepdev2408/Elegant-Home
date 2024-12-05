@@ -112,7 +112,6 @@
                                                         <select name="variant_attributes[attribute_value_id][]"
                                                             class="form-select attribute-select me-3"
                                                             data-attribute-name="{{ $attributeName }}">
-                                                            <option value="">Chọn biến thể</option>
                                                             @foreach ($values as $value)
                                                                 <option value="{{ $value['id'] }}">
                                                                     {{ Str::limit($value['name'], 30) }}
