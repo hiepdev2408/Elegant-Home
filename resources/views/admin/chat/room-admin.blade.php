@@ -138,8 +138,7 @@
                                                         {{ formatTimeForZalo($item->messages->first()->created_at) }}
                                                     </p>
                                                 @else
-                                                    <p class="chat-contact-status text-truncate mb-0 text-muted">No
-                                                        messages</p>
+                                                    <p class="chat-contact-status text-truncate mb-0 text-muted">Null</p>
                                                 @endif
                                             </div>
                                             @if ($item->messages->isNotEmpty())
@@ -346,7 +345,7 @@
                                         <input type="file" id="attach-doc" hidden>
                                     </label>
                                     <button id="send-message-btn" class="btn btn-primary d-flex send-msg-btn">
-                                        <span class="align-middles">Send</span>
+                                        <span class="align-middles">Gửi</span>
                                     </button>
                                 </div>
                             </form>

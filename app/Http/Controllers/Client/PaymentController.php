@@ -191,8 +191,10 @@ class PaymentController extends Controller
         } else if ($secureHash === $vnp_SecureHash && $request->vnp_ResponseCode == '24') {
             $order = Order::find($vnp_TxnRef);
             if ($order) {
-                $order->status_payment = 'Cancel payment'; // Chuyển trạng thái thanh
-                $order->save();
+                foreach ($order->orderDetails as $orderDetails) {
+                    $orderDetails->delete(); // Xóa chi tiết đơn hàng
+                }
+                $order->delete(); // Xóa đơn hàng
             }
             return redirect()->route('error');
         } else {
