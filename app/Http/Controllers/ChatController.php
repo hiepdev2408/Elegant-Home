@@ -21,24 +21,6 @@ class ChatController extends Controller
 
         return redirect()->route('chat.room', ['roomId' => $room->id, 'receiverId' => $receiverId]);
     }
-    //đi đến phòng chat đang hoạt động
-    // public function listChatRooms()
-    // {
-    //     // Lấy tất cả các phòng chat, sắp xếp theo thời gian gần nhất
-    //     $rooms = Room::with('user')->orderBy('updated_at', 'desc')->get();
-
-    //     // Trả về view với danh sách phòng và tin nhắn
-    //     return view('admin.chat.index', compact('rooms'));
-    // }
-
-
-
-    // public function showChatAdmin($roomId, $receiverId)
-    // {
-    //     $room = Room::findOrFail($roomId);
-    //     $messages = Message::where('room_id', $roomId)->get();
-    //     return view('admin.chat.chat', compact('roomId', 'receiverId', 'messages'));
-    // }
 
 
     //hiển thị trong client
@@ -73,7 +55,7 @@ class ChatController extends Controller
             'message' => $request->message,
         ]);
 
-        broadcast(new MessageSent($message, roomId: $request->room_id))->toOthers();
+        broadcast(new MessageSent($message,  $request->room_id))->toOthers();
         if (auth()->user()->role_id != 1) {  // Kiểm tra nếu role_id không phải là 1 (admin)
             event(new NewMessageReceived($request->message, auth()->user()->name));
         }
@@ -97,7 +79,9 @@ class ChatController extends Controller
     public function listChatRooms()
     {
         // Lấy tất cả các phòng chat, sắp xếp theo thời gian gần nhất
-        $rooms = Room::with('user')->orderBy('updated_at', 'desc')->get();
+        $rooms = Room::with('user')
+        ->where('user_id', '!=', auth()->id())
+        ->orderBy('updated_at', 'desc')->get();
 
         // Trả về view với danh sách phòng và tin nhắn
         return view('admin.chat.chat-admin', compact('rooms'));

@@ -107,5 +107,5 @@
         let roleId = {{ auth()->user()->role_id }};
     </script>
     @vite('resources/js/present.js')
-    @vite('resources/js/list.js')
+   
 @endsection
