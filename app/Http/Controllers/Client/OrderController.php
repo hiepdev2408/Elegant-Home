@@ -27,7 +27,7 @@ class OrderController extends Controller
         $cartDetails = $cart ? CartDetail::where('cart_id', $cart->id)->get() : collect();
         $totalAmount = $cartDetails->sum('total_amount');
 
-        return view('client.checkout.order', [
+        return view('client.order.info', [
             'user' => $user,
             'cart' => $cart,
             'cartDetails' => $cartDetails,
@@ -35,7 +35,6 @@ class OrderController extends Controller
             'provinces' => $provinces,
         ]);
     }
-
 
     public function getDistrictsByProvince($provinceCode)
     {

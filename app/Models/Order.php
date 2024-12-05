@@ -16,6 +16,10 @@ class Order extends Model
         'delivered' => 'Đang giao hàng',
         'completed' => 'Đã nhận hàng',
         'canceled'  => 'Đơn hàng đã hủy',
+        'return_request' => 'Yêu cầu trả hàng',
+        'return_approved' => 'Xác nhận trả hàng',
+        'returned_item_received' => 'Đã nhận được hàng trả lại',
+        'refund_completed' => 'Hoàn tiền thành công',
     ];
 
     const STATUS_PAYMENT = [
@@ -28,6 +32,11 @@ class Order extends Model
     const STATUS_ORDER_SHIPPING = 'shipping';
     const STATUS_ORDER_DELIVERED = 'delivered';
     const STATUS_ORDER_COMPLETED = 'completed';
+    const STATUS_ORDER_RETURN_REQUEST = 'return_request';
+    const STATUS_ORDER_RETURN_UNDER_REVIEW = 'return_under_review';
+    const STATUS_ORDER_RETURN_APPROVED = 'return_approved';
+    const STATUS_ORDER_RETURN_ITEM_RECEIVED = 'returned_item_received';
+    const STATUS_ORDER_REFUND_COMPLETED = 'refund_completed';
     const STATUS_ORDER_CANCELED = 'canceled';
     const STATUS_PAYMENT_UNPAID = 'unpaid';
     const STATUS_PAYMENT_PAID = 'paid';
@@ -51,7 +60,12 @@ class Order extends Model
         'total_amount'
     ];
 
-    public function orderDetails(){
+    public function orderDetails()
+    {
         return $this->hasMany(OrderDetail::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

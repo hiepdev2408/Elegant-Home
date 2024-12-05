@@ -82,7 +82,6 @@ class ChatController extends Controller
         $rooms = Room::with('user')
         ->where('user_id', '!=', auth()->id())
         ->orderBy('updated_at', 'desc')->get();
-
         // Trả về view với danh sách phòng và tin nhắn
         return view('admin.chat.chat-admin', compact('rooms'));
     }
@@ -91,7 +90,15 @@ class ChatController extends Controller
 
     public function showChatAdmin($roomId, $receiverId)
     {
-        $rooms = Room::with('user')->orderBy('updated_at', 'desc')->get();
+        $rooms = Room::query()
+            ->with([
+                'user',
+                'messages' => function ($query) {
+                    $query->orderBy('created_at', 'desc'); // Hiển thị 1 tin nhắn mới nhất
+                }
+            ])
+            ->orderBy('created_at', 'desc')
+            ->get();
         $room = Room::findOrFail($roomId);
 
         $messages = Message::where('room_id', $roomId)->get();

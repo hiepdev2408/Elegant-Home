@@ -68,8 +68,13 @@
                                         <i>(4 customer review)</i>
                                     </div>
                                     <!-- Price -->
-                                    <div class="price">{{ number_format($product->price_sale, 0, ',', '.') }} VNĐ
-                                        <span>{{ number_format($product->base_price, 0, ',', '.') }}VNĐ</span>
+                                    <div class="price">
+                                        @if (!$product->price_sale == 'null')
+                                            {{ number_format($product->base_price, 0, ',', '.') }}VNĐ
+                                        @else
+                                            {{ number_format($product->price_sale, 0, ',', '.') }} VNĐ
+                                            <span>{{ number_format($product->base_price, 0, ',', '.') }}VNĐ</span>
+                                        @endif
                                     </div>
                                     <div class="text">{{ $product->description }}</div>
                                     <div class="d-flex flex-wrap">
@@ -112,7 +117,6 @@
                                                         <select name="variant_attributes[attribute_value_id][]"
                                                             class="form-select attribute-select me-3"
                                                             data-attribute-name="{{ $attributeName }}">
-                                                            <option value="">Chọn biến thể</option>
                                                             @foreach ($values as $value)
                                                                 <option value="{{ $value['id'] }}">
                                                                     {{ Str::limit($value['name'], 30) }}
@@ -146,7 +150,11 @@
                                         <!-- Button Box -->
                                         <div class="button-box">
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <input type="hidden" name="total_amount" value="{{ $product->price_sale }}">
+                                            @if (!$product->price_sale == 'null')
+                                                <input type="hidden" name="total_amount" value="{{ $product->base_price }}">
+                                            @else
+                                                <input type="hidden" name="total_amount" value="{{ $product->price_sale }}">
+                                            @endif
                                             <button type="submit" class="theme-btn btn-style-one">
                                                 Add to cart
                                             </button>

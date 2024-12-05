@@ -13,7 +13,7 @@
                     <div class="navbar-collapse collapse clearfix" id="navbarSupportedContent">
                         <ul class="navigation clearfix">
                             <li><a href="{{ route('home') }}">Home</a></li>
-                            <li><a href="about.html">About</a></li>
+                            <li><a href="{{ route('policy') }}">Policy</a></li>
                             <li><a href="{{ route('shop') }}">Shop</a>
                             </li>
                             <li><a href="#">Blog</a>
@@ -40,12 +40,14 @@
                                     <li><a class="dropdown-item mt-2" href="{{ route('profile.info') }}">Thông tin cá nhân</a></li>
                                     <li><a class="dropdown-item mt-2" href="{{ route('admin') }}">Đến trang quản trị</a></li>
                                     <li><a class="dropdown-item mt-2" href="{{ route('profile.order') }}">Đơn hàng</a></li>
+                                    <li><a class="dropdown-item mt-2" href="{{ route('show.favorite') }}">Yêu thích</a></li>
                                     <li><a class="dropdown-item mt-2" href="{{ route('logout') }}">Đăng xuất</a></li>
                                 </ul>
                             @else
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item mt-2" href="{{ route('profile.info') }}">Thông tin cá nhân</a></li>
                                 <li><a class="dropdown-item mt-2" href="{{ route('profile.order') }}">Đơn hàng</a></li>
+                                <li><a class="dropdown-item mt-2" href="{{ route('show.favorite') }}">Yêu thích</a></li>
                                 <li><a class="dropdown-item mt-2" href="{{ route('logout') }}">Đăng xuất</a></li>
                             </ul>
                             @endif

@@ -18,7 +18,6 @@ class TopSellController extends Controller
     {
         $type = $request->input('type', 'day');
         $date = $request->input('date', Carbon::today()->format('Y-m-d'));
-
         // Xử lý thống kê
         switch($type) {
             case 'month':

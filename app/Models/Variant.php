@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Observers\VariantObserver;
 use Illuminate\Database\Eloquent\Model;
 
 class Variant extends Model
@@ -12,7 +13,6 @@ class Variant extends Model
         'price_modifier',
         'image'
     ];
-
     public function product()
     {
         return $this->belongsTo(Product::class);
@@ -28,11 +28,13 @@ class Variant extends Model
         return $this->product->base_price + $this->price_modifier;
     }
 
-    public function cartDetails(){
+    public function cartDetails()
+    {
         return $this->hasMany(CartDetail::class);
     }
 
-    public function orderDetails(){
+    public function orderDetails()
+    {
         return $this->hasMany(OrderDetail::class);
     }
 }

@@ -198,6 +198,9 @@ Route::prefix('admin')
                 Route::post('confirmed/{id}', [OrderController::class, 'confirmed'])->name('confirmed');
                 Route::post('shipping/{id}', [OrderController::class, 'shipping'])->name('shipping');
                 Route::post('delivered/{id}', [OrderController::class, 'delivered'])->name('delivered');
+                Route::post('return_request/{id}', [OrderController::class, 'return_request'])->name('return_request');
+                Route::post('returned_item_received/{id}', [OrderController::class, 'returned_item_received'])->name('returned_item_received');
+                Route::post('refund_completed/{id}', [OrderController::class, 'refund_completed'])->name('refund_completed');
             });
         //Top sell
         Route::get('top_sell', [TopSellController::class, 'index'])->name('top_sell.index');
