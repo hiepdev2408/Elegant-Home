@@ -4,40 +4,19 @@
 @endsection
 @section('content')
     <div class="page-wrapper">
-        <!-- Shop Detail Section -->
         <section class="shop-detail-section">
             <div class="auto-container">
-                <!-- Upper Box -->
-                <div class="upper-box">
-                    @if (session()->has('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Success!</strong> {{ session()->get('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
-
-                    @if (session()->has('error'))
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Error!</strong> {{ session()->get('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
-
                     <form action="{{ route('addToCart') }}" method="post">
                         @csrf
                         <div class="row clearfix">
-                            <!-- Gallery Column -->
                             <div class="gallery-column col-lg-6 col-md-12 col-sm-12">
                                 <div class="inner-column">
                                     <div class="carousel-outer">
-                                        <!-- Swiper -->
                                         <div class="swiper-container content-carousel">
                                             <img src="{{ Storage::url($product->img_thumbnail) }}" alt="">
                                         </div>
-                                        <!-- Thumbnail Carousel -->
                                         <div class="swiper-container thumbs-carousel">
                                             <div class="swiper-wrapper">
-                                                <!-- Hiển thị các thumbnail từ galleries -->
                                                 @foreach ($product->galleries as $gallery)
                                                     @if ($gallery->img_path)
                                                         <div class="swiper-slide mb-5">
@@ -51,14 +30,11 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
-                            <!-- Content Column -->
                             <div class="content-column col-lg-6 col-md-12 col-sm-12">
                                 <div class="inner-column">
                                     <h3>{{ $product->name }}</h3>
-                                    <!-- Rating -->
                                     <div class="rating">
                                         <span class="fa fa-star"></span>
                                         <span class="fa fa-star"></span>
@@ -67,7 +43,6 @@
                                         <span class="light fa fa-star"></span>
                                         <i>(4 customer review)</i>
                                     </div>
-                                    <!-- Price -->
                                     <div class="price">
                                         @if (!$product->price_sale == 'null')
                                             {{ number_format($product->base_price, 0, ',', '.') }}VNĐ

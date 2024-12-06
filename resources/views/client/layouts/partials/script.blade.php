@@ -18,3 +18,29 @@
 <script src="{{ asset('themes') }}/clients/js/nav-tool.js"></script>
 <script src="{{ asset('themes') }}/clients/js/jquery-ui.js"></script>
 <script src="{{ asset('themes') }}/clients/js/script.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
+<script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const notyf = new Notyf({
+            duration: 3000,
+            position: { x: 'right', y: 'top' },
+            ripple: true,
+        });
+
+        @if (session('success'))
+            notyf.success('{{ session('success') }}');
+        @endif
+
+        @if (session('error'))
+            notyf.error('{{ session('error') }}');
+        @endif
+    });
+</script>
+
+
+
+
+
+

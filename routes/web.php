@@ -91,7 +91,7 @@ Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
 Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
 
-//cart
+//CART
 Route::prefix('cart')
     ->middleware('auth')
     ->controller(CartController::class)
@@ -148,7 +148,5 @@ Route::group([
     Route::post('/messages/send', [ChatController::class, 'sendMessage'])
         ->name('messages.send');
 });
-
-
 
 Route::get('search/{id}', [HomeController::class, 'search'])->name('search');
