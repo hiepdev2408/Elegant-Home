@@ -22,10 +22,13 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
 <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const notyf = new Notyf({
             duration: 3000,
-            position: { x: 'right', y: 'top' },
+            position: {
+                x: 'right',
+                y: 'top'
+            },
             ripple: true,
         });
 
@@ -38,9 +41,3 @@
         @endif
     });
 </script>
-
-
-
-
-
-

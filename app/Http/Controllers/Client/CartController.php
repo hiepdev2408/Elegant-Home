@@ -11,6 +11,7 @@ use App\Models\UserVoucher;
 use App\Models\Variant;
 use App\Models\VariantAttribute;
 use App\Models\Vouchers;
+use Illuminate\Console\View\Components\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -119,20 +120,41 @@ class CartController extends Controller
         return view('client.cart.listCart', compact('carts'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, string $id)
     {
         // dd($request->all());
         $request->validate([
-            'cart_id' => 'required',
             'quantity' => 'required',
         ]);
 
-        $cartDetail = CartDetail::where('cart_id', $request->cart_id)->first();
+        $cartDetail = CartDetail::query()->with('cart', 'variant')->findOrFail($id);
+
+        if (!$cartDetail) {
+            return back()->with('error', 'Giỏ hàng không tồn tại!');
+        }
+
+        // Kiểm tra số lượng tồn kho
+        if ($request->quantity > $cartDetail->variant->stock) {
+            return back()->with('error', 'Số lượng yêu cầu vượt quá tồn kho của sản phẩm.');
+        }
+        if ($request->quantity <= 0) {
+            // Xóa chi tiết giỏ hàng nếu số lượng <= 0
+            $cartDetail->delete();
+
+            // Kiểm tra nếu giỏ hàng không còn chi tiết nào thì xóa giỏ hàng
+            if ($cartDetail->cart->cartDetails()->count() === 0) {
+                $cartDetail->cart->delete();
+                return back()->with('error', 'Tất cả sản phẩm đã bị xóa khỏi giỏ hàng!');
+            }
+
+            return back()->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng!');
+        }
+
         if ($cartDetail) {
             $cartDetail->quantity = $request->quantity;
             $cartDetail->total_amount = $request->quantity * $request->price_modifier;
             $cartDetail->save();
-            return back()->with('success', 'Cập nhật thành công!');
+            return back()->with('success', 'Cập nhật số lượng thành công!');
         }
 
         return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra!'], 500);
@@ -144,15 +166,23 @@ class CartController extends Controller
      */
     public function destroy(string $id)
     {
-        $cart = Cart::query()->with('cartDetails')->find($id);
-
-        if ($cart) {
-            $cart->cartDetails()->delete();
-            $cart->delete();
-        } else {
+        // Lấy id chi tiết giỏ hàng
+        $cartDetail = CartDetail::query()->with('cart')->find($id);
+        // dd($cartDetail);
+        if (!$cartDetail) {
             return back()->with('error', 'Giỏ hàng không tồn tại!');
         }
-        return back();
+        $cartDetail->delete();
+
+        // Lấy id giỏ hàng
+        $cart = $cartDetail->cart;
+        // Kiểm tra xem giỏ hàng còn chi tiết nào không
+        if ($cart->cartDetails->count() === 0) {
+            $cart->delete();
+            return back()->with('error', 'Tất cả sản phẩm đã bị xóa khỏi giỏ hàng!');
+        }
+        return back()->with('success', 'Xóa sản phẩm thành công!');
+        ;
 
     }
 }

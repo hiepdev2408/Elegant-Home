@@ -13,23 +13,17 @@
                 @if ($carts)
                     <div class="cart-column col-lg-8 col-md-12 col-sm-12">
                         <div class="inner-column">
-
                             <!--Cart Outer-->
                             <div class="cart-outer">
                                 <div class="table-outer">
-                                    @if (session('success'))
-                                        <div class="alert alert-success">
-                                            {{ session('success') }}
-                                        </div>
-                                    @endif
                                     <table class="cart-table">
                                         <thead class="cart-header">
                                             <tr>
-                                                <th class="prod-column">Product</th>
+                                                <th class="prod-column">Sản phẩm</th>
                                                 <th>&nbsp;</th>
-                                                <th>Price</th>
-                                                <th>Quantity</th>
-                                                <th>Total</th>
+                                                <th>Giá Tiền</th>
+                                                <th>Số Lượng</th>
+                                                <th>Tổng</th>
                                             </tr>
                                         </thead>
                                         @php
@@ -42,7 +36,9 @@
                                                         <td colspan="2" class="prod-column">
                                                             <div class="column-box">
                                                                 <figure class="prod-thumb">
-                                                                    <form action="{{ route('destroy', $cart->cart_id) }}"
+                                                                    <form class="delete-cart-form"
+                                                                        data-id="{{ $cart->id }}"
+                                                                        action="{{ route('destroy', $cart->id) }}"
                                                                         method="post">
                                                                         @csrf
                                                                         @method('DELETE')
@@ -68,7 +64,8 @@
                                                         </td>
                                                         <!-- Quantity Box -->
                                                         <td class="quantity-box">
-                                                            <form action="{{ route('cart.update', $cart->cart_id) }}"
+                                                            <form id="update-cart-form-{{ $cart->id }}"
+                                                                action="{{ route('cart.update', $cart->id) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('PUT')
@@ -77,8 +74,6 @@
                                                                         value="{{ $cart->quantity }}" name="quantity"
                                                                         readonly>
                                                                 </div>
-                                                                <input type="hidden" name="cart_id"
-                                                                    value="{{ $cart->cart_id }}">
                                                                 <input type="hidden" name="price_modifier"
                                                                     value="{{ $cart->variant->price_modifier }}">
                                                             </form>
@@ -164,24 +159,26 @@
                             <div class="cart-total-outer">
                                 <!-- Title Box -->
                                 <div class="title-box">
-                                    <h6>Cart Totals</h6>
+                                    <h6>Tổng số giỏ hàng</h6>
                                 </div>
 
                                 <div class="cart-total-box">
                                     <ul class="cart-totals">
-                                        <li>Subtotals : <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
+                                        <li>Tạm Tính: <span id="totalAmount">{{ number_format($totalAmount, 0, ',', '.') }}
+                                                VNĐ</span>
                                         </li>
                                         <br>
-                                        <li>Totals : <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span></li>
+                                        <li>Tổng phụ: <span id="totalAmount">{{ number_format($totalAmount, 0, ',', '.') }}
+                                                VNĐ</span></li>
                                     </ul>
                                     <div class="check-box">
                                         <input type="checkbox" name="remember-password" id="type-1">
-                                        <label for="type-1">Shipping & taxes calculated at checkout</label>
+                                        <label for="type-1">Thuế được tính khi thanh toán</label>
                                     </div>
                                     <!-- Buttons Box -->
                                     <div class="buttons-box">
                                         <a href="{{ route('order') }}" class="theme-btn proceed-btn">
-                                            Proceed To Checkout
+                                            Tiến hành thanh toán
                                         </a>
                                     </div>
                                 </div>
@@ -279,42 +276,28 @@
 
 @section('script-libs')
     <script>
-        $(document).ready(function() {
-            $('.qty-btn').click(function() {
-                // Lấy ID giỏ hàng từ data-id của nút
-                var cartId = $(this).data('id');
-                // Lấy số lượng hiện tại
-                var $input = $(this).siblings('.qty-spinner');
-                var currentQuantity = parseInt($input.val());
+        $('.delete-cart-form').submit(function(event) {
+            event.preventDefault(); // Ngừng reload trang
+            var form = $(this);
+            var cartId = form.data('id');
 
-                // Kiểm tra nút nào được nhấn và cập nhật số lượng
-                if ($(this).hasClass('plus')) {
-                    currentQuantity += 1; // Tăng số lượng
-                } else if ($(this).hasClass('minus') && currentQuantity > 1) {
-                    currentQuantity -= 1; // Giảm số lượng, tránh giảm dưới 1
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                success: function(response) {
+                    // Nếu xóa thành công, xóa dòng sản phẩm khỏi bảng
+                    form.closest('tr').remove();
+
+                    // Cập nhật lại tổng số tiền sau khi xóa sản phẩm
+                    // $('#totalAmount').text(response.newTotal); // Cập nhật giá trị tổng mới
+
+                    // Nếu bạn muốn định dạng lại số tiền (ví dụ: có dấu phẩy cho hàng nghìn)
+                    // $('#totalAmount').text(new Intl.NumberFormat('vi-VN').format(response.newTotal));
+                },
+                error: function(xhr, status, error) {
+                    alert('Có lỗi xảy ra khi xóa sản phẩm');
                 }
-
-                // Cập nhật số lượng trong ô input
-                $input.val(currentQuantity);
-
-                // Gửi yêu cầu AJAX để cập nhật số lượng trong giỏ hàng
-                $.ajax({
-                    url: '/cart/update', // Đường dẫn đến route xử lý cập nhật giỏ hàng
-                    type: 'POST',
-                    data: {
-                        cart_id: cartId,
-                        quantity: currentQuantity,
-                        _token: '{{ csrf_token() }}' // Đảm bảo có CSRF token
-                    },
-                    success: function(response) {
-                        // Xử lý thành công nếu cần
-                        console.log('Cập nhật thành công!', response);
-                    },
-                    error: function(xhr) {
-                        // Xử lý lỗi nếu cần
-                        console.error('Có lỗi xảy ra!', xhr);
-                    }
-                });
             });
         });
     </script>
