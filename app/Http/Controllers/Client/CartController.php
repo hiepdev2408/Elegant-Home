@@ -110,6 +110,7 @@ class CartController extends Controller
 
     public function update(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'cart_id' => 'required',
             'quantity' => 'required',
@@ -118,6 +119,7 @@ class CartController extends Controller
         $cartDetail = CartDetail::where('cart_id', $request->cart_id)->first();
         if ($cartDetail) {
             $cartDetail->quantity = $request->quantity;
+            $cartDetail->total_amount = $request->quantity * $request->price_modifier;
             $cartDetail->save();
             return back()->with('success', 'Cập nhật thành công!');
         }

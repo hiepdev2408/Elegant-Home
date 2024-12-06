@@ -79,8 +79,8 @@
                                                                 </div>
                                                                 <input type="hidden" name="cart_id"
                                                                     value="{{ $cart->cart_id }}">
-                                                                <input type="hidden" name="price_sale"
-                                                                    value="{{ $cart->variant->product->price_sale }}">
+                                                                <input type="hidden" name="price_modifier"
+                                                                    value="{{ $cart->variant->price_modifier }}">
                                                             </form>
                                                         </td>
 
