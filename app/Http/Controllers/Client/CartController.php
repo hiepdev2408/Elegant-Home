@@ -13,10 +13,6 @@ use App\Models\VariantAttribute;
 use App\Models\Vouchers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-
-use function Laravel\Prompts\alert;
 
 class CartController extends Controller
 {
@@ -121,5 +117,42 @@ class CartController extends Controller
         $carts = $cart ? $cart->cartDetails()->with(['product', 'variant'])->get() : [];
 
         return view('client.cart.listCart', compact('carts'));
+    }
+
+    public function update(Request $request)
+    {
+        // dd($request->all());
+        $request->validate([
+            'cart_id' => 'required',
+            'quantity' => 'required',
+        ]);
+
+        $cartDetail = CartDetail::where('cart_id', $request->cart_id)->first();
+        if ($cartDetail) {
+            $cartDetail->quantity = $request->quantity;
+            $cartDetail->total_amount = $request->quantity * $request->price_modifier;
+            $cartDetail->save();
+            return back()->with('success', 'Cập nhật thành công!');
+        }
+
+        return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra!'], 500);
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $cart = Cart::query()->with('cartDetails')->find($id);
+
+        if ($cart) {
+            $cart->cartDetails()->delete();
+            $cart->delete();
+        } else {
+            return back()->with('error', 'Giỏ hàng không tồn tại!');
+        }
+        return back();
+
     }
 }

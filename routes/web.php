@@ -98,7 +98,8 @@ Route::prefix('cart')
     ->group(function () {
         Route::post('addToCart', 'addToCart')->name('addToCart');
         Route::get('/', 'cart')->name('cart');
-        Route::put('update', 'updateCartQuantity')->name('updateCartQuantity');
+        Route::put('update/{id}', 'update')->name('cart.update');
+        Route::delete('destroy/{id}', 'destroy')->name('destroy');
     });
 
 //ORDER

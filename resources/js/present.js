@@ -14,7 +14,8 @@ window.Echo.join(`chat.${roomId}`)
             document.getElementById("user-status").style.color = "green";
         } else {
             if (roleId === 3) {
-                document.getElementById("user-status").textContent = "Vui lòng đợi ...";
+                document.getElementById("user-status").textContent =
+                    "Vui lòng đợi ...";
                 document.getElementById("user-status").style.color = "red";
             } else {
                 document.getElementById("user-status").textContent = "Offline";
