@@ -55,23 +55,17 @@
                                 SALE
                                 <span>30<i>% OFF</i></span>
                             </div>
-                            <div class="title">2022 Collection</div>
-                            <h1>Furniture <br> Collection</h1>
-                            <div class="price">Starting From <span>$560.99</span></div>
-                            <a href="{{ route('shop') }}" class="shop-now">Shop Now</a>
-                            <!-- Arrival Box -->
-                            <a href="{{ route('shop') }}" class="arrival-box">New Arrival</a>
-                            <!-- Arrival Box -->
+                            <div class="title">2022 Bộ sưu tập</div>
+                            <h1>Nội thất <br> Bộ sưu tập</h1>
+                            <div class="price">Bắt đầu từ <span>500.000 VNĐ</span></div>
+                            <a href="{{ route('shop') }}" class="shop-now">Mua ngay</a>
+                            <a href="{{ route('shop') }}" class="arrival-box">Hàng mới về</a>
                         </div>
                     </div>
-
                 </div>
             </div>
-            <!-- End Slide One -->
 
-            <!-- Slide Two -->
             <div class="slide">
-                <!-- Ct Dot Animated -->
                 <div class="ct-dot-animated">
                     <div class="ct-dot-container">
                         <div class="ct-dot-item">
@@ -85,13 +79,10 @@
                         </div>
                     </div>
                 </div>
-                <!-- End Ct Dot Animated -->
                 <div class="image-layer"
                     style="background-image: url({{ asset('themes/clients/images/main-slider/image-1.jpg') }})">
                 </div>
                 <div class="auto-container">
-
-                    <!-- Content Column -->
                     <div class="content-box">
                         <div class="box-inner">
                             <div class="vector-icon"
@@ -107,23 +98,17 @@
                                 SALE
                                 <span>30<i>% OFF</i></span>
                             </div>
-                            <div class="title">2022 Collection</div>
-                            <h1>Furniture <br> Collection</h1>
-                            <div class="price">Starting From <span>$560.99</span></div>
-                            <a href="{{ route('shop') }}" class="shop-now">Shop Now</a>
-                            <!-- Arrival Box -->
-                            <a href="{{ route('shop') }}" class="arrival-box">New Arrival</a>
-                            <!-- Arrival Box -->
+                            <div class="title">2024 Bộ sưu tập</div>
+                            <h1>Furniture <br> Bộ sưu tập</h1>
+                            <div class="price">Bắt đầu từ <span>500.000 VNĐ</span></div>
+                            <a href="{{ route('shop') }}" class="shop-now">Mua sắm ngay</a>
+                            <a href="{{ route('shop') }}" class="arrival-box">Hàng mới về</a>
                         </div>
                     </div>
 
                 </div>
             </div>
-            <!-- End Slide Two -->
-
-            <!-- Slide Three -->
             <div class="slide">
-                <!-- Ct Dot Animated -->
                 <div class="ct-dot-animated">
                     <div class="ct-dot-container">
                         <div class="ct-dot-item">
@@ -137,13 +122,10 @@
                         </div>
                     </div>
                 </div>
-                <!-- End Ct Dot Animated -->
                 <div class="image-layer"
                     style="background-image: url({{ asset('themes/clients/images/main-slider/image-1.jpg') }})">
                 </div>
                 <div class="auto-container">
-
-                    <!-- Content Column -->
                     <div class="content-box">
                         <div class="box-inner">
                             <div class="vector-icon"
@@ -159,20 +141,15 @@
                                 SALE
                                 <span>30<i>% OFF</i></span>
                             </div>
-                            <div class="title">2022 Collection</div>
-                            <h1>Furniture <br> Collection</h1>
-                            <div class="price">Starting From <span>$560.99</span></div>
-                            <a href="shop-detail.html" class="shop-now">Shop Now</a>
-                            <!-- Arrival Box -->
-                            <a href="shop.html" class="arrival-box">New Arrival</a>
-                            <!-- Arrival Box -->
+                            <div class="title">2024 Bộ sưu tập</div>
+                            <h1>Nội thất <br> Bộ sưu tập</h1>
+                            <div class="price">Bắt đầu từ <span>500.000 VNĐ</span></div>
+                            <a href="shop-detail.html" class="shop-now">Mua sắm ngay</a>
+                            <a href="shop.html" class="arrival-box">Hàng mới về</a>
                         </div>
                     </div>
-
                 </div>
             </div>
-            <!-- End Slide Three -->
-
         </div>
         <div class="hover-box">
             <div class="dott"></div>
@@ -184,8 +161,8 @@
                     <span class="light fa fa-star"></span>
                     <span class="light fa fa-star"></span>
                 </div>
-                <div class="hover-title">Pot Plastics Color</div>
-                <div class="hover-price">$28.52 - <span>$30.00</span></div>
+                <div class="hover-title">Màu sắc của nhựa chậu</div>
+                <div class="hover-price">$ - <span>$30.00</span></div>
             </div>
         </div>
         <div class="hover-box style-two">
@@ -215,46 +192,42 @@
             <div class="inner-container">
                 <div class="row clearfix">
 
-                    <!-- Feature Block -->
                     <div class="feature-block col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <div class="inner-box">
                             <div class="content">
                                 <div class="icon flaticon-fast"></div>
-                                <strong>Free Shipping</strong>
-                                <div class="text">Free shipping over $100</div>
+                                <strong>Miễn phí vận chuyển</strong>
+                                <div class="text">Miễn phí vận chuyển với những đơn hàng trên 1 triệu đồng</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Feature Block -->
                     <div class="feature-block col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <div class="inner-box">
                             <div class="content">
                                 <div class="icon flaticon-padlock"></div>
-                                <strong>Payment Secure</strong>
-                                <div class="text">Got 100% Payment Safe</div>
+                                <strong>Thanh toán an toàn</strong>
+                                <div class="text">Đã nhận được 100% thanh toán an toàn</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Feature Block -->
                     <div class="feature-block col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <div class="inner-box">
                             <div class="content">
                                 <div class="icon flaticon-headphones-1"></div>
-                                <strong>Support 24/7</strong>
-                                <div class="text">Top quialty 24/7 Support</div>
+                                <strong>Hỗ trợ 24/7</strong>
+                                <div class="text">Hỗ trợ chất lượng cao 24/7</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Feature Block -->
                     <div class="feature-block col-xl-3 col-lg-6 col-md-6 col-sm-12">
                         <div class="inner-box">
                             <div class="content">
                                 <div class="icon flaticon-wallet"></div>
-                                <strong>100% Money Back</strong>
-                                <div class="text">Cutomers Money Backs</div>
+                                <strong>Hoàn tiền 100%</strong>
+                                <div class="text">Hoàn tiền cho khách hàng</div>
                             </div>
                         </div>
                     </div>
@@ -269,52 +242,54 @@
         <div class="auto-container">
             <!-- Sec Title -->
             <div class="sec-title">
-                <h4><span>Populer</span> Products For You !</h4>
+                <h4><span>Phổ biến</span> Sản phẩm dành cho bạn!</h4>
             </div>
             <div class="four-item-carousel owl-carousel owl-theme">
                 @foreach ($products as $product)
-                    <div class="shop-item shadow rounded border">
-                        <div class="inner-box">
-                            <div class="image">
-                                <a href="{{ route('productDetail', ['slug' => $product->slug]) }}">
-                                    @if ($product->img_thumbnail)
-                                        <img src="{{ Storage::url($product->img_thumbnail) }}" alt="" />
-                                    @endif
-                                </a>
-                                @if (Auth::check())
-                                    <a href="{{ route('favourite', $product->id) }}"><span
-                                            class="tag flaticon-heart"></span></a>
-                                @endif
-
-                                <div class="cart-box text-center">
-                                    <a class="cart" href="#">Add to Cart</a>
-                                </div>
-                            </div>
-                            <div class="lower-content p-3">
-                                <div class="rating">
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="light fa fa-star"></span>
-                                </div>
-                                <h6><a href="shop-detail.html">{{ Str::limit($product->name, 30) }}</a></h6>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="price">
-                                        @if ($product->price_sale == '')
-                                            <span
-                                                class="new-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
-                                        @else
-                                            <span
-                                                class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
-                                            <span
-                                                class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ</span>
+                    @if ($product->is_show_home == 1)
+                        <div class="shop-item shadow rounded border">
+                            <div class="inner-box">
+                                <div class="image">
+                                    <a href="{{ route('productDetail', ['slug' => $product->slug]) }}">
+                                        @if ($product->img_thumbnail)
+                                            <img src="{{ Storage::url($product->img_thumbnail) }}" alt="" />
                                         @endif
+                                    </a>
+                                    @if (Auth::check())
+                                        <a href="{{ route('favourite', $product->id) }}"><span
+                                                class="tag flaticon-heart"></span></a>
+                                    @endif
+
+                                    <div class="cart-box text-center">
+                                        <a class="cart" href="#">Add to Cart</a>
+                                    </div>
+                                </div>
+                                <div class="lower-content p-3">
+                                    <div class="rating">
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="fa fa-star"></span>
+                                        <span class="light fa fa-star"></span>
+                                    </div>
+                                    <h6><a href="shop-detail.html">{{ Str::limit($product->name, 30) }}</a></h6>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="price">
+                                            @if ($product->price_sale == '')
+                                                <span
+                                                    class="new-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                            @else
+                                                <span
+                                                    class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                                <span
+                                                    class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ</span>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 @endforeach
             </div>
         </div>
@@ -360,10 +335,9 @@
                             <img src="{{ asset('themes/clients/images/resource/shop-1.jpg') }}" alt="" />
                             <div class="overlay-box">
                                 <div class="overlay-inner">
-                                    <div class="off">Get 30% off</div>
-                                    <h5><a href="shop-detail.html">Be together in the moment <br> with Barnix
-                                            calling</a></h5>
-                                    <a class="buy-now" href="shop-detail.html">buy now</a>
+                                    <div class="off">Giảm giá 30%</div>
+                                    <h5><a href="{{ route('shop') }}">Hãy ở bên nhau trong khoảnh khắc này <br> với Elegant Home gọi</a></h5>
+                                    <a class="buy-now" href="{{ route('shop') }}">Mua ngay</a>
                                 </div>
                             </div>
                         </div>
@@ -374,17 +348,16 @@
                 <div class="sale-block col-xl-6 col-lg-6 col-md-12 col-sm-12">
                     <div class="inner-box">
                         <div class="sale-box">
-                            SALE
-                            <span>30<i>% OFF</i></span>
+                            GIẢM GIÁ
+                            <span>30<i>%</i></span>
                         </div>
                         <div class="image d-flex justify-content-between align-items-center">
                             <img src="{{ asset('themes/clients/images/resource/shop-2.jpg') }}" alt="" />
                             <div class="overlay-box">
                                 <div class="overlay-inner">
                                     <div class="off">Get 30% off</div>
-                                    <h5><a href="shop-detail.html">Be together in the moment <br> with Barnix
-                                            calling</a></h5>
-                                    <a class="buy-now" href="shop-detail.html">buy now</a>
+                                    <h5><a href="{{ route('shop') }}">Hãy ở bên nhau trong khoảnh khắc này <br> với Elegant Home gọi</a></h5>
+                                    <a class="buy-now" href="{{ route('shop') }}">Mua ngay</a>
                                 </div>
                             </div>
                         </div>
@@ -821,25 +794,18 @@
                                 <div class="counter-text">Furniture Product For Home</div>
                             </div>
                         </div>
-
-                        <!-- Counter Column -->
                         <div class="counter-block col-lg-6 col-md-6 col-sm-6">
                             <div class="inner-box d-flex align-items-center">
                                 <div class="counter"><span class="odometer" data-count="120"></span>k</div>
                                 <div class="counter-text">Our Satiesfiyed Clients</div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-                <!-- End Counter Boxed -->
-
             </div>
         </div>
     </section>
-    <!-- End Counter Section -->
 
-    <!-- Collection Section -->
     <section class="collection-section">
         <div class="auto-container">
             <div class="inner-container">
@@ -849,11 +815,10 @@
                     style="background-image: url({{ asset('themes/clients/images/background/pattern-1.png') }})"></div>
                 <div class="row clearfix">
                     <div class="title-column col-lg-6 col-md-12 col-sm-12">
-                        <div class="title">2021 Collection</div>
-                        <h2>mens Black Meta Sunglass</h2>
+                        <div class="title">2024 Bộ sưu tập</div>
+                        <h2>Kính mát nam Black Meta</h2>
                         <div class="deals">Deals <span>35% Flat</span></div>
-                        <a class="shop-now" href="shop-detail.html">Shop Now</a>
-                        <!-- Arrow -->
+                        <a class="shop-now" href="shop-detail.html">Mua ngay</a>
                         <div class="arrow">
                             <img src="images/icons/arrow-1.png" alt="" />
                         </div>

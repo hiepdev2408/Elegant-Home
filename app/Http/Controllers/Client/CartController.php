@@ -26,7 +26,7 @@ class CartController extends Controller
         $cart = Cart::firstOrCreate(['user_id' => $user->id]);
 
         $productId = $request->input('product_id');
-        $variantAttributeIds = $request->input('variant_attributes.attribute_value_id', []); // Mặc định là mảng rỗng
+        $variantAttributeIds = $request->input('variant_attributes.attribute_value_id', []);
         $quantity = $request->input('quantity', 1);
         $totalAmount = $request->input('total_amount', 0);
 
@@ -59,17 +59,21 @@ class CartController extends Controller
                 ->first();
 
             $totalAmountVariant = $matchingVariant->price_modifier;
+
             if ($cartDetail) {
-                if ($matchingVariant->stock < $quantity) {
+                $newQuantity = $cartDetail->quantity + $quantity;
+                if ($matchingVariant->stock < $newQuantity) {
                     return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
                 }
-                $cartDetail->quantity += $quantity;
+
+                $cartDetail->quantity = $newQuantity;
                 $cartDetail->total_amount += $totalAmountVariant * $quantity;
                 $cartDetail->save();
             } else {
                 if ($matchingVariant->stock < $quantity) {
                     return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
                 }
+
                 CartDetail::create([
                     'cart_id' => $cart->id,
                     'variant_id' => $matchingVariant->id,
@@ -79,26 +83,25 @@ class CartController extends Controller
             }
         } else {
             $product = Product::find($productId);
-            foreach ($product->variants as $variant) {
-                if ($variant->stock < $quantity) {
-                    return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
-                }
-            }
 
             $cartDetail = CartDetail::where('cart_id', $cart->id)
                 ->where('product_id', $productId)
                 ->first();
 
             if ($cartDetail) {
-                $cartDetail->quantity += $quantity;
+                $newQuantity = $cartDetail->quantity + $quantity;
+                if ($product->stock < $newQuantity) {
+                    return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
+                }
+
+                $cartDetail->quantity = $newQuantity;
                 $cartDetail->total_amount += $totalAmount;
                 $cartDetail->save();
             } else {
-                foreach ($product->variants as $variant) {
-                    if ($variant->stock < $quantity) {
-                        return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
-                    }
+                if ($product->stock < $quantity) {
+                    return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
                 }
+
                 CartDetail::create([
                     'cart_id' => $cart->id,
                     'product_id' => $productId,
@@ -110,6 +113,7 @@ class CartController extends Controller
 
         return back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
+
 
     public function cart()
     {

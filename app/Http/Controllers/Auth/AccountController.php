@@ -36,15 +36,14 @@ class AccountController extends Controller
         $data = $request->only('email', 'password');
         $check = auth('web')->attempt($data);
         if ($check) {
-            //kiểm tra ng dùng đã email_verified_at chưa
             if (auth('web')->user()->email_verified_at == '') {
                 auth('web')->logout();
                 return redirect()->back()->with('erorr', 'Tài khoản chưa được xác thực bằng email.Vui lòng kiểm tra tin nhắn Gmail');
             }
-            return redirect()->route('home')->with('success', 'Đăng nhập thành công');
+            return redirect()->route('home')->with('success', 'Đăng nhập tài khoản thành công !');
         }
         return redirect()->back()->with([
-            'messageError' => 'Email đăng nhập hoặc mật khẩu sai',
+            'error' => 'Thông tin đăng nhập chưa chính xác. Vui lòng thử lại',
         ]);
     }
     public function showFormRegister()
@@ -53,7 +52,6 @@ class AccountController extends Controller
     }
     public function register(Request $request)
     {
-        // Xác thực dữ liệu
         $request->validate([
             'name' => 'required|min:6|max:100',
             'email' => 'required|email|unique:users',
@@ -78,21 +76,17 @@ class AccountController extends Controller
             'password_confirmation.same' => 'Xác nhận mật khẩu phải trùng với mật khẩu bên trên',
         ]);
 
-        // Tạo người dùng mới
         $user = $request->only(['name', 'email', 'phone', 'address']);
         $request['role_id'] = 3;
         $user['password'] = bcrypt($request->password);
 
-        // Lưu người dùng vào cơ sở dữ liệu
         $acc = User::create($user);
 
         if ($acc) {
-            // Gửi email xác minh
             Mail::to($acc->email)->send(new VerifyAccount($acc));
             return redirect()->route('login')->with('oke', 'Đăng ký thành công, vui lòng kiểm tra Gmail để xác nhận tài khoản');
         }
 
-        // Nếu có lỗi, hiển thị cho người dùng
         return redirect()->back()->withErrors(['msg' => 'Có lỗi xảy ra trong quá trình đăng ký']);
 
 
@@ -157,7 +151,7 @@ class AccountController extends Controller
         request()->session()->invalidate();
         request()->session()->regenerateToken();
         return redirect('/')
-            ->with('success', 'Đăng xuất thành công!');
+            ->with('success', 'Bạn đã đăng xuất. Chúc bạn một ngày tốt lành!');
     }
     // Favorite
     public function showFavorite()

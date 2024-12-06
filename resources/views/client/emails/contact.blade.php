@@ -102,13 +102,6 @@
                             font-weight: bold;
                         }
                     </style>
-
-                    @if (session()->has('success'))
-                        <div class="alert alert-success fw-bold">
-                            {{ session()->get('success') }}
-                        </div>
-                    @endif
-                    <!-- Contact Form -->
                     <div class="contact-form">
                         <form method="post" action="{{ route('contact.submit') }}" method="POST" method="POST">
                             @csrf
