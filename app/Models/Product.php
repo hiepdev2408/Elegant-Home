@@ -47,19 +47,23 @@ class Product extends Model
         return $this->hasMany(Variant::class);
     }
 
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
 
-    public function cartDetails(){
+    public function cartDetails()
+    {
         return $this->hasMany(CartDetail::class);
     }
 
-    public function orderDetails(){
+    public function orderDetails()
+    {
         return $this->hasMany(OrderDetail::class);
     }
-    public function vouchers(){
-        return $this->belongsToMany(Vouchers::class, 'product_voucher','voucher_id','product_id');
+    public function vouchers()
+    {
+        return $this->belongsToMany(Vouchers::class, 'product_voucher', 'voucher_id', 'product_id');
     }
     public function sales(){
         return $this->belongsToMany(Sale::class, 'product_sale');
@@ -68,4 +72,10 @@ class Product extends Model
     public function orders(){
         return $this->hasMany(Order::class);
     }
+
+    public function stockMovements()
+    {
+        return $this->hasMany(StockMovement::class);
+    }
+
 }

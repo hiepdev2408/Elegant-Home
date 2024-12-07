@@ -96,7 +96,6 @@ class HomeController extends Controller
     }
     public function detail($slug)
     {
-        $totalCart = getCartItemCount();
         $product = Product::where([
             ['slug', $slug],
         ])
@@ -181,7 +180,7 @@ class HomeController extends Controller
     public function compose(View $view)
     {
         $userId = Auth::id();
-        $favouritecount = $userId ? Favourite::where('user_id', $userId)->count() : 0;
+        // $favouritecount = $userId ? Favourite::where('user_id', $userId)->count() : 0;
         $totalCart = $userId ? CartDetail::query()->where('cart_id', function ($query) use ($userId) {
             $query->select('id')
                 ->from('carts')
@@ -190,7 +189,7 @@ class HomeController extends Controller
         })->count() : 0;
 
         $view->with([
-            'favouritecount' => $favouritecount,
+            // 'favouritecount' => $favouritecount,
             'totalCart' => $totalCart
         ]);
     }

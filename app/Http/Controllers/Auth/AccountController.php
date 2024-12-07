@@ -100,8 +100,7 @@ class AccountController extends Controller
 
     public function showFormForgotPassword()
     {
-        $totalCart = getCartItemCount();
-        return view('client.auth.passwords.email', compact('totalCart'));
+        return view('client.auth.passwords.email');
     }
 
     public function sendResetLinkEmail(Request $request)
@@ -118,9 +117,7 @@ class AccountController extends Controller
 
     public function showFormReset($token)
     {
-        $totalCart = getCartItemCount();
-
-        return view('client.auth.passwords.reset', compact('totalCart'))->with(['token' => $token]);
+        return view('client.auth.passwords.reset')->with(['token' => $token]);
     }
 
 
@@ -156,10 +153,9 @@ class AccountController extends Controller
     // Favorite
     public function showFavorite()
     {
-        $totalCart = getCartItemCount();
         $favorite = auth()->user()->favorites;
 
-        return view('client.auth.favorite', compact('favorite', 'totalCart'));
+        return view('client.auth.favorite', compact('favorite'));
     }
     public function deleteFavorite($id)
     {

@@ -55,7 +55,7 @@ class ChatController extends Controller
             'message' => $request->message,
         ]);
 
-        broadcast(new MessageSent($message,  $request->room_id))->toOthers();
+        broadcast(new MessageSent($message, $request->room_id))->toOthers();
         if (auth()->user()->role_id != 1) {  // Kiểm tra nếu role_id không phải là 1 (admin)
             event(new NewMessageReceived($request->message, auth()->user()->name));
         }
@@ -80,8 +80,8 @@ class ChatController extends Controller
     {
         // Lấy tất cả các phòng chat, sắp xếp theo thời gian gần nhất
         $rooms = Room::with('user')
-        ->where('user_id', '!=', auth()->id())
-        ->orderBy('updated_at', 'desc')->get();
+            ->where('user_id', '!=', auth()->id())
+            ->orderBy('updated_at', 'desc')->get();
         // Trả về view với danh sách phòng và tin nhắn
         return view('admin.chat.chat-admin', compact('rooms'));
     }
