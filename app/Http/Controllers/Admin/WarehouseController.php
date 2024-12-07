@@ -19,19 +19,24 @@ class WarehouseController extends Controller
     }
     public function create()
     {
-        $product = Product::pluck('name', 'id')->all();
+        $products = Product::with([
+            'variants.attributes' => function ($query) {
+                $query->with('attribute', 'attributeValue');
+            }
+        ])->get();
         $user = User::pluck('name', 'id')->all();
-        return view('admin.warehouses.create', compact('product', 'user'));
+        return view('admin.warehouses.create', compact('products', 'user'));
     }
     public function store(Request $request)
     {
+        dd($request->all());
         $request->validate([
             'quantity' => 'required',
             'price_import' => 'required',
             'Total_amount' => 'required',
         ]);
-        $warehouseData = $request->only('product_id',  'quantity', 'price_import', 'date_import', 'Date_manufacture', 'Total_amount');
-        $warehouseData['user_id']=auth()->user()->id;
+        $warehouseData = $request->only('product_id', 'quantity', 'price_import', 'date_import', 'Date_manufacture', 'Total_amount');
+        $warehouseData['user_id'] = auth()->user()->id;
 
         warehouse::create($warehouseData);
         return redirect()->route('warehouses.index');
@@ -39,7 +44,7 @@ class WarehouseController extends Controller
     public function show(string $id)
     {
         $warehouse = Warehouse::findOrFail($id);
-        $warehouse->load(['product','user']);
+        $warehouse->load(['product', 'user']);
         return view('admin.warehouses.show', compact('warehouse'));
     }
 }

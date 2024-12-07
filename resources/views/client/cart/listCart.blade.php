@@ -11,7 +11,7 @@
 
                 <!-- Cart Column -->
                 @if ($carts)
-                    <div class="cart-column col-lg-8 col-md-12 col-sm-12">
+                    <div id="cart-items" class="cart-column col-lg-8 col-md-12 col-sm-12">
                         <div class="inner-column">
                             <!--Cart Outer-->
                             <div class="cart-outer">
@@ -31,7 +31,7 @@
                                         @endphp
                                         @foreach ($carts as $cart)
                                             @if ($cart->variant)
-                                                <tbody>
+                                                <tbody id="cart-item-{{ $cart->id }}">
                                                     <tr>
                                                         <td colspan="2" class="prod-column">
                                                             <div class="column-box">
@@ -54,7 +54,9 @@
                                                                 <div class="prod-text">Tên sản phẩm :
                                                                     {{ Str::limit($cart->variant->product->name, 10) }} <br>
                                                                     Quantity :
-                                                                    {{ $cart->quantity }}</div>
+                                                                    <span
+                                                                        id="quantity-{{ $cart->id }}">{{ $cart->quantity }}</span>
+                                                                </div>
                                                             </div>
                                                         </td>
 
@@ -64,13 +66,14 @@
                                                         </td>
                                                         <!-- Quantity Box -->
                                                         <td class="quantity-box">
-                                                            <form id="update-cart-form-{{ $cart->id }}"
+                                                            <form class="update-cart-form" data-id="{{ $cart->id }}"
                                                                 action="{{ route('cart.update', $cart->id) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <div class="item-quantity">
-                                                                    <input class="qty-spinner" type="text"
+                                                                    <input id="quantity-{{ $cart->id }}"
+                                                                        class="qty-spinner" type="text"
                                                                         value="{{ $cart->quantity }}" name="quantity"
                                                                         readonly>
                                                                 </div>
@@ -79,7 +82,7 @@
                                                             </form>
                                                         </td>
 
-                                                        <td>
+                                                        <td id="total-amount-{{ $cart->id }}">
                                                             @php
                                                                 $money = $cart->total_amount;
                                                                 $totalAmount += $money;
@@ -88,7 +91,7 @@
                                                         </td>
                                                 </tbody>
                                             @elseif ($cart->product)
-                                                <tbody>
+                                                <tbody id="cart-item-{{ $cart->id }}">
                                                     <tr>
                                                         <td colspan="2" class="prod-column">
                                                             <div class="column-box">
@@ -126,14 +129,12 @@
                                                                         value="{{ $cart->quantity }}" name="quantity"
                                                                         readonly>
                                                                 </div>
-                                                                <input type="hidden" name="cart_id"
-                                                                    value="{{ $cart->cart_id }}">
                                                                 <input type="hidden" name="price_sale"
                                                                     value="{{ $cart->variant->product->price_sale }}">
                                                             </form>
                                                         </td>
 
-                                                        <td>
+                                                        <td id="total-amount-{{ $cart->id }}">
                                                             @php
                                                                 $money = $cart->total_amount;
                                                                 $totalAmount += $money;
@@ -152,7 +153,7 @@
                     </div>
 
                     <!-- Total Column -->
-                    <div class="total-column col-lg-4 col-md-12 col-sm-12">
+                    <div id="cart-itemss" class="total-column col-lg-4 col-md-12 col-sm-12">
                         <div class="inner-column">
 
                             <!-- Cart Total Outer -->
@@ -164,11 +165,13 @@
 
                                 <div class="cart-total-box">
                                     <ul class="cart-totals">
-                                        <li>Tạm Tính: <span id="totalAmount">{{ number_format($totalAmount, 0, ',', '.') }}
+                                        <li>Tạm Tính: <span
+                                                id="overall-total">{{ number_format($totalAmount, 0, ',', '.') }}
                                                 VNĐ</span>
                                         </li>
                                         <br>
-                                        <li>Tổng phụ: <span id="totalAmount">{{ number_format($totalAmount, 0, ',', '.') }}
+                                        <li>Tổng phụ: <span
+                                                id="overall-totals">{{ number_format($totalAmount, 0, ',', '.') }}
                                                 VNĐ</span></li>
                                     </ul>
                                     <div class="check-box">
@@ -186,7 +189,7 @@
                         </div>
                     </div>
                 @else
-                    <div class="empty-cart-box text-center">
+                    <div class="empty-cart-box text-center" id="empty-cart">
                         <img class="mb-4 mt-4"
                             src="https://static-smember.cellphones.com.vn/smember/_nuxt/img/empty.db6deab.svg"
                             alt="Empty Cart" width="300px">
@@ -276,6 +279,56 @@
 
 @section('script-libs')
     <script>
+        $('.update-cart-form').submit(function(event) {
+            event.preventDefault(); // Ngừng reload trang
+
+            var form = $(this);
+            var cartId = form.data('id');
+            var actionUrl = form.attr('action');
+            var formData = form.serialize();
+
+            $.ajax({
+                url: actionUrl,
+                type: 'POST', // Phương thức
+                data: formData,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // CSRF Token
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Hiển thị thông báo thành công
+                        notyf.success(response.message);
+
+                        // Kiểm tra nếu số lượng dưới 0 sẽ xóa
+                        if (response.cartDetailId) {
+                            // Xóa dòng sản phẩm trong bảng
+                            $(`#cart-item-${response.cartDetailId}`).remove();
+                        }
+
+                        $(`#quantity-${cartId}`).text(response.cartDetail.quantity);
+
+                        $(`#total-amount-${cartId}`).text(response
+                            .totalAmountFormatted);
+
+                        // Cập nhật tổng tiền nếu cần
+                        if (response.overallTotalFormatted) {
+                            $('#overall-total').text(response.overallTotalFormatted);
+                            $('#overall-totals').text(response.overallTotalFormatted);
+                        }
+                    } else {
+                        // Hiển thị thông báo lỗi
+                        notyf.error(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Hiển thị thông báo lỗi
+                    notyf.error('Có lỗi xảy ra khi kết nối đến server!');
+                }
+
+            });
+        });
+    </script>
+    <script>
         $('.delete-cart-form').submit(function(event) {
             event.preventDefault(); // Ngừng reload trang
             var form = $(this);
@@ -286,14 +339,15 @@
                 type: 'POST',
                 data: form.serialize(),
                 success: function(response) {
+                    notyf.success(response.message);
                     // Nếu xóa thành công, xóa dòng sản phẩm khỏi bảng
                     form.closest('tr').remove();
 
-                    // Cập nhật lại tổng số tiền sau khi xóa sản phẩm
-                    // $('#totalAmount').text(response.newTotal); // Cập nhật giá trị tổng mới
-
-                    // Nếu bạn muốn định dạng lại số tiền (ví dụ: có dấu phẩy cho hàng nghìn)
-                    // $('#totalAmount').text(new Intl.NumberFormat('vi-VN').format(response.newTotal));
+                    // Cập nhật tổng tiền nếu cần
+                    if (response.overallTotalFormatted) {
+                        $('#overall-total').text(response.overallTotalFormatted);
+                        $('#overall-totals').text(response.overallTotalFormatted);
+                    }
                 },
                 error: function(xhr, status, error) {
                     alert('Có lỗi xảy ra khi xóa sản phẩm');

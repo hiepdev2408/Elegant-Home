@@ -21,14 +21,11 @@
             </div>
         @endif
 
-        {{-- @if (session('low_stock'))
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                {{ session('low_stock') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif --}}
-
-        <div class="card-header d-flex justify-content-end align-items-center mb-3">
+        <div class="card-header d-flex justify-content-end align-items-center mb-3 gap-3">
+            <a class="btn btn-primary" href="{{ route('warehouses.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Nhập
+                hàng</a>
+            <a class="btn btn-warning" href="{{ route('warehouses.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Xuất
+                Hàng</a>
             <a class="btn btn-info" href="{{ route('products.index') }}">Xem sản phẩm</a>
         </div>
         <div class="card">

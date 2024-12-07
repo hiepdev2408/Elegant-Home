@@ -11,7 +11,6 @@ use App\Models\UserVoucher;
 use App\Models\Variant;
 use App\Models\VariantAttribute;
 use App\Models\Vouchers;
-use Illuminate\Console\View\Components\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -122,44 +121,64 @@ class CartController extends Controller
 
     public function update(Request $request, string $id)
     {
-        // dd($request->all());
         $request->validate([
-            'quantity' => 'required',
+            'quantity' => 'required|integer|min:0',
         ]);
 
+        // Lấy chi tiết giỏ hàng
         $cartDetail = CartDetail::query()->with('cart', 'variant')->findOrFail($id);
 
         if (!$cartDetail) {
-            return back()->with('error', 'Giỏ hàng không tồn tại!');
+            return response()->json(['success' => false, 'message' => 'Giỏ hàng không tồn tại!'], 404);
         }
 
         // Kiểm tra số lượng tồn kho
         if ($request->quantity > $cartDetail->variant->stock) {
-            return back()->with('error', 'Số lượng yêu cầu vượt quá tồn kho của sản phẩm.');
+            return response()->json([
+                'success' => false,
+                'message' => 'Số lượng yêu cầu vượt quá tồn kho của sản phẩm.',
+            ], 400);
         }
+
+        // Xóa sản phẩm nếu số lượng <= 0
         if ($request->quantity <= 0) {
-            // Xóa chi tiết giỏ hàng nếu số lượng <= 0
             $cartDetail->delete();
 
-            // Kiểm tra nếu giỏ hàng không còn chi tiết nào thì xóa giỏ hàng
+            // Kiểm tra nếu giỏ hàng không còn chi tiết nào
             if ($cartDetail->cart->cartDetails()->count() === 0) {
                 $cartDetail->cart->delete();
-                return back()->with('error', 'Tất cả sản phẩm đã bị xóa khỏi giỏ hàng!');
+                return back()->with(
+                    'success',
+                    'Tất cả sản phẩm đã bị xóa khỏi giỏ hàng!',
+                );
             }
-
-            return back()->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng!');
+            $overallTotal = $cartDetail->cart->cartDetails->sum('total_amount');
+            return response()->json([
+                'success' => true,
+                'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng!',
+                'cartDetailId' => $id,
+                'overallTotalFormatted' => number_format($overallTotal, 0, ',', '.') . ' VNĐ',
+            ], 200);
         }
 
-        if ($cartDetail) {
-            $cartDetail->quantity = $request->quantity;
-            $cartDetail->total_amount = $request->quantity * $request->price_modifier;
-            $cartDetail->save();
-            return back()->with('success', 'Cập nhật số lượng thành công!');
-        }
+        // Cập nhật số lượng và tổng tiền
+        $cartDetail->quantity = $request->quantity;
+        $cartDetail->total_amount = $request->quantity * ($cartDetail->variant->price_modifier ?? 0);
+        $cartDetail->save();
 
-        return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra!'], 500);
+        // Lấy tổng tiền giỏ hàng
+        $overallTotal = $cartDetail->cart->cartDetails->sum('total_amount');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cập nhật số lượng thành công!',
+            'cartDetail' => [
+                'quantity' => $cartDetail->quantity,
+            ],
+            'totalAmountFormatted' => number_format($cartDetail->total_amount, 0, ',', '.') . ' VNĐ',
+            'overallTotalFormatted' => number_format($overallTotal, 0, ',', '.') . ' VNĐ',
+        ], 200);
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -173,6 +192,7 @@ class CartController extends Controller
             return back()->with('error', 'Giỏ hàng không tồn tại!');
         }
         $cartDetail->delete();
+        $overallTotal = $cartDetail->cart->cartDetails->sum('total_amount');
 
         // Lấy id giỏ hàng
         $cart = $cartDetail->cart;
@@ -181,7 +201,13 @@ class CartController extends Controller
             $cart->delete();
             return back()->with('error', 'Tất cả sản phẩm đã bị xóa khỏi giỏ hàng!');
         }
-        return back()->with('success', 'Xóa sản phẩm thành công!');
+
+        return response()->json([
+            'success' => true,
+            'message' =>
+                'Xóa sản phẩm thành công!',
+            'overallTotalFormatted' => number_format($overallTotal, 0, ',', '.') . ' VNĐ',
+        ]);
         ;
 
     }

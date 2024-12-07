@@ -41,3 +41,13 @@
         @endif
     });
 </script>
+
+<script>
+    const notyf = new Notyf({
+        duration: 3000, // Thời gian hiển thị (ms)
+        position: {
+            x: 'right',
+            y: 'top'
+        }, // Vị trí thông báo
+    });
+</script>

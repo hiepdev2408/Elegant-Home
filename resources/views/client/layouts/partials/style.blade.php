@@ -3,7 +3,7 @@
 <link href="{{ asset('themes') }}/clients/css/responsive.css" rel="stylesheet">
 <style>
     .notyf__toast {
-        top: 52px !important;
+        top: 60px !important;
         /* Khoảng cách từ cạnh trên */
     }
 </style>

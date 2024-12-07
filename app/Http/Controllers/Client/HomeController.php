@@ -59,7 +59,6 @@ class HomeController extends Controller
 
     public function detail($slug)
     {
-        $totalCart = getCartItemCount();
         $product = Product::where([
             ['slug', $slug],
         ])
@@ -89,7 +88,7 @@ class HomeController extends Controller
         $product->increment('view');
 
         // Trả về view với thông tin sản phẩm và sản phẩm liên quan
-        return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes', 'totalCart'));
+        return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes'));
     }
 
 
@@ -133,7 +132,7 @@ class HomeController extends Controller
     public function compose(View $view)
     {
         $userId = Auth::id();
-        $favouritecount = $userId ? Favourite::where('user_id', $userId)->count() : 0;
+        // $favouritecount = $userId ? Favourite::where('user_id', $userId)->count() : 0;
         $totalCart = $userId ? CartDetail::query()->where('cart_id', function ($query) use ($userId) {
             $query->select('id')
                 ->from('carts')
@@ -142,7 +141,7 @@ class HomeController extends Controller
         })->count() : 0;
 
         $view->with([
-            'favouritecount' => $favouritecount,
+            // 'favouritecount' => $favouritecount,
             'totalCart' => $totalCart
         ]);
     }

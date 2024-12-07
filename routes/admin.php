@@ -77,8 +77,18 @@ Route::prefix('admin')
             Route::get('edit/{id}', [ProductController::class, 'edit'])->name('edit');
             Route::put('update/{id}', [ProductController::class, 'update'])->name('update');
             Route::delete('destroy/{id}', [ProductController::class, 'destroy'])->name('destroy');
-            Route::get('/warehouse', [ProductController::class, 'warehouse'])->name('warehouse');
+            Route::get('/warehouses', [ProductController::class, 'warehouse'])->name('warehouses');
             Route::put('updateStock/{variant}', [ProductController::class, 'updateStock'])->name('updateStock');
+        });
+
+        //warehouses
+        Route::prefix('warehouses')
+            ->as('warehouses.')
+            ->group(function () {
+            Route::get('/', [WarehouseController::class, 'index'])->name('index');
+            Route::get('create', [WarehouseController::class, 'create'])->name('create');
+            Route::put('store', [WarehouseController::class, 'store'])->name('store');
+            Route::get('show/{id}', [WarehouseController::class, 'show'])->name('show');
         });
 
         // Category
@@ -173,15 +183,6 @@ Route::prefix('admin')
             ->name('chat.admin');
         Route::get('/chat/messages/{roomId}', [ChatController::class, 'getMessages'])->name('chat.messages');
 
-        //warehouses
-        Route::prefix('warehouses')
-            ->as('warehouses.')
-            ->group(function () {
-            Route::get('/', [WarehouseController::class, 'index'])->name('index');
-            Route::get('create', [WarehouseController::class, 'create'])->name('create');
-            Route::post('store', [WarehouseController::class, 'store'])->name('store');
-            Route::get('show/{id}', [WarehouseController::class, 'show'])->name('show');
-        });
         //export warehouse
         Route::prefix('exportwarehouses')
             ->as('exportwarehouses.')
