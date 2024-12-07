@@ -61,4 +61,7 @@ class Product extends Model
     public function vouchers(){
         return $this->belongsToMany(Vouchers::class, 'product_voucher','voucher_id','product_id');
     }
+    public function sales(){
+        return $this->belongsToMany(Sale::class, 'product_sale');
+    }
 }

@@ -260,7 +260,7 @@
         <div class="auto-container">
             <!-- Sec Title -->
             <div class="sec-title">
-                <h4><span>Populer</span> Products For You !</h4>
+                <h4><span>Product</span>Product For You</h4>
             </div>
             <div class="four-item-carousel owl-carousel owl-theme">
                 @foreach ($products as $product)
@@ -291,14 +291,121 @@
                                 <h6><a href="shop-detail.html">{{ Str::limit($product->name, 30) }}</a></h6>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="price">
-                                        <span class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
-                                        <span class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.' )}}VNĐ</span>
+                                        <span class="old-price">{{ number_format($product['base_price'], 0, ',', '.') }} VNĐ</span>
+                                        <span class="new-price">{{ number_format($product['price_sale'], 0, ',', '.') }} VNĐ</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- Product sale --}}
+    <section class="products-section">
+        <div class="auto-container">
+            <!-- Sec Title -->
+            <div class="sec-title">
+                @if ($sales->isNotEmpty())
+                    @foreach ($sales as $sale)
+                        <h4><span>Sales Off:</span> {{ number_format($sale->discount_percentage, 0, ',', '.') }}%</h4>
+                        <div class="sale-timer" id="sale-timer-{{ $sale->id }}">
+                            <p>Thời gian còn lại: <span id="countdown-{{ $sale->id }}"></span></p>
+                        </div>
+                    @endforeach
+                @else
+                    <h4>Không có chương trình khuyến mãi nào đang diễn ra.</h4>
+                @endif
+            </div>
+    
+            <div class="row">
+                @php
+                    $productsOnSale = session('productsOnSale', []);
+                @endphp
+                @if (!empty($productsOnSale))
+                    @foreach ($productsOnSale as $product)
+                        <div class="col-md-3 col-sm-6 product-item" id="product-{{ $product['id'] }}">
+                            <div class="shop-item shadow rounded border">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <a href="{{ route('productDetail', ['slug' => $product['slug']]) }}">
+                                            @if ($product['img_thumbnail'])
+                                                <img src="{{ Storage::url($product['img_thumbnail']) }}" alt="{{ $product['name'] }}" class="img-fluid" />
+                                            @endif
+                                        </a>
+                                        @if (Auth::check())
+                                            <a href="{{ route('favourite', $product['id']) }}">
+                                                <span class="tag flaticon-heart"></span>
+                                            </a>
+                                        @endif
+                                        <div class="cart-box text-center">
+                                            <a class="cart" href="#">Add to Cart</a>
+                                        </div>
+                                    </div>
+                                    <div class="lower-content p-3">
+                                        <div class="rating">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="light fa fa-star"></span>
+                                        </div>
+                                        <h6>
+                                            <a href="{{ route('productDetail', ['slug' => $product['slug']]) }}">
+                                                {{ Str::limit($product['name'], 30) }}
+                                            </a>
+                                        </h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="price">
+                                                @php
+                                                    $finalPrice = $product['price_sale'];
+                                                @endphp
+                                                <span class="old-price">{{ number_format($product['base_price'], 0, ',', '.') }} VNĐ</span>
+                                                <span class="new-price">{{ number_format($finalPrice, 0, ',', '.') }} VNĐ</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        @foreach ($sales as $sale)
+                            @if ($sale->products->contains($product['id'])) <!-- Kiểm tra sản phẩm có trong chương trình khuyến mãi -->
+                                <script>
+                                    // Lấy thời gian kết thúc từ backend
+                                    var endDate = new Date("{{ \Carbon\Carbon::parse($sale->end_date)->toDateTimeString() }}").getTime();
+    
+                                    // Cập nhật bộ đếm ngược mỗi giây
+                                    var countdownFunction = setInterval(function() {
+                                        var now = new Date().getTime();
+                                        var distance = endDate - now;
+    
+                                        // Nếu thời gian kết thúc, ẩn sản phẩm
+                                        if (distance < 0) {
+                                            clearInterval(countdownFunction);
+                                            document.getElementById("countdown-{{ $sale->id }}").innerHTML = "Khuyến mãi đã kết thúc";
+                                            document.getElementById("product-{{ $product['id'] }}").style.display = "none";
+                                        } else {
+                                            // Tính toán thời gian còn lại
+                                            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                                            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+                                            // Hiển thị thời gian còn lại
+                                            document.getElementById("countdown-{{ $sale->id }}").innerHTML = days + " ngày " + hours + " giờ " 
+                                            + minutes + " phút " + seconds + " giây ";
+                                        }
+                                    }, 1000);
+                                </script>
+                            @endif
+                        @endforeach
+                    @endforeach
+                @else
+                    <p>Không có sản phẩm nào đang giảm giá.</p>
+                @endif
             </div>
         </div>
     </section>
@@ -1157,4 +1264,7 @@
             margin: 0 5px;
         }
     </style>
+@endsection
+@section('script-libs')
+
 @endsection

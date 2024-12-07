@@ -87,7 +87,7 @@ class CheckoutController extends Controller {
                 $cart->delete();
 
                 session()->forget( [ 'voucher_code', 'discount_amount', 'totalAmount' ] );
-            }
+            }   
             , 1 );
             // dd( $request->userVoucher );
 

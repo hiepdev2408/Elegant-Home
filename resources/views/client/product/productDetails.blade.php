@@ -92,8 +92,13 @@
                                         <i>(4 customer review)</i>
                                     </div>
                                     <!-- Price -->
-                                    <div class="price">{{ number_format($product->price_sale, 0, ',', '.') }} VNĐ
-                                        <span>{{ number_format($product->base_price, 0, ',', '.') }}VNĐ</span>
+                                    <div class="price">
+                                        <span class="old-price">{{ number_format($product->base_price, 0, ',', '.') }} VNĐ</span>
+                                        @if(isset($finalPrice) && $finalPrice > 0)
+                                            <span class="new-price">{{ number_format($finalPrice, 0, ',', '.') }} VNĐ</span>
+                                        @else
+                                            <span class="new-price">{{ number_format($product->price_sale, 0, ',', '.') }} VNĐ</span>
+                                        @endif
                                     </div>
                                     <div class="text">{{ $product->description }}</div>
                                     <div class="d-flex flex-wrap">
@@ -170,7 +175,7 @@
                                         <!-- Button Box -->
                                         <div class="button-box">
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <input type="hidden" name="total_amount" value="{{ $product->price_sale }}">
+                                            <input type="hidden" name="total_amount" value="{{ isset($finalPrice) ? $finalPrice : $product->price_sale }}">
                                             <button type="submit" class="theme-btn btn-style-one">
                                                 Add to cart
                                             </button>
@@ -645,6 +650,30 @@
         </form>
     </div>
 @endsection
+@section('style-libs')
+    <style>
+        .new-price {
+    text-decoration: line-through; /* Gạch ngang cho giá cũ */
+    color: rgb(255, 0, 0); /* Màu đỏ cho giá mới */
+    font-weight: bold; /* Đậm */
+    font-size: 1.2em; 
+}
+.new-price {
+    text-decoration: none !important; /* Ghi đè gạch ngang */
+    color: rgb(255, 0, 0); /* Màu đỏ cho giá mới */
+    font-weight: bold; /* Đậm */
+    font-size: 1.2em; /* Kích thước lớn hơn (có thể điều chỉnh) */
+}
+.sale-price {
+    color: red; /* Màu đỏ cho giá sale */
+    font-weight: bold; /* In đậm giá sale */
+}
+
+.regular-price {
+    color: green; /* Màu xanh cho giá hiện tại nếu không có giá sale */
+}
+    </style>
+@endsection
 @section('script-libs')
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -674,3 +703,4 @@
         });
     </script>
 @endsection
+

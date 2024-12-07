@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+
 // ACCOUNT
 Route::prefix('auth')
     ->controller(AccountController::class)
@@ -120,3 +121,4 @@ Route::group([
 
 
 Route::get('search/{id}', [HomeController::class, 'search'])->name('search');
+
