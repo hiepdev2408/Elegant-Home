@@ -107,17 +107,6 @@
                 <div class="order-column col-lg-4 col-md-12 col-sm-12 mt-4 mt-lg-0">
                     <div class="p-4 border rounded shadow">
                         <h4 class="mb-4">Tóm tắt đơn hàng</h4>
-                        @if (session()->has('error'))
-                            <div class="alert alert-danger fw-bold">
-                                {{ session()->get('error') }}
-                            </div>
-                        @endif
-                        @if (session()->has('success'))
-                            <div class="alert alert-success fw-bold">
-                                {{ session()->get('success') }}
-                            </div>
-                        @endif
-                        <!-- Order Box -->
                         <div class="order-box">
                             <ul class="list-group mb-3">
                                 <li class="list-group-item d-flex justify-content-between">
@@ -135,8 +124,6 @@
                                         VNĐ</span>
                                 </li>
                             </ul>
-
-                            <!-- Voucher Box -->
                             <form id="voucherForm" class="d-flex">
                                 @csrf
 
@@ -152,7 +139,6 @@
         </div>
 
     </section>
-    <!-- End Checkout Section -->
 @endsection
 
 @section('script-libs')

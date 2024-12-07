@@ -91,14 +91,15 @@ Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
 Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
 
-//cart
+//CART
 Route::prefix('cart')
     ->middleware('auth')
     ->controller(CartController::class)
     ->group(function () {
         Route::post('addToCart', 'addToCart')->name('addToCart');
         Route::get('/', 'cart')->name('cart');
-        Route::put('update', 'updateCartQuantity')->name('updateCartQuantity');
+        Route::put('update/{id}', 'update')->name('cart.update');
+        Route::delete('destroy/{id}', 'destroy')->name('destroy');
     });
 
 //ORDER
@@ -148,7 +149,5 @@ Route::group([
     Route::post('/messages/send', [ChatController::class, 'sendMessage'])
         ->name('messages.send');
 });
-
-
 
 Route::get('search/{id}', [HomeController::class, 'search'])->name('search');

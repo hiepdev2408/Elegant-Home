@@ -79,11 +79,9 @@ class ChatController extends Controller
     public function listChatRooms()
     {
         // Lấy tất cả các phòng chat, sắp xếp theo thời gian gần nhất
-
         $rooms = Room::with('user')
         ->where('user_id', '!=', auth()->id())
         ->orderBy('updated_at', 'desc')->get();
-
         // Trả về view với danh sách phòng và tin nhắn
         return view('admin.chat.chat-admin', compact('rooms'));
     }

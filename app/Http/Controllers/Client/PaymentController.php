@@ -45,7 +45,6 @@ class PaymentController extends Controller
                 $cartDetail->delete(); // Xóa chi tiết giỏ hàng
                 $cart->delete(); // Xóa giỏ hàng
                 return redirect()->route('home')->with('alert', 'Lỗi');
-
             }
         }
         // Tính tổng giá trị đơn hàng
@@ -188,12 +187,13 @@ class PaymentController extends Controller
                 $order->save();
             }
             return redirect()->route('thank');
-
         } else if ($secureHash === $vnp_SecureHash && $request->vnp_ResponseCode == '24') {
             $order = Order::find($vnp_TxnRef);
             if ($order) {
-                $order->status_payment = 'Cancel payment'; // Chuyển trạng thái thanh
-                $order->save();
+                foreach ($order->orderDetails as $orderDetails) {
+                    $orderDetails->delete(); // Xóa chi tiết đơn hàng
+                }
+                $order->delete(); // Xóa đơn hàng
             }
             return redirect()->route('error');
         } else {
@@ -252,7 +252,6 @@ class PaymentController extends Controller
             Log::error('MoMo payment error: ' . $th->getMessage());
             return back()->with('error', 'Payment processing failed. Please try again.');
         }
-
     }
 
     // Hàm hỗ trợ gửi yêu cầu POST
@@ -279,38 +278,32 @@ class PaymentController extends Controller
         return $result;
     }
 
-    public function notify(Request $request)
-    {
-    }
+    public function notify(Request $request) {}
 
     public function cod(Request $request)
     {
-        // dd($request->all());
         try {
             $user = Auth::user();
             $cart = Cart::query()->where('user_id', $user->id)->first();
 
             if (!$cart || $cart->cartDetails->isEmpty()) {
-                return back()->with('error', 'Giỏ hàng của bạn đang trống.');
+                return redirect()->route('home')->with('error', 'Giỏ hàng của bạn đang trống.');
             }
 
-            // Kiểm tra tồn kho
             $variants = Variant::whereIn('id', $cart->cartDetails->pluck('variant_id'))->get();
             foreach ($cart->cartDetails as $cartDetails) {
                 $variant = $variants->where('id', $cartDetails->variant_id)->first();
                 if ($variant && $variant->stock < $cartDetails->quantity) {
                     $cartDetails->delete();
 
-                    return back()->with(
+                    return redirect()->route('home')->with(
                         'error',
                         "Sản phẩm {$variant->product->name} đã hết hàng và đã bị xóa khỏi giỏ hàng."
                     );
                 }
             }
 
-            // Xử lý giao dịch
             DB::transaction(function () use ($cart, $request, $user) {
-                // Tạo đơn hàng
                 $order = Order::query()->create([
                     'user_id' => $user->id,
                     'user_name' => $request->user_name,
@@ -323,7 +316,6 @@ class PaymentController extends Controller
                     'total_amount' => $request->total_amount,
                 ]);
 
-                // Tạo chi tiết đơn hàng và cập nhật kho
                 $orderDetails = [];
                 foreach ($cart->cartDetails as $cartDetails) {
                     $orderDetails[] = [
@@ -383,9 +375,10 @@ class PaymentController extends Controller
                 'cart_id' => $cart->id ?? null,
             ]);
 
-            return back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
+            return redirect()->route('home')->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
         }
     }
+
 
     public function thank()
     {

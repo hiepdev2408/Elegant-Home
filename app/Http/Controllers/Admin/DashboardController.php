@@ -17,51 +17,54 @@ class DashboardController extends Controller
     const PATH_VIEW = 'admin.';
     public function dashboard()
     {
-        // Giao dich hằng ngày
         $homNay = Carbon::today();
-
-        $tongGiaoDichHomNay = Order::whereDate('created_at', $homNay)->count();
-
         $homQua = Carbon::yesterday();
 
-        $tongGiaoDichHomQua = Order::whereDate('created_at', $homQua)->count();
+        $tongGiaoDichHomNay = $this->getOrderCountByDate($homNay);
+        $tongGiaoDichHomQua = $this->getOrderCountByDate($homQua);
+        $thayDoi = $this->calculatePercentageChange($tongGiaoDichHomNay, $tongGiaoDichHomQua);
 
-        $thayDoi = 0;
+        $mau = $thayDoi > 0 ? 'text-success' : ($thayDoi < 0 ? 'text-danger' : 'text-secondary');
+        $dau = $thayDoi !== 0 ? ($thayDoi > 0 ? '+' : '') . number_format($thayDoi, 2) . '%' : '0%';
 
-        if ($tongGiaoDichHomQua > 0) {
-            $thayDoi = (($tongGiaoDichHomNay - $tongGiaoDichHomQua) / $tongGiaoDichHomQua) * 100;
-        }
-        $mau = 'text-success';
+        $tongDoanhSo = $this->getSalesSum(now()->subDays(7), now());
+        $doanhSoCu = $this->getSalesSum(now()->subDays(14), now()->subDays(7));
+        $phamTrams = $this->calculatePercentageChange($tongDoanhSo, $doanhSoCu);
+        $users = $this->getTopUsers(10);
 
-        if ($thayDoi > 0) {
-            $dau = '+' . $thayDoi;
-        }elseif($thayDoi < 0){
-            $mau = 'text-danger';
-            $dau = '-' . $thayDoi;
-        }else{
-            $dau = '0%';
-        }
+        return view(self::PATH_VIEW . __FUNCTION__, compact(
+            'users',
+            'tongDoanhSo',
+            'phamTrams',
+            'tongGiaoDichHomNay',
+            'dau',
+            'thayDoi',
+            'mau'
+        ));
+    }
 
-        $tongDoanhSo = DB::table('orders')
+    // Hàm phụ trợ
+    private function getOrderCountByDate($date)
+    {
+        return Order::whereDate('created_at', $date)->count();
+    }
+
+    private function calculatePercentageChange($current, $previous)
+    {
+        return $previous > 0 ? (($current - $previous) / $previous) * 100 : 0;
+    }
+
+    private function getSalesSum($startDate, $endDate)
+    {
+        return DB::table('orders')
             ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-            ->where('orders.created_at', '>=', now()->subDays(7))
+            ->whereBetween('orders.created_at', [$startDate, $endDate])
             ->sum('order_details.total_amount');
+    }
 
-        // doanh số trước đó
-        $doanhSoCu = DB::table('orders')
-            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-            ->where('orders.created_at', '<', now()->subDays(7))
-            ->where('orders.created_at', '>=', now()->subDays(14))
-            ->sum('order_details.total_amount');
-
-        // Tăng trưởng theo phần trăm
-        $phamTrams = ($doanhSoCu > 0) ? (($tongDoanhSo - $doanhSoCu) / $doanhSoCu) * 100 : 0;
-
-
-
-
-        // Hiển tị người dùng mua hàng với số tiền cao nhất
-        $users = DB::table('orders')
+    private function getTopUsers($limit)
+    {
+        return DB::table('orders')
             ->join('order_details', 'orders.id', '=', 'order_details.order_id')
             ->join('users', 'orders.user_id', '=', 'users.id')
             ->select(
@@ -71,11 +74,10 @@ class DashboardController extends Controller
                 DB::raw('SUM(order_details.total_amount) as gia_mua_hang'),
                 DB::raw('COUNT(order_details.id) as tong_don_hang')
             )
-            ->groupby('orders.user_id', 'users.name', 'users.email')
+            ->groupBy('orders.user_id', 'users.name', 'users.email')
             ->orderBy('gia_mua_hang', 'desc')
-            ->take(10)
+            ->take($limit)
             ->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('users', 'tongDoanhSo', 'phamTrams' , 'tongGiaoDichHomNay', 'dau','thayDoi', 'mau'));
     }
 
     public function markRead()
@@ -86,7 +88,8 @@ class DashboardController extends Controller
 
     public function compose(View $view)
     {
-        $order = Order::query()->where('user_id', Auth::user()->id)->count();
+        $order = Order::query()->count();
+
         $countContact = Contract::count();
         $notifications = Notification::orderByDesc('created_at')->get();
         $unread = Notification::where('is_read', 0)->count();
