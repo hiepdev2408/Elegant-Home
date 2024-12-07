@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\SaleController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AttributeController;
@@ -205,6 +206,19 @@ Route::prefix('admin')
             Route::post('returned_item_received/{id}', [OrderController::class, 'returned_item_received'])->name('returned_item_received');
             Route::post('refund_completed/{id}', [OrderController::class, 'refund_completed'])->name('refund_completed');
         });
+        //Sale
+        Route::prefix('sales')
+    ->as('sales.')
+    ->group(function () {
+        Route::get('/', [SaleController::class, 'index'])->name('index');
+        Route::get('create', [SaleController::class, 'create'])->name('create');
+        Route::post('store', [SaleController::class, 'store'])->name('store');
+        Route::get('edit/{sale}', [SaleController::class, 'edit'])->name('edit'); // Sử dụng Sale model
+        Route::put('update/{sale}', [SaleController::class, 'update'])->name('update'); // Sử dụng Sale model
+        Route::delete('destroy/{sale}', [SaleController::class, 'destroy'])->name('destroy'); // Sử dụng Sale model
+    });
+   
         //Top sell
         Route::get('top_sell', [TopSellController::class, 'index'])->name('top_sell.index');
+
     });
