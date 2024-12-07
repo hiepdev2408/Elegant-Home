@@ -64,4 +64,8 @@ class Product extends Model
     public function sales(){
         return $this->belongsToMany(Sale::class, 'product_sale');
     }
+  
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
 }

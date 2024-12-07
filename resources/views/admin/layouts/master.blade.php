@@ -53,6 +53,7 @@
     <script src="{{ asset('themes') }}/admin/vendor/js/helpers.js"></script>
     <script src="{{ asset('themes') }}/admin/js/config.js"></script>
 
+
 </head>
 
 <body>
@@ -132,6 +133,7 @@
 
     @yield('script-libs') <!-- CÁC JS CÁC TRANG -->
 
+    @vite('resources/js/list.js')
 </body>
 
 </html>

@@ -13,10 +13,6 @@ use App\Models\VariantAttribute;
 use App\Models\Vouchers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-
-use function Laravel\Prompts\alert;
 
 class CartController extends Controller
 {
@@ -26,7 +22,7 @@ class CartController extends Controller
         $cart = Cart::firstOrCreate(['user_id' => $user->id]);
     
         $productId = $request->input('product_id');
-        $variantAttributeIds = $request->input('variant_attributes.attribute_value_id', []); // Mặc định là mảng rỗng
+        $variantAttributeIds = $request->input('variant_attributes.attribute_value_id', []);
         $quantity = $request->input('quantity', 1);
         $totalAmount = $request->input('total_amount', 0); // Lấy tổng từ yêu cầu
     
@@ -60,13 +56,19 @@ class CartController extends Controller
     
             // Sử dụng giá cuối cùng từ yêu cầu
             if ($cartDetail) {
-                if ($matchingVariant->stock < $cartDetail->quantity + $quantity) {
+                $newQuantity = $cartDetail->quantity + $quantity;
+                if ($matchingVariant->stock < $newQuantity) {
                     return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
                 }
-                $cartDetail->quantity += $quantity;
-                $cartDetail->total_amount += $totalAmount; // Cập nhật tổng từ yêu cầu
+
+                $cartDetail->quantity = $newQuantity;
+                $cartDetail->total_amount += $totalAmountVariant * $quantity;
                 $cartDetail->save();
             } else {
+                if ($matchingVariant->stock < $quantity) {
+                    return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
+                }
+
                 CartDetail::create([
                     'cart_id' => $cart->id,
                     'variant_id' => $matchingVariant->id,
@@ -76,21 +78,25 @@ class CartController extends Controller
             }
         } else {
             $product = Product::find($productId);
-    
-            // Kiểm tra số lượng tồn kho
-            if ($product->stock < $quantity) {
-                return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
-            }
-    
+
             $cartDetail = CartDetail::where('cart_id', $cart->id)
                 ->where('product_id', $productId)
                 ->first();
     
             if ($cartDetail) {
-                $cartDetail->quantity += $quantity; 
-                $cartDetail->total_amount += $totalAmount; // Cập nhật tổng từ yêu cầu
+                $newQuantity = $cartDetail->quantity + $quantity;
+                if ($product->stock < $newQuantity) {
+                    return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
+                }
+
+                $cartDetail->quantity = $newQuantity;
+                $cartDetail->total_amount += $totalAmount;
                 $cartDetail->save();
             } else {
+                if ($product->stock < $quantity) {
+                    return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
+                }
+
                 CartDetail::create([
                     'cart_id' => $cart->id,
                     'product_id' => $productId,
@@ -104,18 +110,15 @@ class CartController extends Controller
     }
 
 
-
-    public function listCart()
+    public function cart()
     {
-        $totalCart = getCartItemCount();
-
         $cart = Cart::where('user_id', Auth::user()->id)->first();
         $carts = $cart ? $cart->cartDetails()->with(['product', 'variant'])->get() : [];
 
-        return view('client.cart.listCart', compact('carts', 'totalCart'));
+        return view('client.cart.listCart', compact('carts'));
     }
 
-    public function updateCartQuantity(Request $request)
+    public function update(Request $request)
     {
         $cartDetail = CartDetail::findOrFail($request->cart_id);
     
@@ -146,5 +149,6 @@ class CartController extends Controller
             'subTotal' => number_format($cartDetail->total_amount, 0, ',', '.'),
             'quantity' => $cartDetail->quantity,
         ]);
+
     }
 }

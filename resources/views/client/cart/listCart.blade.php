@@ -17,6 +17,11 @@
                             <!--Cart Outer-->
                             <div class="cart-outer">
                                 <div class="table-outer">
+                                    @if (session('success'))
+                                        <div class="alert alert-success">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
                                     <table class="cart-table">
                                         <thead class="cart-header">
                                             <tr>
@@ -37,7 +42,8 @@
                                                         <td colspan="2" class="prod-column">
                                                             <div class="column-box">
                                                                 <figure class="prod-thumb">
-                                                                    <form action="" method="post">
+                                                                    <form action="{{ route('destroy', $cart->cart_id) }}"
+                                                                        method="post">
                                                                         @csrf
                                                                         @method('DELETE')
                                                                         <button type="submit"
@@ -62,18 +68,19 @@
                                                         </td>
                                                         <!-- Quantity Box -->
                                                         <td class="quantity-box">
-                                                            <form action="{{ route('updateCartQuantity') }}" method="post">
+                                                            <form action="{{ route('cart.update', $cart->cart_id) }}"
+                                                                method="post">
                                                                 @csrf
-                                                                @method('PATCH')
+                                                                @method('PUT')
                                                                 <div class="item-quantity">
                                                                     <input class="qty-spinner" type="text"
                                                                         value="{{ $cart->quantity }}" name="quantity"
                                                                         readonly>
                                                                 </div>
                                                                 <input type="hidden" name="cart_id"
-                                                                    value="{{ $cart->id }}">
-                                                                <input type="hidden" name="price_sale"
-                                                                    value="{{ $cart->variant->product->price_sale }}">
+                                                                    value="{{ $cart->cart_id }}">
+                                                                <input type="hidden" name="price_modifier"
+                                                                    value="{{ $cart->variant->price_modifier }}">
                                                             </form>
                                                         </td>
 
@@ -110,24 +117,24 @@
                                                         </td>
 
                                                         <td class="price">
-                                                            {{ number_format($cart->product->price_sale, 0, ',', '.') }}
+                                                            {{ number_format($cart->product->base_price, 0, ',', '.') }}
                                                             VNĐ
                                                         </td>
                                                         <!-- Quantity Box -->
                                                         <td class="quantity-box">
-                                                            <form action="{{ route('updateCartQuantity') }}"
+                                                            <form action="{{ route('cart.update', $cart->cart_id) }}"
                                                                 method="post">
                                                                 @csrf
-                                                                @method('PATCH')
+                                                                @method('PUT')
                                                                 <div class="item-quantity">
                                                                     <input class="qty-spinner" type="text"
                                                                         value="{{ $cart->quantity }}" name="quantity"
                                                                         readonly>
                                                                 </div>
                                                                 <input type="hidden" name="cart_id"
-                                                                    value="{{ $cart->id }}">
+                                                                    value="{{ $cart->cart_id }}">
                                                                 <input type="hidden" name="price_sale"
-                                                                    value="{{ $cart->product->price_sale }}">
+                                                                    value="{{ $cart->variant->product->price_sale }}">
                                                             </form>
                                                         </td>
 
@@ -173,7 +180,7 @@
                                     </div>
                                     <!-- Buttons Box -->
                                     <div class="buttons-box">
-                                        <a href="{{ route('index.Order') }}" class="theme-btn proceed-btn">
+                                        <a href="{{ route('order') }}" class="theme-btn proceed-btn">
                                             Proceed To Checkout
                                         </a>
                                     </div>
@@ -272,44 +279,43 @@
 
 @section('script-libs')
     <script>
-        function updateCartQuantity(inputElement) {
-            const cartId = inputElement.getAttribute('data-cart-id');
-            const quantity = inputElement.value;
+        $(document).ready(function() {
+            $('.qty-btn').click(function() {
+                // Lấy ID giỏ hàng từ data-id của nút
+                var cartId = $(this).data('id');
+                // Lấy số lượng hiện tại
+                var $input = $(this).siblings('.qty-spinner');
+                var currentQuantity = parseInt($input.val());
 
-            // Kiểm tra dữ liệu
-            if (quantity <= 0) {
-                alert('Số lượng phải lớn hơn 0!');
-                return;
-            }
+                // Kiểm tra nút nào được nhấn và cập nhật số lượng
+                if ($(this).hasClass('plus')) {
+                    currentQuantity += 1; // Tăng số lượng
+                } else if ($(this).hasClass('minus') && currentQuantity > 1) {
+                    currentQuantity -= 1; // Giảm số lượng, tránh giảm dưới 1
+                }
 
-            // Gửi yêu cầu AJAX
-            fetch("{{ route('updateCartQuantity') }}", {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
+                // Cập nhật số lượng trong ô input
+                $input.val(currentQuantity);
+
+                // Gửi yêu cầu AJAX để cập nhật số lượng trong giỏ hàng
+                $.ajax({
+                    url: '/cart/update', // Đường dẫn đến route xử lý cập nhật giỏ hàng
+                    type: 'POST',
+                    data: {
                         cart_id: cartId,
-                        quantity: quantity
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Cập nhật giao diện
-                        const subTotalElement = document.querySelector(`#sub-total-${cartId}`);
-                        subTotalElement.textContent = `${data.subTotal} VNĐ`;
-
-                        alert(data.message);
-                    } else {
-                        alert('Có lỗi xảy ra khi cập nhật số lượng!');
+                        quantity: currentQuantity,
+                        _token: '{{ csrf_token() }}' // Đảm bảo có CSRF token
+                    },
+                    success: function(response) {
+                        // Xử lý thành công nếu cần
+                        console.log('Cập nhật thành công!', response);
+                    },
+                    error: function(xhr) {
+                        // Xử lý lỗi nếu cần
+                        console.error('Có lỗi xảy ra!', xhr);
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Không thể cập nhật số lượng.');
                 });
-        }
+            });
+        });
     </script>
 @endsection

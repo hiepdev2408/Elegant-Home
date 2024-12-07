@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\AttributeValueController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\TopSellController;
 use App\Http\Controllers\ChatController;
 
 Route::prefix('admin')
@@ -31,10 +32,12 @@ Route::prefix('admin')
         Route::prefix('account')
             ->as('account.')
             ->group(function () {
+
                 Route::get('listAdmin', [UserController::class, 'listAdmin'])->name('listAdmin');
                 Route::get('listStaff', [UserController::class, 'listStaff'])->name('listStaff');
                 Route::get('listCustomer', [UserController::class, 'listCustomer'])->name('listCustomer');
             });
+
 
         // Permission
         Route::prefix('permissions')
@@ -126,7 +129,6 @@ Route::prefix('admin')
 
             Route::get('listDestroy', [AttributeController::class, 'delete'])->name('delete');
             // Hiển thị danh sách xóa
-    
             Route::post('restore/{id}', [AttributeController::class, 'restore'])->name('restore');
             Route::delete('forceDelete/{id}', [AttributeController::class, 'forceDelete'])->name('forceDelete');
         });
@@ -155,7 +157,6 @@ Route::prefix('admin')
             Route::get('show/{id}', [VouchersController::class, 'show'])->name('show');
             Route::put('update/{id}', [VouchersController::class, 'update'])->name('update');
             Route::delete('destroy/{id}', [VouchersController::class, 'destroy'])->name('destroy');
-
         });
 
         // Contact
@@ -167,7 +168,11 @@ Route::prefix('admin')
         });
 
         // Chatrealtime
-        Route::get('/chat', [ChatController::class, 'listChatRooms'])->name('chat');
+    
+        Route::get('/chat-rooms', [ChatController::class, 'listChatRooms'])->name('chat');
+        Route::get('/{roomId}/{receiverId}', [ChatController::class, 'showChatAdmin'])
+            ->name('chat.admin');
+        Route::get('/chat/messages/{roomId}', [ChatController::class, 'getMessages'])->name('chat.messages');
 
         //warehouses
         Route::prefix('warehouses')
@@ -193,8 +198,13 @@ Route::prefix('admin')
             ->as('orders.')
             ->group(function () {
             Route::get('/', [OrderController::class, 'index'])->name('index');
+            Route::post('confirmed/{id}', [OrderController::class, 'confirmed'])->name('confirmed');
+            Route::post('shipping/{id}', [OrderController::class, 'shipping'])->name('shipping');
+            Route::post('delivered/{id}', [OrderController::class, 'delivered'])->name('delivered');
+            Route::post('return_request/{id}', [OrderController::class, 'return_request'])->name('return_request');
+            Route::post('returned_item_received/{id}', [OrderController::class, 'returned_item_received'])->name('returned_item_received');
+            Route::post('refund_completed/{id}', [OrderController::class, 'refund_completed'])->name('refund_completed');
         });
-
         //Sale
         Route::prefix('sales')
     ->as('sales.')
@@ -207,4 +217,7 @@ Route::prefix('admin')
         Route::delete('destroy/{sale}', [SaleController::class, 'destroy'])->name('destroy'); // Sử dụng Sale model
     });
    
+        //Top sell
+        Route::get('top_sell', [TopSellController::class, 'index'])->name('top_sell.index');
+
     });

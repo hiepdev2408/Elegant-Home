@@ -17,8 +17,7 @@ class PermissionController extends Controller
 
     public function __construct(
         protected Permission $model
-    ) {
-    }
+    ) {}
 
     public function access(Role $role, string $id)
     {

@@ -3,16 +3,16 @@
     Products
 @endsection
 @section('content')
-<section class="page-title">
-    <div class="auto-container">
-        <h2>Shop Page</h2>
-        <ul class="bread-crumb clearfix">
-            <li><a href="index.html">Home</a></li>
-            <li>Pages</li>
-            <li>Shops</li>
-        </ul>
-    </div>
-</section>
+    <section class="page-title">
+        <div class="auto-container">
+            <h2>Shop Page</h2>
+            <ul class="bread-crumb clearfix">
+                <li><a href="index.html">Home</a></li>
+                <li>Pages</li>
+                <li>Shops</li>
+            </ul>
+        </div>
+    </section>
     <div class="sidebar-page-container">
         <div class="auto-container">
             <div class="row clearfix">
@@ -45,19 +45,30 @@
                                                 <span class="light fa fa-star"></span>
                                             </div>
                                             <h6><a
-                                                    href="{{ route('productDetail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
+                                                    href="{{ route('productDetail', ['slug' => $product->slug]) }}">{{ Str::limit($product->name, 30) }}</a>
                                             </h6>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="price">
-                                                    <span>{{ number_format($product->base_price, 0, ',', '.') }}VNĐ</span>{{ number_format($product->price_sale, 0, ',', '.') }}VNĐ
+                                                    @if ($product->price_sale == '')
+                                                        <span
+                                                            class="new-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                                    @else
+                                                        <span
+                                                            class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
+                                                        <span
+                                                            class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ</span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             @endforeach
                             <!-- Shop Item -->
                         </div>
+
+
                         <!-- Styled Pagination -->
                         <div class="styled-pagination text-center">
                             <ul>
@@ -87,7 +98,7 @@
                         <!-- End Styled Pagination -->
                     </div>
                 </div>
-                @include('client.shops.partials.sideBarfilter',['categories' => $categories] )
+                @include('client.shops.partials.sideBarfilter', ['categories' => $categories])
             </div>
         </div>
     </div>

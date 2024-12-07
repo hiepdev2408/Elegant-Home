@@ -1,153 +1,189 @@
 @extends('client.layouts.master')
-@section('title')
-    Lịch sủ mua hàng
-@endsection
-@section('order', 'active')
+
 @section('content')
-    <div class="container mt-3 mb-5">
-        <div class="row">
-            @include('client.auth.layouts.master')
-            <section class="col-9 ms-5">
-                <div class="d-flex">
-                    <div class="h-50 p-3 me-3" style="border: 1px solid red; border-radius: 50%">
-                        <img src="https://cdn2.cellphones.com.vn/50x50,webp,q100/media/wysiwyg/Shipper_CPS3_1.png"
-                            alt="" height="50px">
-                    </div>
-                    <div class="d-grid">
-                        @if (Auth::check())
-                            <h4>{{ Auth::user()->name }}</h4>
-                            <span>{{ Auth::user()->phone }}</span>
-                            <div class="d-flex">
-                                <p class="badge text-bg-primary">SNULL</p>
-                            </div>
-                        @endif
-                    </div>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Lịch sử đơn hàng của bạn</h2>
+
+        @foreach ($orders as $order)
+            <div class="card mb-4 shadow-sm">
+                <!-- Header: Thông tin đơn hàng -->
+                <div class="card-header bg-white text-dark d-flex justify-content-between">
+                    <span>Đơn hàng #{{ $order->id }}</span>
+                    <span>{{ date('d/m/Y', strtotime($order->order_date)) }}</span>
                 </div>
-                <div class="row text-center mb-4 mt-2 box-shadows p-3 rounded-3">
-                    <div class="col-6" style="border-right: 1px solid #000;">
-                        <h5 class="mt-3">0</h5>
-                        <p class="text-muted">Đơn hàng</p>
-                    </div>
-                    <div class="col-6">
-                        <h5 class="mt-3">0đ</h5>
-                        <p class="text-muted">Tổng tiền tích lũy</p>
-                    </div>
+
+                <!-- Body: Chi tiết đơn hàng -->
+                <div class="card-body">
+                    <p><strong>Tổng tiền:</strong> {{ number_format($order->total_amount, 0, ',', '.') }} VND</p>
+                    <p><strong>Trạng thái:</strong>
+                        <span
+                            class="badge
+                            @switch($order->status_order)
+                                @case('pending') bg-secondary text-dark @break
+                                @case('confirmed') bg-success text-white @break
+                                @case('shipping') bg-warning text-dark @break
+                                @case('delivered') bg-info text-white @break
+                                @case('completed') bg-purple text-white @break
+                                @case('canceled') bg-danger text-white @break
+                                @case('return_request') bg-orange text-dark @break
+                                @case('return_approved') bg-secondary text-white @break
+                                @case('returned_item_received') bg-info text-white @break
+                                @case('refund_completed') bg-success text-white @break
+                                @default bg-dark text-white
+                            @endswitch">
+                            {{ [
+                                'pending' => 'Chờ xác nhận',
+                                'confirmed' => 'Đã xác nhận',
+                                'shipping' => 'Chờ giao hàng',
+                                'delivered' => 'Đang giao hàng',
+                                'completed' => 'Đã nhận hàng',
+                                'canceled' => 'Đơn hàng đã hủy',
+                                'return_request' => 'Yêu cầu trả hàng',
+                                'return_approved' => 'Yêu cầu được chấp nhận',
+                                'returned_item_received' => 'Đã nhận hàng trả lại',
+                                'refund_completed' => 'Hoàn tiền thành công',
+                            ][$order->status_order] ?? 'Không rõ' }}
+                        </span>
+                    </p>
+
+                    <!-- Sản phẩm trong đơn hàng -->
+                    <h5 class="mt-3">Chi tiết sản phẩm:</h5>
+                    <ul class="list-group">
+                        @foreach ($order->orderDetails as $item)
+                            @if ($item->product)
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>({{ $item->quantity }}x) - {{ $item->product->name }}</span>
+                                <span>{{ number_format($item->total_amount, 0, ',', '.') }} VND</span>
+                            </li>
+                            @else
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>({{ $item->quantity }}x) - {{ $item->variant->product->name }}</span>
+                                    <span>{{ number_format($item->total_amount, 0, ',', '.') }} VND</span>
+                                </li>
+                            @endif
+                        @endforeach
+                    </ul>
                 </div>
-                <div class="d-flex gap-2" id="status-buttons">
-                    <button class="btn btn-custom active">Tất cả</button>
-                    <button class="btn btn-custom">Chờ xác nhận</button>
-                    <button class="btn btn-custom">Đã xác nhận</button>
-                    <button class="btn btn-custom">Đang vận chuyển</button>
-                    <button class="btn btn-custom">Đã giao hàng</button>
-                    <button class="btn btn-custom">Đã hủy</button>
+
+                <div class="card-footer text-end d-inline-flex">
+                    <!-- Liên hệ admin -->
+                    @if (!in_array($order->status_order, ['canceled', 'return_request', 'return_approved', 'returned_item_received']))
+                        <form action="{{ route('chat.create', Auth::user()->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-outline-warning mx-2">Liên Hệ Admin</button>
+                        </form>
+                    @endif
+
+                    <a href="{{ route('profile.order.showDetailOrder', $order->id) }}"
+                        class="btn btn-sm btn-outline-primary mx-2">Xem chi tiết</a>
+                    @if ($order->status_order == 'pending')
+                        <form id="cancel-order-form-{{ $order->id }}"
+                            action="{{ route('profile.order.cancel', $order->id) }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                        <button type="button" class="btn btn-sm btn-outline-danger ms-2"
+                            onclick="confirmCancelOrder({{ $order->id }})">
+                            Hủy đơn hàng
+                        </button>
+                    @endif
+
+                    @if ($order->status_order == 'delivered')
+                        <form action="{{ route('profile.order.completed', $order->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-outline-success">Đã nhận hàng</button>
+                        </form>
+                    @endif
+
+                    @if ($order->status_order == 'completed')
+                        <form id="return-form-{{ $order->id }}"
+                            action="{{ route('profile.order.return_request', $order->id) }}" method="POST"
+                            style="display: none;">
+                            @csrf
+                        </form>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="confirmReturn({{ $order->id }})">Trả
+                            hàng</button>
+                    @endif
+
+                    @if ($order->status_order == 'return_request')
+                        <span class="badge text-black bg-warning">Hãy đợi thêm thông tin từ chúng tôi</span>
+                    @endif
+
+                    @if ($order->status_order == 'return_approved')
+                        <span class="badge text-black bg-info">Yêu cầu đã được chấp nhận</span>
+                    @endif
+
+                    @if ($order->status_order == 'returned_item_received')
+                        <span class="badge text-black bg-info">Đơn hàng đã trở về nhà cung cấp</span>
+                    @endif
+
+                    @if ($order->status_order == 'refund_completed')
+                        <span class="badge text-black bg-success">Hoàn tiền thành công</span>
+                    @endif
                 </div>
-                @if (!empty($orderDetails))
-                    <table class="table mt-3">
-                        <thead>
-                            <tr>
-                                <th>STT</th>
-                                <th>Hình ảnh</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Số lượng</th>
-                                <th>Thành tiền</th>
-                                <th>Trạng thái</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="order-list">
-                            @foreach ($orderDetails as $key => $order)
-                                <tr>
-                                    <td>{{ $key + 1 }}</td>
-                                    <td>
-                                        <img src="{{ Storage::url($order->variant->image) }}" alt="product"
-                                            class="img-thumbnail">
-                                    </td>
-                                    <td class="product-name">{{ $order->variant->product->name }}</td>
-                                    <td>{{ $order->quantity }}</td>
-                                    <td>{{ number_format($order->total_amount, '0', '0', ',') }} VNĐ</td>
-                                    <td>
-                                        @if ($order->order->status_order == 'pending')
-                                            <p>Chờ xác nhận</p>
-                                        @elseif ($order->order->status_order == 'comfirmed')
-                                            <p>Đã xác nhận</p>
-                                        @elseif ($order->order->status_order == 'shipping')
-                                            <p>Đang giao hàng</p>
-                                        @elseif ($order->order->status_order == 'delivered')
-                                            <p>Đã giao hàng</p>
-                                        @else
-                                            <p>Đơn hàng đã hủy</p>
-                                        @endif
-                                    </td>
-                                    <td>
-                                    <td>
-                                        <div class="order-actions">
-                                            @if ($order->order->status_order === 'pending')
-                                                <a href="{{ route('profile.order.showDetailOrder', $order->id) }}"
-                                                    class="d-block btn btn-primary btn-sm">Xem chi tiết</a>
-                                                <form action="{{ route('profile.order.cancel', $order->id) }}"
-                                                    method="post" class="d-inline">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-danger btn-sm">Hủy đơn
-                                                        hàng</button>
-                                                </form>
-                                            @elseif ($order->order->status_order === 'comfirmed')
-                                                <a href="{{ route('profile.order.showDetailOrder', $order->id) }}"
-                                                    class="d-block btn btn-primary btn-sm">Xem chi tiết</a>
-                                            @elseif ($order->order->status_order === 'shipping')
-                                                <a href="{{ route('profile.order.showDetailOrder', $order->id) }}"
-                                                    class="d-block btn btn-primary btn-sm">Xem chi tiết</a>
-                                                <form action="" method="post" class="d-inline">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-success btn-sm">Đã nhận
-                                                        hàng</button>
-                                                </form>
-                                            @elseif ($order->order->status_order === 'delivered')
-                                                <a href="{{ route('profile.order.showDetailOrder', $order->id) }}"
-                                                    class="d-block btn btn-primary btn-sm">Xem chi tiết</a>
-                                                <form action="" method="post" class="d-inline">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-success btn-sm">Mua lại</button>
-                                                </form>
-                                            @elseif ($order->order->status_order === 'canceled')
-                                                <form action="" method="post" class="d-inline">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-success btn-sm">Mua lại</button>
-                                                </form>
-                                            @endif
-                                        </div>
-                                    </td>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @else
-                    <div class="d-flex justify-content-center mt-5">
-                        <div class="text-center">
-                            <img src="https://static-smember.cellphones.com.vn/smember/_nuxt/img/empty.db6deab.svg"
-                                width="200px">
-                            <p>Không có đơn hàng nào thỏa mãn!</p>
-                        </div>
-                    </div>
-                @endif
-            </section>
-        </div>
+            </div>
+        @endforeach
+
+        @if ($orders->isEmpty())
+            <div class="alert alert-info text-center">
+                Bạn chưa có đơn hàng nào.
+            </div>
+        @endif
     </div>
 @endsection
-@section('script')
+
+@section('script-libs')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Lấy danh sách tất cả các nút trong div
-        const buttons = document.querySelectorAll('#status-buttons .btn-custom');
-
-        // Lặp qua tất cả các nút và thêm sự kiện click
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Xóa lớp active khỏi tất cả các nút
-                buttons.forEach(btn => btn.classList.remove('active'));
-
-                // Thêm lớp active vào nút được bấm
-                button.classList.add('active');
+        function confirmReturn(orderId) {
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn trả hàng?',
+                text: "Hành động này sẽ không thể hoàn tác!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Có, tôi muốn trả hàng!',
+                cancelButtonText: 'Hủy',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`return-form-${orderId}`).submit();
+                }
             });
-        });
+        }
+
+        function confirmCancelOrder(orderId) {
+            Swal.fire({
+                title: 'Hủy đơn hàng?',
+                text: "Hành động này sẽ dừng tiến trình của đơn hàng. Bạn có chắc chắn?",
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý hủy',
+                cancelButtonText: 'Không, giữ lại',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`cancel-order-form-${orderId}`).submit();
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        title: 'Hủy bỏ!',
+                        text: 'Đơn hàng vẫn được giữ lại.',
+                        icon: 'info',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            });
+        }
     </script>
+@endsection
+
+@section('style-libs')
+    <style>
+        .bg-purple {
+            background-color: #6f42c1 !important;
+        }
+
+        .bg-orange {
+            background-color: #fd7e14 !important;
+        }
+    </style>
 @endsection

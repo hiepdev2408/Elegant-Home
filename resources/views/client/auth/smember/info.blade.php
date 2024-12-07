@@ -1,64 +1,129 @@
 @extends('client.layouts.master')
-@section('title')
-    Lịch sủ mua hàng
-@endsection
-@section('info', 'active')
 @section('content')
-    <div class="container mt-3 mb-5">
+    <div class="container py-5">
         <div class="row">
-            @include('client.auth.layouts.master')
-            <section class="col-9 ms-5">
-                <div class="d-flex justify-content-center">
-                    <img src="https://static-smember.cellphones.com.vn/smember/_nuxt/img/Shipper_CPS3.77d4065.png"
-                        width="100px">
-                </div>
-                @if (Auth::check())
-                    <h4 class="text-center">{{ Auth::user()->name }}</h4>
-                @endif
-                @if (session('success'))
-                    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050; margin-top: 55px">
-                        <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Thành Công!</strong> {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
+            <!-- Left Section: Profile Image and Basic Info -->
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3">
+                    <div class="text-center">
+                        @if (Auth::user()->avatar)
+                            <img src="{{ asset('path-to-avatar.png') }}" alt="User Avatar"
+                                class="rounded-circle mb-3 profile-img">
+                        @else
+                            <img src="{{ asset('themes/image/logo.jpg') }}" alt="User Avatar"
+                                class="rounded-circle mb-3 profile-img">
+                        @endif
+                        <h5 class="fw-bold">{{ Auth::user()->name }}</h5>
+                        <p class="text-muted">{{ Auth::user()->role->name ?? 'Member' }}</p>
                     </div>
-                @endif
-                <div class="d-flex justify-content-center">
-                    <form action="{{ route('profile.update', Auth::user()->id) }}" class="col-6" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Họ và Tên</label>
-                            <input type="text" class="form-control" name="name" value="{{ Auth::user()->name }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" value="{{ Auth::user()->email }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Điện thoại</label>
-                            <input type="tetx" class="form-control" name="phone" value="{{ Auth::user()->phone }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="address" class="form-label">Địa chỉ</label>
-                            <input type="text" class="form-control" name="address" value="{{ Auth::user()->address }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="join" class="form-label">Ngày tham gia</label>
-                            <input type="text" class="form-control"
-                                value="{{ Auth::user()->created_at->format('d/m/Y') }}" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Mật khẩu</label>
-                            <a href="#" class="form-control d-flex justify-content-between align-items-center">Đổi mật
-                                khẩu<i class="fa-solid fa-pen-to-square"></i></a>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Cập nhật thông tin</button>
-                        </div>
-                    </form>
+                    <hr>
+                    <ul class="list-unstyled">
+                        <li><strong>Số điện thoại:</strong> {{ Auth::user()->phone ?? 'N/A' }}</li>
+                        <li><strong>Email:</strong> {{ Auth::user()->email }}</li>
+                        <li><strong>Ngày gia nhập:</strong> {{ Auth::user()->created_at->format('d M Y') }}</li>
+                    </ul>
                 </div>
+            </div>
 
-            </section>
+            <!-- Right Section: Detailed Data -->
+            <div class="col-md-8">
+                <div class="card shadow-sm p-4">
+                    <h4 class="mb-4">Thông tin cá nhân</h4>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Ảnh cá nhân</label>
+                        <input type="file" id="avatar" name="avatar" class="form-control" disabled>
+                        @if (Auth::user()->avatar)
+                            <img src="{{ Storage::url(Auth::user()->avatar) }}" width="150px" alt="">
+                        @endif
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Địa chỉ email</label>
+                        <input type="email" id="email" name="email" class="form-control"
+                            value="{{ Auth::user()->email }}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Address_all">Địa chỉ chi tiết</label>
+                        @if (Auth::user()->ward && Auth::user()->district && Auth::user()->province)
+                            <input type="text" class="form-control"
+                                value="{{ Auth::user()->ward->name . ', ' . Auth::user()->district->name . ', ' . Auth::user()->province->name }}"
+                                disabled>
+                        @else
+                            <input type="text" class="form-control" placeholder="Thông tin chi tiết" disabled>
+                        @endif
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Địa chỉ</label>
+                        <input type="text" id="address" name="address" class="form-control"
+                            value="{{ Auth::user()->address ?? '' }}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Số điện thoại</label>
+                        <input type="text" id="phone" name="phone" class="form-control"
+                            value="{{ Auth::user()->phone ?? '' }}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Mật khẩu</label>
+                        <input type="password" id="password" name="password" class="form-control"
+                            placeholder="Enter new password" value="{{ Auth::user()->password }}" disabled>
+                    </div>
+                    <div class="text-end">
+                        <a href="{{ route('profile.info.showProfile', Auth::user()->id) }}" class="btn btn-outline-primary">Cập nhật thông tin</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+@endsection
+@section('style')
+    <style>
+        /* Profile Image */
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border: 3px solid #007bff;
+        }
+
+        /* Card Styling */
+        .card {
+            border-radius: 10px;
+            background-color: #ffffff;
+        }
+
+        /* Left Section: Info List */
+        .card ul li {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* Form Labels and Inputs */
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
 @endsection

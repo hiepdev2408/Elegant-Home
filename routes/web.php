@@ -8,6 +8,7 @@ use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ContactFormController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\OrderController;
+use App\Http\Controllers\Client\PaymentController;
 use App\Http\Controllers\Client\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,10 +56,18 @@ Route::prefix('smember')
         Route::get('/order', 'order')->name('order');
         Route::get('/endow', 'endow')->name('endow');
         Route::get('/info', 'info')->name('info');
+        Route::get('info/show/{id}', 'showProfile')->name('info.showProfile');
         Route::post('/update/{id}', 'update')->name('update');
         Route::post('/order/cancel/{id}', 'cancel')->name('order.cancel');
+        Route::post('/order/completed/{id}', 'completed')->name('order.completed');
+        Route::post('/order/return_request/{id}', 'return_request')->name('order.return_request');
         Route::get('/order/show/{id}', 'showDetailOrder')->name('order.showDetailOrder');
+        Route::get('/districts/{provinceCode}', [OrderController::class, 'getDistrictsByProvince']);
+        Route::get('/wards/{districtCode}', [OrderController::class, 'getWardsByDistrict']);
     });
+
+// POLICY
+Route::get('policy', [ProfileController::class, 'policy'])->name('policy');
 
 // CONTACT
 Route::prefix('contact')
@@ -83,26 +92,48 @@ Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
 Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
 
-//cart
+//CART
+Route::prefix('cart')
+    ->middleware('auth')
+    ->controller(CartController::class)
+    ->group(function () {
+        Route::post('addToCart', 'addToCart')->name('addToCart');
+        Route::get('/', 'cart')->name('cart');
+        Route::put('update/{id}', 'update')->name('cart.update');
+        Route::delete('destroy/{id}', 'destroy')->name('destroy');
+    });
+
+//ORDER
+Route::prefix('order')
+    ->middleware('auth')
+    ->controller(OrderController::class)
+    ->group(function () {
+        Route::get('/info', 'index')->name('order');
+        Route::post('order/apply-voucher', 'applyVoucher')->name('order.applyVoucher');
+
+        Route::post('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+        Route::get('/thank', [PaymentController::class, 'thank'])->name('thank');
+
+        // Checkout
+        Route::post('vnpay_payment', [PaymentController::class, 'vnpay'])->name('vnpay');
+        Route::get('vnpayReturn', [PaymentController::class, 'vnpayReturn'])->name('vnpayReturn');
+        Route::post('momo_payment', [PaymentController::class, 'momo'])->name('momo_payment');
+        Route::post('cod', [PaymentController::class, 'cod'])->name('cod');
+        Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
+        Route::get('/checkout/thank', [PaymentController::class, 'thank'])->name('thank');
+        Route::get('/checkout/error', [PaymentController::class, 'error'])->name('error');
+        Route::post('/notify', [PaymentController::class, 'notify'])->name('notify');
+    });
+
 Route::group([
     'middleware' => 'auth',
 ], function () {
-    Route::post('addToCart', [CartController::class, 'addToCart'])->name('addToCart');
-    Route::get('listCart', [CartController::class, 'listCart'])->name('listCart');
-    Route::put('cart/update', [CartController::class, 'updateCartQuantity'])->name('updateCartQuantity');
-    Route::post('cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.applyVoucher');
-    Route::put('cart/update', [CartController::class, 'updateCartQuantity'])->name('updateCartQuantity');
-    Route::get('order', [OrderController::class, 'index'])->name('index.Order');
-    Route::post('order/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.applyVoucher');
     // Web routes
     Route::get('/districts/{provinceCode}', [OrderController::class, 'getDistrictsByProvince']);
     Route::get('/wards/{districtCode}', [OrderController::class, 'getWardsByDistrict']);
-
-    // Checkout
-    Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
-    Route::get('defaultView', [CheckoutController::class, 'defaultView'])->name('defaultView');
 });
 
+//chat realtime
 Route::group([
     'middleware' => 'auth',
 ], function () {
@@ -112,13 +143,13 @@ Route::group([
                 ->name('chat.create');
             Route::get('/{roomId}/{receiverId}', [ChatController::class, 'showChatRoom'])
                 ->name('chat.room');
+            Route::post('/outChat/{roomid}', [ChatController::class, 'outChat'])
+                ->name('outChat');
         });
 
     Route::post('/messages/send', [ChatController::class, 'sendMessage'])
         ->name('messages.send');
 });
-
-
 
 Route::get('search/{id}', [HomeController::class, 'search'])->name('search');
 

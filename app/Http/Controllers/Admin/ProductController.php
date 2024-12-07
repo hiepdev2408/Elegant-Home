@@ -145,7 +145,8 @@ class ProductController extends Controller
         $attributes = Attribute::with('values')->get();
         $categoryProduct = $product->categories->pluck('id')->all();
 
-        return view('admin.products.edit', compact('product', 'attributes', 'category', 'categoryProduct'));
+        // dd($product);
+        return view('admin.products.update', compact('product', 'attributes', 'category', 'categoryProduct'));
     }
 
     /**
@@ -153,8 +154,102 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        try {
+            DB::transaction(function () use ($request, $id) {
 
+                $product = Product::findOrFail($id);
+
+                // Chuẩn bị dữ liệu để cập nhật
+                $dataProduct = $request->except(['product_galleries', 'variants', 'categories']);
+                $dataProduct['is_active'] = isset($dataProduct['is_active']) ? 1 : 0;
+                $dataProduct['is_good_deal'] = isset($dataProduct['is_good_deal']) ? 1 : 0;
+                $dataProduct['is_new'] = isset($dataProduct['is_new']) ? 1 : 0;
+                $dataProduct['is_show_home'] = isset($dataProduct['is_show_home']) ? 1 : 0;
+                $dataProduct['slug'] = Str::slug($dataProduct['name']);
+
+                $dataProduct['img_thumbnail'] = $product->img_thumbnail;
+
+                // Xử lý ảnh thumbnail
+                if ($request->hasFile('img_thumbnail')) {
+                    // Xóa ảnh cũ nếu có
+                    if ($product->img_thumbnail) {
+                        Storage::delete($product->img_thumbnail);
+                    }
+                    $dataProduct['img_thumbnail'] = Storage::put('products', $request->file('img_thumbnail'));
+                }
+
+                // Cập nhật sản phẩm
+                $product->update($dataProduct);
+
+                // Xử lý galleries
+                if (!empty($request->product_galleries)) {
+                    foreach ($request->product_galleries as $galleryId => $imageGallery) {
+                        if ($imageGallery) {
+                            if (is_numeric($galleryId)) {
+                                // Cập nhật gallery cũ
+                                $gallery = Gallery::find($galleryId);
+                                if ($gallery) {
+                                    // Xóa ảnh cũ nếu có
+                                    if (Storage::exists($gallery->img_path)) {
+                                        Storage::delete($gallery->img_path);
+                                    }
+                                    // Lưu ảnh mới
+                                    $gallery->update([
+                                        'img_path' => Storage::put('galleries', $imageGallery),
+                                    ]);
+                                }
+                            } else {
+                                // Thêm mới gallery
+                                Gallery::create([
+                                    'product_id' => $product->id,
+                                    'img_path' => Storage::put('galleries', $imageGallery),
+                                ]);
+                            }
+                        }
+                    }
+                }
+                // Xử lý danh mục
+                if ($request->has('categories')) {
+                    $product->categories()->sync($request['categories']);
+                }
+
+                // foreach ($request->variants as $variantData) {
+                //     if (!empty($variantData['sku'])) {
+                //         $variant = Variant::query()->create([
+                //             'product_id' => $product->id,
+                //             'sku' => $variantData['sku'] ?? 0,
+                //             'stock' => $variantData['stock'],
+                //             'price_modifier' => $variantData['price_modifier'] ?? 0,
+                //             'image' => Storage::put('variants', $variantData['image']),
+                //         ]);
+                //     }
+
+                //     if (!empty($variantData['attributes'])) {
+                //         foreach ($variantData['attributes'] as $key => $value) {
+                //             // dd($value);
+                //             if ($value) {
+                //                 $variant->attributes()->create([
+                //                     'attribute_id' => $key,
+                //                     'attribute_value_id' => $value,
+                //                 ]);
+                //             }
+                //         }
+                //     }
+                // }
+
+                // $product->categories()->attach($request->categories);
+            }, 3);
+
+            // return redirect()->route('products.index')->with('success', 'Thao tác thành công');
+            return back();
+        } catch (\Exception $exception) {
+            dd($exception->getMessage());
+
+            return back();
+        }
     }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -208,5 +303,17 @@ class ProductController extends Controller
         $variant->save();
 
         return redirect()->back()->with('success', 'Cập nhật số lượng thành công!');
+    }
+
+    public function compose(View $view)
+    {
+        $notifications = Notification::orderByDesc('created_at')->get();
+        $unread = Notification::where('is_read', 0)->count();
+        $view->with([
+            'notifications' =>
+            $notifications,
+            'unread' =>
+            $unread
+        ]);
     }
 }
