@@ -97,6 +97,7 @@ class ChatController extends Controller
                     $query->orderBy('created_at', 'desc'); // Hiển thị 1 tin nhắn mới nhất
                 }
             ])
+            ->where('user_id', '!=', auth()->id())
             ->orderBy('created_at', 'desc')
             ->get();
         $room = Room::findOrFail($roomId);
