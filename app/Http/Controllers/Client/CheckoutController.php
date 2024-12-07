@@ -83,7 +83,7 @@ class CheckoutController extends Controller
                 $cart->delete();
 
                 session()->forget( [ 'voucher_code', 'discount_amount', 'totalAmount' ] );
-            }
+            }   
             , 1 );
 
             return redirect()->route( 'thank' )->with( 'success', 'Đơn hàng của bạn đã được đặt thành công!' );
