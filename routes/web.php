@@ -10,6 +10,7 @@ use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\PaymentController;
 use App\Http\Controllers\Client\ProductController;
+use App\Http\Controllers\Client\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -89,7 +90,10 @@ Route::prefix('products')
 
 Route::get('productDetail/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 Route::post('/comments', [HomeController::class, 'store'])->name('comments');
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/products/{id}', [ReviewController::class, 'show'])->name('product.productDetail');
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('review.productDetail');
+});
 Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
 
 //CART
