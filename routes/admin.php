@@ -197,6 +197,7 @@ Route::prefix('admin')
         Route::prefix('orders')
             ->as('orders.')
             ->group(function () {
+
                 Route::get('/', [OrderController::class, 'index'])->name('index');
                 Route::post('confirmed/{id}', [OrderController::class, 'confirmed'])->name('confirmed');
                 Route::post('shipping/{id}', [OrderController::class, 'shipping'])->name('shipping');
@@ -205,6 +206,7 @@ Route::prefix('admin')
                 Route::post('returned_item_received/{id}', [OrderController::class, 'returned_item_received'])->name('returned_item_received');
                 Route::post('refund_completed/{id}', [OrderController::class, 'refund_completed'])->name('refund_completed');
             });
+
 
         //Top sell
         Route::get('top_sell', [TopSellController::class, 'index'])->name('top_sell.index');

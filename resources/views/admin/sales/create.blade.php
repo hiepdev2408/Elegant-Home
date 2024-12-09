@@ -2,7 +2,7 @@
 @section('title')
     Thêm mới sale
 @endsection
-@section('menu-item-voucher')
+@section('menu-item-sale')
     open
 @endsection
 
