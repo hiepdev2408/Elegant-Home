@@ -310,7 +310,7 @@
                     <h4>Không có chương trình khuyến mãi nào đang diễn ra.</h4>
                 @endif
             </div>
-    
+
             <div class="row">
                 @php
                     $productsOnSale = session('productsOnSale', []);
@@ -323,7 +323,8 @@
                                     <div class="image">
                                         <a href="{{ route('productDetail', ['slug' => $product['slug']]) }}">
                                             @if ($product['img_thumbnail'])
-                                                <img src="{{ Storage::url($product['img_thumbnail']) }}" alt="{{ $product['name'] }}" class="img-fluid" />
+                                                <img src="{{ Storage::url($product['img_thumbnail']) }}"
+                                                    alt="{{ $product['name'] }}" class="img-fluid" />
                                             @endif
                                         </a>
                                         @if (Auth::check())
@@ -351,28 +352,40 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="price">
                                                 @php
-                                                    $finalPrice = $product['price_sale'];
+                                                    $finalPrice =
+                                                        !is_null($product['price_sale']) && $product['price_sale'] > 0
+                                                            ? $product['price_sale']
+                                                            : $product['base_price'];
                                                 @endphp
-                                                <span class="old-price">{{ number_format($product['base_price'], 0, ',', '.') }} VNĐ</span>
-                                                <span class="new-price">{{ number_format($finalPrice, 0, ',', '.') }} VNĐ</span>
+
+                                                <div class="price">
+                                                    @if (!is_null($product['price_sale']) && $product['price_sale'] > 0)
+                                                        <span
+                                                            class="old-price">{{ number_format($product['base_price'], 0, ',', '.') }}
+                                                            VNĐ</span>
+                                                    @endif
+                                                    <span class="new-price">{{ number_format($finalPrice, 0, ',', '.') }}
+                                                        VNĐ</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-    
+
                         @foreach ($sales as $sale)
-                            @if ($sale->products->contains($product['id'])) <!-- Kiểm tra sản phẩm có trong chương trình khuyến mãi -->
+                            @if ($sale->products->contains($product['id']))
+                                <!-- Kiểm tra sản phẩm có trong chương trình khuyến mãi -->
                                 <script>
                                     // Lấy thời gian kết thúc từ backend
                                     var endDate = new Date("{{ \Carbon\Carbon::parse($sale->end_date)->toDateTimeString() }}").getTime();
-    
+
                                     // Cập nhật bộ đếm ngược mỗi giây
                                     var countdownFunction = setInterval(function() {
                                         var now = new Date().getTime();
                                         var distance = endDate - now;
-    
+
                                         // Nếu thời gian kết thúc, ẩn sản phẩm
                                         if (distance < 0) {
                                             clearInterval(countdownFunction);
@@ -384,10 +397,11 @@
                                             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                                             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                                             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
+
                                             // Hiển thị thời gian còn lại
-                                            document.getElementById("countdown-{{ $sale->id }}").innerHTML = days + " ngày " + hours + " giờ " 
-                                            + minutes + " phút " + seconds + " giây ";
+                                            document.getElementById("countdown-{{ $sale->id }}").innerHTML = days + " ngày " + hours +
+                                                " giờ " +
+                                                minutes + " phút " + seconds + " giây ";
                                         }
                                     }, 1000);
                                 </script>
@@ -1261,5 +1275,4 @@
     </style>
 @endsection
 @section('script-libs')
-
 @endsection

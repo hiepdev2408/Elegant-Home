@@ -69,25 +69,27 @@ class HomeController extends Controller
 
             foreach ($sales as $sale) {
                 foreach ($sale->products as $product) {
-                    // Tính toán giá khuyến mãi
-                    $finalPrice = $product->price_sale; // hoặc giá mặc định nếu không có
-                    $discountAmount = ($finalPrice * $sale->discount_percentage) / 100;
-                    $finalPrice -= $discountAmount;
+                    if ($product->price_sale || $product->base_price) {
+                        $finalPrice = $product->price_sale ?: $product->base_price;
 
-                    // Lưu sản phẩm vào mảng sản phẩm khuyến mãi cùng với thời gian kết thúc
-                    $productsOnSale[] = [
-                        'id' => $product->id,
-                        'name' => $product->name,
-                        'slug' => $product->slug,
-                        'price_sale' => $finalPrice,
-                        'base_price' => $product->base_price,
-                        'img_thumbnail' => $product->img_thumbnail,
-                        'sale_end' => $sale->end_date, // Lưu thời gian kết thúc
-                    ];
+                        if (isset($finalPrice) && $sale->discount_percentage > 0) {
+                            $discountAmount = ($finalPrice * $sale->discount_percentage) / 100;
+                            $finalPrice -= $discountAmount;
+                        }
+
+                        $productsOnSale[] = [
+                            'id' => $product->id,
+                            'name' => $product->name,
+                            'slug' => $product->slug,
+                            'price_sale' => $finalPrice,
+                            'base_price' => $product->base_price,
+                            'img_thumbnail' => $product->img_thumbnail,
+                            'sale_end' => $sale->end_date,
+                        ];
+                    }
                 }
             }
 
-            // Lưu danh sách sản phẩm vào session
             session(['productsOnSale' => $productsOnSale]);
 
         // Trả về view home
@@ -127,6 +129,7 @@ class HomeController extends Controller
         $productsOnSale = session('productsOnSale', []);
 
         foreach ($productsOnSale as $saleProduct) {
+
         if ($saleProduct['id'] === $product->id) {
             $finalPrice = $saleProduct['price_sale'];
             break;

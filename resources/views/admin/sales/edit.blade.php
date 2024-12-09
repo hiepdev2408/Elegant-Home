@@ -21,7 +21,7 @@
             </ul>
         </div>
     @endif
-    <form action="{{ route('sales.update', $sale->id) }}" method="POST">
+    <form action="{{ route('flashsales.update', $sale->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">
