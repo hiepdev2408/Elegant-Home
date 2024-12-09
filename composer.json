@@ -28,7 +28,6 @@
     "autoload": {
         "files": [
             "app/Helpers/SlugHelper.php",
-            "app/Helpers/CartHelper.php",
             "app/Helpers/formatTimeFor.php"
         ],
         "psr-4": {

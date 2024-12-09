@@ -27,8 +27,9 @@
                 {{ session('success') }}
             </div>
         @endif
+
         <div class="card-header d-flex justify-content-end align-items-center mb-3">
-            <a class="btn btn-primary" href="{{ route('sales.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Thêm
+            <a class="btn btn-primary" href="{{ route('flashsales.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Thêm
                 Sale</a>
         </div>
         <div class="card">
@@ -68,11 +69,14 @@
 
 
                                         <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Update"
-                                            class="btn btn-warning btn-sm me-1" href="{{ route('sales.edit', $sale->id) }}">
+
+                                            class="btn btn-warning btn-sm me-1"
+                                            href="{{ route('flashsales.edit', $sale->id) }}">
                                             <i class="mdi mdi-pencil"></i>
                                         </a>
 
-                                        <form action="{{ route('sales.destroy', $sale) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('flashsales.destroy', $sale) }}" method="POST"
+                                            class="d-inline">
                                             @csrf
                                             @method('delete')
                                             <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top"

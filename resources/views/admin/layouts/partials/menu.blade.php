@@ -81,12 +81,12 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item @yield('menu-sub-create-sale')">
-                    <a href="{{ route('sales.create') }}" class="menu-link">
+                    <a href="{{ route('flashsales.create') }}" class="menu-link">
                         <div data-i18n="Thêm sale">Thêm sale</div>
                     </a>
                 </li>
                 <li class="menu-item @yield('menu-sub-index-sale')">
-                    <a href="{{ route('sales.index') }}" class="menu-link">
+                    <a href="{{ route('flashsales.index') }}" class="menu-link">
                         <div data-i18n="Danh sách sale">Danh sách sale</div>
                     </a>
                 </li>
@@ -134,7 +134,7 @@
                     </a>
                 </li>
                 <li class="menu-item @yield('menu-sub-warehouse')">
-                    <a href="{{ route('products.warehouse') }}" class="menu-link">
+                    <a href="{{ route('products.warehouses') }}" class="menu-link">
                         <div data-i18n="Quản Lý Kho">Quản Lý Kho</div>
                     </a>
                 </li>

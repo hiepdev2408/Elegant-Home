@@ -54,8 +54,8 @@
                             <div class="card-body pt-0">
                                 <h6 class="mb-2">Giao dịch</h6>
                                 <div class="d-flex flex-wrap mb-2 gap-2 pb-1 align-items-center">
-                                    <h4 class="mb-0">{{$tongGiaoDichHomNay}}</h4>
-                                    <small class="{{$mau}} mt-1">{{ $dau}}%</small>
+                                    <h4 class="mb-0">{{ $tongGiaoDichHomNay }}</h4>
+                                    <small class="{{ $mau }} mt-1"> {{ $dau }}</small>
                                 </div>
                                 <small>Giao dịch hôm nay</small>
                             </div>
@@ -529,25 +529,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($users as $item)
-                                <tr>
-                                    <td class="text-primary">{{ $item->user_id}}</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-sm me-3">
-                                                <img src="{{ asset('themes') }}/admin/img/avatars/1.png" alt="Avatar"
-                                                    class="rounded-circle">
+                                @foreach ($users as $item)
+                                    <tr>
+                                        <td class="text-primary">{{ $item->user_id }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <img src="{{ asset('themes') }}/admin/img/avatars/1.png"
+                                                        alt="Avatar" class="rounded-circle">
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-0 text-truncate">{{ $item->name }}</h6>
+                                                    <small class="text-truncate">{{ $item->email }}</small>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <h6 class="mb-0 text-truncate">{{ $item->name}}</h6>
-                                                <small class="text-truncate">{{ $item->email}}</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-truncate">{{ number_format($item->gia_mua_hang, 0, ',', '.') }} VND</td>
-                                    <td><span class="badge bg-label-success rounded-pill fw-normal">{{$item->tong_don_hang}}</span>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td class="text-truncate">{{ number_format($item->gia_mua_hang, 0, ',', '.') }}
+                                            VND</td>
+                                        <td><span
+                                                class="badge bg-label-success rounded-pill fw-normal">{{ $item->tong_don_hang }}</span>
+                                        </td>
+                                    </tr>
                                 @endforeach
 
                             </tbody>

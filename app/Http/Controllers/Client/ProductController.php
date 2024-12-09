@@ -10,8 +10,6 @@ class ProductController extends Controller
 {
     public function shop()
     {
-
-        $totalCart = getCartItemCount();
         $categories = Category::with('children')->where('is_active', 1)->get();
 
         $products = Product::query()->latest('id')->paginate(12);
@@ -19,17 +17,16 @@ class ProductController extends Controller
         $productnew = Product::query()->latest('id')->take(3)->get();
         // dd($categories);
 
-        return view('client.shops.shopProduct', compact(['categories', 'products', 'productnew', 'totalCart']));
+        return view('client.shops.shopProduct', compact(['categories', 'products', 'productnew']));
     }
 
     public function gird()
     {
-        $totalCart = getCartItemCount();
         $products = Product::query()->latest('id')->paginate(8);
 
         $productnew = Product::query()->latest('id')->take(3)->get();
 
-        return view('client.shops.gird', compact(['products', 'productnew', 'totalCart']));
+        return view('client.shops.gird', compact(['products', 'productnew']));
 
     }
 

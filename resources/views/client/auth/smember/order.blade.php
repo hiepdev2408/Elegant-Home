@@ -1,5 +1,7 @@
 @extends('client.layouts.master')
-
+@section('title')
+    Lịch sử đơn hàng
+@endsection
 @section('content')
     <div class="container mt-5">
         <h2 class="text-center mb-4">Lịch sử đơn hàng của bạn</h2>
@@ -51,10 +53,10 @@
                     <ul class="list-group">
                         @foreach ($order->orderDetails as $item)
                             @if ($item->product)
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span>({{ $item->quantity }}x) - {{ $item->product->name }}</span>
-                                <span>{{ number_format($item->total_amount, 0, ',', '.') }} VND</span>
-                            </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>({{ $item->quantity }}x) - {{ $item->product->name }}</span>
+                                    <span>{{ number_format($item->total_amount, 0, ',', '.') }} VND</span>
+                                </li>
                             @else
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <span>({{ $item->quantity }}x) - {{ $item->variant->product->name }}</span>
@@ -79,6 +81,7 @@
                     @if ($order->status_order == 'pending')
                         <form id="cancel-order-form-{{ $order->id }}"
                             action="{{ route('profile.order.cancel', $order->id) }}" method="POST" style="display: none;">
+                            {{-- <input type="text" name="status_order" value="pending"> --}}
                             @csrf
                         </form>
                         <button type="button" class="btn btn-sm btn-outline-danger ms-2"

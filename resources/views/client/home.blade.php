@@ -259,10 +259,6 @@
                                         <a href="{{ route('favourite', $product->id) }}"><span
                                                 class="tag flaticon-heart"></span></a>
                                     @endif
-
-                                    <div class="cart-box text-center">
-                                        <a class="cart" href="#">Add to Cart</a>
-                                    </div>
                                 </div>
 
                                 <div class="lower-content p-3">
@@ -273,7 +269,9 @@
                                         <span class="fa fa-star"></span>
                                         <span class="light fa fa-star"></span>
                                     </div>
-                                    <h6><a href="shop-detail.html">{{ Str::limit($product->name, 30) }}</a></h6>
+                                    <h6><a
+                                            href="{{ route('productDetail', ['slug' => $product->slug]) }}">{{ Str::limit($product->name, 30) }}</a>
+                                    </h6>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="price">
                                             @if ($product->price_sale == '')
@@ -312,7 +310,7 @@
                     <h4>Không có chương trình khuyến mãi nào đang diễn ra.</h4>
                 @endif
             </div>
-    
+
             <div class="row">
                 @php
                     $productsOnSale = session('productsOnSale', []);
@@ -325,7 +323,8 @@
                                     <div class="image">
                                         <a href="{{ route('productDetail', ['slug' => $product['slug']]) }}">
                                             @if ($product['img_thumbnail'])
-                                                <img src="{{ Storage::url($product['img_thumbnail']) }}" alt="{{ $product['name'] }}" class="img-fluid" />
+                                                <img src="{{ Storage::url($product['img_thumbnail']) }}"
+                                                    alt="{{ $product['name'] }}" class="img-fluid" />
                                             @endif
                                         </a>
                                         @if (Auth::check())
@@ -353,28 +352,40 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="price">
                                                 @php
-                                                    $finalPrice = $product['price_sale'];
+                                                    $finalPrice =
+                                                        !is_null($product['price_sale']) && $product['price_sale'] > 0
+                                                            ? $product['price_sale']
+                                                            : $product['base_price'];
                                                 @endphp
-                                                <span class="old-price">{{ number_format($product['base_price'], 0, ',', '.') }} VNĐ</span>
-                                                <span class="new-price">{{ number_format($finalPrice, 0, ',', '.') }} VNĐ</span>
+
+                                                <div class="price">
+                                                    @if (!is_null($product['price_sale']) && $product['price_sale'] > 0)
+                                                        <span
+                                                            class="old-price">{{ number_format($product['base_price'], 0, ',', '.') }}
+                                                            VNĐ</span>
+                                                    @endif
+                                                    <span class="new-price">{{ number_format($finalPrice, 0, ',', '.') }}
+                                                        VNĐ</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-    
+
                         @foreach ($sales as $sale)
-                            @if ($sale->products->contains($product['id'])) <!-- Kiểm tra sản phẩm có trong chương trình khuyến mãi -->
+                            @if ($sale->products->contains($product['id']))
+                                <!-- Kiểm tra sản phẩm có trong chương trình khuyến mãi -->
                                 <script>
                                     // Lấy thời gian kết thúc từ backend
                                     var endDate = new Date("{{ \Carbon\Carbon::parse($sale->end_date)->toDateTimeString() }}").getTime();
-    
+
                                     // Cập nhật bộ đếm ngược mỗi giây
                                     var countdownFunction = setInterval(function() {
                                         var now = new Date().getTime();
                                         var distance = endDate - now;
-    
+
                                         // Nếu thời gian kết thúc, ẩn sản phẩm
                                         if (distance < 0) {
                                             clearInterval(countdownFunction);
@@ -386,10 +397,11 @@
                                             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                                             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                                             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
+
                                             // Hiển thị thời gian còn lại
-                                            document.getElementById("countdown-{{ $sale->id }}").innerHTML = days + " ngày " + hours + " giờ " 
-                                            + minutes + " phút " + seconds + " giây ";
+                                            document.getElementById("countdown-{{ $sale->id }}").innerHTML = days + " ngày " + hours +
+                                                " giờ " +
+                                                minutes + " phút " + seconds + " giây ";
                                         }
                                     }, 1000);
                                 </script>
@@ -444,7 +456,8 @@
                             <div class="overlay-box">
                                 <div class="overlay-inner">
                                     <div class="off">Giảm giá 30%</div>
-                                    <h5><a href="{{ route('shop') }}">Hãy ở bên nhau trong khoảnh khắc này <br> với Elegant Home gọi</a></h5>
+                                    <h5><a href="{{ route('shop') }}">Hãy ở bên nhau trong khoảnh khắc này <br> với
+                                            Elegant Home gọi</a></h5>
                                     <a class="buy-now" href="{{ route('shop') }}">Mua ngay</a>
                                 </div>
                             </div>
@@ -464,7 +477,8 @@
                             <div class="overlay-box">
                                 <div class="overlay-inner">
                                     <div class="off">Get 30% off</div>
-                                    <h5><a href="{{ route('shop') }}">Hãy ở bên nhau trong khoảnh khắc này <br> với Elegant Home gọi</a></h5>
+                                    <h5><a href="{{ route('shop') }}">Hãy ở bên nhau trong khoảnh khắc này <br> với
+                                            Elegant Home gọi</a></h5>
                                     <a class="buy-now" href="{{ route('shop') }}">Mua ngay</a>
                                 </div>
                             </div>
@@ -482,7 +496,7 @@
         <div class="auto-container">
             <!-- Sec Title -->
             <div class="sec-title centered">
-                <h4><span>Populer</span> Products For You !</h4>
+                <h4><span>Sản phẩm phổ biến</span> cho bạn !</h4>
             </div>
             <div class="inner-container">
                 <div class="single-item-carousel owl-carousel owl-theme">
@@ -881,8 +895,8 @@
                 <!-- Shipping Box -->
                 <div class="shipping-box">
                     <div class="inner-box">
-                        Free <span class="theme_color">Shipping</span>
-                        <div class="order">On all Order</div>
+                        Miễn phí <span class="theme_color">Vận chuyển</span>
+                        <div class="order">Cho tất cả các đơn hàng</div>
                     </div>
                 </div>
 
@@ -899,13 +913,13 @@
                         <div class="counter-block col-lg-6 col-md-6 col-sm-6">
                             <div class="inner-box d-flex align-items-center">
                                 <div class="counter"><span class="odometer" data-count="12"></span>k</div>
-                                <div class="counter-text">Furniture Product For Home</div>
+                                <div class="counter-text">Sản phẩm nội thất cho gia đình</div>
                             </div>
                         </div>
                         <div class="counter-block col-lg-6 col-md-6 col-sm-6">
                             <div class="inner-box d-flex align-items-center">
                                 <div class="counter"><span class="odometer" data-count="120"></span>k</div>
-                                <div class="counter-text">Our Satiesfiyed Clients</div>
+                                <div class="counter-text">Khách hàng hài lòng</div>
                             </div>
                         </div>
                     </div>
@@ -953,7 +967,7 @@
         <div class="auto-container">
             <!-- Sec Title -->
             <div class="sec-title">
-                <h4><span>Products </span> your choich !</h4>
+                <h4><span>Sản phẩm </span>sự lựa chọn của bạn !</h4>
             </div>
 
             <!-- MixitUp Galery -->
@@ -985,9 +999,9 @@
                                         @endif
                                     </a>
                                     <span class="tag flaticon-heart"></span>
-                                    <div class="cart-box text-center">
+                                    {{-- <div class="cart-box text-center">
                                         <a class="cart" href="#">Add to Cart</a>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="lower-content p-3">
                                     <div class="rating">
@@ -1021,7 +1035,7 @@
 
                 <div class="button-box text-center">
                     <a href="{{ route('shop') }}" class="theme-btn btn-style-one">
-                        Shop Now <span class="icon flaticon-right-arrow"></span>
+                        Mua ngay <span class="icon flaticon-right-arrow"></span>
                     </a>
                 </div>
 
@@ -1261,5 +1275,4 @@
     </style>
 @endsection
 @section('script-libs')
-
 @endsection
