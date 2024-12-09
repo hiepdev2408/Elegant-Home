@@ -43,16 +43,23 @@
                                         <span class="light fa fa-star"></span>
                                         <i>(4 customer review)</i>
                                     </div>
-                                    <!-- Price -->
+                                    @if ($product->price_sale != '')
                                     <div class="price">
                                         <span class="old-price">{{ number_format($product->base_price, 0, ',', '.') }} VNĐ</span>
                                         @if(isset($finalPrice) && $finalPrice > 0)
                                             <span class="new-price">{{ number_format($finalPrice, 0, ',', '.') }} VNĐ</span>
                                         @else
-                                            <span class="new-price">{{ number_format($product->price_sale, 0, ',', '.') }} VNĐ</span>
-
+                                            {{ number_format($product->price_sale, 0, ',', '.') }} VNĐ
                                         @endif
                                     </div>
+                                    @else
+                                    <div class="price">
+                                        <span class="new-price">{{ number_format($product->base_price, 0, ',', '.') }} VNĐ</span>
+                                        @if(isset($finalPrice) && $finalPrice > 0)
+                                            {{ number_format($finalPrice, 0, ',', '.') }} VNĐ
+                                        @endif
+                                    </div>
+                                    @endif
                                     <div class="text">{{ $product->description }}</div>
                                     <div class="d-flex flex-wrap">
                                         @php
@@ -608,7 +615,7 @@
     text-decoration: line-through; /* Gạch ngang cho giá cũ */
     color: rgb(255, 0, 0); /* Màu đỏ cho giá mới */
     font-weight: bold; /* Đậm */
-    font-size: 1.2em; 
+    font-size: 1.2em;
 }
 .new-price {
     text-decoration: none !important; /* Ghi đè gạch ngang */

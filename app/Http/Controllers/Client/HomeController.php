@@ -42,39 +42,38 @@ class HomeController extends Controller
             ->whereHas('products')
             ->take(5)
             ->get(['id', 'name']);
-    
+
         // Lấy các sản phẩm mới nhất
         $products = Product::query()
             ->with('categories')
-            
+
             ->latest('id')
             ->take(10)
             ->get();
-    
+
         // Lấy các bài viết blog mới nhất
         $blogs = Blog::query()
             ->with('user')
             ->latest()
             ->take(10)
             ->get();
-    
+
             $currentDate = Carbon::now();
 
-            // Lấy các chương trình khuyến mãi đang diễn ra
             $sales = Sale::where('start_date', '<=', $currentDate)
                          ->where('end_date', '>=', $currentDate)
-                         ->with('products') // Lấy sản phẩm liên quan
+                         ->with('products')
                          ->get();
-        
+
             $productsOnSale = [];
-        
+
             foreach ($sales as $sale) {
                 foreach ($sale->products as $product) {
                     // Tính toán giá khuyến mãi
                     $finalPrice = $product->price_sale; // hoặc giá mặc định nếu không có
                     $discountAmount = ($finalPrice * $sale->discount_percentage) / 100;
                     $finalPrice -= $discountAmount;
-        
+
                     // Lưu sản phẩm vào mảng sản phẩm khuyến mãi cùng với thời gian kết thúc
                     $productsOnSale[] = [
                         'id' => $product->id,
@@ -87,7 +86,7 @@ class HomeController extends Controller
                     ];
                 }
             }
-        
+
             // Lưu danh sách sản phẩm vào session
             session(['productsOnSale' => $productsOnSale]);
 
@@ -136,7 +135,7 @@ class HomeController extends Controller
     }
 
         // Trả về view với thông tin sản phẩm và sản phẩm liên quan
-        return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes', 'totalCart','finalPrice'));
+        return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes','finalPrice'));
     }
 
 
@@ -194,8 +193,8 @@ class HomeController extends Controller
         ]);
     }
 
-    
 
-   
-   
+
+
+
 }

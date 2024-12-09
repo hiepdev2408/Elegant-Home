@@ -2,7 +2,7 @@
 @section('title')
    Cập nhật sale
 @endsection
-@section('menu-item-voucher')
+@section('menu-item-sale')
     open
 @endsection
 
@@ -23,7 +23,7 @@
     @endif
     <form action="{{ route('sales.update', $sale->id) }}" method="POST">
         @csrf
-        @method('PUT') 
+        @method('PUT')
         <div class="form-group">
             <label for="discount_percent">Giảm Giá (Phần trăm):</label>
             <input type="number" class="form-control" id="discount_percent" name="discount_percentage" value="{{ old('discount_percent', $sale->discount_percent) }}" step="0.01" min="0" max="100">
@@ -36,13 +36,13 @@
             <label for="end_date">Ngày Kết Thúc:</label>
             <input type="date" class="form-control" id="end_date" name="end_date" value="{{ old('end_date', $sale->end_date) }}" required>
         </div>
-       
-        
+
+
         <h3>Chọn Sản Phẩm Áp Dụng Sales</h3>
         <div class="form-group">
             @foreach($products as $product)
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="product_{{ $product->id }}" name="products[]" value="{{ $product->id }}" 
+                    <input type="checkbox" class="form-check-input" id="product_{{ $product->id }}" name="products[]" value="{{ $product->id }}"
                         {{ $sale->products->contains($product->id) ? 'checked' : '' }}>
                     <label class="form-check-label" for="product_{{ $product->id }}">{{ $product->name }}</label>
                 </div>

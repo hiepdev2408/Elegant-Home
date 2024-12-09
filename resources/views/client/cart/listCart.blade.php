@@ -30,7 +30,7 @@
                                             $totalAmount = 0;
                                         @endphp
                                         @foreach ($carts as $cart)
-                                            @if ($cart->variant)
+                                            @if ($cart->variant != '')
                                                 <tbody id="cart-item-{{ $cart->id }}">
                                                     <tr>
                                                         <td colspan="2" class="prod-column">
@@ -130,7 +130,7 @@
                                                                         readonly>
                                                                 </div>
                                                                 <input type="hidden" name="price_sale"
-                                                                    value="{{ $cart->variant->product->price_sale }}">
+                                                                    value="{{ $cart->product->base_price }}">
                                                             </form>
                                                         </td>
 

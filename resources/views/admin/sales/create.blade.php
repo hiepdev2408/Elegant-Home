@@ -2,7 +2,7 @@
 @section('title')
     Thêm mới sale
 @endsection
-@section('menu-item-voucher')
+@section('menu-item-sale')
     open
 @endsection
 
@@ -21,7 +21,7 @@
         </ul>
     </div>
     @endif
-    <form action="{{ route('sales.store') }}" method="POST">
+    <form action="{{ route('flashsales.store') }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="discount_percentage">Giảm Giá (Phần trăm):</label>
@@ -35,10 +35,10 @@
             <label for="end_date">Ngày Kết Thúc:</label>
             <input type="date" class="form-control" id="end_date" name="end_date" required>
         </div>
-        
+
         <h3>Chọn Sản Phẩm Áp Dụng Sale</h3>
         <div class="form-group">
-           
+
             <div class="scrollable-product-list" style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-top: 10px;">
                 @foreach($products as $product)
                     <div class="form-check">
@@ -60,13 +60,13 @@
     <script>
         CKEDITOR.replace('content');
     </script>
-    
+
 
     <script>
         document.getElementById('select-all').addEventListener('click', function() {
             const checkboxes = document.querySelectorAll('.product-checkbox');
             const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-    
+
             checkboxes.forEach(checkbox => {
                 checkbox.checked = !allChecked; // Nếu tất cả đã được chọn, bỏ chọn, ngược lại thì chọn tất cả
             });
