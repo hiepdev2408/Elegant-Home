@@ -30,11 +30,7 @@
                                             $totalAmount = 0;
                                         @endphp
                                         @foreach ($carts as $cart)
-<<<<<<< HEAD
-                                            @if ($cart->variant)
-=======
                                             @if ($cart->variant != '')
->>>>>>> 1d2df7306bcbbb20be73dcfc5bf2a737c46dd4f2
                                                 <tbody id="cart-item-{{ $cart->id }}">
                                                     <tr>
                                                         <td colspan="2" class="prod-column">

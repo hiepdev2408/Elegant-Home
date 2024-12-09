@@ -15,8 +15,7 @@
                                 <div class="swiper-container content-carousel">
                                     <img src="{{ Storage::url($product->img_thumbnail) }}" alt="">
                                 </div>
-                                <<<<<<< HEAD
-                                    <div class="swiper-container thumbs-carousel">
+                                <div class="swiper-container thumbs-carousel">
                                     <div class="swiper-wrapper">
                                         @foreach ($product->galleries as $gallery)
                                         @if ($gallery->img_path)
@@ -27,185 +26,125 @@
                                             </figure>
                                         </div>
                                         @endif
-                                        =======
-                                    </div>
-                                    <div class="content-column col-lg-6 col-md-12 col-sm-12">
-                                        <div class="inner-column">
-                                            <h3>{{ $product->name }}</h3>
-                                            <div class="rating">
-                                                <span class="fa fa-star"></span>
-                                                <span class="fa fa-star"></span>
-                                                <span class="fa fa-star"></span>
-                                                <span class="fa fa-star"></span>
-                                                <span class="light fa fa-star"></span>
-                                                <i>(4 customer review)</i>
-                                            </div>
-                                            @if ($product->price_sale != '')
-                                            <div class="price">
-                                                <span class="old-price">{{ number_format($product->base_price, 0, ',', '.') }} VNĐ</span>
-                                                @if(isset($finalPrice) && $finalPrice > 0)
-                                                <span class="new-price">{{ number_format($finalPrice, 0, ',', '.') }} VNĐ</span>
-                                                @else
-                                                {{ number_format($product->price_sale, 0, ',', '.') }} VNĐ
-                                                @endif
-                                            </div>
-                                            @else
-                                            <div class="price">
-                                                <span class="new-price">{{ number_format($product->base_price, 0, ',', '.') }} VNĐ</span>
-                                                @if(isset($finalPrice) && $finalPrice > 0)
-                                                {{ number_format($finalPrice, 0, ',', '.') }} VNĐ
-                                                @endif
-                                            </div>
-                                            @endif
-                                            <div class="text">{{ $product->description }}</div>
-                                            <div class="d-flex flex-wrap">
-                                                @php
-                                                $groupAttribute = [];
-                                                $arr = [];
-                                                @endphp
-
-                                                @foreach ($product->variants as $variant)
-                                                @foreach ($variant->attributes as $attribute)
-                                                @php
-                                                $data = [
-                                                'id' => $attribute->attributeValue->id,
-                                                'name' => $attribute->attributeValue->value,
-                                                ];
-
-                                                if (!in_array($data, $arr)) {
-                                                $arr[] = $data;
-                                                }
-
-                                                $attributeName = $attribute->attribute->name;
-                                                if (!isset($groupAttribute[$attributeName])) {
-                                                $groupAttribute[$attributeName] = [];
-                                                }
-
-                                                if (!in_array($data, $groupAttribute[$attributeName])) {
-                                                $groupAttribute[$attributeName][] = $data;
-                                                }
-                                                @endphp
-                                                @endforeach
-                                                >>>>>>> 1d2df7306bcbbb20be73dcfc5bf2a737c46dd4f2
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-                            </div>
-                        </div>
-                        <div class="content-column col-lg-6 col-md-12 col-sm-12">
-                            <div class="inner-column">
-                                <h3>{{ $product->name }}</h3>
-                                <div class="rating">
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="light fa fa-star"></span>
-                                    <i>(4 customer review)</i>
-                                </div>
-                                <!-- Price -->
-                                <div class="price">
-                                    <span class="old-price">{{ number_format($product->base_price, 0, ',', '.') }} VNĐ</span>
-                                    @if(isset($finalPrice) && $finalPrice > 0)
-                                    <span class="new-price">{{ number_format($finalPrice, 0, ',', '.') }} VNĐ</span>
-                                    @else
-                                    <span class="new-price">{{ number_format($product->price_sale, 0, ',', '.') }} VNĐ</span>
-
-                                    @endif
-                                </div>
-                                <div class="text">{{ $product->description }}</div>
-                                <div class="d-flex flex-wrap">
-                                    @php
-                                    $groupAttribute = [];
-                                    $arr = [];
-                                    @endphp
-
-                                    @foreach ($product->variants as $variant)
-                                    @foreach ($variant->attributes as $attribute)
-                                    @php
-                                    $data = [
-                                    'id' => $attribute->attributeValue->id,
-                                    'name' => $attribute->attributeValue->value,
-                                    ];
-
-                                    if (!in_array($data, $arr)) {
-                                    $arr[] = $data;
-                                    }
-
-                                    $attributeName = $attribute->attribute->name;
-                                    if (!isset($groupAttribute[$attributeName])) {
-                                    $groupAttribute[$attributeName] = [];
-                                    }
-
-                                    if (!in_array($data, $groupAttribute[$attributeName])) {
-                                    $groupAttribute[$attributeName][] = $data;
-                                    }
-                                    @endphp
-                                    @endforeach
-                                    @endforeach
-
-                                    <div class="d-grid flex-wrap attribute-container">
-                                        @foreach ($groupAttribute as $attributeName => $values)
-                                        <div class="attribute-group">
-                                            <div class="model">
-                                                <span class="model-title">{{ $attributeName }}</span>
-                                            </div>
-                                            <div class="select-size-box d-flex flex-wrap">
-                                                <select name="variant_attributes[attribute_value_id][]"
-                                                    class="form-select attribute-select me-3"
-                                                    data-attribute-name="{{ $attributeName }}">
-                                                    @foreach ($values as $value)
-                                                    <option value="{{ $value['id'] }}">
-                                                        {{ Str::limit($value['name'], 30) }}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
                                         @endforeach
-                                    </div>
-                                </div>
-
-                                <div class="categories"><span>Danh mục :</span>
-                                    @foreach ($product->categories as $category)
-                                    {{ $category->name }}
-                                    @endforeach
-                                </div>
-
-                                <!-- Tags -->
-                                <div class="sku"><span>Mã sản phẩm :</span> {{ $product->sku }}</div>
-                                <!-- Social Box -->
-                                <ul class="social-box">
-                                    <li class="share">Share:</li>
-                                    <li><a href="https://www.facebook.com/" class="fa fa-facebook-f"></a></li>
-                                    <li><a href="https://www.twitter.com/" class="fa fa-twitter"></a></li>
-                                    <li><a href="https://dribbble.com/" class="fa fa-dribbble"></a></li>
-                                    <li><a href="https://www.linkedin.com/" class="fa fa-linkedin"></a></li>
-                                </ul>
-                                <div class="d-flex align-items-center flex-wrap">
-
-                                    <!-- Button Box -->
-                                    <div class="button-box">
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <input type="hidden" name="total_amount" value="{{ isset($finalPrice) ? $finalPrice : $product->price_sale }}">
-                                        <button type="submit" class="theme-btn btn-style-one">
-                                            Add to cart
-                                        </button>
-                                    </div>
-                                    <!-- Quantity Box -->
-                                    <div class="quantity-box d-flex align-items-center"
-                                        style="gap: 0.5rem; padding: 0.5rem; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
-                                        <label for="quantity"
-                                            style="font-size: 1rem; font-weight: 500;">Quantity:</label>
-                                        <input type="number" id="quantity" name="quantity" min="1"
-                                            value="1"
-                                            style="width: 60px; padding: 0.25rem; border-radius: 4px; border: 1px solid #ccc;">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="content-column col-lg-6 col-md-12 col-sm-12">
+                        <div class="inner-column">
+                            <h3>{{ $product->name }}</h3>
+                            <div class="rating">
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="light fa fa-star"></span>
+                                <i>(4 customer review)</i>
+                            </div>
+                            <!-- Price -->
+                            <div class="price">
+                                <span class="old-price">{{ number_format($product->base_price, 0, ',', '.') }} VNĐ</span>
+                                @if(isset($finalPrice) && $finalPrice > 0)
+                                <span class="new-price">{{ number_format($finalPrice, 0, ',', '.') }} VNĐ</span>
+                                @else
+                                <span class="new-price">{{ number_format($product->price_sale, 0, ',', '.') }} VNĐ</span>
+
+                                @endif
+                            </div>
+                            <div class="text">{{ $product->description }}</div>
+                            <div class="d-flex flex-wrap">
+                                @php
+                                $groupAttribute = [];
+                                $arr = [];
+                                @endphp
+
+                                @foreach ($product->variants as $variant)
+                                @foreach ($variant->attributes as $attribute)
+                                @php
+                                $data = [
+                                'id' => $attribute->attributeValue->id,
+                                'name' => $attribute->attributeValue->value,
+                                ];
+
+                                if (!in_array($data, $arr)) {
+                                $arr[] = $data;
+                                }
+
+                                $attributeName = $attribute->attribute->name;
+                                if (!isset($groupAttribute[$attributeName])) {
+                                $groupAttribute[$attributeName] = [];
+                                }
+
+                                if (!in_array($data, $groupAttribute[$attributeName])) {
+                                $groupAttribute[$attributeName][] = $data;
+                                }
+                                @endphp
+                                @endforeach
+                                @endforeach
+
+                                <div class="d-grid flex-wrap attribute-container">
+                                    @foreach ($groupAttribute as $attributeName => $values)
+                                    <div class="attribute-group">
+                                        <div class="model">
+                                            <span class="model-title">{{ $attributeName }}</span>
+                                        </div>
+                                        <div class="select-size-box d-flex flex-wrap">
+                                            <select name="variant_attributes[attribute_value_id][]"
+                                                class="form-select attribute-select me-3"
+                                                data-attribute-name="{{ $attributeName }}">
+                                                @foreach ($values as $value)
+                                                <option value="{{ $value['id'] }}">
+                                                    {{ Str::limit($value['name'], 30) }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div class="categories"><span>Danh mục :</span>
+                                @foreach ($product->categories as $category)
+                                {{ $category->name }}
+                                @endforeach
+                            </div>
+
+                            <!-- Tags -->
+                            <div class="sku"><span>Mã sản phẩm :</span> {{ $product->sku }}</div>
+                            <!-- Social Box -->
+                            <ul class="social-box">
+                                <li class="share">Share:</li>
+                                <li><a href="https://www.facebook.com/" class="fa fa-facebook-f"></a></li>
+                                <li><a href="https://www.twitter.com/" class="fa fa-twitter"></a></li>
+                                <li><a href="https://dribbble.com/" class="fa fa-dribbble"></a></li>
+                                <li><a href="https://www.linkedin.com/" class="fa fa-linkedin"></a></li>
+                            </ul>
+                            <div class="d-flex align-items-center flex-wrap">
+
+                                <!-- Button Box -->
+                                <div class="button-box">
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="total_amount" value="{{ isset($finalPrice) ? $finalPrice : $product->price_sale }}">
+                                    <button type="submit" class="theme-btn btn-style-one">
+                                        Add to cart
+                                    </button>
+                                </div>
+                                <!-- Quantity Box -->
+                                <div class="quantity-box d-flex align-items-center"
+                                    style="gap: 0.5rem; padding: 0.5rem; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                                    <label for="quantity"
+                                        style="font-size: 1rem; font-weight: 500;">Quantity:</label>
+                                    <input type="number" id="quantity" name="quantity" min="1"
+                                        value="1"
+                                        style="width: 60px; padding: 0.25rem; border-radius: 4px; border: 1px solid #ccc;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
         <!-- End Upper Box -->
@@ -711,24 +650,6 @@
         font-weight: bold;
         /* Đậm */
         font-size: 1.2em;
-    }
-
-    .new-price {
-        text-decoration: none !important;
-        /* Ghi đè gạch ngang */
-        color: rgb(255, 0, 0);
-        /* Màu đỏ cho giá mới */
-        font-weight: bold;
-        /* Đậm */
-        font-size: 1.2em;
-        /* Kích thước lớn hơn (có thể điều chỉnh) */
-    }
-
-    .sale-price {
-        color: red;
-        /* Màu đỏ cho giá sale */
-        font-weight: bold;
-        /* In đậm giá sale */
     }
 
     .new-price {
