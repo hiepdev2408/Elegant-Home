@@ -34,7 +34,6 @@ class ProfileController extends Controller
     public function showDetailOrder($id)
     {
         $order = Order::query()->findOrFail($id);
-
         return view('client.auth.smember.showDetailOrder', compact('order'));
     }
 

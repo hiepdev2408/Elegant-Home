@@ -1,6 +1,6 @@
 @extends('client.layouts.master')
 @section('title')
-    Reset password
+    Đặt lại mật khẩu
 @endsection
 @section('content')
     @if (session('status'))
@@ -21,7 +21,7 @@
                     @csrf
                     <input type="hidden" name="token" value="{{ $token }}">
                     <span class="login100-form-title">
-                        <b>QUÊN MẬT KHẨU</b>
+                        <b>ĐẶT LẠI MẬT KHẨU</b>
                     </span>
                     <form action="#">
                         <div class="wrap-input100 validate-input mt-3">

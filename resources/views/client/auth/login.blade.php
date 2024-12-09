@@ -1,6 +1,6 @@
 @extends('client.layouts.master')
 @section('title')
-    Login
+    Đăng Nhập
 @endsection
 @section('content')
     @if (session()->has('erorr'))

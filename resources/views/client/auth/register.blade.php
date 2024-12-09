@@ -1,6 +1,6 @@
 @extends('client.layouts.master')
 @section('title')
-    Register
+    Đăng Ký
 @endsection
 @section('content')
     <div class="limiter">
