@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @section('title')
-    Thêm sản phẩm kho hàng
+    Xuất sản phẩm khỏi kho
 @endsection
 @section('menu-item-product', 'open')
 
@@ -79,7 +79,7 @@
                                 </div>
 
                                 <div class="form-floating form-floating-outline mb-4">
-                                    <input type="number" class="form-control" id="stock" name="quantity"
+                                    <input type="number" class="form-control" id="stock" name="stock"
                                         placeholder="Số lượng" oninput="calculateTotal()">
                                     <label for="stock">Số Lượng</label>
                                 </div>
@@ -97,12 +97,16 @@
                                 </div>
 
                                 <div class="form-floating form-floating-outline mb-4">
-                                    <input type="text" class="form-control" name="note" id="note"
-                                        placeholder="Ghi Chú" value="Khác">
-                                    <label for="note">Ghi Chú</label>
+                                    <input type="text" class="form-control" name="Total_import_price"
+                                        id="Total_import_price" placeholder="Nhập - Xuất">
+                                    <label for="Total_import_price">Tên Phiếu</label>
                                 </div>
 
-                                <input type="hidden" name="type" value="Nhập Hàng">
+                                <div class="form-floating form-floating-outline mb-4">
+                                    <input type="date" class="form-control" name="date_import"
+                                        placeholder="Ngày Nhập Hàng">
+                                    <label for="date_import">Ngày Nhập Hàng</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -137,20 +141,10 @@
     <script>
         // Tính tổng tiền khi người dùng nhập số lượng hoặc giá nhập
         function calculateTotal() {
-            // Lấy giá trị số lượng từ input
-            var quantity = parseFloat(document.getElementById('stock').value);
-            // Lấy giá trị giá nhập từ input
-            var purchasePrice = parseFloat(document.getElementById('wholesale_price').value);
-
-            // Tính tổng giá nhập
+            var quantity = document.getElementById('stock').value;
+            var purchasePrice = document.getElementById('wholesale_price').value;
             var totalPrice = quantity * purchasePrice;
-
-            // Định dạng tổng giá với dấu phân cách hàng nghìn
-            var formattedTotalPrice = totalPrice.toLocaleString('vi-VN', {
-                style: 'decimal'
-            });
-            // Gán giá trị tổng giá nhập vào ô input
-            document.getElementById('Total_import_price').value = formattedTotalPrice;
+            document.getElementById('Total_import_price').value = totalPrice;
         }
     </script>
 @endsection

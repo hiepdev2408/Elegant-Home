@@ -84,12 +84,14 @@ Route::prefix('admin')
 
         //warehouses
         Route::prefix('warehouses')
+            ->controller(WarehouseController::class)
             ->as('warehouses.')
             ->group(function () {
-            Route::get('/', [WarehouseController::class, 'index'])->name('index');
-            Route::get('create', [WarehouseController::class, 'create'])->name('create');
-            Route::put('store', [WarehouseController::class, 'store'])->name('store');
-            Route::get('show/{id}', [WarehouseController::class, 'show'])->name('show');
+            Route::get('/', 'index')->name('index');
+            Route::get('create', 'create')->name('create');
+            Route::get('export', 'export')->name('export');
+            Route::put('store', 'store')->name('store');
+            Route::get('show/{id}', 'show')->name('show');
         });
 
         // Category
@@ -208,16 +210,16 @@ Route::prefix('admin')
         });
         //Sale
         Route::prefix('sales')
-    ->as('sales.')
-    ->group(function () {
-        Route::get('/', [SaleController::class, 'index'])->name('index');
-        Route::get('create', [SaleController::class, 'create'])->name('create');
-        Route::post('store', [SaleController::class, 'store'])->name('store');
-        Route::get('edit/{sale}', [SaleController::class, 'edit'])->name('edit'); // Sử dụng Sale model
-        Route::put('update/{sale}', [SaleController::class, 'update'])->name('update'); // Sử dụng Sale model
-        Route::delete('destroy/{sale}', [SaleController::class, 'destroy'])->name('destroy'); // Sử dụng Sale model
-    });
-   
+            ->as('sales.')
+            ->group(function () {
+            Route::get('/', [SaleController::class, 'index'])->name('index');
+            Route::get('create', [SaleController::class, 'create'])->name('create');
+            Route::post('store', [SaleController::class, 'store'])->name('store');
+            Route::get('edit/{sale}', [SaleController::class, 'edit'])->name('edit'); // Sử dụng Sale model
+            Route::put('update/{sale}', [SaleController::class, 'update'])->name('update'); // Sử dụng Sale model
+            Route::delete('destroy/{sale}', [SaleController::class, 'destroy'])->name('destroy'); // Sử dụng Sale model
+        });
+
         //Top sell
         Route::get('top_sell', [TopSellController::class, 'index'])->name('top_sell.index');
 
