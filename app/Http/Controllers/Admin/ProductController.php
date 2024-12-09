@@ -202,7 +202,6 @@ class ProductController extends Controller
                                 ]);
                             }
                         }
-                        
                     }
                 }
                 // Xử lý danh mục

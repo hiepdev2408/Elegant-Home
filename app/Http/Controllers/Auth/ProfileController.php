@@ -3,17 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cart;
 use App\Models\District;
 use App\Models\Order;
-use App\Models\OrderDetail;
 use App\Models\Province;
-use App\Models\User;
 use App\Models\Ward;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -23,33 +19,36 @@ class ProfileController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__);
     }
 
-    public function policy(){
+    public function policy()
+    {
         return view('client.policy.policy');
     }
 
     public function order()
     {
-        $orders = Order::query()->where('user_id', Auth::user()->id)->get();
+        $orders = Order::query()->with('user', 'orderDetails')->where('user_id', Auth::user()->id)->latest('id')->get();
         $countOrder = $orders->where('status_order', '!=', 'canceled')->count();
-
         return view('client.auth.smember.order', compact('orders', 'countOrder'));
     }
 
     public function showDetailOrder($id)
     {
         $order = Order::query()->findOrFail($id);
-
         return view('client.auth.smember.showDetailOrder', compact('order'));
     }
 
 
     public function cancel(Request $request, $id)
     {
+        // dd($request->all());
         $order = Order::query()->findOrFail($id);
-        $order->update([
-            'status_order' => 'canceled',
-        ]);
-
+        if ($order->status_order === 'pending') {
+            $order->update([
+                'status_order' => 'canceled',
+            ]);
+        } else {
+            return back()->with('error', 'Hủy đơn hàng thất bại!');
+        }
         return back()->with('success', 'Đơn hàng đã hủy thành công!');
     }
     public function completed(Request $request, $id)
@@ -64,11 +63,15 @@ class ProfileController extends Controller
     public function return_request(Request $request, $id)
     {
         $order = Order::query()->findOrFail($id);
-        $order->update([
-            'status_order' => 'return_request',
-        ]);
-
-        return back();
+        $receivedDate = $order->updated_at;
+        if (Carbon::parse($receivedDate)->addDays(7)->isPast()) {
+            return back()->with('error', 'Đơn hàng đã quá thời hạn 7 ngày kể từ khi nhận hàng, không thể yêu cầu trả hàng.');
+        } else {
+            $order->update([
+                'status_order' => 'return_request',
+            ]);
+        }
+        return back()->with('success', 'Yêu cầu trả hàng của bạn đã được gửi.');
     }
 
     public function endow()
@@ -80,7 +83,8 @@ class ProfileController extends Controller
         return view('client.auth.smember.info');
     }
 
-    public function showProfile(){
+    public function showProfile()
+    {
         $user = Auth::user();
         $provinces = Province::pluck('name', 'code')->all();
 

@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\Role;
+use App\Models\StockMovement;
 use App\Models\User;
 use App\Models\warehouse;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
@@ -19,27 +18,48 @@ class WarehouseController extends Controller
     }
     public function create()
     {
-        $product = Product::pluck('name', 'id')->all();
+        $products = Product::with([
+            'variants.attributes' => function ($query) {
+                $query->with('attribute', 'attributeValue');
+            }
+        ])->get();
         $user = User::pluck('name', 'id')->all();
-        return view('admin.warehouses.create', compact('product', 'user'));
+        return view('admin.warehouses.create', compact('products', 'user'));
     }
+
+    public function export()
+    {
+        $products = Product::with([
+            'variants.attributes' => function ($query) {
+                $query->with('attribute', 'attributeValue');
+            }
+        ])->get();
+        $user = User::pluck('name', 'id')->all();
+        return view('admin.warehouses.export', compact('products', 'user'));
+    }
+
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
+            'variant_id' => 'required',
+            'user_id' => 'required',
             'quantity' => 'required',
-            'price_import' => 'required',
-            'Total_amount' => 'required',
+            'wholesale_price' => 'required',
+            'Total_import_price' => 'required',
+            'note' => 'required',
+            'type' => 'required'
         ]);
-        $warehouseData = $request->only('product_id',  'quantity', 'price_import', 'date_import', 'Date_manufacture', 'Total_amount');
-        $warehouseData['user_id']=auth()->user()->id;
 
-        warehouse::create($warehouseData);
+        $Data = $request->only('variant_id', 'user_id', 'quantity', 'wholesale_price', 'Total_import_price', 'note', 'type');
+
+        StockMovement::create($Data);
         return redirect()->route('warehouses.index');
     }
-    public function show(string $id)
-    {
-        $warehouse = Warehouse::findOrFail($id);
-        $warehouse->load(['product','user']);
-        return view('admin.warehouses.show', compact('warehouse'));
-    }
+    // public function show(string $id)
+    // {
+    //     $warehouse = Warehouse::findOrFail($id);
+    //     $warehouse->load(['product', 'user']);
+    //     return view('admin.warehouses.show', compact('warehouse'));
+    // }
 }

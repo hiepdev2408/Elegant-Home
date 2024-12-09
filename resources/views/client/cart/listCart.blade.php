@@ -11,38 +11,34 @@
 
                 <!-- Cart Column -->
                 @if ($carts)
-                    <div class="cart-column col-lg-8 col-md-12 col-sm-12">
+                    <div id="cart-items" class="cart-column col-lg-8 col-md-12 col-sm-12">
                         <div class="inner-column">
-
                             <!--Cart Outer-->
                             <div class="cart-outer">
                                 <div class="table-outer">
-                                    @if (session('success'))
-                                        <div class="alert alert-success">
-                                            {{ session('success') }}
-                                        </div>
-                                    @endif
                                     <table class="cart-table">
                                         <thead class="cart-header">
                                             <tr>
-                                                <th class="prod-column">Product</th>
+                                                <th class="prod-column">Sản phẩm</th>
                                                 <th>&nbsp;</th>
-                                                <th>Price</th>
-                                                <th>Quantity</th>
-                                                <th>Total</th>
+                                                <th>Giá Tiền</th>
+                                                <th>Số Lượng</th>
+                                                <th>Tổng</th>
                                             </tr>
                                         </thead>
                                         @php
                                             $totalAmount = 0;
                                         @endphp
                                         @foreach ($carts as $cart)
-                                            @if ($cart->variant)
-                                                <tbody>
+                                            @if ($cart->variant != '')
+                                                <tbody id="cart-item-{{ $cart->id }}">
                                                     <tr>
                                                         <td colspan="2" class="prod-column">
                                                             <div class="column-box">
                                                                 <figure class="prod-thumb">
-                                                                    <form action="{{ route('destroy', $cart->cart_id) }}"
+                                                                    <form class="delete-cart-form"
+                                                                        data-id="{{ $cart->id }}"
+                                                                        action="{{ route('destroy', $cart->id) }}"
                                                                         method="post">
                                                                         @csrf
                                                                         @method('DELETE')
@@ -58,7 +54,9 @@
                                                                 <div class="prod-text">Tên sản phẩm :
                                                                     {{ Str::limit($cart->variant->product->name, 10) }} <br>
                                                                     Quantity :
-                                                                    {{ $cart->quantity }}</div>
+                                                                    <span
+                                                                        id="quantity-{{ $cart->id }}">{{ $cart->quantity }}</span>
+                                                                </div>
                                                             </div>
                                                         </td>
 
@@ -68,23 +66,23 @@
                                                         </td>
                                                         <!-- Quantity Box -->
                                                         <td class="quantity-box">
-                                                            <form action="{{ route('cart.update', $cart->cart_id) }}"
+                                                            <form class="update-cart-form" data-id="{{ $cart->id }}"
+                                                                action="{{ route('cart.update', $cart->id) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <div class="item-quantity">
-                                                                    <input class="qty-spinner" type="text"
+                                                                    <input id="quantity-{{ $cart->id }}"
+                                                                        class="qty-spinner" type="text"
                                                                         value="{{ $cart->quantity }}" name="quantity"
                                                                         readonly>
                                                                 </div>
-                                                                <input type="hidden" name="cart_id"
-                                                                    value="{{ $cart->cart_id }}">
                                                                 <input type="hidden" name="price_modifier"
                                                                     value="{{ $cart->variant->price_modifier }}">
                                                             </form>
                                                         </td>
 
-                                                        <td>
+                                                        <td id="total-amount-{{ $cart->id }}">
                                                             @php
                                                                 $money = $cart->total_amount;
                                                                 $totalAmount += $money;
@@ -93,7 +91,7 @@
                                                         </td>
                                                 </tbody>
                                             @elseif ($cart->product)
-                                                <tbody>
+                                                <tbody id="cart-item-{{ $cart->id }}">
                                                     <tr>
                                                         <td colspan="2" class="prod-column">
                                                             <div class="column-box">
@@ -131,14 +129,12 @@
                                                                         value="{{ $cart->quantity }}" name="quantity"
                                                                         readonly>
                                                                 </div>
-                                                                <input type="hidden" name="cart_id"
-                                                                    value="{{ $cart->cart_id }}">
                                                                 <input type="hidden" name="price_sale"
-                                                                    value="{{ $cart->variant->product->price_sale }}">
+                                                                    value="{{ $cart->product->base_price }}">
                                                             </form>
                                                         </td>
 
-                                                        <td>
+                                                        <td id="total-amount-{{ $cart->id }}">
                                                             @php
                                                                 $money = $cart->total_amount;
                                                                 $totalAmount += $money;
@@ -157,31 +153,35 @@
                     </div>
 
                     <!-- Total Column -->
-                    <div class="total-column col-lg-4 col-md-12 col-sm-12">
+                    <div id="cart-itemss" class="total-column col-lg-4 col-md-12 col-sm-12">
                         <div class="inner-column">
 
                             <!-- Cart Total Outer -->
                             <div class="cart-total-outer">
                                 <!-- Title Box -->
                                 <div class="title-box">
-                                    <h6>Cart Totals</h6>
+                                    <h6>Tổng số giỏ hàng</h6>
                                 </div>
 
                                 <div class="cart-total-box">
                                     <ul class="cart-totals">
-                                        <li>Subtotals : <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
+                                        <li>Tạm Tính: <span
+                                                id="overall-total">{{ number_format($totalAmount, 0, ',', '.') }}
+                                                VNĐ</span>
                                         </li>
                                         <br>
-                                        <li>Totals : <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span></li>
+                                        <li>Tổng phụ: <span
+                                                id="overall-totals">{{ number_format($totalAmount, 0, ',', '.') }}
+                                                VNĐ</span></li>
                                     </ul>
                                     <div class="check-box">
                                         <input type="checkbox" name="remember-password" id="type-1">
-                                        <label for="type-1">Shipping & taxes calculated at checkout</label>
+                                        <label for="type-1">Thuế được tính khi thanh toán</label>
                                     </div>
                                     <!-- Buttons Box -->
                                     <div class="buttons-box">
                                         <a href="{{ route('order') }}" class="theme-btn proceed-btn">
-                                            Proceed To Checkout
+                                            Tiến hành thanh toán
                                         </a>
                                     </div>
                                 </div>
@@ -189,7 +189,7 @@
                         </div>
                     </div>
                 @else
-                    <div class="empty-cart-box text-center">
+                    <div class="empty-cart-box text-center" id="empty-cart">
                         <img class="mb-4 mt-4"
                             src="https://static-smember.cellphones.com.vn/smember/_nuxt/img/empty.db6deab.svg"
                             alt="Empty Cart" width="300px">
@@ -279,42 +279,79 @@
 
 @section('script-libs')
     <script>
-        $(document).ready(function() {
-            $('.qty-btn').click(function() {
-                // Lấy ID giỏ hàng từ data-id của nút
-                var cartId = $(this).data('id');
-                // Lấy số lượng hiện tại
-                var $input = $(this).siblings('.qty-spinner');
-                var currentQuantity = parseInt($input.val());
+        $('.update-cart-form').submit(function(event) {
+            event.preventDefault(); // Ngừng reload trang
 
-                // Kiểm tra nút nào được nhấn và cập nhật số lượng
-                if ($(this).hasClass('plus')) {
-                    currentQuantity += 1; // Tăng số lượng
-                } else if ($(this).hasClass('minus') && currentQuantity > 1) {
-                    currentQuantity -= 1; // Giảm số lượng, tránh giảm dưới 1
+            var form = $(this);
+            var cartId = form.data('id');
+            var actionUrl = form.attr('action');
+            var formData = form.serialize();
+
+            $.ajax({
+                url: actionUrl,
+                type: 'POST', // Phương thức
+                data: formData,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // CSRF Token
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Hiển thị thông báo thành công
+                        notyf.success(response.message);
+
+                        // Kiểm tra nếu số lượng dưới 0 sẽ xóa
+                        if (response.cartDetailId) {
+                            // Xóa dòng sản phẩm trong bảng
+                            $(`#cart-item-${response.cartDetailId}`).remove();
+                        }
+
+                        $(`#quantity-${cartId}`).text(response.cartDetail.quantity);
+
+                        $(`#total-amount-${cartId}`).text(response
+                            .totalAmountFormatted);
+
+                        // Cập nhật tổng tiền nếu cần
+                        if (response.overallTotalFormatted) {
+                            $('#overall-total').text(response.overallTotalFormatted);
+                            $('#overall-totals').text(response.overallTotalFormatted);
+                        }
+                    } else {
+                        // Hiển thị thông báo lỗi
+                        notyf.error(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Hiển thị thông báo lỗi
+                    notyf.error('Có lỗi xảy ra khi kết nối đến server!');
                 }
 
-                // Cập nhật số lượng trong ô input
-                $input.val(currentQuantity);
+            });
+        });
+    </script>
+    <script>
+        $('.delete-cart-form').submit(function(event) {
+            event.preventDefault(); // Ngừng reload trang
+            var form = $(this);
+            var cartId = form.data('id');
 
-                // Gửi yêu cầu AJAX để cập nhật số lượng trong giỏ hàng
-                $.ajax({
-                    url: '/cart/update', // Đường dẫn đến route xử lý cập nhật giỏ hàng
-                    type: 'POST',
-                    data: {
-                        cart_id: cartId,
-                        quantity: currentQuantity,
-                        _token: '{{ csrf_token() }}' // Đảm bảo có CSRF token
-                    },
-                    success: function(response) {
-                        // Xử lý thành công nếu cần
-                        console.log('Cập nhật thành công!', response);
-                    },
-                    error: function(xhr) {
-                        // Xử lý lỗi nếu cần
-                        console.error('Có lỗi xảy ra!', xhr);
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                success: function(response) {
+                    notyf.success(response.message);
+                    // Nếu xóa thành công, xóa dòng sản phẩm khỏi bảng
+                    form.closest('tr').remove();
+
+                    // Cập nhật tổng tiền nếu cần
+                    if (response.overallTotalFormatted) {
+                        $('#overall-total').text(response.overallTotalFormatted);
+                        $('#overall-totals').text(response.overallTotalFormatted);
                     }
-                });
+                },
+                error: function(xhr, status, error) {
+                    alert('Có lỗi xảy ra khi xóa sản phẩm');
+                }
             });
         });
     </script>

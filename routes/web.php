@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+
 // ACCOUNT
 Route::prefix('auth')
     ->controller(AccountController::class)
@@ -86,7 +87,7 @@ Route::prefix('products')
         Route::get('/filter', 'shopFilter')->name('shop.filter');
     });
 
-Route::get('productDetail/{slug}', [HomeController::class, 'detail'])->name('productDetail');
+Route::get('product/{slug}', [HomeController::class, 'detail'])->name('productDetail');
 Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
 Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
@@ -151,3 +152,4 @@ Route::group([
 });
 
 Route::get('search/{id}', [HomeController::class, 'search'])->name('search');
+

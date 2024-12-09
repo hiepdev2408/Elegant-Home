@@ -36,66 +36,69 @@ class CheckoutController extends Controller
                 }
             }
 
-            DB::transaction(function () use ($cart, $request, $user) {
+            DB::transaction(
+                function () use ($cart, $request, $user) {
 
-                $order = Order::query()->create([
-                    'user_id' => $user->id,
-                    'user_name' => $request->user_name,
-                    'user_email' => $request->user_email,
-                    'user_phone' => $request->user_phone,
-                    'user_address' => $request->user_address,
-                    'user_address_all' => $request->user_address_all,
-                    'user_content' => $request->user_note ?? '',
-                    'is_ship_user_same_user' => $request->is_ship_user_same_user,
-                    'total_amount' => $request->total_amount,
-                ]);
-
-                foreach ($cart->cartDetails as $cartDetails) {
-                    OrderDetail::query()->create([
-                        'order_id' => $order->id,
-                        'product_id' => $cartDetails->product_id,
-                        'variant_id' => $cartDetails->variant_id,
-                        'quantity' => $cartDetails->quantity,
-                        'total_amount' => $cartDetails->total_amount,
+                    $order = Order::query()->create([
+                        'user_id' => $user->id,
+                        'user_name' => $request->user_name,
+                        'user_email' => $request->user_email,
+                        'user_phone' => $request->user_phone,
+                        'user_address' => $request->user_address,
+                        'user_address_all' => $request->user_address_all,
+                        'user_content' => $request->user_note ?? '',
+                        'is_ship_user_same_user' => $request->is_ship_user_same_user,
+                        'total_amount' => $request->total_amount,
                     ]);
 
-                    $variant = Variant::query()->find($cartDetails->variant_id);
-                    if ($variant) {
-                        $variant->stock -= $cartDetails->quantity;
-                        $variant->save();
+                    foreach ($cart->cartDetails as $cartDetails) {
+                        OrderDetail::query()->create([
+                            'order_id' => $order->id,
+                            'product_id' => $cartDetails->product_id,
+                            'variant_id' => $cartDetails->variant_id,
+                            'quantity' => $cartDetails->quantity,
+                            'total_amount' => $cartDetails->total_amount,
+                        ]);
+
+                        $variant = Variant::query()->find($cartDetails->variant_id);
+                        if ($variant) {
+                            $variant->stock -= $cartDetails->quantity;
+                            $variant->save();
+                        }
+                        $cartDetails->delete();
                     }
-                    $cartDetails->delete();
-                }
 
-                $voucherCode = session( 'voucher_code' );
-                if ($voucherCode) {
-                    $voucher = Vouchers::where('code', $voucherCode)->first();
-                    if ($voucher) {
-                        UserVoucher::create( [
-                            'user_id' => auth()->id(),
-                            'voucher_id' => $voucher->id,
-                        ] );
+                    $voucherCode = session('voucher_code');
+                    if ($voucherCode) {
+                        $voucher = Vouchers::where('code', $voucherCode)->first();
+                        if ($voucher) {
+                            UserVoucher::create([
+                                'user_id' => auth()->id(),
+                                'voucher_id' => $voucher->id,
+                            ]);
 
-                        $voucher->increment( 'used_count' );
+                            $voucher->increment('used_count');
+                        }
                     }
+
+                    $cart->delete();
+
+
+                    session()->forget(['voucher_code', 'discount_amount', 'totalAmount']);
                 }
+                ,
+                1
+            );
+            return redirect()->route('thank')->with('success', 'Đơn hàng của bạn đã được đặt thành công!');
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
 
-                $cart->delete();
-
-                session()->forget( [ 'voucher_code', 'discount_amount', 'totalAmount' ] );
-            }
-            , 1 );
-
-            return redirect()->route( 'thank' )->with( 'success', 'Đơn hàng của bạn đã được đặt thành công!' );
-        } catch ( \Exception $exception ) {
-            Log::error( $exception->getMessage() );
-
-            return back()->with( 'error', 'Có lỗi xảy ra, vui lòng thử lại.' );
+            return back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
         }
     }
 
-    public function defaultView() {
-        $totalCart = getCartItemCount();
-        return view( 'client.payment_method.default', compact( 'totalCart' ) );
+    public function defaultView()
+    {
+        return view('client.payment_method.default');
     }
 }

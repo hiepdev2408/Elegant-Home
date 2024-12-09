@@ -5,22 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Vouchers extends Model {
+class Sale extends Model
+{
     use HasFactory;
 
     protected $fillable = [
-        'code',
-        'discount_type',
-        'discount_value',
-        'quantity',
-        'used',
-        'minimum_order_value',
+        'discount_percentage',
         'start_date',
         'end_date',
     ];
 
-    
-
-   
-   
+    public function products(){
+        return $this->belongsToMany(Product::class, 'product_sale');
+    }
 }

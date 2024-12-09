@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Models\Sale;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
@@ -41,25 +43,60 @@ class HomeController extends Controller
             ->take(5)
             ->get(['id', 'name']);
 
+        // Lấy các sản phẩm mới nhất
         $products = Product::query()
             ->with('categories')
+
             ->latest('id')
             ->take(10)
             ->get();
 
+        // Lấy các bài viết blog mới nhất
         $blogs = Blog::query()
             ->with('user')
             ->latest()
             ->take(10)
             ->get();
 
-        return view('client.home', compact('categories', 'products', 'blogs'));
+        $currentDate = Carbon::now();
+
+        $sales = Sale::where('start_date', '<=', $currentDate)
+            ->where('end_date', '>=', $currentDate)
+            ->with('products')
+            ->get();
+
+        $productsOnSale = [];
+
+        foreach ($sales as $sale) {
+            foreach ($sale->products as $product) {
+                if ($product->price_sale || $product->base_price) {
+                    $finalPrice = $product->price_sale ?: $product->base_price;
+
+                    if (isset($finalPrice) && $sale->discount_percentage > 0) {
+                        $discountAmount = ($finalPrice * $sale->discount_percentage) / 100;
+                        $finalPrice -= $discountAmount;
+                    }
+
+                    $productsOnSale[] = [
+                        'id' => $product->id,
+                        'name' => $product->name,
+                        'slug' => $product->slug,
+                        'price_sale' => $finalPrice,
+                        'base_price' => $product->base_price,
+                        'img_thumbnail' => $product->img_thumbnail,
+                        'sale_end' => $sale->end_date,
+                    ];
+                }
+            }
+        }
+
+        session(['productsOnSale' => $productsOnSale]);
+
+        // Trả về view home
+        return view('client.home', compact('categories', 'products', 'blogs', 'sales'));
     }
-
-
     public function detail($slug)
     {
-        $totalCart = getCartItemCount();
         $product = Product::where([
             ['slug', $slug],
         ])
@@ -88,8 +125,19 @@ class HomeController extends Controller
         $attributes = Attribute::with('values')->get();
         $product->increment('view');
 
-        // Trả về view với thông tin sản phẩm và sản phẩm liên quan
-        return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes', 'totalCart'));
+        $finalPrice = null;
+        $productsOnSale = session('productsOnSale', []);
+
+        foreach ($productsOnSale as $saleProduct) {
+
+            if ($saleProduct['id'] === $product->id) {
+                $finalPrice = $saleProduct['price_sale'];
+                break;
+            }
+
+            // Trả về view với thông tin sản phẩm và sản phẩm liên quan
+            return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes', 'finalPrice'));
+        }
     }
 
 
@@ -133,7 +181,7 @@ class HomeController extends Controller
     public function compose(View $view)
     {
         $userId = Auth::id();
-        $favouritecount = $userId ? Favourite::where('user_id', $userId)->count() : 0;
+        // $favouritecount = $userId ? Favourite::where('user_id', $userId)->count() : 0;
         $totalCart = $userId ? CartDetail::query()->where('cart_id', function ($query) use ($userId) {
             $query->select('id')
                 ->from('carts')
@@ -142,8 +190,13 @@ class HomeController extends Controller
         })->count() : 0;
 
         $view->with([
-            'favouritecount' => $favouritecount,
+            // 'favouritecount' => $favouritecount,
             'totalCart' => $totalCart
         ]);
     }
+
+
+
+
+
 }

@@ -278,7 +278,9 @@ class PaymentController extends Controller
         return $result;
     }
 
-    public function notify(Request $request) {}
+    public function notify(Request $request)
+    {
+    }
 
     public function cod(Request $request)
     {
@@ -361,7 +363,6 @@ class PaymentController extends Controller
                     }
                 }
 
-                // Xóa giỏ hàng và các thông tin liên quan
                 $cart->cartDetails()->delete();
                 $cart->delete();
                 session()->forget(['voucher_code', 'discount_amount', 'totalAmount']);

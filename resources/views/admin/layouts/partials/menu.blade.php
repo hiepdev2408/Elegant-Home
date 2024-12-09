@@ -21,7 +21,7 @@
             <a href="/admin" class="menu-link">
                 <i class="menu-icon tf-icons mdi mdi-home-outline"></i>
                 <div data-i18n="Bảng điều khiển">Bảng điều khiển</div>
-                <div class="badge bg-danger rounded-pill ms-auto">5</div>
+                {{-- <div class="badge bg-danger rounded-pill ms-auto">5</div> --}}
             </a>
         </li>
         <!-- Apps & Pages -->
@@ -36,7 +36,7 @@
         </li>
 
         <li class="menu-item @yield('menu-item-order')">
-            <a class="menu-link menu-toggle">
+            <a href="{{ route('orders.index') }}" class="menu-link">
                 <i class='menu-icon tf-icons mdi mdi-order-bool-descending-variant'></i>
                 <div data-i18n="Đơn Hàng">Đơn Hàng</div>
                 <div class="badge bg-danger rounded-pill ms-auto">
@@ -47,13 +47,6 @@
                     @endif
                 </div>
             </a>
-            <ul class="menu-sub">
-                <li class="menu-item @yield('menu-sub-index-order')">
-                    <a href="{{ route('orders.index') }}" class="menu-link">
-                        <div data-i18n="Quản lý đơn hàng">Quản lý đơn hàng</div>
-                    </a>
-                </li>
-            </ul>
         </li>
 
         <li class="menu-item @yield('menu-item-voucher')">
@@ -70,6 +63,24 @@
                 <li class="menu-item @yield('menu-sub-index-voucher')">
                     <a href="{{ route('vouchers.index') }}" class="menu-link">
                         <div data-i18n="Danh sách voucher">Danh sách voucher</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item @yield('menu-item-sale')">
+            <a class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons mdi mdi-printer-pos-cog"></i>
+                <div data-i18n="Sale">Sale</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item @yield('menu-sub-create-sale')">
+                    <a href="{{ route('flashsales.create') }}" class="menu-link">
+                        <div data-i18n="Thêm sale">Thêm sale</div>
+                    </a>
+                </li>
+                <li class="menu-item @yield('menu-sub-index-sale')">
+                    <a href="{{ route('flashsales.index') }}" class="menu-link">
+                        <div data-i18n="Danh sách sale">Danh sách sale</div>
                     </a>
                 </li>
             </ul>
@@ -116,7 +127,7 @@
                     </a>
                 </li>
                 <li class="menu-item @yield('menu-sub-warehouse')">
-                    <a href="{{ route('products.warehouse') }}" class="menu-link">
+                    <a href="{{ route('products.warehouses') }}" class="menu-link">
                         <div data-i18n="Quản Lý Kho">Quản Lý Kho</div>
                     </a>
                 </li>
@@ -210,9 +221,9 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-item @yield('menu-item-contact')">
+        <li class="menu-item @yield('menu-item-sale')">
             <a href="{{ route('top_sell.index') }}" class="menu-link">
-                <i class='menu-icon tf-icons mdi mdi-card-account-mail-outline'></i>
+                <i class='menu-icon tf-icons mdi mdi-fire'></i>
                 <div data-i18n="Top Bán Chạy">Top Bán Chạy</div>
             </a>
         </li>
