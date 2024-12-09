@@ -74,7 +74,7 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-item @yield('menu-item-voucher')">
+        <li class="menu-item @yield('menu-item-sale')">
             <a class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons mdi mdi-sale-outline"></i>
                 <div data-i18n="Sale">Sale</div>
