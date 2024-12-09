@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
-            $table->decimal('discount_amount', 10, 2)->nullable(); // Giảm giá theo số tiền
-            $table->decimal('discount_percent', 5, 2)->nullable(); // Giảm giá theo phần trăm
-            $table->dateTime('start_date'); // Thời gian bắt đầu
-            $table->dateTime('end_date'); // Thời gian kết thúc
-            $table->integer('usage_limit')->nullable(); // Giới hạn sử dụng
-            $table->integer('used_count')->default(0); // Số lần đã sử dụng
+            $table->string('code')->unique(); 
+            $table->decimal('discount_value', 8, 2); 
+            $table->enum('discount_type', ['money', 'percentage']); 
+            $table->integer('quantity'); 
+            $table->integer('used')->default(0); 
+            $table->decimal('minimum_order_value', 8, 2)->default(0); 
+            $table->timestamp('start_date')->nullable(); 
+            $table->timestamp('end_date')->nullable(); 
             $table->timestamps();
         });
     }

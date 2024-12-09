@@ -1,6 +1,10 @@
 @extends('client.layouts.master')
 @section('title')
+<<<<<<< HEAD
 Lịch sử đơn hàng
+=======
+    Lịch sử đơn hàng
+>>>>>>> 1d2df7306bcbbb20be73dcfc5bf2a737c46dd4f2
 @endsection
 @section('content')
 <div class="container mt-5">
@@ -47,6 +51,7 @@ Lịch sử đơn hàng
                 </span>
             </p>
 
+<<<<<<< HEAD
             <!-- Sản phẩm trong đơn hàng -->
             <h5 class="mt-3">Chi tiết sản phẩm:</h5>
             <ul class="list-group">
@@ -65,6 +70,26 @@ Lịch sử đơn hàng
                 @endforeach
             </ul>
         </div>
+=======
+                    <!-- Sản phẩm trong đơn hàng -->
+                    <h5 class="mt-3">Chi tiết sản phẩm:</h5>
+                    <ul class="list-group">
+                        @foreach ($order->orderDetails as $item)
+                            @if ($item->product)
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>({{ $item->quantity }}x) - {{ $item->product->name }}</span>
+                                    <span>{{ number_format($item->total_amount, 0, ',', '.') }} VND</span>
+                                </li>
+                            @else
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>({{ $item->quantity }}x) - {{ $item->variant->product->name }}</span>
+                                    <span>{{ number_format($item->total_amount, 0, ',', '.') }} VND</span>
+                                </li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
+>>>>>>> 1d2df7306bcbbb20be73dcfc5bf2a737c46dd4f2
 
         <div class="card-footer text-end d-inline-flex">
             <!-- Liên hệ admin -->
@@ -75,6 +100,22 @@ Lịch sử đơn hàng
             </form>
             @endif
 
+<<<<<<< HEAD
+=======
+                    <a href="{{ route('profile.order.showDetailOrder', $order->id) }}"
+                        class="btn btn-sm btn-outline-primary mx-2">Xem chi tiết</a>
+                    @if ($order->status_order == 'pending')
+                        <form id="cancel-order-form-{{ $order->id }}"
+                            action="{{ route('profile.order.cancel', $order->id) }}" method="POST" style="display: none;">
+                            {{-- <input type="text" name="status_order" value="pending"> --}}
+                            @csrf
+                        </form>
+                        <button type="button" class="btn btn-sm btn-outline-danger ms-2"
+                            onclick="confirmCancelOrder({{ $order->id }})">
+                            Hủy đơn hàng
+                        </button>
+                    @endif
+>>>>>>> 1d2df7306bcbbb20be73dcfc5bf2a737c46dd4f2
 
             <a href="{{ route('profile.order.showDetailOrder', $order->id) }}"
                 class="btn btn-sm btn-outline-primary mx-2">Xem chi tiết</a>

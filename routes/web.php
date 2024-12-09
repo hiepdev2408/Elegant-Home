@@ -88,9 +88,8 @@ Route::prefix('products')
         Route::get('/filter', 'shopFilter')->name('shop.filter');
     });
 
-    Route::get('product/{slug}', [HomeController::class, 'detail'])->name('productDetail');
-    // Route gửi bình luận (không cần xác thực)
-    Route::post('/comments', [HomeController::class, 'store'])->name('comments');
+Route::get('product/{slug}', [HomeController::class, 'detail'])->name('productDetail');
+Route::post('/comments', [HomeController::class, 'store'])->name('comments');
 
     Route::post('/reviews', [ReviewController::class, 'store'])->middleware('auth')->name('review.store');
     // Route gửi đánh giá, cần xác thực

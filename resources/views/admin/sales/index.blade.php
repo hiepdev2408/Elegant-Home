@@ -3,7 +3,7 @@
     Danh sách sale
 @endsection
 
-@section('menu-item-voucher')
+@section('menu-item-sale')
     open
 @endsection
 
@@ -16,19 +16,20 @@
         <h4>
             <span class="text-muted fw-light">Sale /</span> Danh sách Sale
         </h4>
-        @if(session('message'))
-        <div class="alert alert-warning">
-            {{ session('message') }}
-        </div>
-    @endif
-    
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+        @if (session('message'))
+            <div class="alert alert-warning">
+                {{ session('message') }}
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="card-header d-flex justify-content-end align-items-center mb-3">
-            <a class="btn btn-primary" href="{{ route('sales.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Thêm
+            <a class="btn btn-primary" href="{{ route('flashsales.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Thêm
                 Sale</a>
         </div>
         <div class="card">
@@ -38,7 +39,7 @@
                     style="width:100%">
                     <thead>
                         <tr>
-                            <th>STT</th>                           
+                            <th>STT</th>
                             <th>Giảm theo phần trăm</th>
                             <th>Ngày bắt đầu</th>
                             <th>Ngày kết thúc</th>
@@ -53,7 +54,7 @@
                                 <td>{{ number_format($sale->discount_percentage, 0, ',', '.') . '%' }}</td>
                                 <td>{{ \Carbon\Carbon::parse($sale->start_date)->format('d/m/Y') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($sale->end_date)->format('d/m/Y') }}</td>
-                               
+
                                 <td>
                                     @if ($sale->products->isNotEmpty())
                                         @foreach ($sale->products as $product)
@@ -66,14 +67,15 @@
                                 <td>
                                     <div class="d-flex justify-content-center">
 
-                                        
+
                                         <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Update"
+
                                             class="btn btn-warning btn-sm me-1"
-                                            href="{{ route('sales.edit', $sale->id) }}">
+                                            href="{{ route('flashsales.edit', $sale->id) }}">
                                             <i class="mdi mdi-pencil"></i>
                                         </a>
 
-                                        <form action="{{ route('sales.destroy', $sale) }}" method="POST"
+                                        <form action="{{ route('flashsales.destroy', $sale) }}" method="POST"
                                             class="d-inline">
                                             @csrf
                                             @method('delete')
