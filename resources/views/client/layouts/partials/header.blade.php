@@ -97,36 +97,32 @@
         <div class="menu-outer">
         </div>
     </nav>
-</div>
-<div aria-live="polite" aria-atomic="true" class="position-relative">
-    <!-- Toast container -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <!-- Success Toast -->
-        @if (session('success'))
-            <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
-                aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        <strong>Thành công!</strong> {{ session('success') }}
+    <div aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            @if (session('success'))
+                <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+                    aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <strong>Thành công!</strong> {{ session('success') }}
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
                     </div>
-                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
-                        aria-label="Close"></button>
                 </div>
-            </div>
-        @endif
-
-        <!-- Error Toast -->
-        @if (session('error'))
-            <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
-                aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        <strong>Lỗi!</strong> {{ session('error') }}
+            @endif
+            @if (session('error'))
+                <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
+                    aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <strong>Lỗi!</strong> {{ session('error') }}
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
                     </div>
-                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
-                        aria-label="Close"></button>
                 </div>
-            </div>
-        @endif
+            @endif
+        </div>
     </div>
 </div>
