@@ -128,7 +128,6 @@
     <!-- Main JS -->
     <script src="{{ asset('themes') }}/admin/js/main.js"></script>
 
-
     <!-- Page JS -->
 
     @yield('script-libs') <!-- CÁC JS CÁC TRANG -->

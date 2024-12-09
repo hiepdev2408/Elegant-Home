@@ -363,7 +363,6 @@ class PaymentController extends Controller
                     }
                 }
 
-                // Xóa giỏ hàng và các thông tin liên quan
                 $cart->cartDetails()->delete();
                 $cart->delete();
                 session()->forget(['voucher_code', 'discount_amount', 'totalAmount']);

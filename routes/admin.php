@@ -32,12 +32,10 @@ Route::prefix('admin')
         Route::prefix('account')
             ->as('account.')
             ->group(function () {
-
                 Route::get('listAdmin', [UserController::class, 'listAdmin'])->name('listAdmin');
                 Route::get('listStaff', [UserController::class, 'listStaff'])->name('listStaff');
                 Route::get('listCustomer', [UserController::class, 'listCustomer'])->name('listCustomer');
             });
-
 
         // Permission
         Route::prefix('permissions')
@@ -138,7 +136,6 @@ Route::prefix('admin')
             Route::get('edit/{id}', [AttributeController::class, 'edit'])->name('edit');
             Route::put('update/{id}', [AttributeController::class, 'update'])->name('update');
             Route::delete('destroy/{id}', [AttributeController::class, 'destroy'])->name('destroy');
-
             Route::get('listDestroy', [AttributeController::class, 'delete'])->name('delete');
             // Hiển thị danh sách xóa
             Route::post('restore/{id}', [AttributeController::class, 'restore'])->name('restore');
@@ -149,7 +146,6 @@ Route::prefix('admin')
         Route::prefix('attribute_values')
             ->as('attribute_values.')
             ->group(function () {
-
             Route::get('/', [AttributeValueController::class, 'index'])->name('index');
             Route::get('create', [AttributeValueController::class, 'create'])->name('create');
             Route::post('store', [AttributeValueController::class, 'store'])->name('store');
@@ -198,15 +194,16 @@ Route::prefix('admin')
 
         // Order
         Route::prefix('orders')
+            ->controller(OrderController::class)
             ->as('orders.')
             ->group(function () {
-            Route::get('/', [OrderController::class, 'index'])->name('index');
-            Route::post('confirmed/{id}', [OrderController::class, 'confirmed'])->name('confirmed');
-            Route::post('shipping/{id}', [OrderController::class, 'shipping'])->name('shipping');
-            Route::post('delivered/{id}', [OrderController::class, 'delivered'])->name('delivered');
-            Route::post('return_request/{id}', [OrderController::class, 'return_request'])->name('return_request');
-            Route::post('returned_item_received/{id}', [OrderController::class, 'returned_item_received'])->name('returned_item_received');
-            Route::post('refund_completed/{id}', [OrderController::class, 'refund_completed'])->name('refund_completed');
+            Route::get('/', 'index')->name('index');
+            Route::post('confirmed/{id}', 'confirmed')->name('confirmed');
+            Route::post('shipping/{id}', 'shipping')->name('shipping');
+            Route::post('delivered/{id}', 'delivered')->name('delivered');
+            Route::post('return_request/{id}', 'return_request')->name('return_request');
+            Route::post('returned_item_received/{id}', 'returned_item_received')->name('returned_item_received');
+            Route::post('refund_completed/{id}', 'refund_completed')->name('refund_completed');
         });
         //Sale
         Route::prefix('sales')
@@ -223,4 +220,14 @@ Route::prefix('admin')
         //Top sell
         Route::get('top_sell', [TopSellController::class, 'index'])->name('top_sell.index');
 
+        Route::prefix('flashsales')
+            ->as('flashsales.')
+            ->group(function () {
+                Route::get('/', [SaleController::class, 'index'])->name('index');
+                Route::get('create', [SaleController::class, 'create'])->name('create');
+                Route::post('store', [SaleController::class, 'store'])->name('store');
+                Route::get('edit/{sale}', [SaleController::class, 'edit'])->name('edit'); // Sử dụng Sale model
+                Route::put('update/{sale}', [SaleController::class, 'update'])->name('update'); // Sử dụng Sale model
+                Route::delete('destroy/{sale}', [SaleController::class, 'destroy'])->name('destroy'); // Sử dụng Sale model
+            });
     });

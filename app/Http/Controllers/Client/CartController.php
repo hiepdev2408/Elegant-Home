@@ -49,12 +49,11 @@ class CartController extends Controller
             if (!$matchingVariant) {
                 return back()->with('error', 'Sản phẩm không còn hàng đó, vui lòng chọn sản phẩm khác!');
             }
-
+            $totalAmountVariant = $matchingVariant->price;
             $cartDetail = CartDetail::where('cart_id', $cart->id)
                 ->where('variant_id', $matchingVariant->id)
                 ->first();
 
-            // Sử dụng giá cuối cùng từ yêu cầu
             if ($cartDetail) {
                 $newQuantity = $cartDetail->quantity + $quantity;
                 if ($matchingVariant->stock < $newQuantity) {
@@ -85,16 +84,21 @@ class CartController extends Controller
 
             if ($cartDetail) {
                 $newQuantity = $cartDetail->quantity + $quantity;
-                if ($product->stock < $newQuantity) {
-                    return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
+                foreach ($product->variants as $variant) {
+                    if ($variant->stock < $newQuantity) {
+                        return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
+                    }
                 }
 
                 $cartDetail->quantity = $newQuantity;
                 $cartDetail->total_amount += $totalAmount;
                 $cartDetail->save();
             } else {
-                if ($product->stock < $quantity) {
-                    return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
+
+                foreach ($product->variants as $variant) {
+                    if ($variant->stock < $quantity) {
+                        return back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho của sản phẩm.');
+                    }
                 }
 
                 CartDetail::create([
@@ -108,7 +112,6 @@ class CartController extends Controller
 
         return back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
-
 
     public function cart()
     {
@@ -160,12 +163,10 @@ class CartController extends Controller
             ], 200);
         }
 
-        // Cập nhật số lượng và tổng tiền
         $cartDetail->quantity = $request->quantity;
         $cartDetail->total_amount = $request->quantity * ($cartDetail->variant->price_modifier ?? 0);
         $cartDetail->save();
 
-        // Lấy tổng tiền giỏ hàng
         $overallTotal = $cartDetail->cart->cartDetails->sum('total_amount');
 
         return response()->json([
@@ -237,6 +238,5 @@ class CartController extends Controller
             'subTotal' => number_format($cartDetail->total_amount, 0, ',', '.'),
             'quantity' => $cartDetail->quantity,
         ]);
-
     }
 }

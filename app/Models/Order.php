@@ -43,6 +43,7 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
+        'voucher_id',
         'user_name',
         'user_email',
         'user_phone',
