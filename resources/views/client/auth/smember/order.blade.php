@@ -1,5 +1,7 @@
 @extends('client.layouts.master')
-
+@section('title')
+Lịch sử đơn hàng
+@endsection
 @section('content')
 <div class="container mt-5">
     <h2 class="text-center mb-4">Lịch sử đơn hàng của bạn</h2>
@@ -98,8 +100,8 @@
             @if ($order->status_order == 'completed')
             <ul class="list-group">
                 @foreach ($order->orderDetails as $item)
-                <li class=" d-flex justify-content-between align-items-center">
-                    <a href="{{ route('productDetail', $item->variant->product->id) }}" class="btn btn-outline-primary">Đánh giá</a>
+                <li class="d-flex justify-content-between align-items-center">
+                    <a href="{{ route('productDetail', ['slug' => $item->variant->product->slug]) }}" class="btn btn-outline-primary">Đánh giá</a>
                 </li>
                 @endforeach
             </ul>

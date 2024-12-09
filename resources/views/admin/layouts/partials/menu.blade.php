@@ -134,7 +134,7 @@
                     </a>
                 </li>
                 <li class="menu-item @yield('menu-sub-warehouse')">
-                    <a href="{{ route('products.warehouse') }}" class="menu-link">
+                    <a href="{{ route('products.warehouses') }}" class="menu-link">
                         <div data-i18n="Quản Lý Kho">Quản Lý Kho</div>
                     </a>
                 </li>

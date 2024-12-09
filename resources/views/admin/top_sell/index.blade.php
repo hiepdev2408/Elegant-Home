@@ -61,7 +61,7 @@ Danh sách các sản phẩm bán chạy nhất
                     <p>Không có hình ảnh.</p>
                     @endif
                 </td>
-                <td>{{ $item->product->name }}</td>
+                <td>{{ $item->variant->product->name }}</td>
                 <td>{{ $item->tong_so_luong }}</td>
                 <td>{{ $item->created_at}}</td>
             </tr>

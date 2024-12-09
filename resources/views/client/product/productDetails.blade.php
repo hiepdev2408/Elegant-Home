@@ -160,9 +160,9 @@
                     <!-- Tab Btns -->
                     <ul class="tab-btns tab-buttons clearfix">
                         <li data-tab="#prod-details" class="tab-btn active-btn">Product Details</li>
-                        <li data-tab="#prod-info" class="tab-btn">additional information</li>
-                        <li data-tab="#prod-review" class="tab-btn">Review (02)</li>
-                        <li data-tab="#prod-faq" class="tab-btn">Faq</li>
+                        <li data-tab="#prod-info" class="tab-btn">Thông tin bổ sung</li>
+                        <li data-tab="#prod-review" class="tab-btn">Bình luận (02)</li>
+                        <li data-tab="#prod-faq" class="tab-btn">Đánh giá</li>
                     </ul>
 
                     <!-- Tabs Container -->
@@ -312,17 +312,91 @@
                             </div>
                             @endif
                         </div>
-
                         <!-- Tab -->
                         <div class="tab" id="prod-faq">
-                            <div class="content">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
-                                    vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus aliquet
-                                    nunc, vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
-                                    cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum accumsan
-                                    quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
-                                    bibendum dui. Aenean consequat pulvinar luctus. Suspendisse consectetur
-                                    tristique tortor</p>
+                            <div class="container">
+                                <div class="product-detail">
+                                    <h1 class="display-4">{{ $product->name }}</h1>
+                                    <p class="lead">{{ $product->description }}</p>
+
+                                    <h3 class="mt-4">Gửi Đánh Giá</h3>
+                                    <form action="{{ route('review.store') }}" method="POST" class="review-form">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <div class="form-group">
+                                            <label for="rating">Đánh giá:</label>
+                                            <div class="star-rating">
+                                                @for ($i = 5; $i >= 1; $i--)
+                                                <input class="form-check-input" type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}" required style="display: none;">
+                                                <label class="form-check-label" for="star{{ $i }}" style="font-size: 2rem; cursor: pointer;">★</label>
+                                                @endfor
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="comment">Nhận xét:</label>
+                                            <textarea name="comment" id="comment" class="form-control" maxlength="255" placeholder="Chia sẻ ý kiến của bạn..."></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Gửi</button>
+                                    </form>
+
+                                    <style>
+                                        .star-rating {
+                                            direction: rtl;
+                                            /* Ngôi sao sẽ được chọn từ phải sang trái */
+                                        }
+
+                                        .star-rating input:checked~label {
+                                            color: #f39c12;
+                                            /* Màu ngôi sao đã chọn */
+                                        }
+
+                                        .star-rating label {
+                                            color: #ccc;
+                                            /* Màu ngôi sao chưa chọn */
+                                            transition: color 0.2s;
+                                            /* Hiệu ứng chuyển màu */
+                                        }
+
+                                        .star-rating label:hover,
+                                        .star-rating label:hover~label {
+                                            color: #f39c12;
+                                            /* Màu ngôi sao khi hover */
+                                        }
+                                    </style>
+
+                                    @if(session('success'))
+                                    <div class="alert alert-success mt-3">{{ session('success') }}</div>
+                                    @endif
+
+                                    @if(session('error'))
+                                    <div class="alert alert-danger mt-3">{{ session('error') }}</div>
+                                    @endif
+
+                                    <h3 class="mt-4">Đánh Giá Sản Phẩm</h3>
+                                    @if($product->reviews && $product->reviews->isNotEmpty())
+                                    @foreach ($product->reviews as $review)
+                                    <div class="review card mb-3 p-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ Storage::url($review->user->avatar)}}" alt="{{ $review->user->name }}" class="rounded-circle" style="width: 50px; height: 50px; margin-right: 10px;">
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between">
+                                                    <strong class="h5">{{ $review->user->name }}</strong>
+                                                    <span class="rating">
+                                                        <span class="text-warning" style="font-size: 1.5rem;">
+                                                            {{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                                <p>{{ $review->comment }}</p>
+                                                <small class="text-muted">{{ $review->created_at->format('d/m/Y H:i') }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    @else
+                                    <p class="text-muted">Chưa có đánh giá nào.</p>
+                                    @endif
+                                </div>
                             </div>
                         </div>
 
