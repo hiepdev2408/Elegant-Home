@@ -58,42 +58,42 @@ class HomeController extends Controller
             ->take(10)
             ->get();
 
-            $currentDate = Carbon::now();
+        $currentDate = Carbon::now();
 
-            $sales = Sale::where('start_date', '<=', $currentDate)
-                         ->where('end_date', '>=', $currentDate)
-                         ->with('products')
-                         ->get();
+        $sales = Sale::where('start_date', '<=', $currentDate)
+            ->where('end_date', '>=', $currentDate)
+            ->with('products')
+            ->get();
 
-            $productsOnSale = [];
+        $productsOnSale = [];
 
-            foreach ($sales as $sale) {
-                foreach ($sale->products as $product) {
-                    if ($product->price_sale || $product->base_price) {
-                        $finalPrice = $product->price_sale ?: $product->base_price;
+        foreach ($sales as $sale) {
+            foreach ($sale->products as $product) {
+                if ($product->price_sale || $product->base_price) {
+                    $finalPrice = $product->price_sale ?: $product->base_price;
 
-                        if (isset($finalPrice) && $sale->discount_percentage > 0) {
-                            $discountAmount = ($finalPrice * $sale->discount_percentage) / 100;
-                            $finalPrice -= $discountAmount;
-                        }
-
-                        $productsOnSale[] = [
-                            'id' => $product->id,
-                            'name' => $product->name,
-                            'slug' => $product->slug,
-                            'price_sale' => $finalPrice,
-                            'base_price' => $product->base_price,
-                            'img_thumbnail' => $product->img_thumbnail,
-                            'sale_end' => $sale->end_date,
-                        ];
+                    if (isset($finalPrice) && $sale->discount_percentage > 0) {
+                        $discountAmount = ($finalPrice * $sale->discount_percentage) / 100;
+                        $finalPrice -= $discountAmount;
                     }
+
+                    $productsOnSale[] = [
+                        'id' => $product->id,
+                        'name' => $product->name,
+                        'slug' => $product->slug,
+                        'price_sale' => $finalPrice,
+                        'base_price' => $product->base_price,
+                        'img_thumbnail' => $product->img_thumbnail,
+                        'sale_end' => $sale->end_date,
+                    ];
                 }
             }
+        }
 
-            session(['productsOnSale' => $productsOnSale]);
+        session(['productsOnSale' => $productsOnSale]);
 
         // Trả về view home
-        return view('client.home', compact('categories', 'products', 'blogs','sales'));
+        return view('client.home', compact('categories', 'products', 'blogs', 'sales'));
     }
     public function detail($slug)
     {
@@ -130,15 +130,14 @@ class HomeController extends Controller
 
         foreach ($productsOnSale as $saleProduct) {
 
-        if ($saleProduct['id'] === $product->id) {
-            $finalPrice = $saleProduct['price_sale'];
-            break;
-        }
-        // dd($productsOnSale);
-    }
+            if ($saleProduct['id'] === $product->id) {
+                $finalPrice = $saleProduct['price_sale'];
+                break;
+            }
 
-        // Trả về view với thông tin sản phẩm và sản phẩm liên quan
-        return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes','finalPrice'));
+            // Trả về view với thông tin sản phẩm và sản phẩm liên quan
+            return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes', 'finalPrice'));
+        }
     }
 
 

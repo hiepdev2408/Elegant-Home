@@ -27,7 +27,8 @@ class OrderController extends Controller
         return view('admin.orders.index', compact('orders'));
     }
 
-    public function confirmed($id){
+    public function confirmed($id)
+    {
         $order = Order::findOrFail($id);
 
         $order->update([
@@ -36,7 +37,8 @@ class OrderController extends Controller
 
         return back();
     }
-    public function shipping($id){
+    public function shipping($id)
+    {
         $order = Order::findOrFail($id);
 
         $order->update([
@@ -45,7 +47,8 @@ class OrderController extends Controller
 
         return back();
     }
-    public function delivered($id){
+    public function delivered($id)
+    {
         $order = Order::findOrFail($id);
 
         $order->update([
@@ -54,7 +57,8 @@ class OrderController extends Controller
 
         return back();
     }
-    public function return_request($id){
+    public function return_request($id)
+    {
         $order = Order::findOrFail($id);
 
         $order->update([
@@ -63,7 +67,8 @@ class OrderController extends Controller
 
         return back();
     }
-    public function returned_item_received($id){
+    public function returned_item_received($id)
+    {
         $order = Order::findOrFail($id);
 
         $order->update([
@@ -72,7 +77,8 @@ class OrderController extends Controller
 
         return back();
     }
-    public function refund_completed($id){
+    public function refund_completed($id)
+    {
         $order = Order::findOrFail($id);
 
         $order->update([
