@@ -15,17 +15,6 @@
                                     <div class="swiper-container content-carousel">
                                         <img src="{{ Storage::url($product->img_thumbnail) }}" alt="">
                                     </div>
-<<<<<<< HEAD
-                                    <div class="swiper-container thumbs-carousel">
-                                        <div class="swiper-wrapper">
-                                            @foreach ($product->galleries as $gallery)
-                                                @if ($gallery->img_path)
-                                                    <div class="swiper-slide mb-5">
-                                                        <figure class="thumb">
-                                                            <img src="{{ Storage::url($gallery->img_path) }}"
-                                                                style="height: 100px" alt="Thumbnail sản phẩm">
-                                                        </figure>
-=======
                                 </div>
                             </div>
                             <div class="content-column col-lg-6 col-md-12 col-sm-12">
@@ -92,9 +81,7 @@
                                                 <div class="attribute-group">
                                                     <div class="model">
                                                         <span class="model-title">{{ $attributeName }}</span>
->>>>>>> 1d2df7306bcbbb20be73dcfc5bf2a737c46dd4f2
                                                     </div>
-                                                @endif
                                             @endforeach
                                         </div>
                                     </div>
