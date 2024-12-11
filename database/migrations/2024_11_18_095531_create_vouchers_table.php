@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('discount_type', ['money', 'percentage']); 
             $table->integer('quantity'); 
             $table->integer('used')->default(0); 
-            $table->decimal('minimum_order_value', 8, 2)->default(0); 
+            $table->decimal('minimum_order_value', 10, 2)->default(0); 
             $table->timestamp('start_date')->nullable(); 
             $table->timestamp('end_date')->nullable(); 
             $table->timestamps();
