@@ -149,22 +149,22 @@
                                     <span>0 VNĐ</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between fw-bold">
-                                    <span>Tổng cộng</span>
-                                    <span
-                                        class="totalAmounts">{{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }}
-                                        VNĐ</span>
-
+                                    <span>Total</span>
+                                    <span id="total-amount">
+                                        {{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }} VNĐ
+                                    </span>
                                 </li>
                             </ul>
-
-                            <!-- Voucher Box -->
-                            <form id="voucherForm" class="d-flex">
+                            <form id="voucher-form" class="d-flex mb-3">
                                 @csrf
-                                <input type="text" name="voucher_code" class="form-control me-2 form-control-sm "
-                                    placeholder="Nhập mã giảm giá">
-                                <button type="submit" class="btn btn-success btn-sm col-3">Áp dụng</button>
+                                
+                                <input type="text" name="voucher_code" class="form-control me-2" placeholder="Nhập mã voucher" style="width: 225px; height: 35px; ">
+                                <input type="hidden" name="total_amount" value="{{ $totalAmount }}">
+                                <button type="submit" class="btn btn-success" style="height: 35px; padding: 0 10px;">Áp dụng</button>
                             </form>
-                            <div id="voucherMessage" class="mt-2"></div>
+                
+                            <!-- Thông báo lỗi hoặc thành công -->
+                            <div id="message"></div>
                         </div>
                     </div>
                 </div>
@@ -334,47 +334,7 @@
         });
     </script>
     <!-- Thêm jQuery -->
-
-    <script>
-        $(document).ready(function() {
-            $('#voucherForm').on('submit', function(event) {
-                event.preventDefault(); // Ngăn chặn reload trang
-
-                $.ajax({
-                    url: '{{ route('order.applyVoucher') }}',
-                    method: 'POST',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        if (response.success) {
-                            $('#voucherMessage').html(
-                                `<p class="alert alert-success">${response.message}</p>`
-                            );
-
-                            let newTotal = response.new_total; // Giá trị tổng mới từ server
-
-                            // Cập nhật giá trị vào input (số nguyên)
-                            $('.totalAmounts[type="text"]').val(newTotal);
-
-                            // Cập nhật giá trị vào span (định dạng kèm VNĐ)
-                            $('.totalAmounts:not([type="text"])').text(
-                                newTotal.toLocaleString('vi-VN') + ' VNĐ'
-                            );
-                        } else {
-                            $('#voucherMessage').html(
-                                `<p class="alert alert-danger">${response.message}</p>`
-                            );
-                            let newTotal = response.new_total; // Giá trị tổng mới từ server
-                        }
-                    },
-                    error: function(xhr) {
-                        $('#voucherMessage').html(
-                            `<p class="alert alert-danger">Đã có lỗi xảy ra! Vui lòng thử lại.</p>`
-                        );
-                    }
-                });
-            });
-        });
-    </script>
+    
     <script>
         // Lấy các radio button
         const momoRadio = document.getElementById('paymentMomo');
@@ -422,4 +382,28 @@
 
         });
     </script>
+  <script>
+    $(document).ready(function() {
+        $('#voucher-form').on('submit', function(event) {
+            event.preventDefault(); // Ngăn chặn gửi form theo cách thông thường
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('order.applyVoucher') }}',
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#message').html('<div class="alert alert-success">' + response.message + '</div>');
+                    $('#total-amount').text(response.total);
+                    $('#discount-amount').text(response.discount);
+                    $('#discount-details').show(); // Hiển thị thông tin giảm giá
+                },
+                error: function(xhr) {
+                    $('#message').html('<div class="alert alert-danger">' + xhr.responseJSON.message + '</div>');
+                    $('#total-amount').text(xhr.responseJSON.total);
+                    $('#discount-details').hide(); // Ẩn thông tin giảm giá khi voucher không hợp lệ
+                }
+            });
+        });
+    });
+</script>
 @endsection
