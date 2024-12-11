@@ -112,7 +112,6 @@ class HomeController extends Controller
         // dd($product->variants);
         // Lấy danh mục của sản phẩm hiện tại
         $categoryIds = $product->categories->pluck('id');
-
         // Lấy các sản phẩm có cùng danh mục (trừ sản phẩm hiện tại)
         $relatedProducts = Product::whereHas('categories', function ($query) use ($categoryIds) {
             $query->whereIn('id', $categoryIds);
@@ -134,10 +133,9 @@ class HomeController extends Controller
                 $finalPrice = $saleProduct['price_sale'];
                 break;
             }
-
-            // Trả về view với thông tin sản phẩm và sản phẩm liên quan
-            return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes', 'finalPrice'));
         }
+        // Trả về view với thông tin sản phẩm và sản phẩm liên quan
+        return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes', 'finalPrice'));
     }
 
 

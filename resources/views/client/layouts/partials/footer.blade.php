@@ -20,12 +20,10 @@
                                 <div class="logo"><a href="index.html"><img
                                             src="{{ asset('themes/clients/images/logo.png') }}" alt=""
                                             title=""></a></div>
-                                <div class="text">4517 Washington Ave. Manchester, Kentucky 39495 ashington
-                                    Ave.
-                                    Manchester, </div>
+                                <div class="text">Xuân Phương, Nam Từ Liêm, Hà Nội</div>
                                 <ul class="contact-list">
-                                    <li><span class="icon flaticon-map"></span>254 Lillian Blvd, Holbrook</li>
-                                    <li><span class="icon flaticon-call"></span>1-800-654-3210</li>
+                                    <li><span class="icon flaticon-map"></span>Xuân Phương, Nam Từ Liêm, Hà Nội</li>
+                                    <li><span class="icon flaticon-call"></span>0382.500.462</li>
                                 </ul>
                             </div>
                         </div>
@@ -33,13 +31,13 @@
                         <!-- Footer Column -->
                         <div class="footer-column col-lg-5 col-md-6 col-sm-12">
                             <div class="footer-widget links-widget">
-                                <h5>Find It Fast</h5>
+                                <h5>Tìm kiếm nhanh</h5>
                                 <ul class="page-list">
-                                    <li><a href="#">Laptops & Computers</a></li>
-                                    <li><a href="#">Cameras & Photography</a></li>
-                                    <li><a href="#">Smart Phones & Tablets</a></li>
-                                    <li><a href="#">Video Games & Consoles</a></li>
-                                    <li><a href="#">TV & Audio</a></li>
+                                    <li><a href="#">Máy tính xách tay & Máy tính</a></li>
+                                    <li><a href="#">Máy ảnh & Nhiếp ảnh</a></li>
+                                    <li><a href="#">Điện thoại thông minh & Máy tính bảng</a></li>
+                                    <li><a href="#">Trò chơi điện tử & Máy chơi game</a></li>
+                                    <li><a href="#">TV & Âm thanh</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -54,13 +52,13 @@
                         <!-- Footer Column -->
                         <div class="footer-column col-lg-7 col-md-6 col-sm-12">
                             <div class="footer-widget links-widget">
-                                <h5>Quick Links</h5>
+                                <h5>Liên kết nhanh</h5>
                                 <ul class="page-list">
-                                    <li><a href="#">Your Account</a></li>
-                                    <li><a href="#">Returns & Exchanges</a></li>
-                                    <li><a href="#">Return Center</a></li>
-                                    <li><a href="#">Purchase Hisotry</a></li>
-                                    <li><a href="#">App Download</a></li>
+                                    <li><a href="#">Tài khoản của bạn</a></li>
+                                    <li><a href="#">Trả lại & Đổi hàng</a></li>
+                                    <li><a href="#">Trung tâm trả lại</a></li>
+                                    <li><a href="#">Lịch sử mua hàng</a></li>
+                                    <li><a href="#">Tải xuống ứng dụng</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -68,13 +66,13 @@
                         <!-- Footer Column -->
                         <div class="footer-column col-lg-5 col-md-6 col-sm-12">
                             <div class="footer-widget instagram-widget">
-                                <h5>Service us</h5>
+                                <h5>Dịch vụ chúng tôi</h5>
                                 <ul class="page-list-two">
-                                    <li><a href="#">Support Center</a></li>
-                                    <li><a href="#">Term & Conditions</a></li>
-                                    <li><a href="#">Shipping</a></li>
-                                    <li><a href="#">Privacy Policy</a></li>
-                                    <li><a href="#">Help</a></li>
+                                    <li><a href="#">Trung tâm hỗ trợ</a></li>
+                                    <li><a href="#">Điều khoản & Điều kiện</a></li>
+                                    <li><a href="#">Vận chuyển</a></li>
+                                    <li><a href="#">Chính sách bảo mật</a></li>
+                                    <li><a href="#">Trợ giúp</a></li>
                                 </ul>
                             </div>
                         </div>
