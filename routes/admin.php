@@ -92,6 +92,16 @@ Route::prefix('admin')
             Route::get('show/{id}', 'show')->name('show');
         });
 
+        //warehouses
+        Route::prefix('warehouses')
+            ->as('warehouses.')
+            ->group(function () {
+            Route::get('/', [WarehouseController::class, 'index'])->name('index');
+            Route::get('create', [WarehouseController::class, 'create'])->name('create');
+            Route::put('store', [WarehouseController::class, 'store'])->name('store');
+            Route::get('show/{id}', [WarehouseController::class, 'show'])->name('show');
+        });
+
         // Category
         Route::prefix('categories')
             ->name('categories.')
