@@ -38,7 +38,6 @@
                                                             <img src="{{ Storage::url($gallery->img_path) }}"
                                                                 style="height: 100px" alt="Thumbnail sản phẩm">
                                                         </figure>
-
                                 </div>
                             </div>
                         </div>
@@ -152,7 +151,6 @@
                                         value="1"
                                         style="width: 60px; padding: 0.25rem; border-radius: 4px; border: 1px solid #ccc;">
                                                     </div>
-                                                @endif
                                             @endforeach
                                         </div>
                                     </div>
