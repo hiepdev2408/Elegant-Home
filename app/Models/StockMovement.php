@@ -9,10 +9,20 @@ class StockMovement extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'product_id', 'variant_id', 'quantity', 'type'];
+    protected $fillable = [
+        'user_id',
+        'variant_id',
+        'quantity',
+        'type'
+    ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+    public function variant()
+    {
+        return $this->belongsTo(Variant::class, 'variant_id');
+    }
+
 }

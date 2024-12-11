@@ -85,17 +85,22 @@
                                 value="{{ $variant->stock }}">
                         </div>
 
+                        <div class="form-floating form-floating-outline mb-4">
+                            <input type="file" id="variant_image_0" name="variants[{{ $variant->id }}][image]"
+                                class="form-control">
+                            <img src="{{ Storage::url($variant->image) }}" width="100px" alt="">
+                        </div>
                         <!-- Thuộc tính của biến thể -->
                         @foreach ($attributes as $attribute)
                             <div class="form-group">
                                 <label>{{ $attribute->name }}:</label>
                                 <select name="variants[{{ $variant->id }}][attributes][{{ $attribute->id }}]"
-                                    class="form-control" disabled>
+                                    class="form-control">
                                     <option value="">Chọn {{ $attribute->name }}</option>
                                     @foreach ($attribute->values as $value)
-                                        <option value="{{ $value->id }}"
-                                            {{ $variant->attributes->contains('id', $value->id) ? 'selected' : '' }}>
-                                            {{ $value->value }}</option>
+                                        <option value="{{ $value->id }}" @selected($variant->attributes->contains('attribute_value_id', $value->id))>
+                                            {{ $value->value }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>

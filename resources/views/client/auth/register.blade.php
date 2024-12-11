@@ -1,99 +1,127 @@
 @extends('client.layouts.master')
 @section('title')
-    Register
+    Đăng Ký
 @endsection
 @section('content')
-    <!-- Register Section -->
-    <div class="register-section">
-        <div class="auto-container">
-            <div class="inner-container">
-                <div class="row clearfix">
-                    <!-- Column -->
-                    <div class="column col-lg-12 col-md-12 col-sm-12">
-                        <!-- Login Form -->
-                        <div class="text-center mb-0">
-                            <img src="https://account.cellphones.com.vn/_nuxt/img/Shipper_CPS3.77d4065.png" width="150px">
-                        </div>
-
-                        <div class="d-flex justify-content-center">
-                            <form method="POST" action="{{ route('register') }}" class="w-50">
-                                @csrf
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Your Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" value=""
-                                        placeholder="Enter your name*">
-                                    @error('name')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email address</label>
-                                    <input type="email" class="form-control" id="email" name="email" value=""
-                                        placeholder="Enter Email Address">
-                                    @error('email')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">Phone</label>
-                                    <input type="text" class="form-control" id="phone" name="phone" value=""
-                                        placeholder="Enter phone">
-                                    @error('phone')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">Address</label>
-                                    <input type="text" class="form-control" id="address" name="address" value=""
-                                        placeholder="Enter Address">
-                                    @error('address')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password"
-                                        value="" placeholder="Create password">
-                                    @error('password')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="password_confirmation" class="form-label">Password confirmation</label>
-                                    <input type="password" class="form-control" id="password_confirmation"
-                                        name="password_confirmation" value="" placeholder="Confirm password">
-                                    @error('password_confirmation')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" name="remember-password"
-                                        id="terms-and-conditions">
-                                    <label class="form-check-label" for="terms-and-conditions">I agree to all <a
-                                            href="#">Terms</a> & <a href="#">Conditions</a> and Feeds</label>
-                                </div>
-
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        Register
-                                    </button>
-                                </div>
-                            </form>
-
-                        </div>
-                        <div class="mb-3 text-center">
-                            <label for="login" class="form-label">Bạn đã có tài khoản?</label>
-                            <a href="{{ route('login') }}">Login</a>
-                        </div>
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic d-flex justify-items-center align-items-center">
+                    <div class="team">
+                        <img src="{{ asset('themes') }}/clients/images/auth/team.jpg">
                     </div>
                 </div>
+                <form action="{{ route('register') }}" method="post" class="login100-form validate-form">
+                    @csrf
+                    <span class="login100-form-title">
+                        <b>ĐĂNG KÝ TÀI KHOẢN</b>
+                    </span>
+                    <form action="#">
+                        <div class="wrap-input100 validate-input">
+                            <input class="input100" type="text" name="name" id="name" placeholder="Tên của bạn"
+                                value="{{ old('name') }}">
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <i class='bx bx-user'></i>
+                            </span>
+                        </div>
+
+                        @error('name')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+
+                        <div class="wrap-input100 validate-input">
+                            <input class="input100" type="text" name="phone" id="phone" placeholder="Số điện thoại"
+                                value="{{ old('phone') }}">
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <i class='bx bx-phone'></i>
+                            </span>
+                        </div>
+
+                        @error('phone')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+
+                        <div class="wrap-input100 validate-input">
+                            <input class="input100" type="text" name="address" id="address" placeholder="Địa chỉ"
+                                value="{{ old('address') }}">
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <i class='bx bx-current-location'></i>
+                            </span>
+                        </div>
+
+                        @error('address')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+
+                        <div class="wrap-input100 validate-input">
+                            <input class="input100" type="email" name="email" id="email" placeholder="Email"
+                                value="{{ old('email') }}">
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <i class='bx bx-envelope'></i>
+                            </span>
+                        </div>
+                        @error('email')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                        <p id="errorUsername"></p>
+                        <div class="wrap-input100 validate-input">
+                            <input autocomplete="off" class="input100 hidden-show" type="password" name="password"
+                                id="password" placeholder="Mật khẩu">
+                            <span class="bx fa-fw bx-hide field-icon eye-hidden"></span>
+                            <span class="bx bx-show field-icon eye-show hidden"></span>
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <i class='bx bx-key'></i>
+                            </span>
+                        </div>
+                        @error('password')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                        <p id="errorPassword"></p>
+
+                        <div class="wrap-input100 validate-input">
+                            <input autocomplete="off" class="input100 hidden-show" type="password"
+                                name="password_confirmation" id="password_confirmation" placeholder="Nhập lại mật khẩu">
+                            <span class="bx fa-fw bx-hide field-icon eye-hidden"></span>
+                            <span class="bx bx-show field-icon eye-show hidden"></span>
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <i class='bx bx-key'></i>
+                            </span>
+                        </div>
+                        @error('password_confirmation')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                        <div class="container-login100-form-btn">
+                            <input type="submit" value="Đăng Ký">
+                        </div>
+                        <div class="text-right p-t-12 mt-1">
+                            Bạn đã có tài khoản?
+                            <a class="txt3" href="{{ route('auth.login') }}">
+                                Đăng Nhập
+                            </a>
+                        </div>
+                    </form>
+                    <div class="text-center p-t-70 txt2 mt-1">
+                        Phần mềm quản lý bán hàng <i class="fa fa-copyright" aria-hidden="true"></i>
+                        <script type="text/javascript">
+                            document.write(new Date().getFullYear());
+                        </script> code bởi Elegant
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+@endsection
+
+@section('style-libs')
+    <link rel="stylesheet" href="{{ asset('themes') }}/clients/css/auth.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+@endsection
+@section('script-libs')
+    <script src="{{ asset('themes') }}/clients/js/auth.js"></script>
 @endsection

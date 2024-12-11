@@ -278,7 +278,9 @@ class PaymentController extends Controller
         return $result;
     }
 
-    public function notify(Request $request) {}
+    public function notify(Request $request)
+    {
+    }
 
     public function cod(Request $request)
     {

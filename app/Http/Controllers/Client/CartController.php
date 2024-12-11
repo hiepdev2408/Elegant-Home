@@ -54,7 +54,6 @@ class CartController extends Controller
                 ->where('variant_id', $matchingVariant->id)
                 ->first();
 
-
             if ($cartDetail) {
                 $newQuantity = $cartDetail->quantity + $quantity;
                 if ($matchingVariant->stock < $newQuantity) {
@@ -82,7 +81,6 @@ class CartController extends Controller
             $cartDetail = CartDetail::where('cart_id', $cart->id)
                 ->where('product_id', $productId)
                 ->first();
-
 
             if ($cartDetail) {
                 $newQuantity = $cartDetail->quantity + $quantity;
@@ -207,9 +205,10 @@ class CartController extends Controller
         return response()->json([
             'success' => true,
             'message' =>
-            'Xóa sản phẩm thành công!',
+                'Xóa sản phẩm thành công!',
             'overallTotalFormatted' => number_format($overallTotal, 0, ',', '.') . ' VNĐ',
-        ]);;
+        ]);
+        ;
         $cartDetail = CartDetail::findOrFail($request->cart_id);
 
         // Lấy giá từ session

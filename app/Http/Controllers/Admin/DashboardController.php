@@ -89,7 +89,6 @@ class DashboardController extends Controller
     public function compose(View $view)
     {
         $order = Order::query()->count();
-
         $countContact = Contract::count();
         $notifications = Notification::orderByDesc('created_at')->get();
         $unread = Notification::where('is_read', 0)->count();
