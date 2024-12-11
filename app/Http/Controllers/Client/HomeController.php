@@ -15,6 +15,7 @@ use App\Models\CartDetail;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Favourite;
+use App\Models\Order;
 use App\Models\Product;
 
 
@@ -192,9 +193,4 @@ class HomeController extends Controller
             'totalCart' => $totalCart
         ]);
     }
-
-
-
-
-
 }

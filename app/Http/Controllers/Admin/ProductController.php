@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Gallery;
@@ -58,10 +59,13 @@ class ProductController extends Controller
         return view('admin.products.create', compact('attributes', 'category'));
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         // dd($request->all());
+        $dataProduct = $request->validated();
+
         try {
+
             DB::transaction(function () use ($request) {
                 $dataProduct = $request->except(['product_galleries', 'variants', 'categories']);
 
@@ -114,7 +118,7 @@ class ProductController extends Controller
                 $product->categories()->attach($request->categories);
             }, 3);
 
-            return redirect()->route('products.index')->with('success', 'Thao tác thành công');
+            return redirect()->route('product.index')->with('success', 'Thao tác thành công');
         } catch (\Exception $exception) {
             dd($exception->getMessage());
 
@@ -146,7 +150,7 @@ class ProductController extends Controller
         $categoryProduct = $product->categories->pluck('id')->all();
 
         // dd($product);
-        return view('admin.products.update', compact('product', 'attributes', 'category', 'categoryProduct'));
+        return view('admin.products.edit', compact('product', 'attributes', 'category', 'categoryProduct'));
     }
 
     /**
@@ -180,28 +184,20 @@ class ProductController extends Controller
 
                 // Cập nhật sản phẩm
                 $product->update($dataProduct);
-
-                // Xử lý galleries
                 if (!empty($request->product_galleries)) {
                     foreach ($request->product_galleries as $galleryId => $imageGallery) {
-                        if ($imageGallery) {
-                            if (is_numeric($galleryId)) {
-                                // Cập nhật gallery cũ
-                                $gallery = Gallery::find($galleryId);
-                                if ($gallery) {
-                                    // Xóa ảnh cũ nếu có
-                                    if (Storage::exists($gallery->img_path)) {
-                                        Storage::delete($gallery->img_path);
-                                    }
-                                    // Lưu ảnh mới
-                                    $gallery->update([
-                                        'img_path' => Storage::put('galleries', $imageGallery),
-                                    ]);
+                        // Kiểm tra xem đây là ảnh cũ (có ID) hay ảnh mới (không có ID)
+
+                        if (is_numeric($galleryId) && $galleryId > 0) {
+                            // Cập nhật gallery cũ
+                            $gallery = Gallery::find($galleryId);
+                            if ($gallery) {
+                                // Xóa ảnh cũ nếu có
+                                if (Storage::exists($gallery->img_path)) {
+                                    Storage::delete($gallery->img_path);
                                 }
-                            } else {
-                                // Thêm mới gallery
-                                Gallery::create([
-                                    'product_id' => $product->id,
+                                // Lưu ảnh mới
+                                $gallery->update([
                                     'img_path' => Storage::put('galleries', $imageGallery),
                                 ]);
                             }
@@ -213,35 +209,54 @@ class ProductController extends Controller
                     $product->categories()->sync($request['categories']);
                 }
 
-                // foreach ($request->variants as $variantData) {
-                //     if (!empty($variantData['sku'])) {
-                //         $variant = Variant::query()->create([
-                //             'product_id' => $product->id,
-                //             'sku' => $variantData['sku'] ?? 0,
-                //             'stock' => $variantData['stock'],
-                //             'price_modifier' => $variantData['price_modifier'] ?? 0,
-                //             'image' => Storage::put('variants', $variantData['image']),
-                //         ]);
-                //     }
 
-                //     if (!empty($variantData['attributes'])) {
-                //         foreach ($variantData['attributes'] as $key => $value) {
-                //             // dd($value);
-                //             if ($value) {
-                //                 $variant->attributes()->create([
-                //                     'attribute_id' => $key,
-                //                     'attribute_value_id' => $value,
-                //                 ]);
-                //             }
-                //         }
-                //     }
-                // }
+                if ($request->has('variants')) {
+                    foreach ($request->input('variants') as $variantId => $variantData) {
+                        // Kiểm tra xem biến thể có cần xóa không
+                        if (isset($variantData['_delete']) && $variantData['_delete'] == 1) {
+                            Variant::findOrFail($variantId)->delete();
+                            continue;
+                        }
 
-                // $product->categories()->attach($request->categories);
+                        $variant = Variant::findOrFail($variantId);
+
+                        // Cập nhật các thông tin cơ bản của biến thể
+                        $variant->update([
+                            'sku' => $variantData['sku'] ?? $variant->sku,
+                            'price_modifier' => $variantData['price_modifier'] ?? $variant->price_modifier,
+                            'stock' => $variantData['stock'] ?? $variant->stock,
+                        ]);
+
+                        // Xử lý ảnh (nếu có upload)
+                        if (isset($variantData['image']) && $request->hasFile("variants.$variantId.image")) {
+                            // Xóa ảnh cũ nếu cần
+                            if ($variant->image) {
+                                Storage::delete($variant->image);
+                            }
+
+                            // Lưu ảnh mới
+                            $path = $request->file("variants.$variantId.image")->store('variants');
+                            $variant->update(['image' => $path]);
+                        }
+
+                        // Cập nhật các thuộc tính của biến thể
+                        if (isset($variantData['attributes'])) {
+                            foreach ($variantData['attributes'] as $attributeId => $attributeValueId) {
+                                if ($attributeValueId) {
+                                    $variant->attributes()->updateOrCreate(
+                                        ['attribute_id' => $attributeId],
+                                        ['attribute_value_id' => $attributeValueId]
+                                    );
+                                }
+
+                            }
+                        }
+                    }
+                }
             }, 3);
 
-            // return redirect()->route('products.index')->with('success', 'Thao tác thành công');
-            return back();
+            return redirect()->route('products.index')->with('success', 'Thao tác thành công');
+
         } catch (\Exception $exception) {
             dd($exception->getMessage());
 
@@ -260,11 +275,8 @@ class ProductController extends Controller
         try {
             DB::transaction(function () use ($product) {
 
-                $product->productAttributes()->delete();
-                foreach ($product->productAttributes as $productAttribute) {
-                    $group = $productAttribute->group;
-                    $group->delete();
-                }
+                $product->variants()->delete();
+
 
                 $product->galleries()->delete();
 
