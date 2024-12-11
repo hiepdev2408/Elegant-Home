@@ -110,8 +110,7 @@ class HomeController extends Controller
             ])
             ->firstOrFail();
 
-        // dd($product->variants);
-        // Lấy danh mục của sản phẩm hiện tại
+
         $categoryIds = $product->categories->pluck('id');
         // Lấy các sản phẩm có cùng danh mục (trừ sản phẩm hiện tại)
         $relatedProducts = Product::whereHas('categories', function ($query) use ($categoryIds) {
