@@ -128,19 +128,30 @@
                                     <span>Shipping Fee</span>
                                     <span>0 VNĐ</span>
                                 </li>
+                                @if (session('discount_amount'))
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Discount</span>
+                                    <span>{{ number_format(session('discount_amount'), 0, ',', '.') }} VNĐ</span>
+                                </li>
+                                @endif
                                 <li class="list-group-item d-flex justify-content-between fw-bold">
                                     <span>Total</span>
                                     <span>{{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }} VNĐ</span>
                                 </li>
                             </ul>
-
-                            <!-- Voucher Box -->
-                            <form method="post" action="{{ route('order.applyVoucher') }}" class="d-flex">
+                            <form method="post" action="{{ route('order.applyVoucher') }}" class="d-flex mb-3">
                                 @csrf
-                                <input type="text" name="voucher_code" class="form-control me-2"
-                                    placeholder="Enter voucher code">
-                                <button type="submit" class="btn btn-success">Apply</button>
+                                <input type="text" name="voucher_code" class="form-control me-2" placeholder="Nhập mã voucher">
+                                <button type="submit" class="btn btn-success">Áp dụng</button>
                             </form>
+                
+                            <!-- Thông báo lỗi hoặc thành công -->
+                            @if (session('error'))
+                            <div class="alert alert-danger">{{ session('error') }}</div>
+                        @endif
+                        @if (session('success'))
+                            <div class="alert alert-success">{{ session('success') }}</div>
+                        @endif
                         </div>
                     </div>
                 </div>
@@ -226,34 +237,5 @@
     </script>
     <!-- Thêm jQuery -->
 
-    <script>
-        $(document).ready(function() {
-            $('#voucherForm').on('submit', function(event) {
-                event.preventDefault(); // Ngăn chặn reload trang
-
-                $.ajax({
-                    url: '{{ route('order.applyVoucher') }}',
-                    method: 'POST',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        if (response.success) {
-                            $('#voucherMessage').html(`
-                    <p class="alert alert-success">${response.message}</p>`);
-                            // Cập nhật tổng giá trị
-                            let newTotal = response.new_total; // Tổng mới từ phản hồi
-                            $('#totalAmount').text(newTotal.toLocaleString('vi-VN') + ' VNĐ');
-                        } else {
-                            $('#voucherMessage').html(
-                                `<p class="alert alert-danger">${response.message}</p>`);
-                        }
-                    },
-                    error: function(xhr) {
-                        $('#voucherMessage').html(
-                            `<p class="alert alert-danger">Đã có lỗi xảy ra! Vui lòng thử lại.</p>`
-                            );
-                    }
-                });
-            });
-        });
-    </script>
+    
 @endsection

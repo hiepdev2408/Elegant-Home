@@ -16,79 +16,69 @@
         <h4>
             <span class="text-muted fw-light">Khuyến Mãi /</span> Danh sách khuyến mãi
         </h4>
+        
         @if (session()->has('success'))
             <div class="alert alert-success fw-bold">
                 {{ session()->get('success') }}
             </div>
         @endif
+        
         <div class="card-header d-flex justify-content-end align-items-center mb-3">
-            <a class="btn btn-primary" href="{{ route('vouchers.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Thêm
-                Khuyến mãi</a>
+            <a class="btn btn-primary" href="{{ route('vouchers.create') }}">
+                <i class="mdi mdi-plus me-0 me-sm-1"></i>Thêm Khuyến mãi
+            </a>
         </div>
+        
         <div class="card">
             <div class="card-body">
-                <table id="example"
-                    class=" text-center table table-bordered dt-responsive nowrap table-striped align-middle"
-                    style="width:100%">
+                <table id="example" class="text-center table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
                     <thead>
                         <tr>
                             <th>STT</th>
                             <th>Code</th>
-                            <th>Giảm theo giá</th>
-                            <th>Giảm theo phần trăm</th>
+                            <th>Giá trị giảm giá</th>
+                            <th>Loại giảm giá</th>
+                            <th>Số lượng</th>
+                            <th>Số lần đã sử dụng</th>
+                            <th>Giá trị đơn hàng tối thiểu</th>
                             <th>Ngày bắt đầu</th>
                             <th>Ngày kết thúc</th>
-                            <th>Giới hạn sử dụng</th>
-                            <th>Số lần sử dụng</th>
-                            <th>Sản phẩm áp dụng</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($vouchers as $voucher)
                             <tr>
-                                <td>{{ $voucher->id }}</td>
+                                <td>{{ $loop->iteration }}</td> <!-- Sử dụng $loop->iteration để hiển thị STT -->
                                 <td>{{ $voucher->code }}</td>
-                                <td>{{ number_format($voucher->discount_amount, 0, ',', '.') . ' VNĐ' }}</td>
-                                <td>{{ number_format($voucher->discount_percent, 0, ',', '.') . '%' }}</td>
-                                <td>{{ \Carbon\Carbon::parse($voucher->start_date)->format('d/m/Y') }}</td>
-                                <td>{{ \Carbon\Carbon::parse($voucher->end_date)->format('d/m/Y') }}</td>
-                                <td>{{ $voucher->usage_limit }}</td>
-                                <td>{{ $voucher->used_count }}</td>
                                 <td>
-                                    @if ($voucher->products->isNotEmpty())
-                                        @foreach ($voucher->products as $product)
-                                            <span>{{ $product->name }}</span>{{ !$loop->last ? ', ' : '' }}
-                                        @endforeach
-                                    @else
-                                        <span>Không có sản phẩm áp dụng</span>
-                                    @endif
+                                    {{ $voucher->discount_type === 'money' ? number_format($voucher->discount_value, 0, ',', '.') . ' VNĐ' : $voucher->discount_value . '%' }}
                                 </td>
                                 <td>
+                                    {{ $voucher->discount_type === 'money' ? 'Giảm giá theo tiền' : 'Giảm giá theo phần trăm' }}
+                                </td>
+                                <td>{{ $voucher->quantity }}</td>
+                                <td>{{ $voucher->used }}</td>
+                                <td>{{ number_format($voucher->minimum_order_value, 0, ',', '.') . ' VNĐ' }}</td>
+                                <td>{{ \Carbon\Carbon::parse($voucher->start_date)->format('d/m/Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($voucher->end_date)->format('d/m/Y') }}</td>
+                                <td>
                                     <div class="d-flex justify-content-center">
-
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Show"
-                                            class="btn btn-info btn-sm me-1"
-                                            href="{{ route('vouchers.show', $voucher->id) }}">
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Show" class="btn btn-info btn-sm me-1" href="{{ route('vouchers.show', $voucher->id) }}">
                                             <i class="mdi mdi-eye"></i>
                                         </a>
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Update"
-                                            class="btn btn-warning btn-sm me-1"
-                                            href="{{ route('vouchers.edit', $voucher->id) }}">
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Update" class="btn btn-warning btn-sm me-1" href="{{ route('vouchers.edit', $voucher->id) }}">
                                             <i class="mdi mdi-pencil"></i>
                                         </a>
-
-                                        <form action="{{ route('vouchers.destroy', $voucher) }}" method="POST"
-                                            class="d-inline">
+                                        <form action="{{ route('vouchers.destroy', $voucher->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('delete')
-                                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                data-bs-title="Delete" class="btn btn-danger btn-sm me-1"
-                                                onclick="return confirm('Bạn có muốn chuyển vào thùng rác?')">
+                                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete" class="btn btn-danger btn-sm me-1" onclick="return confirm('Bạn có muốn chuyển vào thùng rác?')">
                                                 <i class="mdi mdi-delete-circle"></i>
                                             </button>
                                         </form>
                                     </div>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
