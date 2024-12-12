@@ -158,6 +158,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request->all());
         try {
             DB::transaction(function () use ($request, $id) {
 
@@ -202,6 +203,12 @@ class ProductController extends Controller
                                 ]);
                             }
                         }
+                        else{
+                            Gallery::query()->create([
+                                'product_id' => $product->id,
+                                'img_path' => Storage::put('galleries', $imageGallery),
+                            ]);
+                        }
                     }
                 }
                 // Xử lý danh mục
@@ -228,15 +235,17 @@ class ProductController extends Controller
                         ]);
 
                         // Xử lý ảnh (nếu có upload)
-                        if (isset($variantData['image']) && $request->hasFile("variants.$variantId.image")) {
+                        if ($request->hasFile("variants.$variantId.image")) {
                             // Xóa ảnh cũ nếu cần
                             if ($variant->image) {
                                 Storage::delete($variant->image);
                             }
 
                             // Lưu ảnh mới
-                            $path = $request->file("variants.$variantId.image")->store('variants');
-                            $variant->update(['image' => $path]);
+                             $variant->update([
+                                    'image' => Storage::put('variants', $request->file("variants.$variantId.image")),
+                                ]);
+
                         }
 
                         // Cập nhật các thuộc tính của biến thể
@@ -248,7 +257,6 @@ class ProductController extends Controller
                                         ['attribute_value_id' => $attributeValueId]
                                     );
                                 }
-
                             }
                         }
                     }
@@ -256,7 +264,6 @@ class ProductController extends Controller
             }, 3);
 
             return redirect()->route('products.index')->with('success', 'Thao tác thành công');
-
         } catch (\Exception $exception) {
             dd($exception->getMessage());
 
