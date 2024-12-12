@@ -6,8 +6,9 @@
 @section('menu-sub-create-voucher', 'active')
 
 @section('content')
-    <div class="container mt-5">
+   <div class="container mt-5">
         <h1 class="text-center mb-4">Thêm Mới Voucher</h1>
+        
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul class="mb-0">
@@ -32,21 +33,21 @@
                 <label for="discount_type" class="form-label">Loại Giảm Giá:</label>
                 <select class="form-select" id="discount_type" name="discount_type" required onchange="toggleDiscountFields()">
                     <option value="">-- Chọn loại giảm giá --</option>
-                    <option value="amount">Giảm Giá (Số tiền)</option>
-                    <option value="percent">Giảm Giá (Phần trăm)</option>
+                    <option value="money">Giảm Giá (Số tiền)</option>
+                    <option value="percentage">Giảm Giá (Phần trăm)</option>
                 </select>
             </div>
-
-            <!-- Giảm Giá (Số tiền) -->
-            <div class="mb-3" id="discount_amount_group" style="display: none;">
-                <label for="discount_amount" class="form-label">Giảm Giá (Số tiền):</label>
-                <input type="number" class="form-control" id="discount_amount" name="discount_amount" step="0.01" min="0">
+            
+            <!-- Giảm Giá -->
+            <div class="mb-3" id="discount_value_group" style="display: none;">
+                <label for="discount_value" class="form-label">Giảm Giá:</label>
+                <input type="number" class="form-control" id="discount_value" name="discount_value" step="0.01" min="0">
             </div>
 
-            <!-- Giảm Giá (Phần trăm) -->
-            <div class="mb-3" id="discount_percent_group" style="display: none;">
-                <label for="discount_percent" class="form-label">Giảm Giá (Phần trăm):</label>
-                <input type="number" class="form-control" id="discount_percent" name="discount_percent" step="0.01" min="0" max="100">
+            <!-- Giá trị đơn hàng tối thiểu -->
+            <div class="mb-3">
+                <label for="minimum_order_value" class="form-label">Giá trị đơn hàng tối thiểu:</label>
+                <input type="number" class="form-control" id="minimum_order_value" name="minimum_order_value" step="0.01" min="0" required>
             </div>
 
             <!-- Ngày Bắt Đầu -->
@@ -63,18 +64,8 @@
 
             <!-- Giới Hạn Sử Dụng -->
             <div class="mb-3">
-                <label for="usage_limit" class="form-label">Giới Hạn Sử Dụng:</label>
-                <input type="number" class="form-control" id="usage_limit" name="usage_limit" min="0">
-            </div>
-
-            <!-- Chọn Sản Phẩm -->
-            <div class="mb-4">
-                <label for="products" class="form-label">Chọn Sản Phẩm Áp Dụng Voucher:</label>
-                <select class="form-select" id="products" name="products[]" multiple>
-                    @foreach ($products as $product)
-                        <option value="{{ $product->id }}">{{ $product->name }}</option>
-                    @endforeach
-                </select>
+                <label for="quantity" class="form-label">Giới Hạn Sử Dụng:</label>
+                <input type="number" class="form-control" id="quantity" name="quantity" min="0" required>
             </div>
 
             <!-- Nút Gửi -->
@@ -83,6 +74,8 @@
             </div>
         </form>
     </div>
+
+   
 @endsection
 
 @section('script-libs')
@@ -92,15 +85,19 @@
     <script>
         function toggleDiscountFields() {
             const discountType = document.getElementById('discount_type').value;
-            document.getElementById('discount_amount_group').style.display = discountType === 'amount' ? 'block' : 'none';
-            document.getElementById('discount_percent_group').style.display = discountType === 'percent' ? 'block' : 'none';
+            const valueGroup = document.getElementById('discount_value_group');
+        
+            if (discountType) {
+                valueGroup.style.display = 'block';
+                const inputValue = document.getElementById('discount_value');
+                if (discountType === 'percentage') {
+                    inputValue.setAttribute('max', '100');
+                } else {
+                    inputValue.removeAttribute('max');
+                }
+            } else {
+                valueGroup.style.display = 'none';
+            }
         }
-
-        $(document).ready(function() {
-            $('#products').select2({
-                placeholder: "Chọn sản phẩm",
-                allowClear: true
-            });
-        });
-    </script>
+        </script>
 @endsection

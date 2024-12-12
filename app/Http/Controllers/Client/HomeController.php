@@ -15,6 +15,7 @@ use App\Models\CartDetail;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Favourite;
+use App\Models\Order;
 use App\Models\Product;
 
 
@@ -109,10 +110,8 @@ class HomeController extends Controller
             ])
             ->firstOrFail();
 
-        // dd($product->variants);
-        // Lấy danh mục của sản phẩm hiện tại
-        $categoryIds = $product->categories->pluck('id');
 
+        $categoryIds = $product->categories->pluck('id');
         // Lấy các sản phẩm có cùng danh mục (trừ sản phẩm hiện tại)
         $relatedProducts = Product::whereHas('categories', function ($query) use ($categoryIds) {
             $query->whereIn('id', $categoryIds);
@@ -134,10 +133,9 @@ class HomeController extends Controller
                 $finalPrice = $saleProduct['price_sale'];
                 break;
             }
-
-            // Trả về view với thông tin sản phẩm và sản phẩm liên quan
-            return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes', 'finalPrice'));
         }
+        // Trả về view với thông tin sản phẩm và sản phẩm liên quan
+        return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes', 'finalPrice'));
     }
 
 
@@ -194,9 +192,4 @@ class HomeController extends Controller
             'totalCart' => $totalCart
         ]);
     }
-
-
-
-
-
 }

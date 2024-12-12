@@ -299,6 +299,7 @@
         <div class="auto-container">
             <!-- Sec Title -->
             <div class="sec-title">
+                @dd($sales)
                 @if ($sales->isNotEmpty())
                     @foreach ($sales as $sale)
                         <h4><span>Sales Off:</span> {{ number_format($sale->discount_percentage, 0, ',', '.') }}%</h4>
@@ -1196,10 +1197,11 @@
                                             <span class="fa fa-star"></span>
                                             <span class="fa fa-star"></span>
                                         </div>
-                                        <div class="text">The most <span>advanced</span> revenue than this. I
-                                            will
-                                            refer everyone I know I like Level more and more each day because it
-                                            makes my life a lot easier. It really saves me time and effort.</div>
+                                        <div class="text">Doanh thu hơn thế này. Tôi
+                                            sẽ
+                                            giới thiệu cho mọi người tôi biết tôi thích Level hơn mỗi ngày vì nó
+                                            làm cho cuộc sống của tôi dễ dàng hơn rất nhiều. Nó thực sự giúp tôi tiết kiệm
+                                            thời gian và công sức.</div>
                                         <div class="quote-icon flaticon-quote"></div>
                                     </div>
                                 </div>
@@ -1243,10 +1245,11 @@
                                             <span class="fa fa-star"></span>
                                             <span class="fa fa-star"></span>
                                         </div>
-                                        <div class="text">The most <span>advanced</span> revenue than this. I
-                                            will
-                                            refer everyone I know I like Level more and more each day because it
-                                            makes my life a lot easier. It really saves me time and effort.</div>
+                                        <div class="text">Doanh thu hơn thế này. Tôi
+                                            sẽ
+                                            giới thiệu cho mọi người tôi biết tôi thích Level hơn mỗi ngày vì nó
+                                            làm cho cuộc sống của tôi dễ dàng hơn rất nhiều. Nó thực sự giúp tôi tiết kiệm
+                                            thời gian và công sức.</div>
                                         <div class="quote-icon flaticon-quote"></div>
                                     </div>
                                 </div>
