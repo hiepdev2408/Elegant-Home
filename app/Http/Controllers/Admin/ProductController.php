@@ -202,8 +202,7 @@ class ProductController extends Controller
                                     'img_path' => Storage::put('galleries', $imageGallery),
                                 ]);
                             }
-                        }
-                        else{
+                        } else {
                             Gallery::query()->create([
                                 'product_id' => $product->id,
                                 'img_path' => Storage::put('galleries', $imageGallery),
@@ -217,9 +216,12 @@ class ProductController extends Controller
                 }
 
 
-                if ($request->has('variants')) {
+                if ($request->has('variants') && !empty($request->input('variants'))) {
                     foreach ($request->input('variants') as $variantId => $variantData) {
                         // Kiểm tra xem biến thể có cần xóa không
+                        if (!is_numeric($variantId) || $variantId <= 0) {
+                            continue;
+                        }
                         if (isset($variantData['_delete']) && $variantData['_delete'] == 1) {
                             Variant::findOrFail($variantId)->delete();
                             continue;
@@ -242,10 +244,9 @@ class ProductController extends Controller
                             }
 
                             // Lưu ảnh mới
-                             $variant->update([
-                                    'image' => Storage::put('variants', $request->file("variants.$variantId.image")),
-                                ]);
-
+                            $variant->update([
+                                'image' => Storage::put('variants', $request->file("variants.$variantId.image")),
+                            ]);
                         }
 
                         // Cập nhật các thuộc tính của biến thể

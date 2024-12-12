@@ -291,7 +291,7 @@
                                 <div class="form-floating form-floating-outline mb-4">
                                     <input type="text" class="form-control" id="ecommerce-product-base_price"
                                         placeholder="Giá sản phẩm" name="base_price"
-                                        value="{{ number_format($product->base_price, 0, ',', '.') }}" />
+                                        value="{{ $product->base_price }}" />
                                     <label for="ecommerce-product-base_price">Giá sản phẩm</label>
                                 </div>
                                 <div class="form-floating form-floating-outline ">
