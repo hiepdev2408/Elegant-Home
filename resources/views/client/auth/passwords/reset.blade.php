@@ -1,92 +1,90 @@
 @extends('client.layouts.master')
 @section('title')
-    Reset password
+    Đặt lại mật khẩu
 @endsection
 @section('content')
-    <!-- Register Section -->
-    <div class="register-section mt-5">
-        <div class="auto-container">
-            <div class="inner-container">
-                <div class="row clearfix">
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
 
-                    <div class="column col-lg-12 col-md-12 col-sm-12">
-                        <style>
-                            .alert {
-                                padding: 15px;
-                                margin: 20px 0;
-                                border: 1px solid transparent;
-                                border-radius: 4px;
-                            }
-
-                            .alert-red {
-                                color: #cd2228;
-                                background-color: #e1aeb9;
-                                border-color: #c3e6cb;
-                            }
-
-                            .fw-bold {
-                                font-weight: bold;
-                            }
-
-                            .text-danger {
-                                color: red;
-                                font-weight: bold;
-                            }
-                        </style>
-                        <!-- Login Form -->
-                        @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-                        <div class="text-center mb-0">
-                            <img src="https://account.cellphones.com.vn/_nuxt/img/Shipper_CPS3.77d4065.png" width="150px">
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <form action="{{ route('password.update') }}" method="POST" class="w-50 mt-3">
-                                @csrf
-                                <input type="hidden" name="token" value="{{ $token }}">
-
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email"
-                                        value="{{ request('email') }}" placeholder="Enter your email" required>
-                                    @error('email')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password"
-                                        placeholder="Enter Password" required>
-                                    @error('password')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="password_confirmation" class="form-label">Confirm Password</label>
-                                    <input type="password" class="form-control" id="password_confirmation"
-                                        name="password_confirmation" placeholder="Confirm Password" required>
-                                    @error('password_confirmation')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary w-100">Send</button>
-                                </div>
-                            </form>
-                        </div>
-
-
-
-
+    <div class="limiter">
+        <div class="container-login90">
+            <div class="wrap-login100s">
+                <div class="login100-pic d-flex justify-items-center align-items-center">
+                    <div>
+                        <img src="{{ asset('themes') }}/clients/images/auth/team.jpg">
                     </div>
                 </div>
+                <form action="{{ route('password.update') }}" method="post" class="login100-form validate-form">
+                    @csrf
+                    <input type="hidden" name="token" value="{{ $token }}">
+                    <span class="login100-form-title">
+                        <b>ĐẶT LẠI MẬT KHẨU</b>
+                    </span>
+                    <form action="#">
+                        <div class="wrap-input100 validate-input mt-3">
+                            <input class="input100" type="email" name="email" id="email" placeholder="Email"
+                                value="{{ request('email') }}">
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <i class='bx bx-envelope'></i>
+                            </span>
+                        </div>
+                        @error('email')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+
+                        <div class="wrap-input100 validate-input">
+                            <input autocomplete="off" class="input100 hidden-show" type="password" name="password"
+                                id="password" placeholder="Mật khẩu">
+                            <span class="bx fa-fw bx-hide field-icon eye-hidden"></span>
+                            <span class="bx bx-show field-icon eye-show hidden"></span>
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <i class='bx bx-key'></i>
+                            </span>
+                        </div>
+
+                        @error('password')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+
+                        <div class="wrap-input100 validate-input">
+                            <input autocomplete="off" class="input100 hidden-show" type="password"
+                                name="password_confirmation" id="password_confirmation" placeholder="Nhập lại mật khẩu">
+                            <span class="bx fa-fw bx-hide field-icon eye-hidden"></span>
+                            <span class="bx bx-show field-icon eye-show hidden"></span>
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <i class='bx bx-key'></i>
+                            </span>
+                        </div>
+
+                        @error('password_confirmation')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+
+                        <div class="container-login100-form-btn">
+                            <input type="submit" value="Gửi">
+                        </div>
+                    </form>
+                    <div class="text-center p-t-70 txt2 mt-4">
+                        Phần mềm quản lý bán hàng <i class="fa fa-copyright" aria-hidden="true"></i>
+                        <script type="text/javascript">
+                            document.write(new Date().getFullYear());
+                        </script> code bởi Elegant
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    </div>
+@endsection
+@section('style-libs')
+    <link rel="stylesheet" href="{{ asset('themes') }}/clients/css/auth.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+@endsection
+@section('script-libs')
+    <script src="{{ asset('themes') }}/clients/js/auth.js"></script>
 @endsection

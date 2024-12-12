@@ -23,9 +23,9 @@
 
         <div class="card-header d-flex justify-content-end align-items-center mb-3 gap-3">
             <a class="btn btn-primary" href="{{ route('warehouses.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Nhập
-                hàng</a>
-            <a class="btn btn-warning" href="{{ route('warehouses.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Xuất
-                Hàng</a>
+                Kho</a>
+            <a class="btn btn-warning" href="{{ route('warehouses.export') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Xuất
+                Kho</a>
             <a class="btn btn-info" href="{{ route('products.index') }}">Xem sản phẩm</a>
         </div>
         <div class="card">

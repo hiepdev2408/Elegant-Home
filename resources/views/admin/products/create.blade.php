@@ -23,6 +23,20 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        @error('variants.attributes')
+            <div class="alert alert-danger">
+                {{ $message }}
+            </div>
+        @enderror
 
         <!-- Form tạo sản phẩm -->
         <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
@@ -52,28 +66,50 @@
                             <div class="card-body">
                                 <div class="form-floating form-floating-outline mb-4">
                                     <input type="text" class="form-control" id="ecommerce-product-name"
-                                        placeholder="Tên sản phẩm" name="name" />
+                                        placeholder="Tên sản phẩm" name="name" value="{{ old('name') }}" />
                                     <label for="ecommerce-product-name">Tên sản phẩm</label>
+                                    @if ($errors->has('name'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('name') }}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div hidden class="form-floating form-floating-outline mb-4">
                                     <input type="text" class="form-control" id="ecommerce-product-slug"
                                         placeholder="Tên sản phẩm" name="slug" />
+
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Content
                                         <span class="text-muted">(Optional)</span></label>
-                                    <textarea class="form-control" name="content" id="content"></textarea>
+                                    <textarea class="form-control" name="content" id="content">{{ old('content') }}</textarea>
+                                    @if ($errors->has('content'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('content') }}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="form-floating form-floating-outline mb-4">
-                                    <textarea class="form-control" name="description" id="description" rows="2" placeholder="Mô tả ngắn"></textarea>
+                                    <textarea class="form-control" name="description" id="description" rows="2" placeholder="Mô tả ngắn">{{ old('description') }}</textarea>
                                     <label for="ecommerce-product-description">Mô tả ngắn</label>
+                                    @if ($errors->has('description'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('description') }}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="mb-4">
                                     <label for="img_thumbnail" class="form-label">Ảnh sản phẩm</label>
-                                    <input type="file" class="form-control" name="img_thumbnail" id="img_thumbnail">
+                                    <input type="file" class="form-control" name="img_thumbnail" id="img_thumbnail"
+                                        value="{{ old('img_thumbnail') }}">
+                                    @if ($errors->has('img_thumbnail'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('img_thumbnail') }}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="form-floating form-floating-outline mb-4">
-                                    <textarea class="form-control" name="user_manual" id="user_manual" rows="2" placeholder="Hướng dẫn sử dụng"></textarea>
+                                    <textarea class="form-control" name="user_manual" id="user_manual" rows="2" placeholder="Hướng dẫn sử dụng">{{ old('') }}</textarea>
                                     <label for="ecommerce-product-user_manual">Hướng dẫn sử dụng</label>
                                 </div>
                             </div>
@@ -88,6 +124,11 @@
                                         <label for="gallery_input_1" class="form-label">Gallery 1</label>
                                         <input type="file" class="form-control" name="product_galleries[]"
                                             id="gallery_input_1">
+                                        @if ($errors->has('product_galleries'))
+                                            <div class="text-danger">
+                                                {{ $errors->first('product_galleries') }}
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                                 <button type="button" class="btn btn-primary mt-3" id="add-gallery"><i
@@ -110,20 +151,23 @@
                                             <h5 class="mt-3">Thuộc Tính 1</h5>
                                             <div class="form-floating form-floating-outline mb-4">
                                                 <input type="text" id="variant_sku_0" name="variants[0][sku]"
-                                                    placeholder="Mã biến thể" class="form-control">
+                                                    placeholder="Mã biến thể" class="form-control"
+                                                    value="{{ old('variant_sku_0') }}">
                                                 <label for="variant_sku_0">Mã biến thể</label>
                                             </div>
 
                                             <div class="form-floating form-floating-outline mb-4">
                                                 <input type="number" id="variant_price_modifier_0"
                                                     name="variants[0][price_modifier]" class="form-control"
-                                                    step="0.01" placeholder="Giá điều chỉnh">
+                                                    step="0.01" placeholder="Giá điều chỉnh"
+                                                    value="{{ old('variants[0][price_modifier]') }}">
                                                 <label for="variant_price_modifier_0">Giá điều chỉnh</label>
                                             </div>
 
                                             <div class="form-floating form-floating-outline mb-4">
                                                 <input type="number" id="variant_stock_0" name="variants[0][stock]"
-                                                    class="form-control" placeholder="Số lượng tồn kho">
+                                                    class="form-control" placeholder="Số lượng tồn kho"
+                                                    value="{{ old('variants[0][stock]') }}">
                                                 <label for="variant_stock_0">Số lượng tồn kho</label>
                                             </div>
                                             <div class="form-floating form-floating-outline mb-4">
@@ -205,13 +249,23 @@
                             <div class="card-body">
                                 <div class="form-floating form-floating-outline mb-4">
                                     <input type="text" class="form-control" id="ecommerce-product-base_price"
-                                        placeholder="Giá sản phẩm" name="base_price" />
+                                        placeholder="Giá sản phẩm" name="base_price" value="{{ old('base_price') }}" />
                                     <label for="ecommerce-product-base_price">Giá sản phẩm</label>
+                                    @if ($errors->has('base_price'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('base_price') }}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="form-floating form-floating-outline ">
                                     <input type="text" class="form-control" id="ecommerce-product-base_price"
-                                        placeholder="Giá sản phẩm" name="price_sale" />
+                                        placeholder="Giá sản phẩm" name="price_sale" value="{{ old('price_sale') }}" />
                                     <label for="ecommerce-product-base_price">Giá giảm giá</label>
+                                    @if ($errors->has('price_sale'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('price_sale') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -222,8 +276,13 @@
                             <div class="card-body">
                                 <div class="form-floating form-floating-outline mb-4">
                                     <input type="text" class="form-control" id="ecommerce-product-base_price"
-                                        placeholder="Mã sản phẩm" name="sku" />
+                                        placeholder="Mã sản phẩm" name="sku" value="{{ old('sku') }}" />
                                     <label for="ecommerce-product-base_price">Mã sản phẩm</label>
+                                    @if ($errors->has('sku'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('sku') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -240,6 +299,11 @@
                                         @endforeach
                                     </select>
                                     <label for="name" class="form-label">Danh mục</label>
+                                    @if ($errors->has('categories'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('categories') }}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="mb-3 mt-4">
                                     <div class="form-floating form-floating-outline">
@@ -249,6 +313,7 @@
                                         <label for="ecommerce-product-tags">Tags</label>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -278,9 +343,16 @@
     <script src="{{ asset('themes') }}/admin/vendor/libs/tagify/tagify.js"></script>
     <script src="{{ asset('themes') }}/admin/js/app-ecommerce-product-add.js"></script>
 
-    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace('content');
+        ClassicEditor
+            .create(document.querySelector('#content'))
+            .then(editor => {
+                editor.ui.view.editable.element.style.height = '200px'; // Tăng chiều cao ở đây
+            })
+            .catch(error => {
+                console.error(error);
+            });
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
