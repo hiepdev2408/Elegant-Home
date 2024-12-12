@@ -25,6 +25,12 @@
                 </div>
             </div>
 
+            <div class="text-right">
+                <button type="submit" class="btn btn-primary">Xem</button>
+            </div>
+<<<<<<<<< Temporary merge branch 1
+        </div>
+
         <div class="text-right">
             <button type="submit" class="btn btn-primary">Xem</button>
         </div>
@@ -70,6 +76,45 @@
         </tbody>
     </table>
 </div>
+=========
+        </form>
+        <h2>Sản phẩm bán chạy nhất
+            @if ($type == 'day')
+                ngày {{ \Carbon\Carbon::parse($date)->format('d-m-Y') }}
+            @elseif($type == 'month ')
+                tháng {{ \Carbon\Carbon::parse($date)->format('m-Y') }}
+            @elseif($type == 'year')
+                năm {{ \Carbon\Carbon::parse($date)->format('Y') }}
+            @endif
+        </h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Ảnh Sản Phẩm</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Số Lượng Bán</th>
+                    <th>Ngày Mua Hàng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($topProduct as $item)
+                    <tr>
+                        <td>
+                            @if ($item && $item->img_thumbnail)
+                                <img src="{{ Storage::url($item->img_thumbnail) }}" alt="Thumbnail">
+                            @else
+                                <p>Không có hình ảnh.</p>
+                            @endif
+                        </td>
+                        <td>{{ $item->product->name }}</td>
+                        <td>{{ $item->tong_so_luong }}</td>
+                        <td>{{ $item->created_at }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+>>>>>>>>> Temporary merge branch 2
 @endsection
 
 @section('style-libs')

@@ -28,7 +28,7 @@ Route::prefix('admin')
         //ĐỌC THÔNG BÁO
         Route::post('/mark-read', [DashboardController::class, 'markRead'])->name('mark-read');
         // Account
-    
+
         Route::prefix('account')
             ->as('account.')
             ->group(function () {
@@ -186,7 +186,7 @@ Route::prefix('admin')
         });
 
         // Chatrealtime
-    
+
         Route::get('/chat-rooms', [ChatController::class, 'listChatRooms'])->name('chat');
         Route::get('/{roomId}/{receiverId}', [ChatController::class, 'showChatAdmin'])
             ->name('chat.admin');
@@ -230,7 +230,9 @@ Route::prefix('admin')
         //Top sell
         Route::get('top_sell', [TopSellController::class, 'index'])->name('top_sell.index');
 
-        Route::prefix('flashsales')
+
+    });
+    Route::prefix('flashsales')
             ->as('flashsales.')
             ->group(function () {
                 Route::get('/', [SaleController::class, 'index'])->name('index');
@@ -240,4 +242,3 @@ Route::prefix('admin')
                 Route::put('update/{sale}', [SaleController::class, 'update'])->name('update'); // Sử dụng Sale model
                 Route::delete('destroy/{sale}', [SaleController::class, 'destroy'])->name('destroy'); // Sử dụng Sale model
             });
-    });
