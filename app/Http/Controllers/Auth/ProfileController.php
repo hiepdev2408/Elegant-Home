@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\District;
 use App\Models\Order;
 use App\Models\Province;
+use App\Models\User;
 use App\Models\Ward;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -83,12 +85,16 @@ class ProfileController extends Controller
         return view('client.auth.smember.info');
     }
 
-    public function showProfile()
+    public function showProfile(Request $request, $id)
     {
-        $user = Auth::user();
-        $provinces = Province::pluck('name', 'code')->all();
-
-        return view('client.auth.smember.showProfile', compact('user', 'provinces'));
+        $user = User::findOrFail($id); // Lấy thông tin người dùng
+    
+        // Lấy danh sách tỉnh, quận, xã/phường
+        $provinces = Province::all()->pluck('name', 'code');
+        $districts = District::where('province_code', $user->province_id)->pluck('full_name', 'code');
+        $wards = Ward::where('district_code', $user->district_id)->pluck('name', 'code');
+    
+        return view('client.auth.smember.showProfile', compact('user', 'provinces', 'districts', 'wards'));
     }
 
     public function getDistrictsByProvince($provinceCode)
@@ -105,6 +111,35 @@ class ProfileController extends Controller
 
     public function update(Request $request, $id)
     {
-        dd($request->all());
+        // Lấy người dùng theo ID
+        $user = User::findOrFail($id); 
+    
+        // Xác thực dữ liệu
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Quy tắc xác thực cho ảnh
+        ]);
+    
+        // Cập nhật thông tin người dùng
+        $user->name = $request->name;
+        $user->email = $request->email;
+    
+        // Xử lý file ảnh đại diện nếu có
+        if ($request->hasFile('avatar')) {
+            // Xóa ảnh cũ nếu có
+            if ($user->avatar) {
+                Storage::delete($user->avatar); // Xóa file cũ
+            }
+            // Lưu ảnh mới
+            $user->avatar = $request->file('avatar')->store('avatars', 'public');
+        }
+    
+        // Lưu thay đổi
+        $user->save(); 
+    
+        // Chuyển hướng về trang thông tin người dùng
+        return redirect()->route('profile.info', ['id' => $user->id])
+                         ->with('success', 'Thông tin đã được cập nhật.');
     }
 }

@@ -1,73 +1,69 @@
 @extends('client.layouts.master')
 @section('content')
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow-sm border-0 rounded-lg p-4">
-                    <h4 class="text-center text-primary fw-bold mb-4">Thêm mới thông tin</h4>
-                    <form action="" method="post">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Họ và tên</label>
-                            <input type="text" id="name" name="name" class="form-control" value{{ $user->name }}>
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Địa chỉ Email</label>
-                            <input type="email" id="email" name="email" class="form-control"
-                               value="{{ $user->email }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="avatar" class="form-label">Ảnh đại diện</label>
-                            <input type="file" id="avatar" name="avatar" class="form-control">
-                            @if ($user->avatar)
-                                <img src="{{ Storage::url($user->avatar) }}" width="100px" alt="">
-                            @endif
-                        </div>
-                        <div class="mb-3">
-                            <label for="province" class="form-label">Tỉnh/Thành phố</label>
-                            <select name="province_id" id="province" class="form-select">
-                                <option value="">Chọn Tỉnh/Thành phố</option>
-                                @foreach ($provinces as $code => $name)
-                                    <option @selected($user->province->code == $code) value="{{ $code }}">{{ $name }}</option>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 rounded-lg p-4">
+                <h4 class="text-center text-primary fw-bold mb-4">Cập nhật thông tin khách hàng</h4>
+                <form action="{{ route('profile.info.update', ['id' => $user->id]) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Họ và tên</label>
+                        <input type="text" id="name" name="name" class="form-control" value="{{ $user->name }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Địa chỉ Email</label>
+                        <input type="email" id="email" name="email" class="form-control" value="{{ $user->email }}">
+                    </div>
+                    @csrf
+                    <!-- Các trường thông tin khác -->
+                    <div class="mb-3">
+                        <label for="avatar" class="form-label">Ảnh cá nhân</label>
+                        <input type="file" id="avatar" name="avatar" class="form-control">
+                        @if (Auth::user()->avatar)
+                            <img src="{{ Storage::url(Auth::user()->avatar) }}" width="150px" alt="">
+                        @endif
+                    </div>
+                    <div class="mb-3">
+                        <label for="province" class="form-label">Tỉnh/Thành phố</label>
+                        <select name="province_id" id="province" class="form-select">
+                            <option value="">Chọn Tỉnh/Thành phố</option>
+                            @foreach ($provinces as $code => $name)
+                                <option @selected($user->province && $user->province->code == $code) value="{{ $code }}">{{ $name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="district" class="form-label">Quận/Huyện</label>
+                        <select name="district_id" id="district" class="form-select" @if (!$user->district) disabled @endif>
+                            <option value="">Chọn Quận/Huyện</option>
+                            @if ($districts)
+                                @foreach ($districts as $id => $name)
+                                    <option @selected($user->district && $user->district->id == $id) value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="district" class="form-label">Quận/Huyện</label>
-                            <select name="district_id" id="district" class="form-select" @if (!$user->district) disabled @endif>
-                                <option value="">Chọn Quận/Huyện</option>
-                                @if ($districts)
-                                    @foreach ($districts as $code => $name)
-                                        <option value="{{ $code }}" @selected($user->district?->code == $code)>
-                                            {{ $name }}
-                                        </option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="ward" class="form-label">Xã/Phường</label>
-                            <select name="ward_id" id="ward" class="form-select" @if (!$user->ward) disabled @endif>
-                                <option value="">Chọn Xã/Phường</option>
-                                @if ($wards)
-                                    @foreach ($wards as $code => $name)
-                                        <option value="{{ $code }}" @selected($user->ward?->code == $code)>
-                                            {{ $name }}
-                                        </option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
-
-                        <div class="text-end">
-                            <button class="btn btn-primary px-4">Thêm mới</button>
-                        </div>
-                    </form>
-                </div>
+                            @endif
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ward" class="form-label">Xã/Phường</label>
+                        <select name="ward_id" id="ward" class="form-select" @if (!$user->ward) disabled @endif>
+                            <option value="">Chọn Xã/Phường</option>
+                            @if ($wards)
+                                @foreach ($wards as $code => $name)
+                                    <option value="{{ $code }}" @selected($user->ward?->code == $code)>
+                                        {{ $name }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="text-end"><button type="submit" class="btn btn-primary">Cập nhật</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 @section('script-libs')

@@ -53,20 +53,28 @@ Route::prefix('smember')
     ->as('profile.')
     ->middleware('auth')
     ->group(function () {
+        // Route cho trang chính của người dùng
         Route::get('/', 'profile')->name('user');
+
+        // Route cho đơn hàng
         Route::get('/order', 'order')->name('order');
-        Route::get('/endow', 'endow')->name('endow');
-        Route::get('/info', 'info')->name('info');
-        Route::get('info/show/{id}', 'showProfile')->name('info.showProfile');
-        Route::post('/update/{id}', 'update')->name('update');
+        Route::get('/order/show/{id}', 'showDetailOrder')->name('order.showDetailOrder');
         Route::post('/order/cancel/{id}', 'cancel')->name('order.cancel');
         Route::post('/order/completed/{id}', 'completed')->name('order.completed');
         Route::post('/order/return_request/{id}', 'return_request')->name('order.return_request');
-        Route::get('/order/show/{id}', 'showDetailOrder')->name('order.showDetailOrder');
-        Route::get('/districts/{provinceCode}', [OrderController::class, 'getDistrictsByProvince']);
-        Route::get('/wards/{districtCode}', [OrderController::class, 'getWardsByDistrict']);
-    });
 
+        // Route cho thông tin người dùng
+        Route::get('/info', 'info')->name('info');
+        Route::get('/info/show/{id}', 'showProfile')->name('info.showProfile');         
+        Route::post('/info/update/{id}', 'update')->name('info.update');
+
+        // Route cho các chức năng khác
+        Route::get('/endow', 'endow')->name('endow');
+
+        // Route cho lấy quận/huyện và xã/phường
+        Route::get('/districts/{provinceCode}', [OrderController::class, 'getDistrictsByProvince'])->name('districts');
+        Route::get('/wards/{districtCode}', [OrderController::class, 'getWardsByDistrict'])->name('wards');
+    });
 // POLICY
 Route::get('policy', [ProfileController::class, 'policy'])->name('policy');
 
