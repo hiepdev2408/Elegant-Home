@@ -94,7 +94,7 @@
                         @foreach ($attributes as $attribute)
                             <div class="form-group">
                                 <label>{{ $attribute->name }}:</label>
-                                <select name="variants[{{ $variant->id }}][attributes][{{ $attribute->id }}]"
+                                <select disabled name="variants[{{ $variant->id }}][attributes][{{ $attribute->id }}]"
                                     class="form-control">
                                     <option value="">Chọn {{ $attribute->name }}</option>
                                     @foreach ($attribute->values as $value)
