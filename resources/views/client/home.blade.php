@@ -299,7 +299,6 @@
         <div class="auto-container">
             <!-- Sec Title -->
             <div class="sec-title">
-                @dd($sales)
                 @if ($sales->isNotEmpty())
                     @foreach ($sales as $sale)
                         <h4><span>Sales Off:</span> {{ number_format($sale->discount_percentage, 0, ',', '.') }}%</h4>
