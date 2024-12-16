@@ -25,7 +25,8 @@ class SaleController extends Controller
         return view('admin.sales.create', compact('products'));
     }
 
-    // Lưu chương trình khuyến mãi mới
+    
+
     public function store(Request $request)
     {
         $request->validate([
@@ -35,22 +36,29 @@ class SaleController extends Controller
             'products' => 'required|array', 
             'products.*' => 'exists:products,id',
         ]);
-
-        // Lấy ngày hiện tại
-        $currentDate = Carbon::now();
-
+    
+        // Lấy thời gian hiện tại ở UTC
+        $currentDate = Carbon::now()->setTimezone('UTC');
+    
+        // Kiểm tra các sale đang hoạt động
         $activeSales = Sale::where('start_date', '<=', $currentDate)
             ->where('end_date', '>=', $currentDate)
             ->get();
-
+    
         if ($activeSales->isNotEmpty()) {
             return redirect()->route('flashsales.index')->with('message', 'Vẫn còn chương trình khuyến mãi đang diễn ra.')->withInput();
         }
-
-        // Nếu không có chương trình khuyến mãi nào đang diễn ra, cho phép tạo mới
-        $sale = Sale::create($request->only(['discount_percentage', 'start_date', 'end_date']));
-        $sale->products()->attach($request->products); // Gán sản phẩm cho sale
-
+    
+        // Tạo sale mới và chuyển đổi thời gian sang UTC
+        $sale = Sale::create([
+            'discount_percentage' => $request->discount_percentage,
+            'start_date' => Carbon::parse($request->start_date)->setTimezone('UTC'), // Chuyển đổi sang UTC
+            'end_date' => Carbon::parse($request->end_date)->setTimezone('UTC'), // Chuyển đổi sang UTC
+        ]);
+    
+        // Gắn sản phẩm vào sale
+        $sale->products()->attach($request->products); 
+    
         return redirect()->route('flashsales.index')->with('success', 'Tạo thành công Sale.');
     }
 
