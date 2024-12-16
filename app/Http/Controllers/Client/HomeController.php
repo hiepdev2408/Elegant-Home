@@ -50,6 +50,8 @@ class HomeController extends Controller
             ->take(10)
             ->get();
 
+        $productCategory = $products->take(8);
+
         $blogs = Blog::query()
             ->with('user')
             ->latest()
@@ -90,7 +92,7 @@ class HomeController extends Controller
 
         session(['productsOnSale' => $productsOnSale]);
 
-        return view('client.home', compact('categories', 'products', 'blogs', 'sales'));
+        return view('client.home', compact('categories', 'products', 'blogs', 'sales', 'productCategory'));
     }
 
     public function detail($slug)

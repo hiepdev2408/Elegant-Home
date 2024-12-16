@@ -986,7 +986,7 @@
                 </div>
 
                 <div class="filter-list row clearfix">
-                    @foreach ($products as $product)
+                    @foreach ($productCategory as $product)
                         <div
                             class="shop-item mix shadow rounded border
                             @foreach ($product->categories as $category)

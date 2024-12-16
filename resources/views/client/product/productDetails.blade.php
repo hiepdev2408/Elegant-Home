@@ -137,8 +137,11 @@
                                     <!-- Button Box -->
                                     <div class="button-box">
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <input type="hidden" name="total_amount"
-                                            value="{{ isset($finalPrice) ? $finalPrice : $product->price_sale }}">
+                                        @if ($product->price_sale)
+                                            <input type="hidden" name="total_amount"
+                                                value="{{ isset($finalPrice) ? $finalPrice : $product->price_sale }}">
+                                        @elseif ($product->base_price)
+                                        @endif
                                         <button type="submit" class="theme-btn btn-style-one">
                                             Add to cart
                                         </button>
@@ -347,7 +350,8 @@
                                 <div class="lower-box">
                                     <div class="price">
                                         @if (!is_null($product->price_sale))
-                                            <span>{{ number_format($product->base_price, '0', '0', '.') }}VNĐ</span> {{ number_format($product->price_sale, '0', '0', '.') }}VNĐ
+                                            <span>{{ number_format($product->base_price, '0', '0', '.') }}VNĐ</span>
+                                            {{ number_format($product->price_sale, '0', '0', '.') }}VNĐ
                                         @else
                                             {{ $product->base_price }}
                                         @endif
