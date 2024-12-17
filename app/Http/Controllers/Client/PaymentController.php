@@ -116,7 +116,7 @@ class PaymentController extends Controller
                 Log::error('Lỗi khi tạo chi tiết đơn hàng: ' . $e->getMessage());
             }
         }
-
+      
         // Trạng Thái đơn hàng
         try {
             Shipping::create([
@@ -323,6 +323,7 @@ class PaymentController extends Controller
 
     public function cod(Request $request)
     {
+        // dd($request->all());
         try {
             $user = Auth::user();
             $cart = Cart::query()->where('user_id', $user->id)->first();
@@ -351,7 +352,8 @@ class PaymentController extends Controller
                 );
             }
 
-            $totalAmount = session('totalAmount');
+            $totalAmount = session('totalAmount') ?? $request->total_amount;
+            // dd($totalAmount);
 
             DB::transaction(function () use ($cart, $request, $user, $totalAmount) {
                 $voucherCode = session('voucher_code');

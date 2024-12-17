@@ -301,8 +301,9 @@
             <div class="sec-title">
                 @if ($sales->isNotEmpty())
                     @foreach ($sales as $sale)
-                        <h4><span>Sales Off:</span> {{ number_format($sale->discount_percentage, 0, ',', '.') }}%</h4>
+                        <h4><span>Khuyến mãi:</span> {{ number_format($sale->discount_percentage, 0, ',', '.') }}%</h4>
                         <div class="sale-timer" id="sale-timer-{{ $sale->id }}">
+                            <p><strong>Thời Gian:</strong> Từ {{ \Carbon\Carbon::parse($sale->start_date)->setTimezone('Asia/Ho_Chi_Minh')->format('d-m-Y H:i') }} đến {{ \Carbon\Carbon::parse($sale->end_date)->setTimezone('Asia/Ho_Chi_Minh')->format('d-m-Y H:i') }}</p>
                             <p>Thời gian còn lại: <span id="countdown-{{ $sale->id }}"></span></p>
                         </div>
                     @endforeach
@@ -985,7 +986,7 @@
                 </div>
 
                 <div class="filter-list row clearfix">
-                    @foreach ($products as $product)
+                    @foreach ($productCategory as $product)
                         <div
                             class="shop-item mix shadow rounded border
                             @foreach ($product->categories as $category)

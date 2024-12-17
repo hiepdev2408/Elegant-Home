@@ -55,7 +55,8 @@
                                     </div>
                                 @else
                                     <div class="price">
-                                        <span class="new-price">{{ number_format($product->base_price, 0, ',', '.') }}
+                                        <span
+                                            class="old-price new-price">{{ number_format($product->base_price, 0, ',', '.') }}
                                             VNĐ</span>
                                         @if (isset($finalPrice) && $finalPrice > 0)
                                             {{ number_format($finalPrice, 0, ',', '.') }} VNĐ
@@ -136,8 +137,13 @@
                                     <!-- Button Box -->
                                     <div class="button-box">
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        @if ($product->price_sale)
+                                            <input type="hidden" name="total_amount"
+                                                value="{{ isset($finalPrice) ? $finalPrice : $product->price_sale }}">
+                                        @elseif ($product->base_price)
                                         <input type="hidden" name="total_amount"
-                                            value="{{ isset($finalPrice) ? $finalPrice : $product->price_sale }}">
+                                        value="{{ isset($finalPrice) ? $finalPrice : $product->base_price }}">
+                                        @endif
                                         <button type="submit" class="theme-btn btn-style-one">
                                             Add to cart
                                         </button>
@@ -155,127 +161,40 @@
                     </div>
                 </form>
             </div>
-            <!-- End Upper Box -->
+            <div class="container">
+                <div class="lower-box">
+                    <div class="product-info-tabs">
+                        <div class="prod-tabs tabs-box">
+                            <ul class="tab-btns tab-buttons clearfix">
+                                <li data-tab="#prod-details" class="tab-btn active-btn">Chi tiết sản phẩm</li>
+                                <li data-tab="#prod-info" class="tab-btn">Thông tin bổ sung</li>
+                                <li data-tab="#prod-review" class="tab-btn">Bình luận</li>
+                            </ul>
 
-            <!-- Lower Box -->
-            <div class="lower-box">
+                            <div class="tabs-content">
 
-                <!-- Product Info Tabs -->
-                <div class="product-info-tabs">
-                    <!-- Product Tabs -->
-                    <div class="prod-tabs tabs-box">
-
-                        <!-- Tab Btns -->
-                        <ul class="tab-btns tab-buttons clearfix">
-                            <li data-tab="#prod-details" class="tab-btn active-btn">Product Details</li>
-                            <li data-tab="#prod-info" class="tab-btn">additional information</li>
-                            <li data-tab="#prod-review" class="tab-btn">Review (02)</li>
-                            <li data-tab="#prod-faq" class="tab-btn">Faq</li>
-                        </ul>
-
-                        <!-- Tabs Container -->
-                        <div class="tabs-content">
-
-                            <!-- Tab / Active Tab -->
-                            <div class="tab active-tab" id="prod-details">
-                                <div class="content">
-                                    <h3>Experience is over the world visit</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
-                                        vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus aliquet
-                                        nunc vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
-                                        cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum accumsan
-                                        quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
-                                        bibendum dui. Aenean consequat pulvinar luctus</p>
-                                    <h5>More Details</h5>
-                                    <div class="row clearfix">
-                                        <div class="col-lg-6 col-md-12 col-sm-12">
-                                            <ul class="list-one">
-                                                <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                                                    industry</li>
-                                                <li>Lorem Ipsum has been the ‘s standard dummy text. Lorem Ipsumum is
-                                                    simply dummy text.</li>
-                                                <li>type here your detail one by one li more add</li>
-                                                <li>has been the industry’s standard dummy text ever since. Lorem Ips
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-lg-6 col-md-12 col-sm-12">
-                                            <ul class="list-two">
-                                                <li>Lorem Ipsum generators on the tend to repeat.</li>
-                                                <li>If you are going to use a passage.</li>
-                                                <li>Lorem Ipsum generators on the tend to repeat.</li>
-                                                <li>Lorem Ipsum generators on the tend to repeat.</li>
-                                                <li>If you are going to use a passage.</li>
-                                            </ul>
-                                        </div>
+                                <div class="tab active-tab" id="prod-details">
+                                    <div class="content">
+                                        {!! $product->content !!}
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Tab -->
-                            <div class="tab" id="prod-info">
-                                <div class="content">
-                                    <h3>Experience is over the world visit</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
-                                        vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus aliquet
-                                        nunc vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
-                                        cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum accumsan
-                                        quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
-                                        bibendum dui. Aenean consequat pulvinar luctus</p>
-                                </div>
-                            </div>
 
-                            <!--Tab-->
-                            <div class="tab p-2" id="prod-review">
-                                <h1 class="">Bình luận</h1>
-                                <!--Reviews Container-->
-                                <div class="comments-area p-3">
-                                    <!--Comment Box-->
-                                    <!-- Bình luận cấp 1 -->
-                                    @if ($product->comments->count() == 0)
-                                        <p>Không có bình luận nào</p>
-                                    @else
-                                        @foreach ($product->comments->where('parent_id', null) as $comment)
-                                            <div class="mb-3 p-4">
-                                                <div class="card-body">
-                                                    <div class="d-flex mb-3">
-                                                        <div>
-                                                            <h4 class="mb-1">
-                                                                @if ($comment->user->img_thumbnail)
-                                                                    <img src="{{ Storage::url($comment->user->img_thumbnail) }}"
-                                                                        class="rounded-circle me-3" alt="User Avatar"
-                                                                        width="50">
-                                                                @else
-                                                                    <img src="{{ asset('themes/image/logo.jpg') }}"
-                                                                        class="rounded-circle me-3" alt="User Avatar"
-                                                                        width="50">
-                                                                @endif
-                                                                {{ $comment->user->name }}
-                                                            </h4>
-                                                            <small
-                                                                class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
-                                                            <p class="mt-2">{{ $comment->comment }}</p>
-                                                            <!-- Nút trả lời -->
-                                                            @if (Auth::check())
-                                                                <button class="btn btn-sm btn-outline-primary reply-btn"
-                                                                    type="button" data-id="{{ $comment->id }}">Trả
-                                                                    lời</button>
-                                                            @endif
 
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-                                                <!-- Bình luận cấp 2 (trả lời) -->
-                                                @foreach ($comment->replies as $reply)
-                                                    <div class="card-body ps-5 mt-3">
-                                                        <div class="d-flex mb-4">
-
+                                <div class="tab p-2" id="prod-review">
+                                    <h1 class="">Bình luận</h1>
+                                    <div class="comments-area p-3">
+                                        @if ($product->comments->count() == 0)
+                                            <p>Không có bình luận nào</p>
+                                        @else
+                                            @foreach ($product->comments->where('parent_id', null) as $comment)
+                                                <div class="mb-3 p-4">
+                                                    <div class="card-body">
+                                                        <div class="d-flex mb-3">
                                                             <div>
-                                                                <h5 class="mb-1">
-                                                                    @if ($reply->user->img_thumbnail)
-                                                                        <img src="{{ Storage::url($reply->user->img_thumbnail) }}"
+                                                                <h4 class="mb-1">
+                                                                    @if ($comment->user->img_thumbnail)
+                                                                        <img src="{{ Storage::url($comment->user->img_thumbnail) }}"
                                                                             class="rounded-circle me-3" alt="User Avatar"
                                                                             width="50">
                                                                     @else
@@ -283,246 +202,174 @@
                                                                             class="rounded-circle me-3" alt="User Avatar"
                                                                             width="50">
                                                                     @endif
-                                                                    {{ $reply->user->name }}
-                                                                </h5>
+                                                                    {{ $comment->user->name }}
+                                                                </h4>
                                                                 <small
-                                                                    class="text-muted">{{ $reply->created_at->diffForHumans() }}</small>
-                                                                <p class="mt-2">{{ $reply->comment }}</p>
+                                                                    class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                                                                <p class="mt-2">{{ $comment->comment }}</p>
                                                                 @if (Auth::check())
                                                                     <button
                                                                         class="btn btn-sm btn-outline-primary reply-btn"
                                                                         type="button" data-id="{{ $comment->id }}">Trả
                                                                         lời</button>
-                                                                @else
-                                                                    <hr width="1200px">
                                                                 @endif
+
                                                             </div>
 
                                                         </div>
 
                                                     </div>
-                                                @endforeach
+                                                    @foreach ($comment->replies as $reply)
+                                                        <div class="card-body ps-5 mt-3">
+                                                            <div class="d-flex mb-4">
 
-                                                <!-- Khu vực nhập bình luận trả lời -->
-                                                <div class="card-body ps-5 d-none reply-form"
-                                                    id="reply-form-{{ $comment->id }}">
-                                                    <form action="{{ route('comments', $comment->id) }}" method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="product_id"
-                                                            value="{{ $product->id }}">
-                                                        <input type="hidden" name="parent_id"
-                                                            value="{{ $comment->id }}">
-                                                        <div class="mb-2">
-                                                            <textarea class="form-control" name="comment" rows="2" placeholder="Nhập câu trả lời..."></textarea>
+                                                                <div>
+                                                                    <h5 class="mb-1">
+                                                                        @if ($reply->user->img_thumbnail)
+                                                                            <img src="{{ Storage::url($reply->user->img_thumbnail) }}"
+                                                                                class="rounded-circle me-3"
+                                                                                alt="User Avatar" width="50">
+                                                                        @else
+                                                                            <img src="{{ asset('themes/image/logo.jpg') }}"
+                                                                                class="rounded-circle me-3"
+                                                                                alt="User Avatar" width="50">
+                                                                        @endif
+                                                                        {{ $reply->user->name }}
+                                                                    </h5>
+                                                                    <small
+                                                                        class="text-muted">{{ $reply->created_at->diffForHumans() }}</small>
+                                                                    <p class="mt-2">{{ $reply->comment }}</p>
+                                                                    @if (Auth::check())
+                                                                        <button
+                                                                            class="btn btn-sm btn-outline-primary reply-btn"
+                                                                            type="button"
+                                                                            data-id="{{ $comment->id }}">Trả
+                                                                            lời</button>
+                                                                    @else
+                                                                        <hr width="1200px">
+                                                                    @endif
+                                                                </div>
+
+                                                            </div>
+
                                                         </div>
-                                                        <button class="btn btn-primary btn-sm">Gửi</button>
-                                                        <button type="button"
-                                                            class="btn btn-secondary btn-sm cancel-btn">Hủy</button>
-                                                    </form>
+                                                    @endforeach
+
+                                                    <div class="card-body ps-5 d-none reply-form"
+                                                        id="reply-form-{{ $comment->id }}">
+                                                        <form action="{{ route('comments', $comment->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="product_id"
+                                                                value="{{ $product->id }}">
+                                                            <input type="hidden" name="parent_id"
+                                                                value="{{ $comment->id }}">
+                                                            <div class="mb-2">
+                                                                <textarea class="form-control" name="comment" rows="2" placeholder="Nhập câu trả lời..."></textarea>
+                                                            </div>
+                                                            <button class="btn btn-primary btn-sm">Gửi</button>
+                                                            <button type="button"
+                                                                class="btn btn-secondary btn-sm cancel-btn">Hủy</button>
+                                                        </form>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        @endforeach
-                                    @endif
+                                            @endforeach
+                                        @endif
 
-                                </div>
-
-                                <!-- Comment Form -->
-                                @if (Auth::check())
-                                    <div class="shop-comment-form">
-                                        <form action="{{ route('comments') }}" method="post">
-                                            @csrf
-                                            <h2 class="reviews__comment--reply__title mb-15">Thêm Bình Luận </h2>
-
-                                            <div class="row">
-                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
-                                                    <textarea class="form-control" style="height: 200px;" name="comment" placeholder="Nhập câu trả lời..."></textarea>
-
-                                                </div>
-
-                                            </div>
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
-                                                <button class="btn btn-primary p-3">
-                                                    Gửi
-                                                </button>
-
-                                            </div>
-                                        </form>
                                     </div>
-                                @endif
 
+                                    @if (Auth::check())
+                                        <div class="shop-comment-form">
+                                            <form action="{{ route('comments') }}" method="post">
+                                                @csrf
+                                                <h2 class="reviews__comment--reply__title mb-15">Thêm Bình Luận </h2>
 
-                            </div>
+                                                <div class="row">
+                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                                                        <textarea class="form-control" style="height: 200px;" name="comment" placeholder="Nhập câu trả lời..."></textarea>
 
-                            <!-- Tab -->
-                            <div class="tab" id="prod-faq">
-                                <div class="content">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
-                                        vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus aliquet
-                                        nunc, vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
-                                        cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum accumsan
-                                        quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
-                                        bibendum dui. Aenean consequat pulvinar luctus. Suspendisse consectetur
-                                        tristique tortor</p>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                                                    <button class="btn btn-primary p-3">
+                                                        Gửi
+                                                    </button>
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                    @endif
                                 </div>
-                            </div>
+                                <div class="tab" id="prod-faq">
+                                    <div class="content">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
+                                            vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus aliquet
+                                            nunc, vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
+                                            cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum accumsan
+                                            quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
+                                            bibendum dui. Aenean consequat pulvinar luctus. Suspendisse consectetur
+                                            tristique tortor</p>
+                                    </div>
+                                </div>
 
+                            </div>
                         </div>
                     </div>
-
                 </div>
-                <!--End Product Info Tabs-->
-
             </div>
-            <!-- End Lower Box -->
-
     </div>
     </section>
 
     <section class="products-section-six">
         <div class="auto-container">
-            <!-- Sec Title -->
             <div class="sec-title">
                 <h4><span>Populer</span> Products For You !</h4>
             </div>
             <div class="row clearfix">
-
-                <!-- Shop Item Two -->
-                <div class="shop-item-two col-lg-3 col-md-6 col-sm-12">
-                    <div class="inner-box">
-                        <div class="image">
-                            <a href="shop-detail.html"><img src="images/resource/products/25.png" alt="" /></a>
-                            <div class="options-box">
-                                <ul class="option-list">
-                                    <li><a class="flaticon-resize" href="shop-detail.html"></a></li>
-                                    <li><a class="flaticon-heart" href="shop-detail.html"></a></li>
-                                    <li><a class="flaticon-shopping-cart-2" href="shop-detail.html"></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <h6><a href="shop-detail.html">masks 95 percent 0.3-μm <br> particles</a></h6>
-                            <div class="lower-box">
-                                <div class="price"><span>$239.52</span> $362.00</div>
-                                <!-- Select Size -->
-                                <div class="select-amount clearfix">
-                                    <div class="select-box"><input type="radio" name="payment-group" id="radio-one"
-                                            checked><label for="radio-one">32</label></div>
-                                    <div class="select-box not-available"><label for="radio-two">34</label></div>
-                                    <div class="select-box"><input type="radio" name="payment-group"
-                                            id="radio-three"><label for="radio-three">36</label></div>
+                @foreach ($otherCategoryProducts as $product)
+                    <div class="shop-item-two col-lg-3 col-md-6 col-sm-12">
+                        <div class="inner-box">
+                            <div class="image">
+                                <a href="{{ route('productDetail', ['slug' => $product->slug]) }}"><img
+                                        src="{{ storage::url($product->img_thumbnail) }}" alt="" /></a>
+                                <div class="options-box">
+                                    <ul class="option-list">
+                                        <li><a class="flaticon-resize"
+                                                href="{{ route('productDetail', ['slug' => $product->slug]) }}"></a></li>
+                                        <li><a class="flaticon-heart"
+                                                href="{{ route('productDetail', ['slug' => $product->slug]) }}"></a></li>
+                                        <li><a class="flaticon-shopping-cart-2"
+                                                href="{{ route('productDetail', ['slug' => $product->slug]) }}"></a></li>
+                                    </ul>
                                 </div>
-                                <!-- Select Size -->
+                            </div>
+                            <div class="content">
+                                <h6><a
+                                        href="{{ route('productDetail', ['slug' => $product->slug]) }}">{{ $product->name }}</a>
+                                </h6>
+                                <div class="lower-box">
+                                    <div class="price">
+                                        @if (!is_null($product->price_sale))
+                                            <span>{{ number_format($product->base_price, '0', '0', '.') }}VNĐ</span>
+                                            {{ number_format($product->price_sale, '0', '0', '.') }}VNĐ
+                                        @else
+                                            {{ $product->base_price }}
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Shop Item Two -->
-                <div class="shop-item-two col-lg-3 col-md-6 col-sm-12">
-                    <div class="inner-box">
-                        <div class="image">
-                            <a href="shop-detail.html"><img src="images/resource/products/26.png" alt="" /></a>
-                            <div class="options-box">
-                                <ul class="option-list">
-                                    <li><a class="flaticon-resize" href="shop-detail.html"></a></li>
-                                    <li><a class="flaticon-heart" href="shop-detail.html"></a></li>
-                                    <li><a class="flaticon-shopping-cart-2" href="shop-detail.html"></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <h6><a href="shop-detail.html">masks 95 percent 0.3-μm <br> particles</a></h6>
-                            <div class="lower-box">
-                                <div class="price"><span>$239.52</span> $362.00</div>
-                                <!-- Select Size -->
-                                <div class="select-amount clearfix">
-                                    <div class="select-box"><input type="radio" name="payment-group" id="radio-four"
-                                            checked><label for="radio-four">32</label></div>
-                                    <div class="select-box not-available"><label for="radio-five">34</label></div>
-                                    <div class="select-box"><input type="radio" name="payment-group"
-                                            id="radio-six"><label for="radio-six">36</label></div>
-                                </div>
-                                <!-- Select Size -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Shop Item Two -->
-                <div class="shop-item-two col-lg-3 col-md-6 col-sm-12">
-                    <div class="inner-box">
-                        <div class="image">
-                            <a href="shop-detail.html"><img src="images/resource/products/27.png" alt="" /></a>
-                            <div class="options-box">
-                                <ul class="option-list">
-                                    <li><a class="flaticon-resize" href="shop-detail.html"></a></li>
-                                    <li><a class="flaticon-heart" href="shop-detail.html"></a></li>
-                                    <li><a class="flaticon-shopping-cart-2" href="shop-detail.html"></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <h6><a href="shop-detail.html">masks 95 percent 0.3-μm <br> particles</a></h6>
-                            <div class="lower-box">
-                                <div class="price"><span>$239.52</span> $362.00</div>
-                                <!-- Select Size -->
-                                <div class="select-amount clearfix">
-                                    <div class="select-box"><input type="radio" name="payment-group" id="radio-seven"
-                                            checked><label for="radio-seven">32</label></div>
-                                    <div class="select-box not-available"><label for="radio-eight">34</label></div>
-                                    <div class="select-box"><input type="radio" name="payment-group"
-                                            id="radio-nine"><label for="radio-nine">36</label></div>
-                                </div>
-                                <!-- Select Size -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Shop Item Two -->
-                <div class="shop-item-two col-lg-3 col-md-6 col-sm-12">
-                    <div class="inner-box">
-                        <div class="image">
-                            <a href="shop-detail.html"><img src="images/resource/products/28.png" alt="" /></a>
-                            <div class="options-box">
-                                <ul class="option-list">
-                                    <li><a class="flaticon-resize" href="shop-detail.html"></a></li>
-                                    <li><a class="flaticon-heart" href="shop-detail.html"></a></li>
-                                    <li><a class="flaticon-shopping-cart-2" href="shop-detail.html"></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <h6><a href="shop-detail.html">masks 95 percent 0.3-μm <br> particles</a></h6>
-                            <div class="lower-box">
-                                <div class="price"><span>$239.52</span> $362.00</div>
-                                <!-- Select Size -->
-                                <div class="select-amount clearfix">
-                                    <div class="select-box"><input type="radio" name="payment-group" id="radio-ten"
-                                            checked><label for="radio-ten">32</label></div>
-                                    <div class="select-box"><input type="radio" name="payment-group"
-                                            id="radio-eleven"><label for="radio-eleven">34</label></div>
-                                    <div class="select-box"><input type="radio" name="payment-group"
-                                            id="radio-twelve"><label for="radio-twelve">36</label></div>
-                                </div>
-                                <!-- Select Size -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
 
             </div>
         </div>
     </section>
-    <!-- End Products Section Six -->
-
-    <!-- Gallery Section -->
     <section class="gallery-section">
         <div class="outer-container">
             <div class="instagram-carousel owl-carousel owl-theme">
-
-                <!-- Insta Gallery -->
                 <div class="insta-gallery">
                     <img src="images/gallery/1.jpg" alt="" />
                     <div class="overlay-box">
@@ -531,8 +378,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Insta Gallery -->
                 <div class="insta-gallery">
                     <img src="images/gallery/2.jpg" alt="" />
                     <div class="overlay-box">
@@ -541,8 +386,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Insta Gallery -->
                 <div class="insta-gallery">
                     <img src="images/gallery/3.jpg" alt="" />
                     <div class="overlay-box">
@@ -551,8 +394,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Insta Gallery -->
                 <div class="insta-gallery">
                     <img src="images/gallery/4.jpg" alt="" />
                     <div class="overlay-box">
@@ -561,8 +402,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Insta Gallery -->
                 <div class="insta-gallery">
                     <img src="images/gallery/5.jpg" alt="" />
                     <div class="overlay-box">
@@ -571,8 +410,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Insta Gallery -->
                 <div class="insta-gallery">
                     <img src="images/gallery/6.jpg" alt="" />
                     <div class="overlay-box">
@@ -581,17 +418,10 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
-    <!-- End Gallery Section -->
-
-
     </div>
-    <!-- End PageWrapper -->
-
-    <!-- Search Popup -->
     <div class="search-popup">
         <div class="color-layer"></div>
         <button class="close-search"><span class="fa fa-arrow-up"></span></button>
@@ -607,57 +437,39 @@
     <style>
         .new-price {
             text-decoration: line-through;
-            /* Gạch ngang cho giá cũ */
             color: rgb(255, 0, 0);
-            /* Màu đỏ cho giá mới */
             font-weight: bold;
-            /* Đậm */
             font-size: 1.2em;
         }
 
         .new-price {
             text-decoration: none !important;
-            /* Ghi đè gạch ngang */
             color: rgb(255, 0, 0);
-            /* Màu đỏ cho giá mới */
             font-weight: bold;
-            /* Đậm */
             font-size: 1.2em;
-            /* Kích thước lớn hơn (có thể điều chỉnh) */
         }
 
         .sale-price {
             color: red;
-            /* Màu đỏ cho giá sale */
             font-weight: bold;
-            /* In đậm giá sale */
         }
 
         .regular-price {
             color: green;
-            /* Màu xanh cho giá hiện tại nếu không có giá sale */
         }
     </style>
 @endsection
 @section('script-libs')
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Lấy tất cả các nút trả lời
             const replyButtons = document.querySelectorAll(".reply-btn");
-
-            // Lặp qua từng nút và thêm sự kiện click
             replyButtons.forEach(button => {
                 button.addEventListener("click", function() {
-                    // Lấy ID của comment
                     const commentId = this.getAttribute("data-id");
-                    // Tìm form trả lời tương ứng với comment
                     const replyForm = document.getElementById(`reply-form-${commentId}`);
-                    // Toggle lớp d-none để hiện/ẩn form trả lời
                     replyForm.classList.toggle("d-none");
                 });
             });
-
-            // Hủy form trả lời khi nhấn nút Hủy
             const cancelButtons = document.querySelectorAll(".cancel-btn");
             cancelButtons.forEach(button => {
                 button.addEventListener("click", function() {
@@ -672,29 +484,23 @@
     <style>
         .swiper-container {
             width: 100%;
-            /* Đảm bảo container chiếm đầy đủ chiều rộng */
             overflow: hidden;
         }
 
         .swiper-wrapper {
             display: flex;
             flex-wrap: wrap;
-            /* Cho phép các phần tử nằm trong dòng mới nếu không đủ không gian */
             gap: 10px;
-            /* Tạo khoảng cách giữa các ảnh */
             justify-content: center;
-            /* Căn giữa các ảnh */
         }
 
         .swiper-slide {
             flex: 0 1 calc(25% - 10px);
-            /* 4 ảnh mỗi dòng (25% mỗi ảnh trừ khoảng cách) */
             box-sizing: border-box;
         }
 
         .swiper-slide img {
             width: 100%;
-            /* Đảm bảo ảnh vừa khung */
             height: auto;
             object-fit: cover;
             border-radius: 5px;

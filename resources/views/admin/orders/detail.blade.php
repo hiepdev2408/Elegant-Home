@@ -128,13 +128,14 @@
                             </thead>
                             <tbody>
                                 @foreach ($order->orderDetails as $item)
-                                    <tr>
-                                        <td>
-                                            @if ($item->product)
+                                    @if ($item->product)
+                                        <tr>
+                                            <td>
                                                 <div class="d-flex justify-content-start align-items-center">
                                                     <div class="avatar me-2 pe-1">
                                                         @if ($item->product->img_thumbnail)
-                                                            <img src="{{ Storage::url($item->product->img_thumbnail) }}"
+                                                            <img class="rounded-2"
+                                                                src="{{ Storage::url($item->product->img_thumbnail) }}"
                                                                 width="50px" alt="">
                                                         @else
                                                             <img src="{{ asset('images/default-thumbnail.png') }}"
@@ -146,8 +147,14 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <span>{{ $item->product->name }}</span>
-                                            @else
+                                            </td>
+                                            <td>{{ number_format($item->product->price_sale, 0, ',', '.') }} VND</td>
+                                            <td>{{ $item->quantity }}</td>
+                                            <td>{{ number_format($item->total_amount, 0, ',', '.') }} VND</td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td>
                                                 <div class="d-flex justify-content-start align-items-center mb-1">
                                                     <div class="avatar me-2 pe-1">
                                                         @if ($item->variant && $item->variant->product->img_thumbnail)
@@ -164,8 +171,7 @@
                                                         </strong>
                                                     </div>
                                                 </div>
-                                                {{-- <br> --}}
-                                                <span>
+                                                {{-- <br> --}} <span>
                                                     @foreach ($item->variant->attributes as $attribute)
                                                         @if (!$loop->first)
                                                             <br>
@@ -175,14 +181,13 @@
                                                         @endif
                                                         {{ $attribute->attributeValue->value }}.
                                                     @endforeach
-
                                                 </span>
-                                            @endif
-                                        </td>
-                                        <td>{{ number_format($item->variant->price_modifier, 0, ',', '.') }} VND</td>
-                                        <td>{{ $item->quantity }}</td>
-                                        <td>{{ number_format($item->total_amount, 0, ',', '.') }} VND</td>
-                                    </tr>
+                                            </td>
+                                            <td>{{ number_format($item->variant->price_modifier, 0, ',', '.') }} VND</td>
+                                            <td>{{ $item->quantity }}</td>
+                                            <td>{{ number_format($item->total_amount, 0, ',', '.') }} VND</td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
