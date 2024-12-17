@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
+use App\Models\Shipping;
 use App\Models\UserVoucher;
 use App\Models\Variant;
 use App\Models\Vouchers;
@@ -24,19 +25,19 @@ class PaymentController extends Controller
         if (!$user) {
             return response()->json(['error' => 'Người dùng chưa được xác thực'], 401);
         }
-    
+
         // Lấy giỏ hàng
         $cart = Cart::with('cartDetails')->where('user_id', $user)->first();
         if (!$cart) {
             return response()->json(['error' => 'Không tìm thấy giỏ hàng'], 404);
         }
-    
+
         // Lấy danh sách variant ID từ giỏ hàng
         $variantIds = $cart->cartDetails->pluck('variant_id')->toArray();
-    
+
         // Lấy thông tin các variant liên quan
         $variants = Variant::whereIn('id', $variantIds)->get()->keyBy('id');
-    
+
         // Kiểm tra tồn kho và xử lý
         foreach ($cart->cartDetails as $cartDetail) {
             $variant = $variants->get($cartDetail->variant_id);
@@ -46,27 +47,28 @@ class PaymentController extends Controller
                 return redirect()->route('home')->with('alert', 'Lỗi');
             }
         }
-    
+
         // Lấy tổng tiền từ session
-        $totalAmount = session('totalAmount');
+        $totalAmount = $request->total_amount;
+        // dd($totalAmount);
         if ($totalAmount <= 0) {
             return response()->json(['error' => 'Tổng số tiền không hợp lệ'], 400);
         }
-    
+
         // Lưu voucher ID nếu có
         $voucherCode = session('voucher_code');
         $voucherId = null;
-    
+
         if ($voucherCode) {
             $voucher = Vouchers::where('code', $voucherCode)
                 ->where('end_date', '>=', now())
                 ->first();
-    
+
             if ($voucher && $voucher->used < $voucher->quantity) {
                 $voucherId = $voucher->id; // Lưu voucher_id
             }
         }
-    
+
         // Tạo đơn hàng mới
         try {
             $order = Order::create([
@@ -85,7 +87,7 @@ class PaymentController extends Controller
             Log::error('Lỗi khi tạo đơn hàng: ' . $e->getMessage());
             return response()->json(['error' => 'Lỗi khi tạo đơn hàng'], 500);
         }
-    
+
         // Lưu chi tiết đơn hàng
         foreach ($cart->cartDetails as $cartDetails) {
             try {
@@ -100,13 +102,23 @@ class PaymentController extends Controller
                 Log::error('Lỗi khi tạo chi tiết đơn hàng: ' . $e->getMessage());
             }
         }
-    
+      
+        // Trạng Thái đơn hàng
+        try {
+            Shipping::create([
+                'order_id' => $order->id,
+                'name' => 'Đơn hàng của bạn đã được đặt thành công'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Lỗi khi tạo đơn hàng: ' . $e->getMessage());
+        }
+
         // Tạo URL thanh toán VNPAY
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = route('vnpayReturn');
         $vnp_TmnCode = "5ATNWBPG"; // Mã website tại VNPAY
         $vnp_HashSecret = "09AIHOKAJ8PFFWLKALU26G698T5A2T59"; // Chuỗi bí mật
-    
+
         $vnp_TxnRef = $order->id; // Sử dụng ID đơn hàng làm TxnRef
         $vnp_OrderInfo = 'Thanh toán hóa đơn';
         $vnp_OrderType = 'order_type';
@@ -114,7 +126,7 @@ class PaymentController extends Controller
         $vnp_Locale = 'vn';
         $vnp_BankCode = 'NCB';
         $vnp_IpAddr = $request->ip();
-    
+
         $inputData = [
             "vnp_Version" => "2.1.0",
             "vnp_TmnCode" => $vnp_TmnCode,
@@ -129,11 +141,11 @@ class PaymentController extends Controller
             "vnp_ReturnUrl" => $vnp_Returnurl,
             "vnp_TxnRef" => $vnp_TxnRef,
         ];
-    
+
         if (!empty($vnp_BankCode)) {
             $inputData['vnp_BankCode'] = $vnp_BankCode;
         }
-    
+
         ksort($inputData);
         $query = "";
         $hashdata = "";
@@ -141,16 +153,16 @@ class PaymentController extends Controller
             $query .= urlencode($key) . "=" . urlencode($value) . '&';
             $hashdata .= ($hashdata ? '&' : '') . urlencode($key) . "=" . urlencode($value);
         }
-    
+
         $vnp_Url = $vnp_Url . "?" . $query;
         if (!empty($vnp_HashSecret)) {
             $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
             $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
-    
+
         // Xóa session sau khi thanh toán
         session()->forget(['voucher_code', 'discount_amount', 'totalAmount']);
-    
+
         // Chuyển hướng người dùng đến trang thanh toán VNPAY
         return redirect()->away($vnp_Url);
     }
@@ -297,19 +309,20 @@ class PaymentController extends Controller
 
     public function cod(Request $request)
     {
+        // dd($request->all());
         try {
             $user = Auth::user();
             $cart = Cart::query()->where('user_id', $user->id)->first();
-    
+
             // Kiểm tra giỏ hàng
             if (!$cart || $cart->cartDetails->isEmpty()) {
                 return redirect()->route('home')->with('error', 'Giỏ hàng của bạn đang trống.');
             }
-    
+
             // Kiểm tra hàng tồn kho
             $variants = Variant::whereIn('id', $cart->cartDetails->pluck('variant_id'))->get();
             $outOfStockProducts = [];
-    
+
             foreach ($cart->cartDetails as $cartDetails) {
                 $variant = $variants->where('id', $cartDetails->variant_id)->first();
                 if ($variant && $variant->stock < $cartDetails->quantity) {
@@ -317,26 +330,27 @@ class PaymentController extends Controller
                     $cartDetails->delete(); // Xóa sản phẩm hết hàng khỏi giỏ
                 }
             }
-    
+
             if (!empty($outOfStockProducts)) {
                 return redirect()->route('home')->with(
                     'error',
                     "Các sản phẩm sau đã hết hàng và đã bị xóa khỏi giỏ hàng: " . implode(', ', $outOfStockProducts) . "."
                 );
             }
-    
-            $totalAmount = session('totalAmount');
-            
+
+            $totalAmount = session('totalAmount') ?? $request->total_amount;
+            // dd($totalAmount);
+
             DB::transaction(function () use ($cart, $request, $user, $totalAmount) {
                 $voucherCode = session('voucher_code');
                 $voucher = null;
-    
+
                 if ($voucherCode) {
                     $voucher = Vouchers::where('code', $voucherCode)
                         ->where('end_date', '>=', now())
                         ->first();
                 }
-    
+
                 // Tạo đơn hàng
                 $order = Order::create([
                     'user_id' => $user->id,
@@ -350,8 +364,8 @@ class PaymentController extends Controller
                     'total_amount' => $totalAmount, // Sử dụng tổng tiền từ session
                     'vouchers_id' => $voucher ? $voucher->id : null,
                 ]);
-    
-    
+
+
                 // Thêm chi tiết đơn hàng
                 $orderDetails = $cart->cartDetails->map(function ($cartDetail) use ($order) {
                     return [
@@ -362,9 +376,9 @@ class PaymentController extends Controller
                         'total_amount' => $cartDetail->total_amount,
                     ];
                 });
-    
+
                 OrderDetail::insert($orderDetails->toArray());
-    
+
                 // Cập nhật hàng tồn kho
                 foreach ($cart->cartDetails as $cartDetail) {
                     $variant = Variant::find($cartDetail->variant_id);
@@ -372,7 +386,7 @@ class PaymentController extends Controller
                         $variant->decrement('stock', $cartDetail->quantity);
                     }
                 }
-    
+
                 // Xử lý voucher
                 if ($voucher) {
                     UserVoucher::create([
@@ -383,15 +397,15 @@ class PaymentController extends Controller
                 } else {
                     session()->forget('voucher_code'); // Xóa voucher không hợp lệ
                 }
-    
+
                 // Xóa giỏ hàng
                 $cart->cartDetails()->delete();
                 $cart->delete();
-    
+
                 // Xóa session
                 session()->forget(['totalAmount', 'voucher_code', 'discount_amount']);
             });
-    
+
             return redirect()->route('thank')->with('success', 'Đơn hàng của bạn đã được đặt thành công!');
         } catch (\Exception $exception) {
             Log::error('Đặt hàng COD thất bại.', [
@@ -399,7 +413,7 @@ class PaymentController extends Controller
                 'user_id' => $user->id ?? null,
                 'cart_id' => $cart->id ?? null,
             ]);
-    
+
             return redirect()->route('home')->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
         }
     }

@@ -6,13 +6,10 @@
     <section class="checkout-section">
         <div class="auto-container">
             <div class="row">
-                <!-- Form Column -->
                 <div class="form-column col-lg-8 col-md-12 col-sm-12">
                     <div class="p-4 border rounded shadow">
                         <h4 class="mb-4">Thông tin cá nhân</h4>
-                        <!-- Shipping Form -->
                         <div class="shipping-form">
-                            <!-- Row 1: Họ và Tên + Email -->
                             <div class="row">
                                 <div class="col-md-6 mt-3">
                                     <label for="user_name" class="form-label">Họ và tên</label>
@@ -26,7 +23,6 @@
                                 </div>
                             </div>
 
-                            <!-- Row 2: Số điện thoại + Thành phố / Tỉnh -->
                             <div class="row">
                                 <div class="col-md-6 mt-3">
                                     <label for="user_phone" class="form-label">Số điện thoại</label>
@@ -40,7 +36,6 @@
                                 </div>
                             </div>
 
-                            <!-- Row 3: Địa chỉ chi tiết -->
                             <div class="col-12 mt-3">
                                 <label for="user_address_all" class="form-label">Địa chỉ chi tiết</label>
                                 @if (Auth::check() &&
@@ -59,7 +54,6 @@
                                 @endif
                             </div>
 
-                            <!-- Row 4: Ghi chú -->
                             <div class="col-12 mt-3">
                                 <label for="user_note" class="form-label">Ghi chú</label>
                                 <textarea name="user_note" id="user_note" cols="30" rows="4" class="form-control"
@@ -67,14 +61,12 @@
                             </div>
                         </div>
 
-                        <!-- Phương thức thanh toán -->
                         <h4 class="mt-4">Phương thức thanh toán</h4>
                         <div id="alert-container" class="alert alert-danger d-none" role="alert">
                             Vui lòng chọn một phương thức thanh toán trước khi tiếp tục!
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <!-- Form MOMO -->
                                 <form id="momo-form" action="{{ route('momo_payment') }}" method="post">
                                     @csrf
                                     <input type="text" class="totalAmounts d-none" name="total_amount"
@@ -85,7 +77,6 @@
                                         <label class="form-check-label" for="paymentMomo">Thanh toán MOMO</label>
                                     </div>
                                 </form>
-                                <!-- Form VNPAY -->
                                 <form id="vnpay-form" action="{{ route('vnpay') }}" method="post">
                                     @csrf
                                     <input type="text" class="totalAmounts d-none" name="total_amount"
@@ -105,7 +96,6 @@
                                     </div>
                                 </form>
 
-                                <!-- Form COD -->
                                 <form id="cod-form" action="{{ route('cod') }}" method="post">
                                     @csrf
                                     <input type="text" class="totalAmounts d-none" name="total_amount"
@@ -157,12 +147,12 @@
                             </ul>
                             <form id="voucher-form" class="d-flex mb-3">
                                 @csrf
-                                
                                 <input type="text" name="voucher_code" class="form-control me-2" placeholder="Nhập mã voucher" style="width: 225px; height: 35px; ">
                                 <input type="hidden" name="total_amount" value="{{ $totalAmount }}">
-                                <button type="submit" class="btn btn-success" style="height: 35px; padding: 0 10px;">Áp dụng</button>
+                                <button type="submit" class="btn btn-success" style="height: 35px; padding: 0 10px;">Áp
+                                    dụng</button>
                             </form>
-                
+
                             <!-- Thông báo lỗi hoặc thành công -->
                             <div id="message"></div>
                         </div>
@@ -334,7 +324,7 @@
         });
     </script>
     <!-- Thêm jQuery -->
-    
+
     <script>
         // Lấy các radio button
         const momoRadio = document.getElementById('paymentMomo');
@@ -382,28 +372,31 @@
 
         });
     </script>
-  <script>
-    $(document).ready(function() {
-        $('#voucher-form').on('submit', function(event) {
-            event.preventDefault(); // Ngăn chặn gửi form theo cách thông thường
+    <script>
+        $(document).ready(function() {
+            $('#voucher-form').on('submit', function(event) {
+                event.preventDefault(); // Ngăn chặn gửi form theo cách thông thường
 
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('order.applyVoucher') }}',
-                data: $(this).serialize(),
-                success: function(response) {
-                    $('#message').html('<div class="alert alert-success">' + response.message + '</div>');
-                    $('#total-amount').text(response.total);
-                    $('#discount-amount').text(response.discount);
-                    $('#discount-details').show(); // Hiển thị thông tin giảm giá
-                },
-                error: function(xhr) {
-                    $('#message').html('<div class="alert alert-danger">' + xhr.responseJSON.message + '</div>');
-                    $('#total-amount').text(xhr.responseJSON.total);
-                    $('#discount-details').hide(); // Ẩn thông tin giảm giá khi voucher không hợp lệ
-                }
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('order.applyVoucher') }}',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#message').html('<div class="alert alert-success">' + response
+                            .message + '</div>');
+                        $('#total-amount').text(response.total);
+                        $('#discount-amount').text(response.discount);
+                        $('#discount-details').show(); // Hiển thị thông tin giảm giá
+                    },
+                    error: function(xhr) {
+                        $('#message').html('<div class="alert alert-danger">' + xhr.responseJSON
+                            .message + '</div>');
+                        $('#total-amount').text(xhr.responseJSON.total);
+                        $('#discount-details')
+                    .hide(); // Ẩn thông tin giảm giá khi voucher không hợp lệ
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 @endsection
