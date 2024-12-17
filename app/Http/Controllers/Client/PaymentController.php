@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
+use App\Models\Shipping;
 use App\Models\UserVoucher;
 use App\Models\Variant;
 use App\Models\Vouchers;
@@ -48,7 +49,8 @@ class PaymentController extends Controller
         }
 
         // Lấy tổng tiền từ session
-        $totalAmount = session('totalAmount');
+        $totalAmount = $request->total_amount;
+        // dd($totalAmount);
         if ($totalAmount <= 0) {
             return response()->json(['error' => 'Tổng số tiền không hợp lệ'], 400);
         }
@@ -99,6 +101,16 @@ class PaymentController extends Controller
             } catch (\Exception $e) {
                 Log::error('Lỗi khi tạo chi tiết đơn hàng: ' . $e->getMessage());
             }
+        }
+      
+        // Trạng Thái đơn hàng
+        try {
+            Shipping::create([
+                'order_id' => $order->id,
+                'name' => 'Đơn hàng của bạn đã được đặt thành công'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Lỗi khi tạo đơn hàng: ' . $e->getMessage());
         }
 
         // Tạo URL thanh toán VNPAY
