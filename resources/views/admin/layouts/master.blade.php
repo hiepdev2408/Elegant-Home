@@ -41,12 +41,17 @@
     <link rel="stylesheet" href="{{ asset('themes') }}/admin/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="{{ asset('themes') }}/admin/vendor/libs/typeahead-js/typeahead.css" />
     <link rel="stylesheet" href="{{ asset('themes') }}/admin/vendor/libs/apex-charts/apex-charts.css" />
-
+    <link rel="stylesheet" href="{{ asset('themes') }}/admin/vendor/libs/sweetalert2/sweetalert2.css" />
     <!-- Page CSS -->
     @yield('style-libs')
     <style>
         .swal2-container {
             z-index: 9999 !important;
+        }
+
+        .notyf__toast {
+            top: 40px !important;
+            /* Khoảng cách từ cạnh trên */
         }
     </style>
     <!-- Helpers -->
@@ -108,8 +113,7 @@
     <!-- / Layout wrapper -->
 
     <!-- Core JS -->
-
-    <!-- build:js assets/vendor/js/core.js -->
+    <script src="{{ asset('themes') }}/admin/vendor/libs/sweetalert2/sweetalert2.js"></script>
     <script src="{{ asset('themes') }}/admin/vendor/libs/jquery/jquery.js"></script>
     <script src="{{ asset('themes') }}/admin/vendor/libs/popper/popper.js"></script>
     <script src="{{ asset('themes') }}/admin/vendor/js/bootstrap.js"></script>
@@ -119,7 +123,6 @@
     <script src="{{ asset('themes') }}/admin/vendor/libs/i18n/i18n.js"></script>
     <script src="{{ asset('themes') }}/admin/vendor/libs/typeahead-js/typeahead.js"></script>
     <script src="{{ asset('themes') }}/admin/vendor/js/menu.js"></script>
-
     <!-- endbuild -->
 
     <!-- Vendors JS -->
@@ -133,6 +136,28 @@
     @yield('script-libs') <!-- CÁC JS CÁC TRANG -->
 
     @vite('resources/js/list.js')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notyf = new Notyf({
+                duration: 3000,
+                position: {
+                    x: 'right',
+                    y: 'top'
+                },
+                ripple: true,
+            });
+
+            @if (session('success'))
+                notyf.success('{{ session('success') }}');
+            @endif
+
+            @if (session('error'))
+                notyf.error('{{ session('error') }}');
+            @endif
+        });
+    </script>
 </body>
 
 </html>

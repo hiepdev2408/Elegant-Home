@@ -44,15 +44,14 @@ class HomeController extends Controller
             ->take(5)
             ->get(['id', 'name']);
 
-        // Lấy các sản phẩm mới nhất
         $products = Product::query()
             ->with('categories')
-
             ->latest('id')
             ->take(10)
             ->get();
 
-        // Lấy các bài viết blog mới nhất
+        $productCategory = $products->take(8);
+
         $blogs = Blog::query()
             ->with('user')
             ->latest()
@@ -93,9 +92,9 @@ class HomeController extends Controller
 
         session(['productsOnSale' => $productsOnSale]);
 
-        // Trả về view home
-        return view('client.home', compact('categories', 'products', 'blogs', 'sales'));
+        return view('client.home', compact('categories', 'products', 'blogs', 'sales', 'productCategory'));
     }
+
     public function detail($slug)
     {
         $product = Product::where([
@@ -110,9 +109,9 @@ class HomeController extends Controller
             ])
             ->firstOrFail();
 
-
         $categoryIds = $product->categories->pluck('id');
-        // Lấy các sản phẩm có cùng danh mục (trừ sản phẩm hiện tại)
+
+        // Lấy các sản phẩm liên quan (cùng danh mục)
         $relatedProducts = Product::whereHas('categories', function ($query) use ($categoryIds) {
             $query->whereIn('id', $categoryIds);
         })
@@ -120,7 +119,16 @@ class HomeController extends Controller
             ->distinct()
             ->limit(4)
             ->get();
-        // Lấy tất cả các thuộc tính để hiển thị
+
+        // Lấy các sản phẩm trong danh mục khác
+        $otherCategoryProducts = Product::whereHas('categories', function ($query) use ($categoryIds) {
+            $query->whereIn('id', $categoryIds);
+        })
+            ->where('id', '!=', $product->id)
+            ->distinct()
+            ->limit(4)
+            ->get();
+
         $attributes = Attribute::with('values')->get();
         $product->increment('view');
 
@@ -128,16 +136,14 @@ class HomeController extends Controller
         $productsOnSale = session('productsOnSale', []);
 
         foreach ($productsOnSale as $saleProduct) {
-
             if ($saleProduct['id'] === $product->id) {
                 $finalPrice = $saleProduct['price_sale'];
                 break;
             }
         }
-        // Trả về view với thông tin sản phẩm và sản phẩm liên quan
-        return view('client.product.productDetails', compact('product', 'relatedProducts', 'attributes', 'finalPrice'));
-    }
 
+        return view('client.product.productDetails', compact('product', 'relatedProducts', 'otherCategoryProducts', 'attributes', 'finalPrice'));
+    }
 
     public function shop()
     {
@@ -179,7 +185,6 @@ class HomeController extends Controller
     public function compose(View $view)
     {
         $userId = Auth::id();
-        // $favouritecount = $userId ? Favourite::where('user_id', $userId)->count() : 0;
         $totalCart = $userId ? CartDetail::query()->where('cart_id', function ($query) use ($userId) {
             $query->select('id')
                 ->from('carts')
@@ -188,7 +193,6 @@ class HomeController extends Controller
         })->count() : 0;
 
         $view->with([
-            // 'favouritecount' => $favouritecount,
             'totalCart' => $totalCart
         ]);
     }

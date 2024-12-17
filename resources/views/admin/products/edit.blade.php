@@ -90,12 +90,12 @@
                             <div class="card-body">
                                 <div class="row gy-3" id="gallery-container">
                                     @foreach ($product->galleries as $gallery)
-                                        <div id="gallery_1">
+                                        <div id="gallery_{{ $loop->iteration }}" class="col-12">
                                             <label for="gallery_input_{{ $loop->iteration }}" class="form-label">Gallery
                                                 {{ $loop->iteration }}</label>
                                             <input type="file" class="form-control"
                                                 name="product_galleries[{{ $gallery->id }}]"
-                                                id="gallery_input_{{ $gallery->id }}">
+                                                id="gallery_input_{{ $loop->iteration }}">
                                             @if ($gallery->img_path)
                                                 <img src="{{ Storage::url($gallery->img_path) }}" width="100px"
                                                     alt="">
@@ -103,8 +103,9 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                {{-- <button type="button" class="btn btn-primary mt-3" id="add-gallery"><i
-                                        class="mdi mdi-plus me-0 me-sm-1"></i>Thêm</button> --}}
+                                <button type="button" class="btn btn-primary mt-3" id="add-gallery">
+                                    <i class="mdi mdi-plus me-0 me-sm-1"></i> Thêm
+                                </button>
                             </div>
 
                         </div>
@@ -126,8 +127,8 @@
                                             <label for="variant_price_modifier_{{ $variantIndex }}">Giá điều
                                                 chỉnh:</label>
                                             <input type="number" name="variants[{{ $variant->id }}][price_modifier]"
-                                                class="form-control" value="{{ number_format($variant->price_modifier, 0, ',', '.')}}"
-                                                >
+                                                class="form-control"
+                                                value="{{ number_format($variant->price_modifier, 0, ',', '.') }}">
                                         </div>
 
                                         <div class="form-group">
@@ -136,9 +137,10 @@
                                                 class="form-control" value="{{ $variant->stock }}">
                                         </div>
                                         <div class="form-floating form-floating-outline mb-4">
-                                            <input type="file" id="variant_image_0" name="variants[{{ $variant->id }}][image]"
-                                                class="form-control">
-                                                <img src="{{ Storage::url($variant->image)}}" width="100px" alt="">
+                                            <input type="file" id="variant_image_0"
+                                                name="variants[{{ $variant->id }}][image]" class="form-control">
+                                            <img src="{{ Storage::url($variant->image) }}" width="100px"
+                                                alt="">
                                         </div>
 
                                         <!-- Thuộc tính của biến thể -->
@@ -150,19 +152,18 @@
                                                     class="form-control">
                                                     <option value="">Chọn {{ $attribute->name }}</option>
                                                     @foreach ($attribute->values as $value)
-                                                        <option value="{{ $value->id }}"
-                                                             @selected($variant->attributes->contains('attribute_value_id', $value->id))>
+                                                        <option value="{{ $value->id }}" @selected($variant->attributes->contains('attribute_value_id', $value->id))>
                                                             {{ $value->value }}
                                                         </option>
                                                     @endforeach
                                                 </select>
                                             </div>
-
                                         @endforeach
                                     </div>
                                     <div class="form-group">
                                         <label>
-                                            <input type="checkbox" name="variants[{{ $variant->id }}][_delete]" value="1">
+                                            <input type="checkbox" name="variants[{{ $variant->id }}][_delete]"
+                                                value="1">
                                             Xóa biến thể này
                                         </label>
                                     </div>
@@ -290,7 +291,7 @@
                                 <div class="form-floating form-floating-outline mb-4">
                                     <input type="text" class="form-control" id="ecommerce-product-base_price"
                                         placeholder="Giá sản phẩm" name="base_price"
-                                        value="{{ number_format($product->base_price, 0, ',', '.') }}" />
+                                        value="{{ $product->base_price }}" />
                                     <label for="ecommerce-product-base_price">Giá sản phẩm</label>
                                 </div>
                                 <div class="form-floating form-floating-outline ">
@@ -370,8 +371,9 @@
         CKEDITOR.replace('content');
     </script>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-            let galleryCount = 1;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Khởi tạo galleryCount từ số lượng các phần tử đã có sẵn
+            let galleryCount = document.querySelectorAll('#gallery-container .col-12').length;
 
             const galleryContainer = document.getElementById('gallery-container');
             const addGalleryButton = document.getElementById('add-gallery');
@@ -382,9 +384,9 @@
                 newGalleryDiv.classList.add('col-12');
                 newGalleryDiv.id = `gallery_${galleryCount}`;
                 newGalleryDiv.innerHTML = `
-                <label for="gallery_input_${galleryCount}" class="form-label">Gallery ${galleryCount}</label>
-                <input type="file" class="form-control" name="product_galleries[{{ $gallery->id }}][]" id="gallery_input_${galleryCount}">
-            `;
+            <label for="gallery_input_${galleryCount}" class="form-label">Gallery ${galleryCount}</label>
+            <input type="file" class="form-control" name="product_galleries[${galleryCount}]" id="gallery_input_${galleryCount}">
+        `;
                 galleryContainer.appendChild(newGalleryDiv);
             });
         });
