@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\District;
 use App\Models\Order;
 use App\Models\Province;
+use App\Models\Shipping;
 use App\Models\User;
 use App\Models\Ward;
 use Carbon\Carbon;
@@ -48,6 +49,10 @@ class ProfileController extends Controller
             $order->update([
                 'status_order' => 'canceled',
             ]);
+            Shipping::create([
+                'order_id' => $order->id,
+                'name' => 'Đơn hàng đã bị hủy'
+            ]);
         } else {
             return back()->with('error', 'Hủy đơn hàng thất bại!');
         }
@@ -56,11 +61,18 @@ class ProfileController extends Controller
     public function completed(Request $request, $id)
     {
         $order = Order::query()->findOrFail($id);
-        $order->update([
-            'status_order' => 'completed',
-        ]);
-
-        return back();
+        if ($order->status_order === 'delivered') {
+            $order->update([
+                'status_order' => 'completed',
+            ]);
+            Shipping::create([
+                'order_id' => $order->id,
+                'name' => 'Đã nhận hàng'
+            ]);
+        } else {
+            return back()->with('error', 'Cập nhật trạng thái thất bại!');
+        }
+        return back()->with('success', 'Cập nhật trạng thái đã nhận hàng!');
     }
     public function return_request(Request $request, $id)
     {
@@ -71,6 +83,10 @@ class ProfileController extends Controller
         } else {
             $order->update([
                 'status_order' => 'return_request',
+            ]);
+            Shipping::create([
+                'order_id' => $order->id,
+                'name' => 'Yêu cầu trả hàng'
             ]);
         }
         return back()->with('success', 'Yêu cầu trả hàng của bạn đã được gửi.');
@@ -88,12 +104,12 @@ class ProfileController extends Controller
     public function showProfile(Request $request, $id)
     {
         $user = User::findOrFail($id); // Lấy thông tin người dùng
-    
+
         // Lấy danh sách tỉnh, quận, xã/phường
         $provinces = Province::all()->pluck('name', 'code');
         $districts = District::where('province_code', $user->province_id)->pluck('full_name', 'code');
         $wards = Ward::where('district_code', $user->district_id)->pluck('name', 'code');
-    
+
         return view('client.auth.smember.showProfile', compact('user', 'provinces', 'districts', 'wards'));
     }
 
@@ -112,19 +128,19 @@ class ProfileController extends Controller
     public function update(Request $request, $id)
     {
         // Lấy người dùng theo ID
-        $user = User::findOrFail($id); 
-    
+        $user = User::findOrFail($id);
+
         // Xác thực dữ liệu
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Quy tắc xác thực cho ảnh
         ]);
-    
+
         // Cập nhật thông tin người dùng
         $user->name = $request->name;
         $user->email = $request->email;
-    
+
         // Xử lý file ảnh đại diện nếu có
         if ($request->hasFile('avatar')) {
             // Xóa ảnh cũ nếu có
@@ -134,12 +150,12 @@ class ProfileController extends Controller
             // Lưu ảnh mới
             $user->avatar = $request->file('avatar')->store('avatars', 'public');
         }
-    
+
         // Lưu thay đổi
-        $user->save(); 
-    
+        $user->save();
+
         // Chuyển hướng về trang thông tin người dùng
         return redirect()->route('profile.info', ['id' => $user->id])
-                         ->with('success', 'Thông tin đã được cập nhật.');
+            ->with('success', 'Thông tin đã được cập nhật.');
     }
 }
