@@ -1,19 +1,18 @@
 @extends('client.layouts.master')
 @section('title')
-Lịch sử đơn hàng
+    Lịch sử đơn hàng
 @endsection
 @section('content')
-<<<<<<<<< Temporary merge branch 1
 <div class="container mt-5">
     <h2 class="text-center mb-4">Lịch sử đơn hàng của bạn</h2>
 
-        @foreach ($orders as $order)
-            <div class="card mb-4 shadow-sm">
-                <!-- Header: Thông tin đơn hàng -->
-                <div class="card-header bg-white text-dark d-flex justify-content-between">
-                    <span>Đơn hàng #{{ $order->id }}</span>
-                    <span>{{ date('d/m/Y', strtotime($order->order_date)) }}</span>
-                </div>
+    @foreach ($orders as $order)
+    <div class="card mb-4 shadow-sm">
+        <!-- Header: Thông tin đơn hàng -->
+        <div class="card-header bg-white text-dark d-flex justify-content-between">
+            <span>Đơn hàng #{{ $order->id }}</span>
+            <span>{{ date('d/m/Y', strtotime($order->order_date)) }}</span>
+        </div>
 
         <!-- Body: Chi tiết đơn hàng -->
         <div class="card-body">
@@ -47,29 +46,7 @@ Lịch sử đơn hàng
                         ][$order->status_order] ?? 'Không rõ' }}
                 </span>
             </p>
-
-<<<<<<< HEAD
-            <!-- Sản phẩm trong đơn hàng -->
-            <h5 class="mt-3">Chi tiết sản phẩm:</h5>
-            <ul class="list-group">
-                @foreach ($order->orderDetails as $item)
-                @if ($item->product)
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>({{ $item->quantity }}x) - {{ $item->product->name }}</span>
-                    <span>{{ number_format($item->total_amount, 0, ',', '.') }} VND</span>
-                </li>
-                @else
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>({{ $item->quantity }}x) - {{ $item->variant->product->name }}</span>
-                    <span>{{ number_format($item->total_amount, 0, ',', '.') }} VND</span>
-                </li>
-                @endif
-                @endforeach
-            </ul>
-        </div>
-=======
-                    <!-- Sản phẩm trong đơn hàng -->
-=========
+               <!-- Sản phẩm trong đơn hàng -->
     <div class="container-xxl flex-grow-1 container-p-y">
         <h3 class="text-center mb-4">Lịch sử đơn hàng của bạn</h3>
         <div class="card">
@@ -272,7 +249,6 @@ Lịch sử đơn hàng
                             ][$order->status_order] ?? 'Không rõ' }}
                         </span>
                     </p>
->>>>>>>>> Temporary merge branch 2
                     <h5 class="mt-3">Chi tiết sản phẩm:</h5>
                     <ul class="list-group">
                         @foreach ($order->orderDetails as $item)
@@ -290,19 +266,7 @@ Lịch sử đơn hàng
                         @endforeach
                     </ul>
                 </div>
-
-<<<<<<<<< Temporary merge branch 1
-        <div class="card-footer text-end d-inline-flex">
-            <!-- Liên hệ admin -->
-            @if (!in_array($order->status_order, ['canceled', 'return_request', 'return_approved', 'returned_item_received']))
-            <form action="{{ route('chat.create', Auth::user()->id) }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-sm btn-outline-warning mx-2">Liên Hệ Admin</button>
-            </form>
-            @endif
-=========
                 <div class="card-footer text-end d-inline-flex">
-                    <!-- Liên hệ admin -->
                     @if (!in_array($order->status_order, ['canceled', 'return_request', 'return_approved', 'returned_item_received']))
                         <form action="{{ route('chat.create', Auth::user()->id) }}" method="POST">
                             @csrf
@@ -322,7 +286,6 @@ Lịch sử đơn hàng
                             Hủy đơn hàng
                         </button>
                     @endif
->>>>>>> 1d2df7306bcbbb20be73dcfc5bf2a737c46dd4f2
 
             <a href="{{ route('profile.order.showDetailOrder', $order->id) }}"
                 class="btn btn-sm btn-outline-primary mx-2">Xem chi tiết</a>
@@ -372,76 +335,6 @@ Lịch sử đơn hàng
             <span class="badge text-black bg-info">Yêu cầu đã được chấp nhận</span>
             @endif
 
-            @if ($order->status_order == 'returned_item_received')
-            <span class="badge text-black bg-info">Đơn hàng đã trở về nhà cung cấp</span>
-            @endif
-
-            @if ($order->status_order == 'refund_completed')
-            <span class="badge text-black bg-success">Hoàn tiền thành công</span>
-            @endif
-        </div>
-    </div>
-    @endforeach
-
-    @if ($orders->isEmpty())
-    <div class="alert alert-info text-center">
-        Bạn chưa có đơn hàng nào.
-    </div>
-    @endif
-</div>
-@endsection
-
-@section('script-libs')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function confirmReturn(orderId) {
-        Swal.fire({
-            title: 'Bạn có chắc chắn muốn trả hàng?',
-            text: "Hành động này sẽ không thể hoàn tác!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Có, tôi muốn trả hàng!',
-            cancelButtonText: 'Hủy',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById(`return-form-${orderId}`).submit();
-            }
-        });
-    }
-
-    function confirmCancelOrder(orderId) {
-        Swal.fire({
-            title: 'Hủy đơn hàng?',
-            text: "Hành động này sẽ dừng tiến trình của đơn hàng. Bạn có chắc chắn?",
-            icon: 'error',
-            showCancelButton: true,
-            confirmButtonText: 'Đồng ý hủy',
-            cancelButtonText: 'Không, giữ lại',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById(`cancel-order-form-${orderId}`).submit();
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire({
-                    title: 'Hủy bỏ!',
-                    text: 'Đơn hàng vẫn được giữ lại.',
-                    icon: 'info',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-            }
-        });
-    }
-</script>
-@endsection
-
-@section('style-libs')
-<style>
-    .bg-purple {
-        background-color: #6f42c1 !important;
-    }
-=========
         @if ($orders->isEmpty())
             <div class="alert alert-info text-center">
                 Bạn chưa có đơn hàng nào.
@@ -546,10 +439,9 @@ Lịch sử đơn hàng
         .bg-purple {
             background-color: #6f42c1 !important;
         }
->>>>>>>>> Temporary merge branch 2
 
-        .bg-orange {
-            background-color: #fd7e14 !important;
-        }
-    </style>
+    .bg-orange {
+        background-color: #fd7e14 !important;
+    }
+</style>
 @endsection

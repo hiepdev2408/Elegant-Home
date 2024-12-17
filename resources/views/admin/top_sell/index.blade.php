@@ -28,7 +28,7 @@
             <div class="text-right">
                 <button type="submit" class="btn btn-primary">Xem</button>
             </div>
-<<<<<<<<< Temporary merge branch 1
+
         </div>
 
         <div class="text-right">
