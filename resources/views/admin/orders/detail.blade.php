@@ -228,6 +228,18 @@
                                         </div>
                                     </li>
                                 @elseif ($item->name === 'Đang giao hàng')
+                                    {{-- Hiển thị "Đã nhận hàng" nếu chưa có trong danh sách --}}
+                                    @if (!$hasReceived)
+                                        <li class="timeline-item timeline-item-transparent">
+                                            <span class="timeline-point timeline-point-secondary"></span>
+                                            <div class="timeline-event">
+                                                <div class="timeline-header">
+                                                    <h6 class="mb-0 mt-1">Đã nhận hàng</h6>
+                                                </div>
+                                                {{-- <p class="mt-2">Package has left an Amazon facility, NY</p> --}}
+                                            </div>
+                                        </li>
+                                    @endif
                                     {{-- Hiển thị trạng thái "Đang giao hàng" --}}
                                     <li
                                         class="timeline-item timeline-item-transparent {{ !$loop->last ? 'border-primary' : 'border-transparent' }}">
@@ -241,18 +253,6 @@
                                             </div>
                                         </div>
                                     </li>
-
-                                    {{-- Hiển thị "Đã nhận hàng" nếu chưa có trong danh sách --}}
-                                    @if (!$hasReceived)
-                                        <li class="timeline-item timeline-item-transparent border-transparent pb-0">
-                                            <span class="timeline-point timeline-point-secondary"></span>
-                                            <div class="timeline-event pb-0">
-                                                <div class="timeline-header">
-                                                    <h6 class="mb-0">Đã nhận hàng</h6>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    @endif
                                 @elseif ($item->name === 'Đã nhận hàng')
                                     <li
                                         class="timeline-item timeline-item-transparent {{ !$loop->last ? 'border-primary' : 'border-transparent' }}">
@@ -487,6 +487,7 @@
                 </div>
             </div>
         </div>
+
     </div>
     <!-- / Content -->
 @endsection

@@ -336,7 +336,6 @@
         });
     </script>
     <!-- Thêm jQuery -->
-
     <script>
         // Lấy các radio button
         const momoRadio = document.getElementById('paymentMomo');
@@ -405,7 +404,7 @@
                             .message + '</div>');
                         $('#total-amount').text(xhr.responseJSON.total);
                         $('#discount-details')
-                    .hide(); // Ẩn thông tin giảm giá khi voucher không hợp lệ
+                            .hide(); // Ẩn thông tin giảm giá khi voucher không hợp lệ
                     }
                 });
             });

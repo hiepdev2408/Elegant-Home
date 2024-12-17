@@ -110,9 +110,12 @@
                                                     method="POST" style="display: none;">
                                                     @csrf
                                                 </form>
-                                                <button class="btn btn-sm btn-outline-secondary"
+                                                {{-- <button class="btn btn-sm btn-outline-secondary"
                                                     onclick="confirmReturn({{ $item->id }})">Trả
-                                                    hàng</button>
+                                                    hàng</button> --}}
+                                                <a href="{{ route('profile.refund', $item->id) }}"
+                                                    class="btn btn-sm btn-outline-secondary">Trả
+                                                    hàng</a>
                                             @endif
 
                                             @if ($item->status_order == 'return_request')
@@ -164,6 +167,42 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editUser" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+                <div class="modal-content p-3 p-md-5">
+                    <div class="modal-body py-3 py-md-0">
+                        {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
+                        <div class="text-center mb-4">
+                            <h3 class="mb-2">Trả hành / Hoàn Tiền</h3>
+                            <p class="pt-1">Vui lòng cung cấp các thông tin cần thiết để được giải quyết</p>
+                        </div>
+                        <form action="" class="row g-4" method="POST">
+                            @csrf
+                            <div class="col-12 col-md-12">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected>Lý do hoàn tiền</option>
+                                    <option value="1">Hoạt động</option>
+                                    <option value="2">Không hoạt động</option>
+                                    <option value="3">Đã tạm dừng</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-md-12">
+                                <label for="modalEditUserName" class="mb-1">Mô tả</label>
+                                <input type="text"name="modalEditUserName" class="form-control"
+                                    placeholder="Lý do chi tiết" />
+                            </div>
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-primary me-sm-3 me-1">Xác Nhận</button>
+                                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                                    aria-label="Close">Hủy bỏ</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

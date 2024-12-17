@@ -25,26 +25,40 @@ class PaymentController extends Controller
         if (!$user) {
             return response()->json(['error' => 'Người dùng chưa được xác thực'], 401);
         }
-
         // Lấy giỏ hàng
         $cart = Cart::with('cartDetails')->where('user_id', $user)->first();
         if (!$cart) {
             return response()->json(['error' => 'Không tìm thấy giỏ hàng'], 404);
         }
-
         // Lấy danh sách variant ID từ giỏ hàng
         $variantIds = $cart->cartDetails->pluck('variant_id')->toArray();
+        $productIds = $cart->cartDetails->pluck('product_id')->toArray();
 
-        // Lấy thông tin các variant liên quan
-        $variants = Variant::whereIn('id', $variantIds)->get()->keyBy('id');
+        // Lấy thông tin các variant hoặc sản phẩm liên quan
+        if ($variantIds) {
+            // Nếu có variant_id
+            $variants = Variant::whereIn('id', $variantIds)->get()->keyBy('id');
+        }
+
+        if ($productIds) {
+            // Nếu không có variant_id
+            $variants = Variant::whereIn('id', $productIds)->get()->keyBy('id');
+        }
+        // dd($variants);
 
         // Kiểm tra tồn kho và xử lý
         foreach ($cart->cartDetails as $cartDetail) {
-            $variant = $variants->get($cartDetail->variant_id);
-            if (!$variant || $variant->stock < $cartDetail->quantity) {
-                $cartDetail->delete(); // Xóa chi tiết giỏ hàng
-                $cart->delete(); // Xóa giỏ hàng
-                return redirect()->route('home')->with('alert', 'Lỗi');
+            $item = $variants->get($cartDetail->variant_id) ?? $variants->get($cartDetail->product_id);
+            // Nếu không tìm thấy sản phẩm (variant hoặc product) hoặc tồn kho không đủ
+            if (!$item || $item->stock < $cartDetail->quantity) {
+                $cartDetail->delete(); // Xóa chi tiết giỏ hàng hiện tại
+
+                // Kiểm tra nếu giỏ hàng không còn sản phẩm nào thì xóa giỏ hàng
+                if ($cart->cartDetails()->count() === 0) {
+                    $cart->delete(); // Xóa giỏ hàng
+                }
+
+                return redirect()->route('home')->with('alert', 'Sản phẩm không đủ tồn kho!');
             }
         }
 
@@ -112,8 +126,6 @@ class PaymentController extends Controller
         } catch (\Exception $e) {
             Log::error('Lỗi khi tạo đơn hàng: ' . $e->getMessage());
         }
-
-
 
         // Tạo URL thanh toán VNPAY
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
