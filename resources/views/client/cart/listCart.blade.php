@@ -4,13 +4,23 @@
 @endsection
 
 @section('content')
-    <!-- Shoping Cart Section -->
-    <section class="shoping-cart-section">
-        <div class="auto-container">
-            <div class="row clearfix">
+    @if ($carts)
+        <section class="page-title">
+            <div class="auto-container">
+                <h2>Giỏ hàng</h2>
+                <ul class="bread-crumb clearfix">
+                    <li><a href="{{ route('home') }}">Trang chủ</a></li>
+                    <li>Trang</li>
+                    <li>Giỏ hàng</li>
+                </ul>
+            </div>
+        </section>
+        <section class="shoping-cart-section">
+            <div class="auto-container">
+                <div class="row clearfix">
 
-                <!-- Cart Column -->
-                @if ($carts)
+                    <!-- Cart Column -->
+
                     <div id="cart-items" class="cart-column col-lg-8 col-md-12 col-sm-12">
                         <div class="inner-column">
                             <!--Cart Outer-->
@@ -51,8 +61,8 @@
                                                                             alt=""></a>
                                                                 </figure>
                                                                 <h6 class="prod-title"></h6>
-                                                                <div class="prod-text">Tên sản phẩm :
-                                                                    {{ Str::limit($cart->variant->product->name, 10) }} <br>
+                                                                <div class="prod-text">
+                                                                    {{ Str::limit($cart->variant->product->name, 30) }} <br>
                                                                     Quantity :
                                                                     <span
                                                                         id="quantity-{{ $cart->id }}">{{ $cart->quantity }}</span>
@@ -96,7 +106,8 @@
                                                         <td colspan="2" class="prod-column">
                                                             <div class="column-box">
                                                                 <figure class="prod-thumb">
-                                                                    <form action="" method="post">
+                                                                    <form action="{{ route('destroy', $cart->id) }}"
+                                                                        method="post">
                                                                         @csrf
                                                                         @method('DELETE')
                                                                         <button type="submit"
@@ -188,23 +199,21 @@
                             </div>
                         </div>
                     </div>
-                @else
-                    <div class="empty-cart-box text-center" id="empty-cart">
-                        <img class="mb-4 mt-4"
-                            src="https://static-smember.cellphones.com.vn/smember/_nuxt/img/empty.db6deab.svg"
-                            alt="Empty Cart" width="300px">
-                        <h4 class="text-secondary" style="font-size: 18px; font-weight: 600;">Giỏ hàng trống</h4>
-                        <p style="font-size: 14px; color: #888;">Giỏ hàng của bạn đang trống.
-                            Hãy chọn thêm sản phẩm để mua sắm nhé</p>
-                        <a href="{{ route('home') }}" class="btn btn-danger mb-5">
-                            Quay Lại Trang Chủ
-                        </a>
-                    </div>
-                @endif
-
+                </div>
             </div>
+        </section>
+    @else
+        <div class="empty-cart-box text-center mt-5" id="empty-cart">
+            <img class="mb-4 mt-4" src="https://static-smember.cellphones.com.vn/smember/_nuxt/img/empty.db6deab.svg"
+                alt="Empty Cart" width="300px">
+            <h4 class="text-secondary" style="font-size: 18px; font-weight: 600;">Giỏ hàng trống</h4>
+            <p style="font-size: 14px; color: #888;">Giỏ hàng của bạn đang trống.
+                Hãy chọn thêm sản phẩm để mua sắm nhé</p>
+            <a href="{{ route('home') }}" class="btn btn-danger mb-5">
+                Quay Lại Trang Chủ
+            </a>
         </div>
-    </section>
+    @endif
     <!-- End Shoping Cart Section -->
 
     <!-- Gallery Section -->
@@ -214,60 +223,66 @@
 
                 <!-- Insta Gallery -->
                 <div class="insta-gallery">
-                    <img src="images/gallery/1.jpg" alt="" />
+                    <img src="{{ asset('themes/clients/images/gallery/1.jpg') }}" alt="" />
                     <div class="overlay-box">
                         <div class="overlay-inner">
-                            <a class="lightbox-image icon flaticon-instagram" href="images/gallery/1.jpg"></a>
+                            <a class="lightbox-image icon flaticon-instagram"
+                                href="{{ asset('themes/clients/images/gallery/1.jpg') }}"></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Insta Gallery -->
                 <div class="insta-gallery">
-                    <img src="images/gallery/2.jpg" alt="" />
+                    <img src="{{ asset('themes/clients/images/gallery/2.jpg') }}" alt="" />
                     <div class="overlay-box">
                         <div class="overlay-inner">
-                            <a class="lightbox-image icon flaticon-instagram" href="images/gallery/1.jpg"></a>
+                            <a class="lightbox-image icon flaticon-instagram"
+                                href="{{ asset('themes/clients/images/gallery/1.jpg') }}"></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Insta Gallery -->
                 <div class="insta-gallery">
-                    <img src="images/gallery/3.jpg" alt="" />
+                    <img src="{{ asset('themes/clients/images/gallery/3.jpg') }}" alt="" />
                     <div class="overlay-box">
                         <div class="overlay-inner">
-                            <a class="lightbox-image icon flaticon-instagram" href="images/gallery/3.jpg"></a>
+                            <a class="lightbox-image icon flaticon-instagram"
+                                href="{{ asset('themes/clients/images/gallery/3.jpg') }}"></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Insta Gallery -->
                 <div class="insta-gallery">
-                    <img src="images/gallery/4.jpg" alt="" />
+                    <img src="{{ asset('themes/clients/images/gallery/4.jpg') }}" alt="" />
                     <div class="overlay-box">
                         <div class="overlay-inner">
-                            <a class="lightbox-image icon flaticon-instagram" href="images/gallery/4.jpg"></a>
+                            <a class="lightbox-image icon flaticon-instagram"
+                                href="{{ asset('themes/clients/images/gallery/4.jpg') }}"></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Insta Gallery -->
                 <div class="insta-gallery">
-                    <img src="images/gallery/5.jpg" alt="" />
+                    <img src="{{ asset('themes/clients/images/gallery/5.jpg') }}" alt="" />
                     <div class="overlay-box">
                         <div class="overlay-inner">
-                            <a class="lightbox-image icon flaticon-instagram" href="images/gallery/5.jpg"></a>
+                            <a class="lightbox-image icon flaticon-instagram"
+                                href="{{ asset('themes/clients/images/gallery/5.jpg') }}"></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Insta Gallery -->
                 <div class="insta-gallery">
-                    <img src="images/gallery/6.jpg" alt="" />
+                    <img src="{{ asset('themes/clients/images/gallery/6.jpg') }}" alt="" />
                     <div class="overlay-box">
                         <div class="overlay-inner">
-                            <a class="lightbox-image icon flaticon-instagram" href="images/gallery/6.jpg"></a>
+                            <a class="lightbox-image icon flaticon-instagram"
+                                href="{{ asset('themes/clients/images/gallery/6.jpg') }}"></a>
                         </div>
                     </div>
                 </div>
