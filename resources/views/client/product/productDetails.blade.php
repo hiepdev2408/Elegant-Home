@@ -141,6 +141,8 @@
                                             <input type="hidden" name="total_amount"
                                                 value="{{ isset($finalPrice) ? $finalPrice : $product->price_sale }}">
                                         @elseif ($product->base_price)
+                                        <input type="hidden" name="total_amount"
+                                        value="{{ isset($finalPrice) ? $finalPrice : $product->base_price }}">
                                         @endif
                                         <button type="submit" class="theme-btn btn-style-one">
                                             Add to cart
