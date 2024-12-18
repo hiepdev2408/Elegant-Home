@@ -48,12 +48,14 @@ class SaleController extends Controller
         if ($activeSales->isNotEmpty()) {
             return redirect()->route('flashsales.index')->with('message', 'Vẫn còn chương trình khuyến mãi đang diễn ra.')->withInput();
         }
+        $startDate = Carbon::parse($request->start_date)->setTimezone('Asia/Ho_Chi_Minh');
+        $endDate = Carbon::parse($request->end_date)->setTimezone('Asia/Ho_Chi_Minh');
     
         // Tạo sale mới và chuyển đổi thời gian sang UTC
         $sale = Sale::create([
             'discount_percentage' => $request->discount_percentage,
-            'start_date' => Carbon::parse($request->start_date)->setTimezone('UTC'), // Chuyển đổi sang UTC
-            'end_date' => Carbon::parse($request->end_date)->setTimezone('UTC'), // Chuyển đổi sang UTC
+            'start_date' => $startDate,
+            'end_date' => $endDate
         ]);
     
         // Gắn sản phẩm vào sale
