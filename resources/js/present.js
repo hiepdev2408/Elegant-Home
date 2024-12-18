@@ -1,8 +1,5 @@
 import "./bootstrap";
 
-// Gắn ID người nhận vào giao diện
-// document.getElementById('chat-with').textContent = 'User ' + receiverId;
-
 // Kết nối đến Presence Channel với Laravel Echo
 window.Echo.join(`chat.${roomId}`)
     .here((users) => {
