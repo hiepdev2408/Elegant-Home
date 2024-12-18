@@ -208,7 +208,6 @@ class CartController extends Controller
                 'Xóa sản phẩm thành công!',
             'overallTotalFormatted' => number_format($overallTotal, 0, ',', '.') . ' VNĐ',
         ]);
-        ;
         $cartDetail = CartDetail::findOrFail($request->cart_id);
 
         // Lấy giá từ session
