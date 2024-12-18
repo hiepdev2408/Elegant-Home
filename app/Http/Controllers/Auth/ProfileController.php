@@ -37,7 +37,8 @@ class ProfileController extends Controller
     public function showDetailOrder($id)
     {
         $order = Order::query()->findOrFail($id);
-        return view('client.auth.smember.showDetailOrder', compact('order'));
+        $events = Shipping::where('order_id', $id)->orderBy('created_at', 'DESC')->get();
+        return view('client.auth.smember.showDetailOrder', compact('order', 'events'));
     }
 
 
