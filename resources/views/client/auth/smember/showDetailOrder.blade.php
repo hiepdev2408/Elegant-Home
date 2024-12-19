@@ -34,11 +34,11 @@
                                         </div>
                                     </td>
                                     <td>
-                                    @if ($product->price_sale)
-                                        {{ number_format($item->product->price_sale, 0, ',', '.') }} VND
-                                    @elseif ($product->base_price)
-                                        {{ number_format($item->product->base_price, 0, ',', '.') }} VND
-                                    @endif
+                                        @if ($item->product->price_sale)
+                                            {{ number_format($item->product->price_sale, 0, ',', '.') }} VND
+                                        @elseif ($item->product->base_price)
+                                            {{ number_format($item->product->base_price, 0, ',', '.') }} VND
+                                        @endif
                                     </td>
                                     <td>{{ $item->quantity }}</td>
                                     <td>{{ number_format($item->total_amount, 0, ',', '.') }} VND</td>
@@ -101,94 +101,20 @@
             </div>
             <div class="card-body mt-3">
                 <ul class="timeline pb-0 mb-0">
-                    <li class="timeline-item timeline-item-transparent border-primary">
-                        <span class="timeline-point timeline-point-primary"></span>
-                        <div class="timeline-event">
-                            <div class="timeline-header d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0">Đơn hàng đã được đặt (Order ID: #{{ $item->order->id }})</h6>
-                                <span class="text-muted">{{ date('d/m/Y', strtotime($item->created_at)) }}</span>
+                    @foreach ($events as $event)
+                        <li class="timeline-item timeline-item-transparent border-primary">
+                            <span class="timeline-point timeline-point-primary"></span>
+                            <div class="timeline-event">
+                                <div class="timeline-header d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0">{{ $event->name }}</h6>
+                                    <span class="text-muted">{{ date('d/m/Y', strtotime($event->created_at)) }}
+                                        |
+                                        {{ $event->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('h:i A') }}</span>
+                                </div>
+                                <p class="mt-2">{{ $event->note }}</p>
                             </div>
-                            <p class="mt-2">Đơn hàng của bạn đã được đặt thành công</p>
-                        </div>
-                    </li>
-                    <li class="timeline-item timeline-item-transparent border-primary">
-                        <span class="timeline-point timeline-point-primary"></span>
-                        <div class="timeline-event">
-                            <div class="timeline-header  d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0">Trạng thái đơn hàng
-                                </h6>
-                                <span
-                                    class="text-muted">{{ date('d/m/Y', strtotime($item->order->updated_at)) }}</span>
-                            </div>
-                            <p class="mt-1"><span
-                                    class="badge
-                        @switch($item->order->status_order)
-                            @case('pending') bg-secondary text-dark @break
-                            @case('confirmed') bg-success text-white @break
-                            @case('shipping') bg-warning text-dark @break
-                            @case('delivered') bg-info text-white @break
-                            @case('completed') bg-purple text-white @break
-                            @case('canceled') bg-danger text-white @break
-                            @case('return_request') bg-orange text-dark @break
-                            @case('return_approved') bg-secondary text-white @break
-                            @case('returned_item_received') bg-info text-white @break
-                            @case('refund_completed') bg-success text-white @break
-                            @default bg-dark text-white
-                        @endswitch">
-                                    {{ [
-                                        'pending' => 'Chờ xác nhận',
-                                        'confirmed' => 'Đã xác nhận',
-                                        'shipping' => 'Chờ giao hàng',
-                                        'delivered' => 'Đang giao hàng',
-                                        'completed' => 'Đã nhận hàng',
-                                        'canceled' => 'Đơn hàng đã hủy',
-                                        'return_request' => 'Yêu cầu trả hàng',
-                                        'return_approved' => 'Yêu cầu được chấp nhận',
-                                        'returned_item_received' => 'Đã nhận hàng trả lại',
-                                        'refund_completed' => 'Hoàn tiền thành công',
-                                    ][$item->order->status_order] ?? 'Không rõ' }}
-                                </span></p>
-                        </div>
-                    </li>
-                    {{-- <li class="timeline-item timeline-item-transparent border-primary">
-                        <span class="timeline-point timeline-point-primary"></span>
-                        <div class="timeline-event">
-                            <div class="timeline-header">
-                                <h6 class="mb-0">Dispatched</h6>
-                                <span class="text-muted">Thursday 11:29 AM</span>
-                            </div>
-                            <p class="mt-2">Item has been picked up by courier</p>
-                        </div>
-                    </li>
-                    <li class="timeline-item timeline-item-transparent border-primary">
-                        <span class="timeline-point timeline-point-primary"></span>
-                        <div class="timeline-event">
-                            <div class="timeline-header">
-                                <h6 class="mb-0">Package arrived</h6>
-                                <span class="text-muted">Saturday 15:20 AM</span>
-                            </div>
-                            <p class="mt-2">Package arrived at an Amazon facility, NY</p>
-                        </div>
-                    </li>
-                    <li class="timeline-item timeline-item-transparent">
-                        <span class="timeline-point timeline-point-primary"></span>
-                        <div class="timeline-event">
-                            <div class="timeline-header">
-                                <h6 class="mb-0">Dispatched for delivery</h6>
-                                <span class="text-muted">Today 14:12 PM</span>
-                            </div>
-                            <p class="mt-2">Package has left an Amazon facility, NY</p>
-                        </div>
-                    </li>
-                    <li class="timeline-item timeline-item-transparent border-transparent pb-0">
-                        <span class="timeline-point timeline-point-secondary"></span>
-                        <div class="timeline-event pb-0">
-                            <div class="timeline-header">
-                                <h6 class="mb-0">Delivery</h6>
-                            </div>
-                            <p class="mt-2 mb-0">Package will be delivered by tomorrow</p>
-                        </div>
-                    </li> --}}
+                        </li>
+                    @endforeach
                 </ul>
             </div>
         </div>
@@ -198,13 +124,13 @@
             <div class="card-body">
                 <h6 class="card-title mb-1">Chi tiết khách hàng</h6>
                 <div class="d-flex justify-content-start align-items-center ">
-                    <div class="avatar me-2 pe-1 h-25 mt-3">
+                    <div class="avatar me-2 pe-1 mt-3">
                         @if (Auth::user()->avatar)
-                            <img src="{{ asset('path-to-avatar.png') }}" alt="User Avatar"
-                                class="rounded-circle mb-3 profile-img" width="50px">
+                            <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="User Avatar"
+                                class="rounded-circle mb-3" width="50px" style="height: 50px;">
                         @else
                             <img src="{{ asset('themes/image/logo.jpg') }}" alt="User Avatar"
-                                class="rounded-circle mb-3 profile-img" width="50px">
+                                class="rounded-circle mb-3" width="50px">
                         @endif
                     </div>
                     <div class="d-flex flex-column">
@@ -224,8 +150,6 @@
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between">
                 <h6 class="card-title m-0">Địa chỉ giao hàng</h6>
-                {{-- <h6 class="m-0"><a href=" javascript:void(0)" data-bs-toggle="modal"
-                        data-bs-target="#addNewAddress">Edit</a></h6> --}}
             </div>
             <div class="card-body">
                 <p class="mb-0">Số 21, Xuân Phương<br>Nam Từ Liêm <br>Hà Nội<br>Việt Nam</p>

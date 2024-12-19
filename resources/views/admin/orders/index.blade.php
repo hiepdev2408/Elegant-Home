@@ -84,7 +84,10 @@
                                                 @case('delivered') bg-success @break
                                                 @case('completed') bg-info @break
                                                 @case('canceled') bg-danger @break
+                                                @case('admin_canceled') bg-danger @break
                                                 @case('return_request') bg-danger @break
+                                                @case('refuse_return') bg-danger @break
+                                                @case('sent_information') bg-primary @break
                                                 @case('return_approved') bg-danger @break
                                                 @case('returned_item_received') bg-danger @break
                                                 @case('refund_completed') bg-danger @break
@@ -95,9 +98,12 @@
                                             'confirmed' => 'Xác nhận',
                                             'shipping' => 'Chờ giao hàng',
                                             'delivered' => 'Đang giao hàng',
-                                            'completed' => 'Đã nhận hàng',
-                                            'canceled' => 'Đã hủy',
+                                            'completed' => 'Giao hàng thành công',
+                                            'canceled' => 'Người mua đã hủy',
+                                            'admin_canceled' => 'Đã hủy bởi' . Auth::user()->name,
                                             'return_request' => 'Yêu cầu trả hàng',
+                                            'refuse_return' => 'Từ chối trả hàng',
+                                            'sent_information' => 'Thông tin hoàn tiền',
                                             'return_approved' => 'Chấp nhận trả hàng',
                                             'returned_item_received' => 'Đã nhận được hàng trả lại',
                                             'refund_completed' => 'Hoàn tiền thành công',

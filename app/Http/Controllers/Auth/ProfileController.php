@@ -52,12 +52,44 @@ class ProfileController extends Controller
             ]);
             Shipping::create([
                 'order_id' => $order->id,
-                'name' => 'Đơn hàng đã bị hủy'
+                'name' => 'Đơn hàng đã bị hủy',
+                'note' => 'Khách hàng đã hủy đơn hàng'
             ]);
         } else {
             return back()->with('error', 'Hủy đơn hàng thất bại!');
         }
         return back()->with('success', 'Đơn hàng đã hủy thành công!');
+    }
+
+    public function admin_cancel(Request $request, $id)
+    {
+
+        try {
+            $request->validate([
+                'note' => 'required'
+            ], [
+                'note.required' => 'Vui lòng nhập thông tin hoàn tiền'
+            ]);
+
+            $order = Order::query()->findOrFail($id);
+            if ($order->status_order === 'admin_canceled') {
+                $order->update([
+                    'status_order' => 'sent_information',
+                ]);
+                // dd($order);
+                Shipping::create([
+                    'order_id' => $order->id,
+                    'name' => 'Thông tin hoàn tiền',
+                    'note' => $request->note
+                ]);
+            } else {
+                return back()->with('error', 'Gửi thông tin hoàn tiền thất bại!');
+            }
+            return back()->with('success', 'Gửi thông tin hoàn tiền thành công!');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Gửi thông tin hoàn tiền thất bại!');
+        }
+
     }
     public function completed(Request $request, $id)
     {
@@ -68,7 +100,8 @@ class ProfileController extends Controller
             ]);
             Shipping::create([
                 'order_id' => $order->id,
-                'name' => 'Đã nhận hàng'
+                'name' => 'Giao hàng thành công',
+                'note' => 'Khách hàng đã nhận được hàng'
             ]);
         } else {
             return back()->with('error', 'Cập nhật trạng thái thất bại!');
@@ -87,7 +120,8 @@ class ProfileController extends Controller
             ]);
             Shipping::create([
                 'order_id' => $order->id,
-                'name' => 'Yêu cầu trả hàng'
+                'name' => 'Yêu cầu trả hàng',
+                'note' => 'Yêu cầu trả hàng / hoàn tiền'
             ]);
         }
         return back()->with('success', 'Yêu cầu trả hàng của bạn đã được gửi.');

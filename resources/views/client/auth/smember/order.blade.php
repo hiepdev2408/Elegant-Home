@@ -37,7 +37,10 @@
                                         @case('delivered') bg-info text-white @break
                                         @case('completed') bg-purple text-white @break
                                         @case('canceled') bg-danger text-white @break
+                                        @case('admin_canceled') bg-orange text-dark @break
+                                        @case('sent_information') bg-orange text-dark @break
                                         @case('return_request') bg-orange text-dark @break
+                                        @case('refuse_return') bg-orange text-dark @break
                                         @case('return_approved') bg-secondary text-white @break
                                         @case('returned_item_received') bg-info text-white @break
                                         @case('refund_completed') bg-success text-white @break
@@ -50,7 +53,10 @@
                                                 'delivered' => 'Đang giao hàng',
                                                 'completed' => 'Đã nhận hàng',
                                                 'canceled' => 'Đơn hàng đã hủy',
+                                                'admin_canceled' => 'Người bán đã hủy đơn hàng',
+                                                'sent_information' => 'Đã gửi thông tin hoàn tiền',
                                                 'return_request' => 'Yêu cầu trả hàng',
+                                                'refuse_return' => 'Yêu cầu trả hàng từ chối',
                                                 'return_approved' => 'Yêu cầu được chấp nhận',
                                                 'returned_item_received' => 'Đã nhận hàng trả lại',
                                                 'refund_completed' => 'Hoàn tiền thành công',
@@ -76,11 +82,19 @@
                                                         Admin</button>
                                                 </form>
                                             @endif
+
                                             <a href="#" class="btn btn-sm btn-outline-primary me-2"
                                                 data-bs-toggle="modal" data-bs-target="#orderDetailModal"
                                                 onclick="loadOrderDetail('{{ route('profile.order.showDetailOrder', $item->id) }}')">
                                                 Xem chi tiết
                                             </a>
+                                            @if ($item->status_order === 'admin_canceled')
+                                                <button type="button" class="btn btn-sm btn-outline-info mx-2"
+                                                    data-bs-toggle="modal" data-bs-target="#admin_cancel"
+                                                    data-bs-id="{{ $item->id }}"
+                                                    onclick="setOrderId(this.getAttribute('data-bs-id'))">Thông tin
+                                                    hoàn tiền</button>
+                                            @endif
 
                                             @if ($item->status_order == 'pending')
                                                 <form id="cancel-order-form-{{ $item->id }}"
@@ -110,9 +124,6 @@
                                                     method="POST" style="display: none;">
                                                     @csrf
                                                 </form>
-                                                {{-- <button class="btn btn-sm btn-outline-secondary"
-                                                    onclick="confirmReturn({{ $item->id }})">Trả
-                                                    hàng</button> --}}
                                                 <a href="{{ route('profile.refund', $item->id) }}"
                                                     class="btn btn-sm btn-outline-secondary">Trả
                                                     hàng</a>
@@ -171,33 +182,24 @@
                 </div>
             </div>
         </div>
-
-        <div class="modal fade" id="editUser" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="admin_cancel" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-simple modal-edit-user">
                 <div class="modal-content p-3 p-md-5">
                     <div class="modal-body py-3 py-md-0">
-                        {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
                         <div class="text-center mb-4">
-                            <h3 class="mb-2">Trả hành / Hoàn Tiền</h3>
-                            <p class="pt-1">Vui lòng cung cấp các thông tin cần thiết để được giải quyết</p>
+                            <h3 class="mb-2">Thông tin hoàn tiền</h3>
+                            <p class="pt-1">Vui lòng cung cấp các thông tin cần thiết để được hoàn lại tiền</p>
                         </div>
-                        <form action="" class="row g-4" method="POST">
+                        <form id="adminCancelForm" class="row g-4" method="POST">
                             @csrf
                             <div class="col-12 col-md-12">
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected>Lý do hoàn tiền</option>
-                                    <option value="1">Hoạt động</option>
-                                    <option value="2">Không hoạt động</option>
-                                    <option value="3">Đã tạm dừng</option>
-                                </select>
-                            </div>
-
-                            <div class="col-12 col-md-12">
-                                <label for="modalEditUserName" class="mb-1">Mô tả</label>
-                                <input type="text"name="modalEditUserName" class="form-control"
-                                    placeholder="Lý do chi tiết" />
+                                <label for="note" class="mb-1">Hoàn tiền vào ( Ngân Hàng/STK/Chủ Tài Khoản )</label>
+                                <input type="text" name="note" class="form-control"
+                                    placeholder="Ví Dụ: MBBANK/070820045555/NGUYỄN VĂN DƯƠNG" />
                             </div>
                             <div class="col-12 text-center">
+                                <!-- Hidden Input Field for the ID -->
+                                <input type="hidden" id="order_id" name="order_id" value="">
                                 <button type="submit" class="btn btn-primary me-sm-3 me-1">Xác Nhận</button>
                                 <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
                                     aria-label="Close">Hủy bỏ</button>
@@ -226,6 +228,15 @@
 @endsection
 
 @section('script-libs')
+    <script>
+        // Set the order ID and form action dynamically when opening the modal
+        function setOrderId(id) {
+            var form = document.getElementById('adminCancelForm');
+            var actionUrl = '{{ route('profile.order.admin_cancel', ':id') }}'.replace(':id', id);
+            form.action = actionUrl; // Set the dynamic action URL
+            document.getElementById('order_id').value = id; // Set the dynamic ID value
+        }
+    </script>
     <script>
         function loadOrderDetail(url) {
             const modalBody = document.querySelector('#orderDetailModal .modal-body');
