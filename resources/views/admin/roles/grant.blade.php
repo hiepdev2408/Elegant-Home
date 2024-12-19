@@ -173,6 +173,21 @@
                                             'permissions.create' => 'Thêm',
                                             'permissions.edit' => 'Sửa',
                                         ];
+                                        $vouchers = [
+                                            'vouchers.index' => 'Xem',
+                                            'vouchers.create' => 'Thêm',
+                                            'vouchers.edit' => 'Sửa',
+                                        ];
+                                        $sales = [
+                                            'sales.index' => 'Xem',
+                                            'sales.create' => 'Thêm',
+                                            'sales.edit' => 'Sửa',
+                                        ];
+                                        $blogs = [
+                                            'blogs.index' => 'Xem',
+                                            'blogs.create' => 'Thêm',
+                                            'blogs.edit' => 'Sửa',
+                                        ];
                                     @endphp
                                     <tr>
                                         <td class="text-nowrap text-heading">Quản lý danh mục</td>
@@ -230,6 +245,60 @@
                                         <td class="text-nowrap text-heading">Quản lý giá trị thuộc tính</td>
                                         @foreach ($attribute_value as $slug => $label)
                                             @foreach ($roleAttribute_value as $item)
+                                                {{-- @dd($item) --}}
+                                                @if ($item->slug == $slug)
+                                                    <td>
+                                                        <div class="form-check mb-0 d-flex justify-content-center">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                {{ $item->roles->contains($role->id) ? 'checked' : '' }}
+                                                                name="permissions[{{ $role->id }}][]"
+                                                                value="{{ $item->id }}" />
+                                                        </div>
+                                                    </td>
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    </tr>
+                                    <tr>
+                                        <td class="text-nowrap text-heading">Quản lý Khuyến mãi</td>
+                                        @foreach ($vouchers as $slug => $label)
+                                            @foreach ($roleVouchers as $item)
+                                                {{-- @dd($item) --}}
+                                                @if ($item->slug == $slug)
+                                                    <td>
+                                                        <div class="form-check mb-0 d-flex justify-content-center">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                {{ $item->roles->contains($role->id) ? 'checked' : '' }}
+                                                                name="permissions[{{ $role->id }}][]"
+                                                                value="{{ $item->id }}" />
+                                                        </div>
+                                                    </td>
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    </tr>
+                                    <tr>
+                                        <td class="text-nowrap text-heading">Quản lý Sale</td>
+                                        @foreach ($sales as $slug => $label)
+                                            @foreach ($roleSales as $item)
+                                                {{-- @dd($item) --}}
+                                                @if ($item->slug == $slug)
+                                                    <td>
+                                                        <div class="form-check mb-0 d-flex justify-content-center">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                {{ $item->roles->contains($role->id) ? 'checked' : '' }}
+                                                                name="permissions[{{ $role->id }}][]"
+                                                                value="{{ $item->id }}" />
+                                                        </div>
+                                                    </td>
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    </tr>
+                                    <tr>
+                                        <td class="text-nowrap text-heading">Quản lý Khuyến mãi</td>
+                                        @foreach ($blogs as $slug => $label)
+                                            @foreach ($roleBlogs as $item)
                                                 {{-- @dd($item) --}}
                                                 @if ($item->slug == $slug)
                                                     <td>

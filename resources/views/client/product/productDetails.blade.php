@@ -64,6 +64,7 @@
                                     </div>
                                 @endif
                                 <div class="text">{{ $product->description }}</div>
+
                                 <div class="d-flex flex-wrap">
                                     @php
                                         $groupAttribute = [];
@@ -105,26 +106,39 @@
                                                         class="form-select attribute-select me-3"
                                                         data-attribute-name="{{ $attributeName }}">
                                                         @foreach ($values as $value)
-                                                            <option value="{{ $value['id'] }}">
+                                                            @php
+                                                                // Lấy variant có thuộc tính tương ứng
+                                                                $variant = $product->variants->firstWhere(function ($variant) use ($value) {
+                                                                    return $variant->attributes->firstWhere('attributeValue.id', $value['id']);
+                                                                });
+
+                                                                $stock = $variant ? $variant->stock : 0;
+                                                            @endphp
+
+                                                            {{-- Gắn giá trị stock chính xác vào data-stock --}}
+                                                            <option value="{{ $value['id'] }}" data-stock="{{ $stock }}">
                                                                 {{ Str::limit($value['name'], 30) }}
                                                             </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
+
                                             </div>
                                         @endforeach
                                     </div>
                                 </div>
-
+                                <div class="quantity mt-3">
+                                    <h6>
+                                        <span>Số lượng: </span>
+                                    <span id="variant-stock">{{ $product->variants->first()->stock }}</span>
+                                    </h6>
+                                </div>
                                 <div class="categories"><span>Danh mục :</span>
                                     @foreach ($product->categories as $category)
                                         {{ $category->name }}
                                     @endforeach
                                 </div>
-
-                                <!-- Tags -->
                                 <div class="sku"><span>Mã sản phẩm :</span> {{ $product->sku }}</div>
-                                <!-- Social Box -->
                                 <ul class="social-box">
                                     <li class="share">Share:</li>
                                     <li><a href="https://www.facebook.com/" class="fa fa-facebook-f"></a></li>
@@ -133,22 +147,19 @@
                                     <li><a href="https://www.linkedin.com/" class="fa fa-linkedin"></a></li>
                                 </ul>
                                 <div class="d-flex align-items-center flex-wrap">
-
-                                    <!-- Button Box -->
                                     <div class="button-box">
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         @if ($product->price_sale)
                                             <input type="hidden" name="total_amount"
                                                 value="{{ isset($finalPrice) ? $finalPrice : $product->price_sale }}">
                                         @elseif ($product->base_price)
-                                        <input type="hidden" name="total_amount"
-                                        value="{{ isset($finalPrice) ? $finalPrice : $product->base_price }}">
+                                            <input type="hidden" name="total_amount"
+                                                value="{{ isset($finalPrice) ? $finalPrice : $product->base_price }}">
                                         @endif
                                         <button type="submit" class="theme-btn btn-style-one">
                                             Add to cart
                                         </button>
                                     </div>
-                                    <!-- Quantity Box -->
                                     <div class="quantity-box d-flex align-items-center"
                                         style="gap: 0.5rem; padding: 0.5rem; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
                                         <label for="quantity" style="font-size: 1rem; font-weight: 500;">Quantity:</label>
@@ -170,7 +181,6 @@
                                 <li data-tab="#prod-info" class="tab-btn">Thông tin bổ sung</li>
                                 <li data-tab="#prod-review" class="tab-btn">Bình luận</li>
                             </ul>
-
                             <div class="tabs-content">
 
                                 <div class="tab active-tab" id="prod-details">
@@ -178,9 +188,6 @@
                                         {!! $product->content !!}
                                     </div>
                                 </div>
-
-
-
                                 <div class="tab p-2" id="prod-review">
                                     <h1 class="">Bình luận</h1>
                                     <div class="comments-area p-3">
@@ -475,6 +482,27 @@
                 button.addEventListener("click", function() {
                     const replyForm = this.closest(".reply-form");
                     replyForm.classList.add("d-none");
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lấy tất cả các dropdown attribute
+            const attributeSelects = document.querySelectorAll('.attribute-select');
+
+            // Lấy phần tử hiển thị số lượng
+            const stockDisplay = document.getElementById('variant-stock');
+
+            // Lắng nghe sự kiện thay đổi trên mỗi dropdown
+            attributeSelects.forEach(select => {
+                select.addEventListener('change', function() {
+                    // Lấy stock từ option được chọn
+                    const selectedOption = this.options[this.selectedIndex];
+                    const stock = selectedOption.getAttribute('data-stock') || 0;
+
+                    // Cập nhật số lượng hiển thị
+                    stockDisplay.textContent = stock;
                 });
             });
         });
