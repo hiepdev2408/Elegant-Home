@@ -64,62 +64,6 @@
                                     </div>
                                 @endif
                                 <div class="text">{{ $product->description }}</div>
-                                {{-- <div class="d-flex flex-wrap">
-                                    @php
-                                        $groupAttribute = [];
-                                        $arr = [];
-                                    @endphp
-
-                                    @foreach ($product->variants as $variant)
-                                        @foreach ($variant->attributes as $attribute)
-                                            @php
-                                                $data = [
-                                                    'id' => $attribute->attributeValue->id,
-                                                    'name' => $attribute->attributeValue->value,
-                                                ];
-
-                                                if (!in_array($data, $arr)) {
-                                                    $arr[] = $data;
-                                                }
-
-                                                $attributeName = $attribute->attribute->name;
-                                                if (!isset($groupAttribute[$attributeName])) {
-                                                    $groupAttribute[$attributeName] = [];
-                                                }
-
-                                                if (!in_array($data, $groupAttribute[$attributeName])) {
-                                                    $groupAttribute[$attributeName][] = $data;
-                                                }
-                                            @endphp
-                                        @endforeach
-                                    @endforeach
-
-                                    <div class="d-grid flex-wrap attribute-container">
-                                        @foreach ($groupAttribute as $attributeName => $values)
-                                            <div class="attribute-group">
-                                                <div class="model">
-                                                    <span class="model-title">{{ $attributeName }}</span>
-                                                </div>
-                                                <div class="select-size-box d-flex flex-wrap">
-                                                    <select name="variant_attributes[attribute_value_id][]"
-                                                        class="form-select attribute-select me-3"
-                                                        data-attribute-name="{{ $attributeName }}">
-                                                        @foreach ($values as $value)
-                                                            <option value="{{ $value['id'] }}">
-                                                                {{ Str::limit($value['name'], 30) }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                                <div class="quantity"><span>Số lượng: </span>
-                                    @foreach ($product->variants as $variant)
-                                        {{ $variant->stock }}
-                                    @endforeach
-                                </div> --}}
 
                                 <div class="d-flex flex-wrap">
                                     @php
@@ -184,8 +128,10 @@
                                     </div>
                                 </div>
                                 <div class="quantity mt-3">
-                                    <span>Số lượng: </span>
+                                    <h6>
+                                        <span>Số lượng: </span>
                                     <span id="variant-stock">{{ $product->variants->first()->stock }}</span>
+                                    </h6>
                                 </div>
                                 <div class="categories"><span>Danh mục :</span>
                                     @foreach ($product->categories as $category)
