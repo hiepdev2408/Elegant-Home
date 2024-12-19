@@ -123,6 +123,7 @@ Route::prefix('order')
     ->controller(OrderController::class)
     ->group(function () {
         Route::get('/info', 'index')->name('order');
+       
         Route::post('/apply-voucher', 'applyVoucher')->name('order.applyVoucher');  
         Route::post('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
         Route::get('/thank', [PaymentController::class, 'thank'])->name('thank');

@@ -131,10 +131,10 @@
                                                         </td>
                                                         <td class="price">
                                                             @php
-                                                                $productsOnSale = session('productsOnSale', []);
-                                                                $saleProduct = collect($productsOnSale)->firstWhere('id', $cart->variant->product_id); // Thay $cartDetail bằng $cart
-                                                                $price = $saleProduct['price_sale'] ?? $cart->variant->price_modifier; // Thay $cartDetail bằng $cart
-                                                            @endphp
+                                                            $productsOnSale = session('productsOnSale', []);
+                                                            $saleProduct = collect($productsOnSale)->firstWhere('id', $cart->product->id); 
+                                                            $price = $saleProduct['price_sale'] ?? $cart->product->price_base; 
+                                                        @endphp
                                                             {{ number_format($price, 0, ',', '.') }}
                                                             VNĐ
                                                         </td>

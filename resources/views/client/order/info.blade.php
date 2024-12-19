@@ -147,13 +147,21 @@
                             </ul>
                             <form id="voucher-form" class="d-flex mb-3">
                                 @csrf
-
-                                <input type="text" name="voucher_code" class="form-control me-2" placeholder="Nhập mã voucher" style="width: 225px; height: 35px; ">
+                            
+                                <select name="voucher_code" class="form-control me-2" style="width: 225px; height: 35px;">
+                                    <option value="">Chọn mã voucher</option>
+                                    @foreach($vouchers as $item)
+                                    <option value="{{ $item->code }}">
+                                        {{ $item->code }} - Tối thiểu: {{ number_format($item->minimum_order_value, 0, ',', '.') }} VNĐ
+                                    </option>
+                                    @endforeach
+                                </select>
+                            
                                 <input type="hidden" name="total_amount" value="{{ $totalAmount }}">
                                 <button type="submit" class="btn btn-success" style="height: 35px; padding: 0 10px;">Áp dụng</button>
                             </form>
 
-                            <!-- Thông báo lỗi hoặc thành công -->
+                            
                             <div id="message"></div>
                         </div>
                     </div>

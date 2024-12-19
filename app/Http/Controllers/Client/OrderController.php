@@ -23,6 +23,9 @@ class OrderController extends Controller
 
         $user = Auth::user();
         $cart = Cart::firstWhere('user_id', $user->id);
+        $vouchers = Vouchers::where('start_date', '<=', now())
+        ->where('end_date', '>=', now())
+        ->get();
 
         $cartDetails = $cart ? CartDetail::where('cart_id', $cart->id)->get() : collect();
         $totalAmount = $cartDetails->sum('total_amount');
@@ -33,6 +36,7 @@ class OrderController extends Controller
             'cartDetails' => $cartDetails,
             'totalAmount' => $totalAmount,
             'provinces' => $provinces,
+            'vouchers'=>$vouchers
         ]);
     }
 
@@ -106,6 +110,7 @@ class OrderController extends Controller
             'total' => number_format($request->total_amount - $discount, 0, ',', '.') . ' VNĐ'
         ]);
     }
+
 
 }
 
