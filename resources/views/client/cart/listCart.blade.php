@@ -40,7 +40,7 @@
                                             $totalAmount = 0;
                                         @endphp
                                         @foreach ($carts as $cart)
-                                            @if ($cart->variant != '')
+                                            @if ($cart->variant)
                                                 <tbody id="cart-item-{{ $cart->id }}">
                                                     <tr>
                                                         <td colspan="2" class="prod-column">
@@ -73,8 +73,13 @@
                                                         <td class="price">
                                                             @php
                                                                 $productsOnSale = session('productsOnSale', []);
-                                                                $saleProduct = collect($productsOnSale)->firstWhere('id', $cart->variant->product_id); // Thay $cartDetail bằng $cart
-                                                                $price = $saleProduct['price_sale'] ?? $cart->variant->price_modifier; // Thay $cartDetail bằng $cart
+                                                                $saleProduct = collect($productsOnSale)->firstWhere(
+                                                                    'id',
+                                                                    $cart->variant->product->id,
+                                                                );
+                                                                $price =
+                                                                    $saleProduct['price_sale'] ??
+                                                                    $cart->variant->price_modifier;
                                                             @endphp
                                                             {{ number_format($price, 0, ',', '.') }}
                                                             VNĐ
@@ -99,7 +104,7 @@
 
                                                         <td id="total-amount-{{ $cart->id }}">
                                                             @php
-                                                                $money = $cart->total_amount;
+                                                                $money = $cart->variant->price_modifier;
                                                                 $totalAmount += $money;
                                                             @endphp
                                                             {{ number_format($money, 0, ',', '.') }}VNĐ
@@ -132,8 +137,19 @@
                                                         <td class="price">
                                                             @php
                                                                 $productsOnSale = session('productsOnSale', []);
-                                                                $saleProduct = collect($productsOnSale)->firstWhere('id', $cart->variant->product_id); // Thay $cartDetail bằng $cart
-                                                                $price = $saleProduct['price_sale'] ?? $cart->variant->price_modifier; // Thay $cartDetail bằng $cart
+                                                                $saleProduct = collect($productsOnSale)->firstWhere(
+                                                                    'id',
+                                                                    $cart->product->id,
+                                                                );
+                                                                if ($cart->product->price_sale) {
+                                                                    $price =
+                                                                        $saleProduct['price_sale'] ??
+                                                                        $cart->product->price_sale;
+                                                                } else {
+                                                                    $price =
+                                                                        $saleProduct['price_sale'] ??
+                                                                        $cart->product->base_price;
+                                                                }
                                                             @endphp
                                                             {{ number_format($price, 0, ',', '.') }}
                                                             VNĐ
@@ -149,8 +165,13 @@
                                                                         value="{{ $cart->quantity }}" name="quantity"
                                                                         readonly>
                                                                 </div>
-                                                                <input type="hidden" name="price_sale"
-                                                                    value="{{ $cart->product->base_price }}">
+                                                                @if ($cart->product->price_sale)
+                                                                    <input type="hidden" name="price_sale"
+                                                                        value="{{ $cart->product->price_sale }}">
+                                                                @else
+                                                                    <input type="hidden" name="price_sale"
+                                                                        value="{{ $cart->product->price_sale }}">
+                                                                @endif
                                                             </form>
                                                         </td>
 
@@ -302,80 +323,80 @@
 @endsection
 
 @section('script-libs')
-<script>
-    $('.update-cart-form').submit(function(event) {
-        event.preventDefault(); // Ngừng reload trang
+    <script>
+        $('.update-cart-form').submit(function(event) {
+            event.preventDefault(); // Ngừng reload trang
 
-        var form = $(this);
-        var cartId = form.data('id');
-        var actionUrl = form.attr('action');
-        var formData = form.serialize();
+            var form = $(this);
+            var cartId = form.data('id');
+            var actionUrl = form.attr('action');
+            var formData = form.serialize();
 
-        $.ajax({
-            url: actionUrl,
-            type: 'POST', // Phương thức
-            data: formData,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // CSRF Token
-            },
-            success: function(response) {
-                if (response.success) {
-                    // Hiển thị thông báo thành công
-                    notyf.success(response.message);
+            $.ajax({
+                url: actionUrl,
+                type: 'POST', // Phương thức
+                data: formData,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // CSRF Token
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Hiển thị thông báo thành công
+                        notyf.success(response.message);
 
-                    // Kiểm tra nếu số lượng dưới 0 sẽ xóa
-                    if (response.cartDetailId) {
-                        // Xóa dòng sản phẩm trong bảng
-                        $(`#cart-item-${response.cartDetailId}`).remove();
+                        // Kiểm tra nếu số lượng dưới 0 sẽ xóa
+                        if (response.cartDetailId) {
+                            // Xóa dòng sản phẩm trong bảng
+                            $(`#cart-item-${response.cartDetailId}`).remove();
+                        }
+
+                        // Cập nhật số lượng và tổng tiền
+                        $(`#quantity-${cartId}`).text(response.cartDetail.quantity);
+                        $(`#total-amount-${cartId}`).text(response.totalAmountFormatted);
+
+                        // Cập nhật tổng tiền nếu cần
+                        if (response.overallTotalFormatted) {
+                            $('#overall-total').text(response.overallTotalFormatted);
+                            $('#overall-totals').text(response.overallTotalFormatted);
+                        }
+                    } else {
+                        // Hiển thị thông báo lỗi
+                        notyf.error(response.message);
                     }
+                },
+                error: function(xhr, status, error) {
+                    // Hiển thị thông báo lỗi
+                    notyf.error('Có lỗi xảy ra khi kết nối đến server!');
+                }
+            });
+        });
+    </script>
 
-                    // Cập nhật số lượng và tổng tiền
-                    $(`#quantity-${cartId}`).text(response.cartDetail.quantity);
-                    $(`#total-amount-${cartId}`).text(response.totalAmountFormatted);
+    <script>
+        $('.delete-cart-form').submit(function(event) {
+            event.preventDefault(); // Ngừng reload trang
+            var form = $(this);
+            var cartId = form.data('id');
+
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                success: function(response) {
+                    notyf.success(response.message);
+                    // Nếu xóa thành công, xóa dòng sản phẩm khỏi bảng
+                    form.closest('tr').remove();
 
                     // Cập nhật tổng tiền nếu cần
                     if (response.overallTotalFormatted) {
                         $('#overall-total').text(response.overallTotalFormatted);
                         $('#overall-totals').text(response.overallTotalFormatted);
                     }
-                } else {
-                    // Hiển thị thông báo lỗi
-                    notyf.error(response.message);
+                },
+                error: function(xhr, status, error) {
+                    alert('Có lỗi xảy ra khi xóa sản phẩm');
                 }
-            },
-            error: function(xhr, status, error) {
-                // Hiển thị thông báo lỗi
-                notyf.error('Có lỗi xảy ra khi kết nối đến server!');
-            }
+            });
         });
-    });
-</script>
-
-<script>
-    $('.delete-cart-form').submit(function(event) {
-        event.preventDefault(); // Ngừng reload trang
-        var form = $(this);
-        var cartId = form.data('id');
-
-        $.ajax({
-            url: form.attr('action'),
-            type: 'POST',
-            data: form.serialize(),
-            success: function(response) {
-                notyf.success(response.message);
-                // Nếu xóa thành công, xóa dòng sản phẩm khỏi bảng
-                form.closest('tr').remove();
-
-                // Cập nhật tổng tiền nếu cần
-                if (response.overallTotalFormatted) {
-                    $('#overall-total').text(response.overallTotalFormatted);
-                    $('#overall-totals').text(response.overallTotalFormatted);
-                }
-            },
-            error: function(xhr, status, error) {
-                alert('Có lỗi xảy ra khi xóa sản phẩm');
-            }
-        });
-    });
-</script>
+    </script>
 @endsection
