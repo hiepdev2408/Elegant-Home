@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\ReturnOrder;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
 
@@ -34,9 +35,11 @@ class OrderController extends Controller
             'orderDetails',
             'user'
         )->findOrFail($id);
+        // dd($order);
         $events = Shipping::where('order_id', $id)->orderBy('created_at', 'DESC')->get();
+        $rufund = ReturnOrder::where('order_id', $id)->first();
         // dd($events);
-        return view('admin.orders.detail', compact('order', 'events'));
+        return view('admin.orders.detail', compact('order', 'events', 'rufund'));
     }
 
     public function confirmed($id)

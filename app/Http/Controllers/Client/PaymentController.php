@@ -116,7 +116,7 @@ class PaymentController extends Controller
                 Log::error('Lỗi khi tạo chi tiết đơn hàng: ' . $e->getMessage());
             }
         }
-      
+
         // Trạng Thái đơn hàng
         try {
             Shipping::create([

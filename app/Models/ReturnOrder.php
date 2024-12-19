@@ -30,4 +30,9 @@ class ReturnOrder extends Model
     {
         $this->belongsTo(User::class);
     }
+
+    public function proveRufund()
+    {
+        $this->hasMany(ProveRefund::class);
+    }
 }

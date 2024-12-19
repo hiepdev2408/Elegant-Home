@@ -65,6 +65,10 @@
             </div>
             <div class="d-flex align-content-center flex-wrap gap-2">
                 <a class="btn btn-info" href="{{ route('orders.index') }}">Quay Lại</a>
+                @if (isset($rufund) && $rufund->order_id === $order->id)
+                    <a class="btn btn-success" href="javascript:;" data-bs-toggle="modal" data-bs-target="#rufund">Lý do
+                        hoàn hàng</a>
+                @endif
 
                 @if ($order->status_order == 'pending')
                     <form action="{{ route('orders.confirmed', $order->id) }}" method="post">
@@ -492,6 +496,67 @@
                 </div>
             </div>
         </div>
+
+        @if (isset($rufund) && $rufund->order_id === $order->id)
+            <!-- Refund Modal-->
+            <div class="modal fade" id="rufund" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+                    <div class="modal-content p-3 p-md-5">
+                        <div class="modal-body py-3 py-md-0">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                            <div class="text-center mb-4">
+                                <h3 class="mb-2">Yêu cầu trả hàng / hoàn tiền</h3>
+                                <p class="pt-1">Thông tin chi tiết Yêu cầu trả hàng / hoàn tiền</p>
+                            </div>
+                            <form id="editUserForm" class="row g-4" onsubmit="return false">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        <input type="text" class="form-control" value="{{ $rufund->reason }}"
+                                            disabled />
+                                        <label for="reason">Lý do trả hàng / hoàn tiền</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        <input type="text" class="form-control"
+                                            value="{{ number_format($rufund->total_amount, 0, ',', '.') }} VNĐ"
+                                            disabled />
+                                        <label for="total_amount">Số tiền hoàn lại</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        <input type="text" class="form-control" value="{{ $rufund->refund_on }}"
+                                            disabled />
+                                        <label for="refund_on">Hoàn tiền vào ( Ngân Hàng/STK/Chủ Tài Khoản )</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        <textarea class="form-control" cols="30" rows="10" disabled>{{ $rufund->note }}</textarea>
+                                        <label for="modalEditUserEmail">Mô tả</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        <input type="text" class="form-control" value="{{ $rufund->email }}"
+                                            disabled />
+                                        <label for="Email">Email</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary me-sm-3 me-1">Xác nhận</button>
+                                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                                        aria-label="Close">Từ chối</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/ Refund Modal -->
+        @endif
 
     </div>
     <!-- / Content -->
