@@ -128,13 +128,14 @@
                             </thead>
                             <tbody>
                                 @foreach ($order->orderDetails as $item)
-                                    <tr>
-                                        <td>
-                                            @if ($item->product)
+                                    @if ($item->product)
+                                        <tr>
+                                            <td>
                                                 <div class="d-flex justify-content-start align-items-center">
                                                     <div class="avatar me-2 pe-1">
                                                         @if ($item->product->img_thumbnail)
-                                                            <img src="{{ Storage::url($item->product->img_thumbnail) }}"
+                                                            <img class="rounded-2"
+                                                                src="{{ Storage::url($item->product->img_thumbnail) }}"
                                                                 width="50px" alt="">
                                                         @else
                                                             <img src="{{ asset('images/default-thumbnail.png') }}"
@@ -146,8 +147,14 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <span>{{ $item->product->name }}</span>
-                                            @else
+                                            </td>
+                                            <td>{{ number_format($item->product->price_sale, 0, ',', '.') }} VND</td>
+                                            <td>{{ $item->quantity }}</td>
+                                            <td>{{ number_format($item->total_amount, 0, ',', '.') }} VND</td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td>
                                                 <div class="d-flex justify-content-start align-items-center mb-1">
                                                     <div class="avatar me-2 pe-1">
                                                         @if ($item->variant && $item->variant->product->img_thumbnail)
@@ -164,8 +171,7 @@
                                                         </strong>
                                                     </div>
                                                 </div>
-                                                {{-- <br> --}}
-                                                <span>
+                                                {{-- <br> --}} <span>
                                                     @foreach ($item->variant->attributes as $attribute)
                                                         @if (!$loop->first)
                                                             <br>
@@ -175,14 +181,13 @@
                                                         @endif
                                                         {{ $attribute->attributeValue->value }}.
                                                     @endforeach
-
                                                 </span>
-                                            @endif
-                                        </td>
-                                        <td>{{ number_format($item->variant->price_modifier, 0, ',', '.') }} VND</td>
-                                        <td>{{ $item->quantity }}</td>
-                                        <td>{{ number_format($item->total_amount, 0, ',', '.') }} VND</td>
-                                    </tr>
+                                            </td>
+                                            <td>{{ number_format($item->variant->price_modifier, 0, ',', '.') }} VND</td>
+                                            <td>{{ $item->quantity }}</td>
+                                            <td>{{ number_format($item->total_amount, 0, ',', '.') }} VND</td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -228,6 +233,18 @@
                                         </div>
                                     </li>
                                 @elseif ($item->name === 'Đang giao hàng')
+                                    {{-- Hiển thị "Đã nhận hàng" nếu chưa có trong danh sách --}}
+                                    @if (!$hasReceived)
+                                        <li class="timeline-item timeline-item-transparent">
+                                            <span class="timeline-point timeline-point-secondary"></span>
+                                            <div class="timeline-event">
+                                                <div class="timeline-header">
+                                                    <h6 class="mb-0 mt-1">Đã nhận hàng</h6>
+                                                </div>
+                                                {{-- <p class="mt-2">Package has left an Amazon facility, NY</p> --}}
+                                            </div>
+                                        </li>
+                                    @endif
                                     {{-- Hiển thị trạng thái "Đang giao hàng" --}}
                                     <li
                                         class="timeline-item timeline-item-transparent {{ !$loop->last ? 'border-primary' : 'border-transparent' }}">
@@ -241,18 +258,6 @@
                                             </div>
                                         </div>
                                     </li>
-
-                                    {{-- Hiển thị "Đã nhận hàng" nếu chưa có trong danh sách --}}
-                                    @if (!$hasReceived)
-                                        <li class="timeline-item timeline-item-transparent border-transparent pb-0">
-                                            <span class="timeline-point timeline-point-secondary"></span>
-                                            <div class="timeline-event pb-0">
-                                                <div class="timeline-header">
-                                                    <h6 class="mb-0">Đã nhận hàng</h6>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    @endif
                                 @elseif ($item->name === 'Đã nhận hàng')
                                     <li
                                         class="timeline-item timeline-item-transparent {{ !$loop->last ? 'border-primary' : 'border-transparent' }}">
@@ -487,6 +492,7 @@
                 </div>
             </div>
         </div>
+
     </div>
     <!-- / Content -->
 @endsection

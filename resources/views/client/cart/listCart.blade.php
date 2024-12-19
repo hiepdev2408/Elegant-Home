@@ -40,7 +40,7 @@
                                             $totalAmount = 0;
                                         @endphp
                                         @foreach ($carts as $cart)
-                                            @if ($cart->variant != '')
+                                            @if ($cart->variant)
                                                 <tbody id="cart-item-{{ $cart->id }}">
                                                     <tr>
                                                         <td colspan="2" class="prod-column">
@@ -71,7 +71,17 @@
                                                         </td>
 
                                                         <td class="price">
-                                                            {{ number_format($cart->variant->price_modifier, 0, ',', '.') }}
+                                                            @php
+                                                                $productsOnSale = session('productsOnSale', []);
+                                                                $saleProduct = collect($productsOnSale)->firstWhere(
+                                                                    'id',
+                                                                    $cart->variant->product->id,
+                                                                );
+                                                                $price =
+                                                                    $saleProduct['price_sale'] ??
+                                                                    $cart->variant->price_modifier;
+                                                            @endphp
+                                                            {{ number_format($price, 0, ',', '.') }}
                                                             VNĐ
                                                         </td>
                                                         <!-- Quantity Box -->
@@ -124,9 +134,24 @@
                                                                     {{ $cart->quantity }}</div>
                                                             </div>
                                                         </td>
-
                                                         <td class="price">
-                                                            {{ number_format($cart->product->base_price, 0, ',', '.') }}
+                                                            @php
+                                                                $productsOnSale = session('productsOnSale', []);
+                                                                $saleProduct = collect($productsOnSale)->firstWhere(
+                                                                    'id',
+                                                                    $cart->product->id,
+                                                                );
+                                                                if ($cart->product->price_sale) {
+                                                                    $price =
+                                                                        $saleProduct['price_sale'] ??
+                                                                        $cart->product->price_sale;
+                                                                } else {
+                                                                    $price =
+                                                                        $saleProduct['price_sale'] ??
+                                                                        $cart->product->base_price;
+                                                                }
+                                                            @endphp
+                                                            {{ number_format($price, 0, ',', '.') }}
                                                             VNĐ
                                                         </td>
                                                         <!-- Quantity Box -->
@@ -140,8 +165,13 @@
                                                                         value="{{ $cart->quantity }}" name="quantity"
                                                                         readonly>
                                                                 </div>
-                                                                <input type="hidden" name="price_sale"
-                                                                    value="{{ $cart->product->base_price }}">
+                                                                @if ($cart->product->price_sale)
+                                                                    <input type="hidden" name="price_sale"
+                                                                        value="{{ $cart->product->price_sale }}">
+                                                                @else
+                                                                    <input type="hidden" name="price_sale"
+                                                                        value="{{ $cart->product->price_sale }}">
+                                                                @endif
                                                             </form>
                                                         </td>
 
@@ -320,10 +350,9 @@
                             $(`#cart-item-${response.cartDetailId}`).remove();
                         }
 
+                        // Cập nhật số lượng và tổng tiền
                         $(`#quantity-${cartId}`).text(response.cartDetail.quantity);
-
-                        $(`#total-amount-${cartId}`).text(response
-                            .totalAmountFormatted);
+                        $(`#total-amount-${cartId}`).text(response.totalAmountFormatted);
 
                         // Cập nhật tổng tiền nếu cần
                         if (response.overallTotalFormatted) {
@@ -339,10 +368,10 @@
                     // Hiển thị thông báo lỗi
                     notyf.error('Có lỗi xảy ra khi kết nối đến server!');
                 }
-
             });
         });
     </script>
+
     <script>
         $('.delete-cart-form').submit(function(event) {
             event.preventDefault(); // Ngừng reload trang

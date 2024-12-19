@@ -135,8 +135,8 @@
                                     <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
-                                    <span>Shipping Fee</span>
-                                    <span>0 VNĐ</span>
+                                    <span>Phí vận chuyển</span>
+                                    <span>30.000 VNĐ</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between fw-bold">
                                     <span>Total</span>
@@ -324,7 +324,6 @@
         });
     </script>
     <!-- Thêm jQuery -->
-
     <script>
         // Lấy các radio button
         const momoRadio = document.getElementById('paymentMomo');
@@ -393,7 +392,7 @@
                             .message + '</div>');
                         $('#total-amount').text(xhr.responseJSON.total);
                         $('#discount-details')
-                    .hide(); // Ẩn thông tin giảm giá khi voucher không hợp lệ
+                            .hide(); // Ẩn thông tin giảm giá khi voucher không hợp lệ
                     }
                 });
             });

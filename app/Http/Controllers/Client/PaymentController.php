@@ -25,26 +25,40 @@ class PaymentController extends Controller
         if (!$user) {
             return response()->json(['error' => 'Người dùng chưa được xác thực'], 401);
         }
-
         // Lấy giỏ hàng
         $cart = Cart::with('cartDetails')->where('user_id', $user)->first();
         if (!$cart) {
             return response()->json(['error' => 'Không tìm thấy giỏ hàng'], 404);
         }
-
         // Lấy danh sách variant ID từ giỏ hàng
         $variantIds = $cart->cartDetails->pluck('variant_id')->toArray();
+        $productIds = $cart->cartDetails->pluck('product_id')->toArray();
 
-        // Lấy thông tin các variant liên quan
-        $variants = Variant::whereIn('id', $variantIds)->get()->keyBy('id');
+        // Lấy thông tin các variant hoặc sản phẩm liên quan
+        if ($variantIds) {
+            // Nếu có variant_id
+            $variants = Variant::whereIn('id', $variantIds)->get()->keyBy('id');
+        }
+
+        if ($productIds) {
+            // Nếu không có variant_id
+            $variants = Variant::whereIn('id', $productIds)->get()->keyBy('id');
+        }
+        // dd($variants);
 
         // Kiểm tra tồn kho và xử lý
         foreach ($cart->cartDetails as $cartDetail) {
-            $variant = $variants->get($cartDetail->variant_id);
-            if (!$variant || $variant->stock < $cartDetail->quantity) {
-                $cartDetail->delete(); // Xóa chi tiết giỏ hàng
-                $cart->delete(); // Xóa giỏ hàng
-                return redirect()->route('home')->with('alert', 'Lỗi');
+            $item = $variants->get($cartDetail->variant_id) ?? $variants->get($cartDetail->product_id);
+            // Nếu không tìm thấy sản phẩm (variant hoặc product) hoặc tồn kho không đủ
+            if (!$item || $item->stock < $cartDetail->quantity) {
+                $cartDetail->delete(); // Xóa chi tiết giỏ hàng hiện tại
+
+                // Kiểm tra nếu giỏ hàng không còn sản phẩm nào thì xóa giỏ hàng
+                if ($cart->cartDetails()->count() === 0) {
+                    $cart->delete(); // Xóa giỏ hàng
+                }
+
+                return redirect()->route('home')->with('alert', 'Sản phẩm không đủ tồn kho!');
             }
         }
 
@@ -102,7 +116,7 @@ class PaymentController extends Controller
                 Log::error('Lỗi khi tạo chi tiết đơn hàng: ' . $e->getMessage());
             }
         }
-      
+
         // Trạng Thái đơn hàng
         try {
             Shipping::create([
@@ -303,23 +317,18 @@ class PaymentController extends Controller
         return $result;
     }
 
-    public function notify(Request $request)
-    {
-    }
+    public function notify(Request $request) {}
 
     public function cod(Request $request)
     {
-        // dd($request->all());
         try {
             $user = Auth::user();
             $cart = Cart::query()->where('user_id', $user->id)->first();
 
-            // Kiểm tra giỏ hàng
             if (!$cart || $cart->cartDetails->isEmpty()) {
                 return redirect()->route('home')->with('error', 'Giỏ hàng của bạn đang trống.');
             }
 
-            // Kiểm tra hàng tồn kho
             $variants = Variant::whereIn('id', $cart->cartDetails->pluck('variant_id'))->get();
             $outOfStockProducts = [];
 
@@ -327,7 +336,7 @@ class PaymentController extends Controller
                 $variant = $variants->where('id', $cartDetails->variant_id)->first();
                 if ($variant && $variant->stock < $cartDetails->quantity) {
                     $outOfStockProducts[] = $variant->product->name;
-                    $cartDetails->delete(); // Xóa sản phẩm hết hàng khỏi giỏ
+                    $cartDetails->delete();
                 }
             }
 
@@ -338,8 +347,8 @@ class PaymentController extends Controller
                 );
             }
 
-            $totalAmount = session('totalAmount') ?? $request->total_amount;
-            // dd($totalAmount);
+            $totalAmount = (session('totalAmount') ?? $request->total_amount) + 30000 ;
+            dd($totalAmount);
 
             DB::transaction(function () use ($cart, $request, $user, $totalAmount) {
                 $voucherCode = session('voucher_code');
@@ -351,7 +360,6 @@ class PaymentController extends Controller
                         ->first();
                 }
 
-                // Tạo đơn hàng
                 $order = Order::create([
                     'user_id' => $user->id,
                     'user_name' => $request->user_name,
@@ -361,12 +369,10 @@ class PaymentController extends Controller
                     'user_address_all' => $request->user_address_all ?? '',
                     'user_content' => $request->user_note ?? '',
                     'is_ship_user_same_user' => $request->is_ship_user_same_user,
-                    'total_amount' => $totalAmount, // Sử dụng tổng tiền từ session
+                    'total_amount' => $totalAmount,
                     'vouchers_id' => $voucher ? $voucher->id : null,
                 ]);
 
-
-                // Thêm chi tiết đơn hàng
                 $orderDetails = $cart->cartDetails->map(function ($cartDetail) use ($order) {
                     return [
                         'order_id' => $order->id,
@@ -377,17 +383,22 @@ class PaymentController extends Controller
                     ];
                 });
 
-                OrderDetail::insert($orderDetails->toArray());
-
-                // Cập nhật hàng tồn kho
                 foreach ($cart->cartDetails as $cartDetail) {
                     $variant = Variant::find($cartDetail->variant_id);
+                    $product = Product::find($cartDetail->product_id);
                     if ($variant) {
-                        $variant->decrement('stock', $cartDetail->quantity);
+                        $variant->stock -= $cartDetail->quantity;
+                        $variant->save();
+                    } else if ($product) {
+                        foreach ($product->variants as $variants) {
+                            $variants->stock -= $cartDetail->quantity;
+                            $variants->save();
+                        }
                     }
                 }
 
-                // Xử lý voucher
+                OrderDetail::insert($orderDetails->toArray());
+
                 if ($voucher) {
                     UserVoucher::create([
                         'user_id' => $user->id,
@@ -395,14 +406,12 @@ class PaymentController extends Controller
                     ]);
                     $voucher->increment('used');
                 } else {
-                    session()->forget('voucher_code'); // Xóa voucher không hợp lệ
+                    session()->forget('voucher_code');
                 }
 
-                // Xóa giỏ hàng
                 $cart->cartDetails()->delete();
                 $cart->delete();
 
-                // Xóa session
                 session()->forget(['totalAmount', 'voucher_code', 'discount_amount']);
             });
 
@@ -417,7 +426,6 @@ class PaymentController extends Controller
             return redirect()->route('home')->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
         }
     }
-
 
     public function thank()
     {
