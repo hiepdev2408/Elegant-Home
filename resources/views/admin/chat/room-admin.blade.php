@@ -200,139 +200,39 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="chat-history-body">
-                            <ul class="list-unstyled chat-history">
-                                @foreach ($messages as $item)
-                                    @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
-                                        @if (Auth::user()->id === $item->sender_id)
-                                            <li class="chat-message chat-message-right">
-                                                <div class="d-flex overflow-hidden">
-                                                    <div class="chat-message-wrapper flex-grow-1">
-                                                        <div class="chat-message-text">
-                                                            <p class="mb-0">{{ $item->message }}</p>
-                                                        </div>
-                                                        <div class="text-end text-muted mt-1">
-                                                            <i class='mdi mdi-check-all mdi-14px text-success me-1'></i>
-                                                            <small>
-                                                                @if ($item->created_at->isToday())
-                                                                    {{ $item->created_at->timezone('Asia/Ho_Chi_Minh')->format('h:i A') }}
-                                                                @else
-                                                                    {{ $item->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m') }}
-                                                                @endif
+                        <div class="chat-history-body" id="message-box">
 
-                                                            </small>
-                                                        </div>
-                                                    </div>
-                                                    <div class="user-avatar flex-shrink-0 ms-3">
-                                                        <div class="avatar avatar-sm">
-                                                            @if ($item->receiver->image)
-                                                                <img src="{{ Storage::url($comment->receiver->img_thumbnail) }}"
-                                                                    alt="{{ $item->receiver->name }}"
-                                                                    class="rounded-circle">
-                                                            @else
-                                                                <img src="{{ asset('themes/image/logo.jpg') }}"
-                                                                    alt="{{ $item->receiver->name }}"
-                                                                    class="rounded-circle">
-                                                            @endif
-                                                        </div>
-                                                    </div>
+
+
+                                    @foreach ($messages as $item)
+                                        @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
+                                            @if (Auth::user()->id === $item->sender_id)
+                                                <div class="message sent">
+                                                    <strong>Bạn: </strong>{{ $item->message }}
                                                 </div>
-                                            </li>
-                                        @else
-                                            <li class="chat-message">
-                                                <div class="d-flex overflow-hidden">
-                                                    <div class="user-avatar flex-shrink-0 me-3">
-                                                        <div class="avatar avatar-sm">
-                                                            <img src="{{ asset('themes') }}/admin/img/avatars/4.png"
-                                                                alt="Avatar" class="rounded-circle">
-                                                        </div>
-                                                    </div>
-                                                    <div class="chat-message-wrapper flex-grow-1">
-                                                        <div class="chat-message-text">
-                                                            <p class="mb-0">{{ $item->message }}</p>
-                                                        </div>
-
-                                                        <div class="text-muted mt-1">
-                                                            @if ($item->created_at->isToday())
-                                                                {{ $item->created_at->timezone('Asia/Ho_Chi_Minh')->format('h:i A') }}
-                                                            @else
-                                                                {{ $item->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m') }}
-                                                            @endif
-
-
-                                                        </div>
-                                                    </div>
+                                            @else
+                                                <div class="message received">
+                                                    <strong>Khách hàng: </strong>{{ $item->message }}
                                                 </div>
-                                            </li>
+                                            @endif
                                         @endif
-                                    @endif
-                                    @if (Auth::user()->role_id == 3)
-                                        @if (Auth::user()->id === $item->sender_id)
-                                            <li class="chat-message chat-message-right">
-                                                <div class="d-flex overflow-hidden">
-                                                    <div class="chat-message-wrapper flex-grow-1">
-                                                        <div class="chat-message-text">
-                                                            <p class="mb-0">{{ $item->message }}</p>
-                                                        </div>
-                                                        <div class="text-end text-muted mt-1">
-                                                            <i class='mdi mdi-check-all mdi-14px text-success me-1'></i>
-                                                            <small>
-                                                                @if ($item->created_at->isToday())
-                                                                    {{ $item->created_at->timezone('Asia/Ho_Chi_Minh')->format('h:i A') }}
-                                                                @else
-                                                                    {{ $item->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m') }}
-                                                                @endif
-
-                                                            </small>
-                                                        </div>
-                                                    </div>
-                                                    <div class="user-avatar flex-shrink-0 ms-3">
-                                                        <div class="avatar avatar-sm">
-                                                            @if ($item->receiver->image)
-                                                                <img src="{{ Storage::url($comment->receiver->img_thumbnail) }}"
-                                                                    alt="{{ $item->receiver->name }}"
-                                                                    class="rounded-circle">
-                                                            @else
-                                                                <img src="{{ asset('themes/image/logo.jpg') }}"
-                                                                    alt="{{ $item->receiver->name }}"
-                                                                    class="rounded-circle">
-                                                            @endif
-                                                        </div>
-                                                    </div>
+                                        @if (Auth::user()->role_id == 3)
+                                            @if (Auth::user()->id === $item->sender_id)
+                                                <div class="message sent">
+                                                    <strong>Bạn: </strong>{{ $item->message }}
                                                 </div>
-                                            </li>
-                                        @else
-                                            <li class="chat-message">
-                                                <div class="d-flex overflow-hidden">
-                                                    <div class="user-avatar flex-shrink-0 me-3">
-                                                        <div class="avatar avatar-sm">
-                                                            <img src="{{ asset('themes') }}/admin/img/avatars/4.png"
-                                                                alt="Avatar" class="rounded-circle">
-                                                        </div>
-                                                    </div>
-                                                    <div class="chat-message-wrapper flex-grow-1">
-                                                        <div class="chat-message-text">
-                                                            <p class="mb-0">{{ $item->message }}</p>
-                                                        </div>
-
-                                                        <div class="text-muted mt-1">
-                                                            @if ($item->created_at->isToday())
-                                                                {{ $item->created_at->timezone('Asia/Ho_Chi_Minh')->format('h:i A') }}
-                                                            @else
-                                                                {{ $item->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m') }}
-                                                            @endif
-
-                                                        </div>
-                                                    </div>
+                                            @else
+                                                <div class="message received">
+                                                    <strong>Quảng trị viên: </strong>{{ $item->message }}
                                                 </div>
-                                            </li>
+                                            @endif
                                         @endif
-                                    @endif
-                                @endforeach
-                            </ul>
+                                    @endforeach
+
+
                         </div>
                         <!-- Chat message form -->
-                        <div class="chat-history-footer">
+                        <div class="chat-history-footer mt-3">
                             <form class="form-send-message d-flex justify-content-between align-items-center ">
                                 <input class="form-control message-input me-3 shadow-none" id="message-input"
                                     placeholder="Nhập tin nhắn ...">
