@@ -9,7 +9,7 @@
     <div id="app">
         <div class="container mb-3">
             <div class="text-primary">
-                <h3 class="mb-0">Liên Hệ Quản Trị Viên</h3>
+                 <h1 class="text-primary fw-bold">Liên Hệ Quản Trị Viên</h1>
             </div>
             <!-- Hiển thị trạng thái người dùng -->
             <div class="status mt-2">
@@ -17,7 +17,7 @@
 
             </div>
             <hr>
-            <div id="message-box" style="height: 400px; overflow-y: auto; background-color: #f8f9fa; padding: 10px;">
+            <div id="message-box" style="height: 400px; overflow-y: auto; background-color: #ffff; padding: 10px;">
                 @foreach ($messages as $item)
                     @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
                         @if (Auth::user()->id === $item->sender_id)
@@ -45,7 +45,7 @@
             </div>
 
             <!-- Form gửi tin nhắn -->
-            <div class="input-box">
+            <div class="input-box mt-2">
                 <textarea class="form-control" id="message-input" placeholder="Nhập tin nhắn..." rows="3"></textarea>
                 <div class="d-flex align-items-center gap-2 mt-3">
                     <button class="btn btn-primary" id="send-message-btn">Gửi</button>
