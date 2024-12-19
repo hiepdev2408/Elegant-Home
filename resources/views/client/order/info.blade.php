@@ -135,8 +135,8 @@
                                     <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
-                                    <span>Shipping Fee</span>
-                                    <span>0 VNĐ</span>
+                                    <span>Phí vận chuyển</span>
+                                    <span>30.000 VNĐ</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between fw-bold">
                                     <span>Total</span>

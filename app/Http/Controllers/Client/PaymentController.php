@@ -347,7 +347,8 @@ class PaymentController extends Controller
                 );
             }
 
-            $totalAmount = session('totalAmount') ?? $request->total_amount;
+            $totalAmount = (session('totalAmount') ?? $request->total_amount) + 30000 ;
+            dd($totalAmount);
 
             DB::transaction(function () use ($cart, $request, $user, $totalAmount) {
                 $voucherCode = session('voucher_code');
