@@ -20,6 +20,7 @@ class PaymentController extends Controller
 {
     public function vnpay(Request $request)
     {
+        // dd($request->all());
         // Kiểm tra xác thực
         $user = Auth::id();
         if (!$user) {
@@ -30,41 +31,42 @@ class PaymentController extends Controller
         if (!$cart) {
             return response()->json(['error' => 'Không tìm thấy giỏ hàng'], 404);
         }
-        // Lấy danh sách variant ID từ giỏ hàng
-        $variantIds = $cart->cartDetails->pluck('variant_id')->toArray();
-        $productIds = $cart->cartDetails->pluck('product_id')->toArray();
 
-        // Lấy thông tin các variant hoặc sản phẩm liên quan
-        if ($variantIds) {
-            // Nếu có variant_id
-            $variants = Variant::whereIn('id', $variantIds)->get()->keyBy('id');
-        }
-
-        if ($productIds) {
-            // Nếu không có variant_id
-            $variants = Variant::whereIn('id', $productIds)->get()->keyBy('id');
-        }
-        // dd($variants);
-
-        // Kiểm tra tồn kho và xử lý
         foreach ($cart->cartDetails as $cartDetail) {
-            $item = $variants->get($cartDetail->variant_id) ?? $variants->get($cartDetail->product_id);
-            // Nếu không tìm thấy sản phẩm (variant hoặc product) hoặc tồn kho không đủ
-            if (!$item || $item->stock < $cartDetail->quantity) {
-                $cartDetail->delete(); // Xóa chi tiết giỏ hàng hiện tại
+            $variant = Variant::find($cartDetail->variant_id);
+            $product = Product::find($cartDetail->product_id);
 
-                // Kiểm tra nếu giỏ hàng không còn sản phẩm nào thì xóa giỏ hàng
-                if ($cart->cartDetails()->count() === 0) {
-                    $cart->delete(); // Xóa giỏ hàng
+            if ($variant) {
+                // Kiểm tra tồn kho của variant
+                if ($variant->stock < $cartDetail->quantity) {
+                    $cartDetail->delete();
+
+                    if ($cart->cartDetails()->count() === 0) {
+                        $cart->delete();
+                    }
+
+                    return redirect()->route('home')->with('alert', 'Sản phẩm không đủ tồn kho!');
                 }
+            } elseif ($product) {
+                // Nếu sản phẩm có biến thể
+                if ($product->variants->isNotEmpty()) {
+                    foreach ($product->variants as $variant) {
+                        if ($variant->stock < $cartDetail->quantity) {
+                            $cartDetail->delete();
 
-                return redirect()->route('home')->with('alert', 'Sản phẩm không đủ tồn kho!');
+                            if ($cart->cartDetails()->count() === 0) {
+                                $cart->delete();
+                            }
+
+                            return redirect()->route('home')->with('alert', 'Sản phẩm không đủ tồn kho!');
+                        }
+                    }
+                }
             }
         }
 
-        // Lấy tổng tiền từ session
-        $totalAmount = $request->total_amount;
-        // dd($totalAmount);
+        $totalAmount = (session('totalAmount') ?? $request->total_amount) + 30000;
+
         if ($totalAmount <= 0) {
             return response()->json(['error' => 'Tổng số tiền không hợp lệ'], 400);
         }
@@ -347,8 +349,8 @@ class PaymentController extends Controller
                 );
             }
 
-            $totalAmount = (session('totalAmount') ?? $request->total_amount) + 30000 ;
-            dd($totalAmount);
+            $totalAmount = (session('totalAmount') ?? $request->total_amount) + 30000;
+            // dd($totalAmount);
 
             DB::transaction(function () use ($cart, $request, $user, $totalAmount) {
                 $voucherCode = session('voucher_code');
