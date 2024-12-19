@@ -104,7 +104,7 @@
 
                                                         <td id="total-amount-{{ $cart->id }}">
                                                             @php
-                                                                $money = $cart->variant->price_modifier;
+                                                                $money = $cart->total_amount;
                                                                 $totalAmount += $money;
                                                             @endphp
                                                             {{ number_format($money, 0, ',', '.') }}VNĐ
