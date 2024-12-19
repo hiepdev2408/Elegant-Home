@@ -97,6 +97,7 @@ class ProfileController extends Controller
         if ($order->status_order === 'delivered') {
             $order->update([
                 'status_order' => 'completed',
+                'status_payment' => 'Paid'
             ]);
             Shipping::create([
                 'order_id' => $order->id,
