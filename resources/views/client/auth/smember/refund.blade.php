@@ -22,9 +22,9 @@
                         </thead>
                         <tbody>
                             @foreach ($order->orderDetails as $item)
-                                <tr>
-                                    <td>
-                                        @if ($item->product)
+                                @if ($item->product)
+                                    <tr>
+                                        <td>
                                             <div class="d-flex justify-content-start align-items-center">
                                                 <div class="avatar me-2 pe-1">
                                                     @if ($item->product->img_thumbnail)
@@ -40,8 +40,14 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <span>{{ $item->product->name }}</span>
-                                        @else
+                                        </td>
+                                        <td>{{ number_format($item->product->price_sale, 0, ',', '.') }} VND</td>
+                                        <td>{{ $item->quantity }}</td>
+                                        <td>{{ number_format($item->total_amount, 0, ',', '.') }} VND</td>
+                                    </tr>
+                                @else
+                                    <tr>
+                                        <td>
                                             <div class="d-flex justify-content-start align-items-center">
                                                 <div class="avatar me-2 pe-1">
                                                     @if ($item->variant && $item->variant->product->img_thumbnail)
@@ -69,14 +75,13 @@
                                                     @endif
                                                     {{ $attribute->attributeValue->value }}.
                                                 @endforeach
-
                                             </span>
-                                        @endif
-                                    </td>
-                                    <td>{{ number_format($item->variant->price_modifier, 0, ',', '.') }} VND</td>
-                                    <td>{{ $item->quantity }}</td>
-                                    <td>{{ number_format($item->total_amount, 0, ',', '.') }} VND</td>
-                                </tr>
+                                        </td>
+                                        <td>{{ number_format($item->variant->price_modifier, 0, ',', '.') }} VND</td>
+                                        <td>{{ $item->quantity }}</td>
+                                        <td>{{ number_format($item->total_amount, 0, ',', '.') }} VND</td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -84,32 +89,49 @@
                 <div class="col-12 col-md-12">
                     <label for="reason" class="mb-1 mt-2">Lý do</label>
                     <select class="form-select" name="reason">
-                        <option selected>Lý do hoàn tiền</option>
+                        <option selected disabled>Lý do hoàn tiền</option>
                         <option value="Thiếu hàng">Thiếu hàng</option>
                         <option value="Hàng lỗi">Hàng lỗi</option>
                         <option value="Khác với mô tả">Khác với mô tả</option>
                     </select>
                 </div>
+                @error('reason')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
                 <div class="col-12 col-md-12">
                     <label for="total_amount" class="mb-1 mt-2">Số tiền hoàn lại</label>
-                    <input type="text" name="total_amount" class="form-control"
-                        value="{{ number_format($item->order->total_amount, 0, ',', '.') }} VND" disabled>
+                    <input type="text" class="form-control"
+                        value="{{ number_format($item->order->total_amount, 0, ',', '.') }} VNĐ" disabled>
+                    <input type="hidden" name="total_amount" value="{{ $item->order->total_amount }}">
                 </div>
+                @error('total_amount')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
                 <div class="col-12 col-md-12">
                     <label for="refund_on" class="mb-1 mt-2">Hoàn tiền vào ( Ngân Hàng/STK/Chủ Tài Khoản )</label>
                     <input type="text" name="refund_on" class="form-control"
-                        placeholder="VÍ DỤ: MBBANK/070820045555/NGUYỄN VĂN DƯƠNG" />
+                        placeholder="VÍ DỤ: MBBANK/070820045555/NGUYỄN VĂN DƯƠNG" value="{{ old('refund_on') }}" />
                 </div>
+                @error('refund_on')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
                 <div class="col-12 col-md-12">
                     <label for="note" class="mb-1 mt-2">Mô tả</label>
                     <input type="text"name="note" class="form-control" placeholder="Lý do chi tiết" />
                 </div>
+                @error('note')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
                 <div class="col-12 col-md-12">
                     <label for="Email" class="mb-1 mt-2">Email</label>
                     <input type="email"name="email" class="form-control" placeholder="Email"
                         value="{{ $item->order->user_email }}" />
                 </div>
+                @error('email')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
                 <div class="col-12 text-center mt-3">
+                    <input type="hidden" name="order_id" value="{{ $order->id }}">
                     <button type="submit" class="btn btn-primary me-sm-3 me-1">Gửi Yêu Cầu</button>
                     <a href="{{ route('profile.order') }}" class="btn btn-outline-secondary">Hủy bỏ</a>
                 </div>
