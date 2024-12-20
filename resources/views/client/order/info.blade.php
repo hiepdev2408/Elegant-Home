@@ -71,6 +71,14 @@
                                     @csrf
                                     <input type="text" class="totalAmounts d-none" name="total_amount"
                                         value="{{ session('totalAmount', $totalAmount) }}">
+                                    <input type="hidden" name="is_ship_user_same_user" value="0">
+                                    <input type="hidden" id="momo_out_user_name" name="user_name">
+                                    <input type="hidden" id="momo_out_user_email" name="user_email">
+                                    <input type="hidden" id="momo_out_user_phone" name="user_phone">
+                                    <input type="hidden" id="momo_out_user_address" name="user_address">
+                                    <input type="hidden" id="momo_out_user_address_all" name="user_address_all">
+                                    <input type="hidden" id="momo_out_user_note" name="user_note">
+
                                     <div class="form-check mt-2">
                                         <input class="form-check-input" type="radio" name="paymentMethodMomo"
                                             id="paymentMomo" value="momo">
@@ -89,7 +97,6 @@
                                     <input type="hidden" id="out_user_address_all" name="user_address_all">
                                     <input type="hidden" id="out_user_note" name="user_note">
                                     <div class="form-check mt-2">
-
                                         <input class="form-check-input" type="radio" name="paymentMethodVnpay"
                                             id="paymentVnp" value="vnpay">
                                         <label class="form-check-label" for="paymentVnp">Thanh toán VNPAY</label>
@@ -147,12 +154,14 @@
                             </ul>
                             <form id="voucher-form" class="d-flex mb-3">
                                 @csrf
-                                <select name="voucher_code" class="form-control me-2" style="width: 225px; height: 35px;">
+                                <select name="voucher_code" class="form-control me-2"
+                                    style="width: 225px; height: 35px;">
                                     <option value="">Chọn mã voucher</option>
-                                    @foreach($vouchers as $item)
-                                    <option value="{{ $item->code }}">
-                                        {{ $item->code }} - Tối thiểu: {{ number_format($item->minimum_order_value, 0, ',', '.') }} VNĐ
-                                    </option>
+                                    @foreach ($vouchers as $item)
+                                        <option value="{{ $item->code }}">
+                                            {{ $item->code }} - Tối thiểu:
+                                            {{ number_format($item->minimum_order_value, 0, ',', '.') }} VNĐ
+                                        </option>
                                     @endforeach
                                 </select>
                                 <input type="hidden" name="total_amount" value="{{ $totalAmount }}">
@@ -160,7 +169,7 @@
                                     dụng</button>
                             </form>
 
-                            
+
                             <div id="message"></div>
                         </div>
                     </div>
@@ -200,32 +209,38 @@
         const fields = [{
                 main: 'user_name',
                 vnpay: 'out_user_name',
-                cod: 'cod_out_user_name'
+                cod: 'cod_out_user_name',
+                momo: 'momo_out_user_name'
             },
             {
                 main: 'user_email',
                 vnpay: 'out_user_email',
-                cod: 'cod_out_user_email'
+                cod: 'cod_out_user_email',
+                momo: 'momo_out_user_email'
             },
             {
                 main: 'user_phone',
                 vnpay: 'out_user_phone',
-                cod: 'cod_out_user_phone'
+                cod: 'cod_out_user_phone',
+                momo: 'momo_out_user_phone'
             },
             {
                 main: 'user_address',
                 vnpay: 'out_user_address',
-                cod: 'cod_out_user_address'
+                cod: 'cod_out_user_address',
+                momo: 'momo_out_user_address'
             },
             {
                 main: 'user_address_all',
                 vnpay: 'out_user_address_all',
-                cod: 'cod_out_user_address_all'
+                cod: 'cod_out_user_address_all',
+                momo: 'momo_out_user_address_all'
             },
             {
                 main: 'user_note',
                 vnpay: 'out_user_note',
-                cod: 'cod_out_user_note'
+                cod: 'cod_out_user_note',
+                momo: 'momo_out_user_note'
             },
         ];
 
@@ -234,25 +249,29 @@
             fields.forEach(({
                 main,
                 vnpay,
-                cod
+                cod,
+                momo
             }) => {
                 const mainInput = document.getElementById(main);
                 const vnpayInput = document.getElementById(vnpay);
                 const codInput = document.getElementById(cod);
+                const momoInput = document.getElementById(momo);
 
-                if (!mainInput || !vnpayInput || !codInput) {
-                    console.error(`Không tìm thấy phần tử: ${main}, ${vnpay}, hoặc ${cod}`);
+                if (!mainInput || !vnpayInput || !codInput || !momoInput) {
+                    console.error(`Không tìm thấy phần tử: ${main}, ${vnpay}, ${cod}, hoặc ${momo}`);
                     return;
                 }
 
                 // Cập nhật giá trị ban đầu
                 vnpayInput.value = mainInput.value;
                 codInput.value = mainInput.value;
+                momoInput.value = mainInput.value;
 
                 // Gắn sự kiện lắng nghe thay đổi
                 mainInput.addEventListener('input', () => {
                     vnpayInput.value = mainInput.value;
                     codInput.value = mainInput.value;
+                    momoInput.value = mainInput.value;
                 });
             });
         }

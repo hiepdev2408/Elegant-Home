@@ -1,4 +1,7 @@
 @extends('client.layouts.master')
+@section('title')
+    Liên hệ
+@endsection
 @section('content')
     <!-- End contact section -->
 
@@ -65,7 +68,10 @@
                     <div class="inner-column">
                         <!--Map Outer-->
                         <div class="map-outer">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14896.072099727793!2d105.75039533952248!3d21.03196476820802!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454c7521d2d91%3A0xba6cdc3e1406ddfe!2zQ2F1IERpZW4sIFThu6sgTGnDqm0sIEhhbm9pLCBWaWV0bmFt!5e0!3m2!1sen!2s!4v1730811182044!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14896.072099727793!2d105.75039533952248!3d21.03196476820802!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454c7521d2d91%3A0xba6cdc3e1406ddfe!2zQ2F1IERpZW4sIFThu6sgTGnDqm0sIEhhbm9pLCBWaWV0bmFt!5e0!3m2!1sen!2s!4v1730811182044!5m2!1sen!2s"
+                                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
                 </div>
@@ -233,4 +239,3 @@
             </div>
         </section>
     @endsection
-
