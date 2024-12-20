@@ -102,9 +102,9 @@ Route::prefix('products')
     });
 
 Route::get('product/{slug}', [HomeController::class, 'detail'])->name('productDetail');
-Route::post('/comments', [HomeController::class, 'store'])->name('comments');
+Route::post('/comments', [HomeController::class, 'comments'])->name('comments');
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews');
 
-Route::post('/reviews', [ReviewController::class, 'store'])->middleware('auth')->name('review.store');
 // Route gửi đánh giá, cần xác thực
 // Route::middleware(['auth'])->group(function () {
 //     Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store'); // Route cho gửi đánh giá
