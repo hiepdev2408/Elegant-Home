@@ -61,6 +61,7 @@ class RefundController extends Controller
                 Shipping::create([
                     'order_id' => $order->id,
                     'name' => 'Yêu cầu trả hàng',
+                    'note' => $request->note,
                 ]);
 
                 $rufund = ReturnOrder::create($data);
