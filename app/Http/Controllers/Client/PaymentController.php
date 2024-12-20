@@ -238,8 +238,6 @@ class PaymentController extends Controller
                 $order->delete(); // Xóa đơn hàng
             }
             return redirect()->route('error');
-        } else {
-            dd(1);
         }
     }
 
