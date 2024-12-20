@@ -2,6 +2,24 @@
 @section('title')
     {{ $product->name }}
 @endsection
+@section('style')
+    <style>
+        .stars {
+            display: inline-block;
+        }
+
+        .stars i {
+            color: #dcdcdc;
+            /* Màu sao chưa được đánh giá (màu xám) */
+            font-size: 20px;
+        }
+
+        .stars i.filled {
+            color: #ffcc00;
+            /* Màu vàng cho các sao đã được đánh giá */
+        }
+    </style>
+@endsection
 @section('content')
     <div class="page-wrapper">
         <section class="shop-detail-section">
@@ -35,8 +53,7 @@
                         <div class="content-column col-lg-6 col-md-12 col-sm-12">
                             <div class="inner-column">
                                 <h3>{{ $product->name }}</h3>
-                                <div class="rating">
-
+                                <div class="stars">
                                     @for ($i = 1; $i <= 5; $i++)
                                         <i class="  fa fa-star {{ $i <= $averageRating ? 'filled' : '' }}"></i>
                                     @endfor
@@ -351,7 +368,7 @@
                                                                 </h4>
                                                                 <small
                                                                     class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
-                                                                <div class="rating">
+                                                                <div class="stars">
                                                                     @for ($i = 1; $i <= 5; $i++)
                                                                         <i
                                                                             class="fa fa-star {{ $i <= $review->rating ? 'filled' : '' }}"></i>

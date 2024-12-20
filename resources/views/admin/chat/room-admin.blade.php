@@ -129,7 +129,7 @@
                                             @endif
                                         </div>
                                         <div class="chat-contact-info flex-grow-1 ms-3">
-                                            <div class="d-flex justify-content-between align-items-center">
+                                            <div class=" justify-content-between align-items-center">
                                                 <h6 class="chat-contact-name text-truncate fw-normal m-0">
                                                     {{ $item->user->name }}
                                                 </h6>
@@ -141,14 +141,7 @@
                                                     <p class="chat-contact-status text-truncate mb-0 text-muted">Null</p>
                                                 @endif
                                             </div>
-                                            @if ($item->messages->isNotEmpty())
-                                                <p class="chat-contact-status text-truncate mb-0 text-muted">
-                                                    {{ $item->messages->first()->message }}
-                                                </p>
-                                            @else
-                                                <p class="chat-contact-status text-truncate mb-0 text-muted">No
-                                                    messages</p>
-                                            @endif
+
                                         </div>
                                     </a>
                                 </li>
