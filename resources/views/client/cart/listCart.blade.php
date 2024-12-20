@@ -136,11 +136,9 @@
                                                         </td>
                                                         <td class="price">
                                                             @php
-                                                                $productsOnSale = session('productsOnSale', []);
-                                                                $saleProduct = collect($productsOnSale)->firstWhere(
-                                                                    'id',
-                                                                    $cart->product->id,
-                                                                );
+                                                            $productsOnSale = session('productsOnSale', []);
+                                                            $saleProduct = collect($productsOnSale)->firstWhere('id', $cart->product->id); 
+                                                            $price = $saleProduct['price_sale'] ?? $cart->product->price_base; 
                                                                 if ($cart->product->price_sale) {
                                                                     $price =
                                                                         $saleProduct['price_sale'] ??
