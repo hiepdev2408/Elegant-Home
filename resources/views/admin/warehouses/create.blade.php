@@ -10,13 +10,6 @@
         <h4 class="py-3 mb-4">
             <span class="text-muted fw-light">Sản Phẩm /</span><span> Kho hàng</span>
         </h4>
-
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
         <!-- Form tạo sản phẩm -->
         <form action="{{ route('warehouses.store') }}" method="POST">
             @csrf
@@ -91,8 +84,9 @@
                                 </div>
 
                                 <div class="form-floating form-floating-outline mb-4">
-                                    <input type="text" class="form-control" name="Total_import_price"
-                                        id="Total_import_price" placeholder="Tổng giá nhập">
+                                    <input type="hidden" id="Total_import_price" name="Total_import_price">
+                                    <input type="text" class="form-control" name="Total_import_price_raw"
+                                        id="Total_import_price_raw" placeholder="Tổng giá nhập">
                                     <label for="Total_import_price">Tổng giá nhập</label>
                                 </div>
 
@@ -135,22 +129,27 @@
     <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
     <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
     <script>
-        // Tính tổng tiền khi người dùng nhập số lượng hoặc giá nhập
         function calculateTotal() {
             // Lấy giá trị số lượng từ input
-            var quantity = parseFloat(document.getElementById('stock').value);
+            var quantity = parseFloat(document.getElementById('stock').value) || 0;
             // Lấy giá trị giá nhập từ input
-            var purchasePrice = parseFloat(document.getElementById('wholesale_price').value);
+            var purchasePrice = parseFloat(document.getElementById('wholesale_price').value) || 0;
 
             // Tính tổng giá nhập
             var totalPrice = quantity * purchasePrice;
 
+            // Gán giá trị chưa định dạng vào hidden input
+            document.getElementById('Total_import_price').value = totalPrice;
+
             // Định dạng tổng giá với dấu phân cách hàng nghìn
             var formattedTotalPrice = totalPrice.toLocaleString('vi-VN', {
-                style: 'decimal'
+                style: 'decimal',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
             });
-            // Gán giá trị tổng giá nhập vào ô input
-            document.getElementById('Total_import_price').value = formattedTotalPrice;
+
+            // Gán giá trị định dạng vào input hiển thị
+            document.getElementById('Total_import_price_raw').value = formattedTotalPrice;
         }
     </script>
 @endsection
