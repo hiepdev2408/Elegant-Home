@@ -144,7 +144,7 @@
                                 </div>
                                 <div class="sku"><span>Mã sản phẩm :</span> {{ $product->sku }}</div>
                                 <ul class="social-box">
-                                    <li class="share">Share:</li>
+                                    <li class="share">Chia sẽ:</li>
                                     <li><a href="https://www.facebook.com/" class="fa fa-facebook-f"></a></li>
                                     <li><a href="https://www.twitter.com/" class="fa fa-twitter"></a></li>
                                     <li><a href="https://dribbble.com/" class="fa fa-dribbble"></a></li>
@@ -161,7 +161,7 @@
                                                 value="{{ isset($finalPrice) ? $finalPrice : $product->base_price }}">
                                         @endif
                                         <button type="submit" class="theme-btn btn-style-one">
-                                            Add to cart
+                                            Thêm vào giỏ hàng
                                         </button>
                                     </div>
                                     <div class="quantity-box d-flex align-items-center"
@@ -410,7 +410,7 @@
     <section class="products-section-six">
         <div class="auto-container">
             <div class="sec-title">
-                <h4><span>Populer</span> Products For You !</h4>
+                <h4><span>Sản phẩm</span> cùng loại!</h4>
             </div>
             <div class="row clearfix">
                 @foreach ($otherCategoryProducts as $product)

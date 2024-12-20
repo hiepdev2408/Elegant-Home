@@ -11,7 +11,7 @@
                   </div>
                   <form id="search-form" action="{{ route('shop.search') }}" method="GET">
                       <div class="form-group">
-                          <input type="search" name="search" value="" placeholder="SEARCH" required
+                          <input type="search" name="search" value="" placeholder="Tìm kiếm ..." required
                               style="border: 1px solid #ccc; padding: 10px; border-radius: 4px; font-size: 13px;width: 70%; box-sizing: border-box;">
                           <button type="submit" class="btn"
                               style="background-color: black; color: white; padding: 10px;">Tìm kiếm</button>
@@ -41,7 +41,7 @@
                           </div>
                       @endforeach
                   </div>
-                  
+
               </div>
               <aside class="sidebar sticky-top">
 

@@ -210,32 +210,45 @@ class PaymentController extends Controller
             foreach ($cart->cartDetails as $cartDetail) {
                 $variant = Variant::find($cartDetail->variant_id);
                 $product = Product::find($cartDetail->product_id);
-                if ($variant->stock < $cartDetail->quantity) {
-                    $cartDetail->delete(); // Xóa chi tiết giỏ hàng
-                    $cart->delete();
-                    $order = Order::find($vnp_TxnRef);
-                    if ($order) {
-                        foreach ($order->orderDetails as $orderDetails) {
-                            $orderDetails->delete(); // Xóa chi tiết đơn hàng
-                        }
-                        $order->shipping()->delete();
-                        $order->delete();
+
+                // Kiểm tra nếu có biến thể
+                if ($variant) {
+                    if ($variant->stock < $cartDetail->quantity) {
+                        // Nếu tồn kho không đủ, xóa chi tiết giỏ hàng, giỏ hàng và đơn hàng
+                        $this->handleInsufficientStock($cartDetail, $cart, $vnp_TxnRef);
+                        return redirect()->route('home')->with('error', 'Số lượng sản phẩm trong kho đã hết!');
                     }
-                    return redirect()->route('home')->with('error', 'Số lượng sản phẩm trong kho đã hết!');
-                } else {
-                    if ($variant) {
-                        $variant->stock -= $cartDetail->quantity;
-                        $variant->save();
-                    } else if ($product) {
-                        foreach ($product->variants as $variants) {
-                            $variants->stock -= $cartDetail->quantity;
-                            $variants->save();
+                    // Cập nhật tồn kho của biến thể
+                    $variant->stock -= $cartDetail->quantity;
+                    $variant->save();
+                }
+                // Nếu không có biến thể, kiểm tra sản phẩm và các biến thể của nó
+                elseif ($product) {
+                    $isStockSufficient = false;
+                    foreach ($product->variants as $productVariant) {
+                        if ($productVariant->stock >= $cartDetail->quantity) {
+                            $isStockSufficient = true;
+                            break;
                         }
+                    }
+                    // Nếu không có biến thể nào đủ tồn kho
+                    if (!$isStockSufficient) {
+                        // Xóa chi tiết giỏ hàng, giỏ hàng và đơn hàng
+                        $this->handleInsufficientStock($cartDetail, $cart, $vnp_TxnRef);
+                        return redirect()->route('home')->with('error', 'Số lượng sản phẩm trong kho đã hết!');
+                    }
+
+                    // Cập nhật tồn kho cho tất cả các biến thể của sản phẩm
+                    foreach ($product->variants as $productVariant) {
+                        $productVariant->stock -= $cartDetail->quantity;
+                        $productVariant->save();
                     }
                 }
-                $cartDetail->delete(); // Xóa chi tiết giỏ hàng
-                $cart->delete(); // Xóa giỏ hàng
+
+                // Xóa chi tiết giỏ hàng và giỏ hàng sau khi xử lý
+                $cartDetail->delete();
             }
+            $cart->delete();
 
             // Cập nhật trạng thái đơn hàng
             $order = Order::find($vnp_TxnRef);
@@ -256,6 +269,24 @@ class PaymentController extends Controller
             return redirect()->route('error');
         }
     }
+
+
+    // Hàm phụ để xử lý trường hợp thiếu hàng và xóa đơn hàng nếu cần
+    private function handleInsufficientStock($cartDetail, $cart, $vnp_TxnRef)
+    {
+        $cartDetail->delete(); // Xóa chi tiết giỏ hàng
+        $cart->delete(); // Xóa giỏ hàng
+
+        $order = Order::find($vnp_TxnRef);
+        if ($order) {
+            foreach ($order->orderDetails as $orderDetail) {
+                $orderDetail->delete(); // Xóa chi tiết đơn hàng
+            }
+            $order->shipping()->delete(); // Xóa thông tin vận chuyển
+            $order->delete(); // Xóa đơn hàng
+        }
+    }
+
 
     public function momo(Request $request)
     {
@@ -485,7 +516,9 @@ class PaymentController extends Controller
         }
     }
 
-    public function notify(Request $request) {}
+    public function notify(Request $request)
+    {
+    }
 
     public function cod(Request $request)
     {
@@ -605,8 +638,8 @@ class PaymentController extends Controller
                 'cart_id' => $cart->id ?? null,
             ]);
 
-            if (isset($cart)) {
-                $cart->cartDetails()->delete();
+            foreach ($cart->cartDetails as $cartDetail) {
+                $cartDetail->delete();
                 $cart->delete();
             }
 
