@@ -36,12 +36,10 @@
                             <div class="inner-column">
                                 <h3>{{ $product->name }}</h3>
                                 <div class="rating">
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="light fa fa-star"></span>
-                                    <i>(4 customer review)</i>
+
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <i class="  fa fa-star {{ $i <= $averageRating ? 'filled' : '' }}"></i>
+                                    @endfor
                                 </div>
                                 @if ($product->price_sale != '')
                                     <div class="price">
@@ -335,9 +333,9 @@
                                             <p>Không có đánh giá nào</p>
                                         @else
                                             @foreach ($product->reviews as $review)
-                                                <div class="mb-3 p-4">
+                                                <div class=" p-4">
                                                     <div class="card-body">
-                                                        <div class="d-flex mb-3">
+                                                        <div class="d-flex">
                                                             <div>
                                                                 <h4 class="mb-1">
                                                                     @if ($review->user->img_thumbnail)
@@ -354,8 +352,11 @@
                                                                 <small
                                                                     class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
                                                                 <div class="rating">
+                                                                    @for ($i = 1; $i <= 5; $i++)
+                                                                        <i
+                                                                            class="fa fa-star {{ $i <= $review->rating ? 'filled' : '' }}"></i>
+                                                                    @endfor
 
-                                                                    <i>{{$review->rating}} <span class="fa fa-star"></span> </i>
                                                                 </div>
                                                                 <p class="mt-2">{{ $review->comment }}</p>
 
