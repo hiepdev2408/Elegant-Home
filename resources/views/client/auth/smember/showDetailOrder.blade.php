@@ -34,11 +34,11 @@
                                         </div>
                                     </td>
                                     <td>
-                                    @if ($product->price_sale)
-                                        {{ number_format($item->product->price_sale, 0, ',', '.') }} VND
-                                    @elseif ($product->base_price)
-                                        {{ number_format($item->product->base_price, 0, ',', '.') }} VND
-                                    @endif
+                                        @if ($product->price_sale)
+                                            {{ number_format($item->product->price_sale, 0, ',', '.') }} VND
+                                        @elseif ($product->base_price)
+                                            {{ number_format($item->product->base_price, 0, ',', '.') }} VND
+                                        @endif
                                     </td>
                                     <td>{{ $item->quantity }}</td>
                                     <td>{{ number_format($item->total_amount, 0, ',', '.') }} VND</td>

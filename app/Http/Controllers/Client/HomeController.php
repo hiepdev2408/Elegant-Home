@@ -16,9 +16,10 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Favourite;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Product;
-
-
+use App\Models\Review;
+use App\Models\Variant;
 
 class HomeController extends Controller
 {
@@ -141,8 +142,56 @@ class HomeController extends Controller
                 break;
             }
         }
+        $user = auth()->user();
 
-        return view('client.product.productDetails', compact('product', 'relatedProducts', 'otherCategoryProducts', 'attributes', 'finalPrice'));
+        // Kiểm tra xem khách hàng đã mua sản phẩm này chưa
+        $canReview = OrderDetail::whereHas('order', function ($query) use ($user) {
+            $query->where('user_id', $user->id)
+                ->where('status_order', 'completed');
+        })
+            ->where('product_id', $product->id)
+            // ->where(function ($query) use ($product) {
+            //     $query->where('product_id', $product->id) // Kiểm tra sản phẩm
+            //           ->orWhereNotNull('variant_id');    // Hoặc có biến thể
+            // })
+            ->exists();
+
+        // $canReview = OrderDetail::with('order')
+        //     ->where('user_id', $user->id)
+        //     ->where('status_order', 'completed');
+        // // dd($canReview);
+
+        // $variant = Variant::find($canReview->variant_id);
+        // $product = Product::find($canReview->product_id);
+
+
+        // $canReview->where('product_id', $product->id)
+        //     ->orWhere('variant_id', $variant->id)
+        //     ->exists();
+
+        // $canReviewQuery = OrderDetail::with('order')
+        //     ->where('user_id', $user->id)
+        //     ->where('status_order', 'completed')
+        //     ->where(function ($query) use ($product, $variant) {
+        //         $query->where('product_id', $product->id)
+        //             ->orWhere('variant_id', $variant->id);
+        //     });
+
+        // // Kiểm tra xem có tồn tại dòng nào thỏa mãn điều kiện trên không
+        // $canReview = $canReviewQuery->exists();
+
+
+
+        // Kiểm tra xem khách hàng đã đánh giá sản phẩm chưa
+        if ($canReview) {
+            $hasReviewed = Review::where('user_id', $user->id)
+                ->where('product_id', $product->id)
+                ->exists();
+
+            $canReview = !$hasReviewed; // Nếu đã đánh giá thì không được đánh giá nữa
+        }
+
+        return view('client.product.productDetails', compact('product', 'relatedProducts', 'otherCategoryProducts', 'attributes', 'finalPrice', 'canReview'));
     }
 
     public function shop()
@@ -170,7 +219,7 @@ class HomeController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function comments(Request $request)
     {
         Comment::create([
             'comment' => $request->comment,
