@@ -78,32 +78,35 @@ class SaleController extends Controller
     // Cập nhật chương trình khuyến mãi
     public function update(Request $request, Sale $sale)
     {
+        // Xác thực dữ liệu
         $request->validate([
-
             'discount_percentage' => 'required|numeric|min:0|max:100',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
+            'product_id' => 'required|array',
+            'product_id.*' => 'exists:products,id', // Đảm bảo rằng tất cả product_id đều hợp lệ
         ]);
-
-
+    
+        // Kiểm tra chương trình khuyến mãi xung đột
         $conflictingSales = Sale::where('id', '<>', $sale->id)
             ->where(function ($query) use ($request) {
                 $query->where('start_date', '<=', $request->input('end_date'))
-                    ->where('end_date', '>=', $request->input('start_date'));
+                      ->where('end_date', '>=', $request->input('start_date'));
             })
             ->get();
-
+    
         if ($conflictingSales->isNotEmpty()) {
-
             return redirect()->route('sales.index')->with('message', 'Không thể cập nhật chương trình khuyến mãi vì có chương trình khác trùng ngày.')->withInput();
         }
-
-
+    
+        // Cập nhật thông tin sale
         $sale->update($request->only(['discount_percentage', 'start_date', 'end_date']));
-        $sale->products()->sync($request->product_id); // Cập nhật sản phẩm cho sale
-
+    
+        // Cập nhật sản phẩm cho sale
+        $sale->products()->sync($request->product_id); // Sử dụng product_id để đồng bộ sản phẩm
+    
         return redirect()->route('flashsales.index')->with('success', 'Cập nhật thành công');
-    }
+    }   
 
     // Xóa chương trình khuyến mãi
     public function destroy(Sale $sale)
