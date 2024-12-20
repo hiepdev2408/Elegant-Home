@@ -7,6 +7,7 @@ use App\Models\Contract;
 use App\Models\Notification;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,24 +25,26 @@ class DashboardController extends Controller
         $tongGiaoDichHomQua = $this->getOrderCountByDate($homQua);
         $thayDoi = $this->calculatePercentageChange($tongGiaoDichHomNay, $tongGiaoDichHomQua);
 
-        $mau = $thayDoi > 0 ? 'text-success' : ($thayDoi < 0 ? 'text-danger' : 'text-secondary');
-        $dau = $thayDoi !== 0 ? ($thayDoi > 0 ? '+' : '') . number_format($thayDoi, 2) . '%' : '0%';
-
-        $tongDoanhSo = $this->getSalesSum(now()->subDays(7), now());
-        $doanhSoCu = $this->getSalesSum(now()->subDays(14), now()->subDays(7));
-        $phamTrams = $this->calculatePercentageChange($tongDoanhSo, $doanhSoCu);
+        $user = User::query()->where('role_id', '!=', 1 & 2)->count();
         $users = $this->getTopUsers(10);
+
+        $order = Order::with(['orderDetails']);
+
+        $totalAmount = Order::with(['orderDetails'])
+            ->get()
+            ->flatMap(function ($order) {
+                return $order->orderDetails;
+            })
+            ->sum('total_amount'); // Tính tổng total_amount
 
         return view(self::PATH_VIEW . __FUNCTION__, compact(
             'users',
-            'tongDoanhSo',
-            'phamTrams',
+            'user',
+            'totalAmount',
             'tongGiaoDichHomNay',
-            'dau',
-            'thayDoi',
-            'mau'
         ));
     }
+
 
     // Hàm phụ trợ
     private function getOrderCountByDate($date)
