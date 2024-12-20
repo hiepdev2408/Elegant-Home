@@ -39,6 +39,7 @@ class CartController extends Controller
             $price = $saleProduct['price_sale'] ?? $product->base_price;
         }
 
+
         if (!empty($variantAttributeIds)) {
             $attributeCount = count($variantAttributeIds);
             $variants = Variant::where('product_id', $productId)
@@ -66,7 +67,7 @@ class CartController extends Controller
             $cartDetail = CartDetail::where('cart_id', $cart->id)
                 ->where('variant_id', $matchingVariant->id)
                 ->first();
-
+            $priceMod = $matchingVariant->price_modifier;
             if ($cartDetail) {
                 $newQuantity = $cartDetail->quantity + $quantity;
                 if ($matchingVariant->stock < $newQuantity) {
@@ -74,7 +75,7 @@ class CartController extends Controller
                 }
 
                 $cartDetail->quantity = $newQuantity;
-                $cartDetail->total_amount += $price * $quantity; // Sử dụng price đã tính toán
+                $cartDetail->total_amount += $priceMod * $quantity; // Sử dụng price đã tính toán
                 $cartDetail->save();
             } else {
                 if ($matchingVariant->stock < $quantity) {
@@ -85,7 +86,7 @@ class CartController extends Controller
                     'cart_id' => $cart->id,
                     'variant_id' => $matchingVariant->id,
                     'quantity' => $quantity,
-                    'total_amount' => $price * $quantity, // Sử dụng price đã tính toán
+                    'total_amount' => $priceMod * $quantity, // Sử dụng price đã tính toán
                 ]);
             }
         } else {

@@ -20,7 +20,8 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('stock_movements', function (Blueprint $table) {
-            //
+            $table->dropColumn('Total_import_price');
+            $table->dropColumn('note');
         });
     }
 };

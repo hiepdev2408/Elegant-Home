@@ -209,8 +209,15 @@ class PaymentController extends Controller
 
             foreach ($cart->cartDetails as $cartDetail) {
                 $variant = Variant::find($cartDetail->variant_id);
+                $product = Product::find($cartDetail->product_id);
                 if ($variant) {
-                    $variant->decrement('stock', $cartDetail->quantity);
+                    $variant->stock -= $cartDetail->quantity;
+                    $variant->save();
+                } else if ($product) {
+                    foreach ($product->variants as $variants) {
+                        $variants->stock -= $cartDetail->quantity;
+                        $variants->save();
+                    }
                 }
             }
 
@@ -234,7 +241,7 @@ class PaymentController extends Controller
                 foreach ($order->orderDetails as $orderDetails) {
                     $orderDetails->delete(); // Xóa chi tiết đơn hàng
                 }
-                $order->delete(); // Xóa đơn hàng
+                $order->delete();
             }
             return redirect()->route('error');
         }
@@ -539,13 +546,17 @@ class PaymentController extends Controller
                 foreach ($cart->cartDetails as $cartDetail) {
                     $variant = Variant::find($cartDetail->variant_id);
                     $product = Product::find($cartDetail->product_id);
-                    if ($variant) {
-                        $variant->stock -= $cartDetail->quantity;
-                        $variant->save();
-                    } else if ($product) {
-                        foreach ($product->variants as $variants) {
-                            $variants->stock -= $cartDetail->quantity;
-                            $variants->save();
+                    if ($variant->stock < $cartDetail->quantity) {
+                        throw new \Exception('Sản phẩm không đủ kho.');
+                    } else{
+                        if ($variant) {
+                            $variant->stock -= $cartDetail->quantity;
+                            $variant->save();
+                        } else if ($product) {
+                            foreach ($product->variants as $variants) {
+                                $variants->stock -= $cartDetail->quantity;
+                                $variants->save();
+                            }
                         }
                     }
                 }
@@ -576,7 +587,12 @@ class PaymentController extends Controller
                 'cart_id' => $cart->id ?? null,
             ]);
 
-            return redirect()->route('home')->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
+            if (isset($cart)) {
+                $cart->cartDetails()->delete();
+                $cart->delete();
+            }
+
+            return redirect()->route('home')->with('error', 'Sản phẩm đã hết hàng vui lòng chọn sản phẩm khác!');
         }
     }
 
