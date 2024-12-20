@@ -20,6 +20,7 @@ class PaymentController extends Controller
 {
     public function vnpay(Request $request)
     {
+        // dd($request->all());
         $user = Auth::id();
         if (!$user) {
             return response()->json(['error' => 'Người dùng chưa được xác thực'], 401);
@@ -241,7 +242,115 @@ class PaymentController extends Controller
 
     public function momo(Request $request)
     {
-        // dd($request->total_amount);
+        // dd($request->all());
+        $user = Auth::id();
+        if (!$user) {
+            return response()->json(['error' => 'Người dùng chưa được xác thực'], 401);
+        }
+        // Lấy giỏ hàng
+        $cart = Cart::with('cartDetails')->where('user_id', $user)->first();
+        if (!$cart) {
+            return response()->json(['error' => 'Không tìm thấy giỏ hàng'], 404);
+        }
+
+        foreach ($cart->cartDetails as $cartDetail) {
+            $variant = Variant::find($cartDetail->variant_id);
+            $product = Product::find($cartDetail->product_id);
+
+            if ($variant) {
+                // Kiểm tra tồn kho của variant
+                if ($variant->stock < $cartDetail->quantity) {
+                    $cartDetail->delete();
+
+                    if ($cart->cartDetails()->count() === 0) {
+                        $cart->delete();
+                    }
+
+                    return redirect()->route('home')->with('alert', 'Sản phẩm không đủ tồn kho!');
+                }
+            } elseif ($product) {
+                // Nếu sản phẩm có biến thể
+                if ($product->variants->isNotEmpty()) {
+                    foreach ($product->variants as $variant) {
+                        if ($variant->stock < $cartDetail->quantity) {
+                            $cartDetail->delete();
+
+                            if ($cart->cartDetails()->count() === 0) {
+                                $cart->delete();
+                            }
+
+                            return redirect()->route('home')->with('alert', 'Sản phẩm không đủ tồn kho!');
+                        }
+                    }
+                }
+            }
+        }
+
+        $totalAmount = (session('totalAmount') ?? $request->total_amount) + 30000;
+
+        if ($totalAmount <= 0) {
+            return response()->json(['error' => 'Tổng số tiền không hợp lệ'], 400);
+        }
+
+        // Lưu voucher ID nếu có
+        $voucherCode = session('voucher_code');
+        $voucherId = null;
+
+        if ($voucherCode) {
+            $voucher = Vouchers::where('code', $voucherCode)
+                ->where('end_date', '>=', now())
+                ->first();
+
+            if ($voucher && $voucher->used < $voucher->quantity) {
+                $voucherId = $voucher->id; // Lưu voucher_id
+            }
+        }
+
+        // Tạo đơn hàng mới
+        try {
+            $order = Order::create([
+                'user_id' => $user,
+                'user_name' => $request->user_name,
+                'user_email' => $request->user_email,
+                'user_phone' => $request->user_phone,
+                'user_address' => $request->user_address,
+                'user_address_all' => $request->user_address_all ?? '',
+                'user_content' => $request->user_note ?? '',
+                'is_ship_user_same_user' => $request->is_ship_user_same_user,
+                'total_amount' => $totalAmount,
+                'vouchers_id' => $voucherId, // Lưu voucher_id vào đơn hàng
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Lỗi khi tạo đơn hàng: ' . $e->getMessage());
+            return response()->json(['error' => 'Lỗi khi tạo đơn hàng'], 500);
+        }
+
+        // Lưu chi tiết đơn hàng
+        foreach ($cart->cartDetails as $cartDetails) {
+            try {
+                OrderDetail::create([
+                    'order_id' => $order->id,
+                    'product_id' => $cartDetails->product_id,
+                    'variant_id' => $cartDetails->variant_id,
+                    'quantity' => $cartDetails->quantity,
+                    'total_amount' => $cartDetails->total_amount,
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Lỗi khi tạo chi tiết đơn hàng: ' . $e->getMessage());
+            }
+        }
+
+        // Trạng Thái đơn hàng
+        try {
+            Shipping::create([
+                'order_id' => $order->id,
+                'name' => 'Đơn hàng của bạn đã được đặt thành công',
+                'note' => 'Đơn hàng đang đợi được xác nhận',
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Lỗi khi tạo đơn hàng: ' . $e->getMessage());
+        }
+        // dd($order->id);
         try {
             $endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
             $partnerCode = "MOMOBKUN20180529";
@@ -250,13 +359,13 @@ class PaymentController extends Controller
             $orderInfo = "Thanh toán qua MoMo";
             $amount = $request->total_amount;
             $orderId = (string) rand(1000, 9999);
-            $returnUrl = route('thank');
+            $returnUrl = route('return.momo');
             $notifyUrl = route('notify');
             $bankCode = $request->input('bankCode', 'SML');
 
             $requestId = time() . "";
             $requestType = "captureMoMoWallet";
-            $extraData = "";
+            $extraData = "$order->id";
 
             // Tạo chuỗi dữ liệu để ký
             $rawHash = "partnerCode=$partnerCode&accessKey=$accessKey&requestId=$requestId&amount=$amount&orderId=$orderId&orderInfo=$orderInfo&returnUrl=$returnUrl&notifyUrl=$notifyUrl&extraData=$extraData";
@@ -285,6 +394,7 @@ class PaymentController extends Controller
             if (isset($jsonResult['payUrl'])) {
                 return redirect()->away($jsonResult['payUrl']); // Chuyển hướng đến URL thanh toán
             }
+
             return back()->with('error', 'Có lỗi xảy ra trong quá trình xử lý thanh toán.');
         } catch (\Throwable $th) {
             Log::error('MoMo payment error: ' . $th->getMessage());
@@ -314,6 +424,48 @@ class PaymentController extends Controller
         //close connection
         curl_close($ch);
         return $result;
+    }
+    public function returnMomo(Request $request)
+    {
+        // dd($request->all());
+        // Lấy các tham số từ query string
+        $data = $request->all();
+        $errorCode = $data['errorCode'];
+        $extraData = $data['extraData'];
+
+        // Xử lý theo kết quả giao dịch
+        if ($errorCode == '0') {
+            // Thanh toán thành công
+            $order = Order::find($extraData);
+            if ($order) {
+                $order->status_payment = 'Paid';
+                $order->save();
+                // Xử lý giỏ hàng
+
+                $cart = Cart::where('user_id', $order->user_id)->first();
+                if ($cart) {
+                    foreach ($cart->cartDetails as $cartDetail) {
+                        $variant = Variant::find($cartDetail->variant_id);
+                        if ($variant) {
+                            $variant->decrement('stock', $cartDetail->quantity);
+                        }
+                        $cartDetail->delete();
+                    }
+                    $cart->delete();
+                }
+            }
+            return redirect()->route('thank')->with('success', 'Thanh toán thành công!');
+        } else {
+            $order = Order::find($extraData);
+            if ($order) {
+                foreach ($order->orderDetails as $orderDetails) {
+                    $orderDetails->delete(); // Xóa chi tiết đơn hàng
+                }
+                $order->shipping()->delete();
+                $order->delete(); // Xóa đơn hàng
+            }
+            return redirect()->route('error');
+        }
     }
 
     public function notify(Request $request)

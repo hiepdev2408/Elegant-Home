@@ -35,7 +35,7 @@ class CartController extends Controller
         // Lấy giá sale nếu có, nếu không thì dùng giá gốc
         if ($product->price_sale) {
             $price = $saleProduct['price_sale'] ?? $product->price_sale;
-        }elseif($product->base_price){
+        } elseif ($product->base_price) {
             $price = $saleProduct['price_sale'] ?? $product->base_price;
         }
 
@@ -132,10 +132,11 @@ class CartController extends Controller
 
     public function update(Request $request, string $id)
     {
+        // dd($request->all());
         $request->validate([
             'quantity' => 'required|integer|min:0',
         ]);
-
+        // dd($id);
         // Lấy chi tiết giỏ hàng
         $cartDetail = CartDetail::query()->with('cart', 'variant')->findOrFail($id);
 
@@ -143,12 +144,28 @@ class CartController extends Controller
             return response()->json(['success' => false, 'message' => 'Giỏ hàng không tồn tại!'], 404);
         }
 
-        // Kiểm tra số lượng tồn kho
-        if ($request->quantity > $cartDetail->variant->stock) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Số lượng yêu cầu vượt quá tồn kho của sản phẩm.',
-            ], 400);
+        $variant = Variant::find($cartDetail->variant_id);
+        $product = Product::find($cartDetail->product_id);
+        // dd($product);
+        if ($variant) {
+            // Kiểm tra số lượng tồn kho
+            if ($request->quantity > $variant->stock) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Số lượng yêu cầu vượt quá tồn kho của sản phẩm.',
+                ], 400);
+            }
+        }
+        if ($product) {
+            foreach ($product->variants as $variant) {
+                // Kiểm tra số lượng tồn kho
+                if ($request->quantity > $variant->stock) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Số lượng yêu cầu vượt quá tồn kho của sản phẩm.',
+                    ], 400);
+                }
+            }
         }
 
         // Xóa sản phẩm nếu số lượng <= 0
@@ -175,11 +192,19 @@ class CartController extends Controller
 
         // Lấy sản phẩm từ cơ sở dữ liệu
         $variant = $cartDetail->variant;
-
-        // Kiểm tra giá sale từ session
-        $productsOnSale = session('productsOnSale', []);
-        $saleProduct = collect($productsOnSale)->firstWhere('id', $variant->product_id);
-        $price = $saleProduct['price_sale'] ?? $variant->price_modifier;
+        $product = $cartDetail->product;
+        // dd($product);
+        if ($variant) {
+            // Kiểm tra giá sale từ session
+            $productsOnSale = session('productsOnSale', []);
+            $saleProduct = collect($productsOnSale)->firstWhere('id', $variant->product_id);
+            $price = $saleProduct['price_sale'] ?? $variant->price_modifier;
+        } elseif ($product) {
+            // Kiểm tra giá sale từ session
+            $productsOnSale = session('productsOnSale', []);
+            $saleProduct = collect($productsOnSale)->firstWhere('id', $product->id);
+            $price = $saleProduct['price_sale'] ?? $product->base_price;
+        }
 
         // Cập nhật số lượng và tổng số tiền
         $cartDetail->quantity = $request->quantity;

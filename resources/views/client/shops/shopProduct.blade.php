@@ -1,6 +1,6 @@
 @extends('client.layouts.master')
 @section('title')
-    Products
+    Sản phẩm
 @endsection
 @section('content')
     <section class="page-title">

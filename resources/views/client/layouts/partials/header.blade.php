@@ -23,7 +23,7 @@
                 <div class="options-box d-flex align-items-center">
                     @if (Auth::check())
                         <div class="dropdown">
-                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                            <a class="btn btn-primary dropdown-toggle" href="#" role="button"
                                 id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ Auth::user()->name }}
                             </a>

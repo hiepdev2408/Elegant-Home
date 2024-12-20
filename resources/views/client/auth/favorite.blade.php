@@ -1,4 +1,7 @@
 @extends('client.layouts.master')
+@section('title')
+    Sản phẩm yêu thích
+@endsection
 @section('content')
     <div class="container py-5">
         <h3 class="mb-4 text-center text-primary">Sản phẩm yêu thích</h3>
@@ -55,9 +58,12 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <span class="text-muted"><del>{{ number_format($item->product->base_price, 0, ',', '.') }} VND</del></span>
+                                    <span class="text-muted"><del>{{ number_format($item->product->base_price, 0, ',', '.') }}
+                                            VND</del></span>
                                     <br>
-                                    <span class="text-danger fw-bold">{{ number_format($item->product->price_sale, 0, ',', '.') }} VND</span>
+                                    <span
+                                        class="text-danger fw-bold">{{ number_format($item->product->price_sale, 0, ',', '.') }}
+                                        VND</span>
                                 </td>
                                 <td>{{ $item->created_at->format('d/m/Y') }}</td>
                             </tr>

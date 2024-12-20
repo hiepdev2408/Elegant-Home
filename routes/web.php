@@ -137,6 +137,7 @@ Route::prefix('order')
         Route::post('vnpay_payment', [PaymentController::class, 'vnpay'])->name('vnpay');
         Route::get('vnpayReturn', [PaymentController::class, 'vnpayReturn'])->name('vnpayReturn');
         Route::post('momo_payment', [PaymentController::class, 'momo'])->name('momo_payment');
+        Route::get('momo/return', [PaymentController::class, 'returnMomo'])->name('return.momo');
         Route::post('cod', [PaymentController::class, 'cod'])->name('cod');
         Route::post('payment', [CheckoutController::class, 'checkout'])->name('checkout');
         Route::get('/checkout/thank', [PaymentController::class, 'thank'])->name('thank');

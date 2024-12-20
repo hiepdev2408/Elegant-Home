@@ -1,36 +1,39 @@
 @extends('client.layouts.master')
+@section('title')
+    Thông tin cá nhân
+@endsection
 @section('content')
     <div class="container py-5">
         <div class="row">
             <!-- Left Section: Profile Image and Basic Info -->
-             <div class="col-md-4">
-            <div class="card shadow-sm p-3">
-                <div class="text-center">
-                    @if (Auth::user()->avatar)
-                        <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="User Avatar"
-                             class="rounded-circle mb-3 profile-img">
-                    @else
-                        <img src="{{ asset('themes/image/logo.jpg') }}" alt="Default Logo"
-                             class="rounded-circle mb-3 profile-img">
-                    @endif
-                    <h5 class="fw-bold">{{ Auth::user()->name }}</h5>
-                    <p class="text-muted">{{ Auth::user()->role->name ?? 'Member' }}</p>
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3">
+                    <div class="text-center">
+                        @if (Auth::user()->avatar)
+                            <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="User Avatar"
+                                class="rounded-circle mb-3 profile-img">
+                        @else
+                            <img src="{{ asset('themes/image/logo.jpg') }}" alt="Default Logo"
+                                class="rounded-circle mb-3 profile-img">
+                        @endif
+                        <h5 class="fw-bold">{{ Auth::user()->name }}</h5>
+                        <p class="text-muted">{{ Auth::user()->role->name ?? 'Member' }}</p>
+                    </div>
+                    <hr>
+                    <ul class="list-unstyled">
+                        <li><strong>Số điện thoại:</strong> {{ Auth::user()->phone ?? 'N/A' }}</li>
+                        <li><strong>Email:</strong> {{ Auth::user()->email }}</li>
+                        <li><strong>Ngày gia nhập:</strong> {{ Auth::user()->created_at->format('d M Y') }}</li>
+                    </ul>
                 </div>
-                <hr>
-                <ul class="list-unstyled">
-                    <li><strong>Số điện thoại:</strong> {{ Auth::user()->phone ?? 'N/A' }}</li>
-                    <li><strong>Email:</strong> {{ Auth::user()->email }}</li>
-                    <li><strong>Ngày gia nhập:</strong> {{ Auth::user()->created_at->format('d M Y') }}</li>
-                </ul>
             </div>
-        </div>
-           
+
 
             <!-- Right Section: Detailed Data -->
             <div class="col-md-8">
                 <div class="card shadow-sm p-4">
                     <h4 class="mb-4">Thông tin cá nhân</h4>
-                   
+
                     <div class="mb-3">
                         <label for="email" class="form-label">Địa chỉ email</label>
                         <input type="email" id="email" name="email" class="form-control"
@@ -62,7 +65,8 @@
                             placeholder="Enter new password" value="{{ Auth::user()->password }}" disabled>
                     </div>
                     <div class="text-end">
-                        <a href="{{ route('profile.info.showProfile', Auth::user()->id) }}" class="btn btn-outline-primary">Cập nhật thông tin</a>
+                        <a href="{{ route('profile.info.showProfile', Auth::user()->id) }}"
+                            class="btn btn-outline-primary">Cập nhật thông tin</a>
                     </div>
                 </div>
             </div>

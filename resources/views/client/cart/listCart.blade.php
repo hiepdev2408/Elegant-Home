@@ -116,7 +116,9 @@
                                                         <td colspan="2" class="prod-column">
                                                             <div class="column-box">
                                                                 <figure class="prod-thumb">
-                                                                    <form action="{{ route('destroy', $cart->id) }}"
+                                                                    <form class="delete-cart-form"
+                                                                        data-id="{{ $cart->id }}"
+                                                                        action="{{ route('destroy', $cart->id) }}"
                                                                         method="post">
                                                                         @csrf
                                                                         @method('DELETE')
@@ -136,9 +138,14 @@
                                                         </td>
                                                         <td class="price">
                                                             @php
-                                                            $productsOnSale = session('productsOnSale', []);
-                                                            $saleProduct = collect($productsOnSale)->firstWhere('id', $cart->product->id); 
-                                                            $price = $saleProduct['price_sale'] ?? $cart->product->price_base; 
+                                                                $productsOnSale = session('productsOnSale', []);
+                                                                $saleProduct = collect($productsOnSale)->firstWhere(
+                                                                    'id',
+                                                                    $cart->product->id,
+                                                                );
+                                                                $price =
+                                                                    $saleProduct['price_sale'] ??
+                                                                    $cart->product->price_base;
                                                                 if ($cart->product->price_sale) {
                                                                     $price =
                                                                         $saleProduct['price_sale'] ??
@@ -154,25 +161,26 @@
                                                         </td>
                                                         <!-- Quantity Box -->
                                                         <td class="quantity-box">
-                                                            <form action="{{ route('cart.update', $cart->cart_id) }}"
+                                                            <form class="update-cart-form" data-id="{{ $cart->id }}"
+                                                                action="{{ route('cart.update', $cart->id) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <div class="item-quantity">
-                                                                    <input class="qty-spinner" type="text"
+                                                                    <input id="quantity-{{ $cart->id }}"
+                                                                        class="qty-spinner" type="text"
                                                                         value="{{ $cart->quantity }}" name="quantity"
-                                                                        readonly max="10000">
+                                                                        readonly>
                                                                 </div>
-                                                                @if ($cart->product->price_sale)
-                                                                    <input type="hidden" name="price_sale"
-                                                                        value="{{ $cart->product->price_sale }}">
+                                                                @if ($cart->product->price_sale == '')
+                                                                    <input type="hidden" name="price_modifier"
+                                                                        value="{{ $cart->product->base_price }}">
                                                                 @else
-                                                                    <input type="hidden" name="price_sale"
+                                                                    <input type="hidden" name="price_modifier"
                                                                         value="{{ $cart->product->price_sale }}">
                                                                 @endif
                                                             </form>
                                                         </td>
-
                                                         <td id="total-amount-{{ $cart->id }}">
                                                             @php
                                                                 $money = $cart->total_amount;
@@ -213,12 +221,8 @@
                                                 id="overall-totals">{{ number_format($totalAmount, 0, ',', '.') }}
                                                 VNĐ</span></li>
                                     </ul>
-                                    <div class="check-box">
-                                        <input type="checkbox" name="remember-password" id="type-1">
-                                        <label for="type-1">Thuế được tính khi thanh toán</label>
-                                    </div>
                                     <!-- Buttons Box -->
-                                    <div class="buttons-box">
+                                    <div class="buttons-box mt-3">
                                         <a href="{{ route('order') }}" class="theme-btn proceed-btn">
                                             Tiến hành thanh toán
                                         </a>
@@ -231,8 +235,8 @@
             </div>
         </section>
     @else
-        <div class="empty-cart-box text-center mt-5" id="empty-cart">
-            <img class="mb-4 mt-4" src="https://static-smember.cellphones.com.vn/smember/_nuxt/img/empty.db6deab.svg"
+        <div class="empty-cart-box text-center mt-5" id="empty-cart" style="margin-bottom: 140px; ">
+            <img class="mb-4 mt-5" src="https://static-smember.cellphones.com.vn/smember/_nuxt/img/empty.db6deab.svg"
                 alt="Empty Cart" width="300px">
             <h4 class="text-secondary" style="font-size: 18px; font-weight: 600;">Giỏ hàng trống</h4>
             <p style="font-size: 14px; color: #888;">Giỏ hàng của bạn đang trống.
