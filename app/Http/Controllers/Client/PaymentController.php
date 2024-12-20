@@ -123,7 +123,8 @@ class PaymentController extends Controller
         try {
             Shipping::create([
                 'order_id' => $order->id,
-                'name' => 'Đơn hàng của bạn đã được đặt thành công'
+                'name' => 'Đơn hàng của bạn đã được đặt thành công',
+                'note' => 'Đơn hàng đang đợi được xác nhận',
             ]);
         } catch (\Exception $e) {
             Log::error('Lỗi khi tạo đơn hàng: ' . $e->getMessage());
@@ -237,8 +238,6 @@ class PaymentController extends Controller
                 $order->delete(); // Xóa đơn hàng
             }
             return redirect()->route('error');
-        } else {
-            dd(1);
         }
     }
 
@@ -319,7 +318,9 @@ class PaymentController extends Controller
         return $result;
     }
 
-    public function notify(Request $request) {}
+    public function notify(Request $request)
+    {
+    }
 
     public function cod(Request $request)
     {

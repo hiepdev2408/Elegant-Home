@@ -61,6 +61,7 @@ Route::prefix('smember')
         Route::get('/order', 'order')->name('order');
         Route::get('/order/show/{id}', 'showDetailOrder')->name('order.showDetailOrder');
         Route::post('/order/cancel/{id}', 'cancel')->name('order.cancel');
+        Route::post('/order/admin_cancel/{id}', 'admin_cancel')->name('order.admin_cancel');
         Route::post('/order/completed/{id}', 'completed')->name('order.completed');
         Route::post('/order/return_request/{id}', 'return_request')->name('order.return_request');
 

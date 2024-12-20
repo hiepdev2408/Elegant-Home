@@ -163,7 +163,7 @@
                                                                 <div class="item-quantity">
                                                                     <input class="qty-spinner" type="text"
                                                                         value="{{ $cart->quantity }}" name="quantity"
-                                                                        readonly>
+                                                                        readonly max="10000">
                                                                 </div>
                                                                 @if ($cart->product->price_sale)
                                                                     <input type="hidden" name="price_sale"
