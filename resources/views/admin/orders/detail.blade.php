@@ -54,7 +54,7 @@
                             'delivered' => 'Đang giao hàng',
                             'completed' => 'Giao hàng thành công',
                             'canceled' => 'Người mua đã hủy',
-                            'admin_canceled' => 'Đã hủy bởi' . Auth::user()->name,
+                            'admin_canceled' => 'Đã hủy bởi ' . Auth::user()->name,
                             'return_request' => 'Yêu cầu trả hàng',
                             'refuse_return' => 'Từ chối trả hàng',
                             'sent_information' => 'Thông tin hoàn tiền',

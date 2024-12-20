@@ -210,21 +210,30 @@ class PaymentController extends Controller
             foreach ($cart->cartDetails as $cartDetail) {
                 $variant = Variant::find($cartDetail->variant_id);
                 $product = Product::find($cartDetail->product_id);
-                if ($variant) {
-                    $variant->stock -= $cartDetail->quantity;
-                    $variant->save();
-                } else if ($product) {
-                    foreach ($product->variants as $variants) {
-                        $variants->stock -= $cartDetail->quantity;
-                        $variants->save();
+                if ($variant->stock < $cartDetail->quantity) {
+                    $cartDetail->delete(); // Xóa chi tiết giỏ hàng
+                    $cart->delete();
+                    $order = Order::find($vnp_TxnRef);
+                    if ($order) {
+                        foreach ($order->orderDetails as $orderDetails) {
+                            $orderDetails->delete(); // Xóa chi tiết đơn hàng
+                        }
+                        $order->shipping()->delete();
+                        $order->delete();
+                    }
+                    return redirect()->route('home')->with('error', 'Số lượng sản phẩm trong kho đã hết!');
+                } else {
+                    if ($variant) {
+                        $variant->stock -= $cartDetail->quantity;
+                        $variant->save();
+                    } else if ($product) {
+                        foreach ($product->variants as $variants) {
+                            $variants->stock -= $cartDetail->quantity;
+                            $variants->save();
+                        }
                     }
                 }
-            }
-
-            if ($cart) {
-                foreach ($cart->cartDetails as $cartDetails) {
-                    $cartDetails->delete(); // Xóa chi tiết giỏ hàng
-                }
+                $cartDetail->delete(); // Xóa chi tiết giỏ hàng
                 $cart->delete(); // Xóa giỏ hàng
             }
 
@@ -241,6 +250,7 @@ class PaymentController extends Controller
                 foreach ($order->orderDetails as $orderDetails) {
                     $orderDetails->delete(); // Xóa chi tiết đơn hàng
                 }
+                $order->shipping()->delete();
                 $order->delete();
             }
             return redirect()->route('error');
@@ -548,7 +558,7 @@ class PaymentController extends Controller
                     $product = Product::find($cartDetail->product_id);
                     if ($variant->stock < $cartDetail->quantity) {
                         throw new \Exception('Sản phẩm không đủ kho.');
-                    } else{
+                    } else {
                         if ($variant) {
                             $variant->stock -= $cartDetail->quantity;
                             $variant->save();
