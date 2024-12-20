@@ -231,10 +231,6 @@ Route::prefix('admin')
             Route::delete('destroy/{sale}', [SaleController::class, 'destroy'])->name('destroy'); // Sử dụng Sale model
         });
 
-        //Top sell
-        Route::get('top_sell', [TopSellController::class, 'index'])->name('top_sell.index');
-
-
     });
 Route::prefix('flashsales')
     ->as('flashsales.')

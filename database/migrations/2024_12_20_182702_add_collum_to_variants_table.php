@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Order;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,12 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('shippings', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(Order::class)->constrained();
-            $table->string('name');
-            $table->string('note');
-            $table->timestamps();
+        Schema::table('variants', function (Blueprint $table) {
+            $table->decimal('wholesale_price', 10, 2)->default(0);
         });
     }
 
@@ -25,6 +20,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('shippings');
+        Schema::table('variants', function (Blueprint $table) {
+            $table->dropColumn('wholesale_price');
+        });
     }
 };

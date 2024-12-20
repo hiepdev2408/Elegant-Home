@@ -1,22 +1,16 @@
 <?php
 
-use App\Models\Order;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
-        Schema::create('shippings', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(Order::class)->constrained();
-            $table->string('name');
+        Schema::table('stock_movements', function (Blueprint $table) {
+            $table->decimal('Total_import_price', 15, 2);
             $table->string('note');
-            $table->timestamps();
         });
     }
 
@@ -25,6 +19,9 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('shippings');
+        Schema::table('stock_movements', function (Blueprint $table) {
+            $table->dropColumn('Total_import_price');
+            $table->dropColumn('note');
+        });
     }
 };
