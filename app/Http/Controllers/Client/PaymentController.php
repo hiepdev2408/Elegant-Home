@@ -485,9 +485,7 @@ class PaymentController extends Controller
         }
     }
 
-    public function notify(Request $request)
-    {
-    }
+    public function notify(Request $request) {}
 
     public function cod(Request $request)
     {
@@ -556,20 +554,30 @@ class PaymentController extends Controller
                 foreach ($cart->cartDetails as $cartDetail) {
                     $variant = Variant::find($cartDetail->variant_id);
                     $product = Product::find($cartDetail->product_id);
-                    if ($variant->stock < $cartDetail->quantity) {
-                        throw new \Exception('Sản phẩm không đủ kho.');
-                    } else {
-                        if ($variant) {
-                            $variant->stock -= $cartDetail->quantity;
-                            $variant->save();
-                        } else if ($product) {
-                            foreach ($product->variants as $variants) {
-                                $variants->stock -= $cartDetail->quantity;
-                                $variants->save();
+
+                    if ($variant) {
+                        // Kiểm tra và trừ kho cho variant
+                        if ($variant->stock < $cartDetail->quantity) {
+                            throw new \Exception('Sản phẩm không đủ kho.');
+                        }
+                        $variant->stock -= $cartDetail->quantity;
+                        $variant->save();
+                    } elseif ($product && $product->variants->count() > 0) {
+                        // Kiểm tra và trừ kho cho tất cả các variants của sản phẩm
+                        foreach ($product->variants as $productVariant) {
+                            if ($productVariant->stock < $cartDetail->quantity) {
+                                throw new \Exception('Sản phẩm không đủ kho.');
                             }
                         }
+                        foreach ($product->variants as $productVariant) {
+                            $productVariant->stock -= $cartDetail->quantity;
+                            $productVariant->save();
+                        }
+                    } else {
+                        throw new \Exception('Sản phẩm không tồn tại.');
                     }
                 }
+
 
                 OrderDetail::insert($orderDetails->toArray());
 
