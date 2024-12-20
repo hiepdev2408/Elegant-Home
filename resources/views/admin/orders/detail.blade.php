@@ -162,7 +162,11 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>{{ number_format($item->product->price_sale, 0, ',', '.') }} VND</td>
+                                            @if ($item->product->price_sale == '')
+                                                <td>{{ number_format($item->product->base_price, 0, ',', '.') }} VND</td>
+                                            @else
+                                                <td>{{ number_format($item->product->price_sale, 0, ',', '.') }} VND</td>
+                                            @endif
                                             <td>{{ $item->quantity }}</td>
                                             <td>{{ number_format($item->total_amount, 0, ',', '.') }} VND</td>
                                         </tr>

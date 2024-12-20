@@ -10,6 +10,7 @@ class Variant extends Model
         'product_id',
         'sku',
         'stock',
+        'wholesale_price',
         'price_modifier',
         'image'
     ];

@@ -221,12 +221,6 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-item @yield('menu-item-sale')">
-            <a href="{{ route('top_sell.index') }}" class="menu-link">
-                <i class='menu-icon tf-icons mdi mdi-fire'></i>
-                <div data-i18n="Top Bán Chạy">Top Bán Chạy</div>
-            </a>
-        </li>
 
         <li class="menu-item @yield('menu-item-contact')">
             <a href="{{ route('contact.index') }}" class="menu-link">

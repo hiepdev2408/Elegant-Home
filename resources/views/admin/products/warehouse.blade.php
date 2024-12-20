@@ -15,17 +15,12 @@
         <h4>
             <span class="text-muted fw-light">Sản Phẩm /</span> Kho hàng
         </h4>
-        @if (session()->has('success'))
-            <div class="alert alert-success fw-bold">
-                {{ session()->get('success') }}
-            </div>
-        @endif
 
         <div class="card-header d-flex justify-content-end align-items-center mb-3 gap-3">
             <a class="btn btn-primary" href="{{ route('warehouses.create') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Nhập
                 Kho</a>
-            <a class="btn btn-warning" href="{{ route('warehouses.export') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Xuất
-                Kho</a>
+            <a class="btn btn-warning" href="{{ route('warehouses.index') }}"><i class="mdi mdi-plus me-0 me-sm-1"></i>Lịch
+                sử</a>
             <a class="btn btn-info" href="{{ route('products.index') }}">Xem sản phẩm</a>
         </div>
         <div class="card">
@@ -40,7 +35,6 @@
                             <th>Giá</th>
                             <th>Ảnh</th>
                             <th>Số Lượng</th>
-                            <th>Cập Nhật Số Lượng</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,15 +56,6 @@
                                             height="30px">
                                     </td>
                                     <td>{{ $variant->stock }}</td>
-                                    <td>
-                                        <form action="{{ route('products.updateStock', $variant) }}" method="post">
-                                            @csrf
-                                            @method('PUT')
-                                            <input name="stock" type="number" class="form-control d-inline-block"
-                                                value="0" style="width: 60px;">
-                                            <button class="btn btn-primary ms-2 d-inline-block">Lưu</button>
-                                        </form>
-                                    </td>
                                 </tr>
                             @endforeach
                         @endforeach
