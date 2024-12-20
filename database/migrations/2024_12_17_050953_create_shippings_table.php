@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(Order::class)->constrained();
             $table->string('name');
+            $table->string('note');
             $table->timestamps();
         });
     }

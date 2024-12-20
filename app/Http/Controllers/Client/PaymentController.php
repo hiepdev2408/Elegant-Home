@@ -20,8 +20,6 @@ class PaymentController extends Controller
 {
     public function vnpay(Request $request)
     {
-        // dd($request->all());
-        // Kiểm tra xác thực
         $user = Auth::id();
         if (!$user) {
             return response()->json(['error' => 'Người dùng chưa được xác thực'], 401);
