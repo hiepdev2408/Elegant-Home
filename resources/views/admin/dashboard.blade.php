@@ -59,10 +59,11 @@
                 </div>
             </div>
             <div class="row">
+                <!-- Bảng thông tin khách hàng -->
                 <div class="col-xl-8 order-xl-1 order-2">
                     <div class="card mb-5">
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-hover">
                                 <thead class="table-light">
                                     <tr>
                                         <th class="text-truncate"># ID</th>
@@ -74,7 +75,7 @@
                                 <tbody>
                                     @foreach ($users as $item)
                                         <tr>
-                                            <td class="text-primary">{{ $item->user_id }}</td>
+                                            <td class="text-primary fw-bold">{{ $item->user_id }}</td>
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div class="avatar avatar-sm me-3">
@@ -83,33 +84,101 @@
                                                     </div>
                                                     <div>
                                                         <h6 class="mb-0 text-truncate">{{ $item->name }}</h6>
-                                                        <small class="text-truncate">{{ $item->email }}</small>
+                                                        <small class="text-truncate text-muted">{{ $item->email }}</small>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="text-truncate">{{ number_format($item->gia_mua_hang, 0, ',', '.') }}
-                                                VND</td>
-                                            <td><span
-                                                    class="badge bg-label-success rounded-pill fw-normal">{{ $item->tong_don_hang }}</span>
+                                            <td class="text-truncate fw-bold text-success">
+                                                {{ number_format($item->gia_mua_hang, 0, ',', '.') }} VND
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success rounded-pill fw-normal">
+                                                    {{ $item->tong_don_hang }}
+                                                </span>
                                             </td>
                                         </tr>
                                     @endforeach
-
                                 </tbody>
                             </table>
                         </div>
+                        <div class="card-footer text-center">
+                            <small class="text-muted">Dữ liệu được cập nhật lúc {{ now()->format('H:i d/m/Y') }}</small>
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-body pt-0">
-                        <h6 class="mb-2">Giao dịch</h6>
-                        <div class="d-flex flex-wrap mb-2 gap-2 pb-1 align-items-center">
-                            <h4 class="mb-0" style="text-align: center">{{ $tongGiaoDichHomNay }}</h4>
+
+                <!-- Phần tổng giao dịch -->
+                <div class="col-xl-4 order-xl-2 order-1">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h6 class="mb-3 text-muted">Giao dịch hôm nay</h6>
+                            <h4 class="mb-2 text-primary fw-bold">{{ $tongGiaoDichHomNay }}
+                            </h4>
+                            <small class="text-muted">Tổng giá trị giao dịch</small>
                         </div>
-                        <small>Giao dịch hôm nay</small>
                     </div>
                 </div>
             </div>
+            <div class="container">
+                <form method="GET" action="{{ route('admin') }}" class="mb-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="start_date" class="form-label">Từ ngày:</label>
+                            <input type="date" id="start_date" name="start_date" class="form-control"
+                                value="{{ $startDate }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="end_date" class="form-label">Đến ngày:</label>
+                            <input type="date" id="end_date" name="end_date" class="form-control"
+                                value="{{ $endDate }}">
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">Lọc</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Tổng số đơn hàng hôm nay: {{ $tongGiaoDichHomNay }}</h5>
+                    <p>So với hôm qua: {{ number_format($thayDoi, 2) }}%</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Doanh thu từ {{ $startDate }} đến {{ $endDate }}:
+                        {{ number_format($tongSoTienTheoNgay, 0, ',', '.') }} VND</h5>
+                </div>
+            </div>
+            <div class="container mt-5">
+                <h2 class="text-center mb-4">Thống kê doanh thu và đơn hàng</h2>
+                <div class="row">
+                    <!-- Biểu đồ cột -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Số lượng doanh thu theo ngày</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="ordersChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Biểu đồ tròn -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">Tỷ lệ doanh thu theo danh mục</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="inventoryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
     </div>
 @endsection
@@ -126,4 +195,134 @@
 
 @section('script-libs')
     <script src="{{ asset('themes') }}/admin/js/app-ecommerce-dashboard.js"></script>
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Biểu đồ cột: Số lượng đơn hàng theo ngày
+        const ordersData = {
+
+            labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
+            datasets: [{
+                label: 'Doanh thu',
+                data: [
+                    {{ $tongGiaoDichHomNay }},
+                    {{ $tongSoTienTheoNgay }},
+                ],
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+            }]
+        };
+
+        const ordersConfig = {
+            type: 'bar',
+            data: ordersData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Số lượng doanh thu theo ngày',
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    },
+                },
+            },
+        };
+
+        new Chart(document.getElementById('ordersChart'), ordersConfig);
+
+        // Biểu đồ tròn: Tỷ lệ doanh thu theo danh mục
+        const revenueData = {
+            labels: ['Thời trang', 'Đồ gia dụng', 'Điện tử', 'Khác'],
+            datasets: [{
+                label: 'Tỷ lệ doanh thu',
+                data: [40, 25, 20, 15],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(255, 205, 86, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                ],
+                hoverOffset: 4,
+            }]
+        };
+
+        const revenueConfig = {
+            type: 'pie',
+            data: revenueData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Tỷ lệ doanh thu theo danh mục',
+                    },
+                },
+            },
+        };
+
+        new Chart(document.getElementById('revenueChart'), revenueConfig);
+    </script>
+    <script>
+        const inventoryData = {
+            labels: {!! json_encode($dates) !!},
+            datasets: [
+                {
+                    label: 'Nhập kho',
+                    data: {!! json_encode($totalIn) !!},
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                },
+                {
+                    label: 'Doanh thu',
+                    data: {!! json_encode($totalOut) !!},
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                },
+                {
+                    label: 'Lời/Lỗ',
+                    data: {!! json_encode($profitLoss) !!},
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                }
+            ]
+        };
+
+        const inventoryConfig = {
+            type: 'line', // Biểu đồ đường
+            data: inventoryData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Thống kê Nhập kho và Lời/Lỗ',
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    },
+                },
+            },
+        };
+
+        new Chart(document.getElementById('inventoryChart'), inventoryConfig);
+    </script>
 @endsection

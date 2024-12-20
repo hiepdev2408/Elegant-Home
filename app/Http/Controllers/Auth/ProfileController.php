@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\District;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\Province;
 use App\Models\Shipping;
 use App\Models\User;
+use App\Models\Variant;
 use App\Models\Ward;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -41,25 +44,53 @@ class ProfileController extends Controller
         return view('client.auth.smember.showDetailOrder', compact('order', 'events'));
     }
 
-
     public function cancel(Request $request, $id)
     {
-        // dd($request->all());
-        $order = Order::query()->findOrFail($id);
-        if ($order->status_order === 'pending') {
+        try {
+            $order = Order::query()->findOrFail($id);
+
+            if ($order->status_order !== 'pending') {
+                return back()->with('error', 'Bạn không thể hủy đơn hàng đã xử lý!');
+            }
+
+            $orderDetails = $order->orderDetails;
+
+            foreach ($orderDetails as $orderDetail) {
+                $variant = Variant::find($orderDetail->variant_id);
+                $product = Product::find($orderDetail->product_id);
+
+                if ($variant) {
+                    $variant->stock += $orderDetail->quantity;
+                    $variant->save();
+                } else if ($product) {
+                    foreach ($product->variants as $variants) {
+                        $variants->stock += $orderDetail->quantity;
+                        $variants->save();
+                    }
+                }
+            }
+
             $order->update([
                 'status_order' => 'canceled',
             ]);
+
             Shipping::create([
                 'order_id' => $order->id,
                 'name' => 'Đơn hàng đã bị hủy',
-                'note' => 'Khách hàng đã hủy đơn hàng'
+                'note' => 'Khách hàng đã hủy đơn hàng',
             ]);
-        } else {
-            return back()->with('error', 'Hủy đơn hàng thất bại!');
+
+            return back()->with('success', 'Đơn hàng đã hủy thành công!');
+        } catch (\Exception $exception) {
+            Log::error('Hủy đơn hàng thất bại.', [
+                'error' => $exception->getMessage(),
+                'order_id' => $id,
+            ]);
+
+            return back()->with('error', 'Có lỗi xảy ra khi hủy đơn hàng.');
         }
-        return back()->with('success', 'Đơn hàng đã hủy thành công!');
     }
+
 
     public function admin_cancel(Request $request, $id)
     {
@@ -89,7 +120,6 @@ class ProfileController extends Controller
         } catch (\Throwable $th) {
             return back()->with('error', 'Gửi thông tin hoàn tiền thất bại!');
         }
-
     }
     public function completed(Request $request, $id)
     {

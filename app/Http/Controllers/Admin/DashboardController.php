@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -16,37 +17,77 @@ use Illuminate\View\View;
 class DashboardController extends Controller
 {
     const PATH_VIEW = 'admin.';
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $homNay = Carbon::today();
         $homQua = Carbon::yesterday();
 
         $tongGiaoDichHomNay = $this->getOrderCountByDate($homNay);
         $tongGiaoDichHomQua = $this->getOrderCountByDate($homQua);
+
         $thayDoi = $this->calculatePercentageChange($tongGiaoDichHomNay, $tongGiaoDichHomQua);
 
-        $user = User::query()->where('role_id', '!=', 1 & 2)->count();
+        $startDate = Carbon::parse($request->get('start_date', Carbon::today('Asia/Ho_Chi_Minh')->toDateString()))->startOfDay();
+        $endDate = Carbon::parse($request->get('end_date', Carbon::today('Asia/Ho_Chi_Minh')->toDateString()))->endOfDay();
+
+        $tongSoTienTheoNgay = $this->getSalesSum($startDate, $endDate);
+
+        $user = User::query()
+            ->where('role_id', '!=', 1)
+            ->where('role_id', '!=', 2)
+            ->count();
         $users = $this->getTopUsers(10);
 
-        $order = Order::with(['orderDetails']);
-
         $totalAmount = Order::with(['orderDetails'])
+            ->where('status_order', '!=', 'canceled')
+            ->where('status_order', '!=', 'refund_completed')
             ->get()
             ->flatMap(function ($order) {
                 return $order->orderDetails;
             })
-            ->sum('total_amount'); // Tính tổng total_amount
+            ->sum('total_amount');
+
+        // Lấy dữ liệu đơn hàng theo ngày trong tuần
+        $ordersPerDay = DB::table('orders')
+            ->select(DB::raw('DAYNAME(created_at) as day, COUNT(*) as total'))
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('day')
+            ->orderByRaw("FIELD(day, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')")
+            ->get();
+
+        // Lấy doanh thu theo danh mục
+
+        $revenuePerCategory = Order::with(['orderDetails.product.category'])
+            ->get()
+            ->groupBy(function ($order) {
+                return $order->orderDetails->first()->product->category->name ?? 'Unknown';
+            })
+            ->map(function ($group) {
+                return [
+                    'category' => $group->first()->orderDetails->first()->product->category->name ?? 'Unknown',
+                    'total' => $group->sum(function ($order) {
+                        return $order->orderDetails->sum(function ($detail) {
+                            return $detail->total_amount * $detail->quantity;
+                        });
+                    }),
+                ];
+            })
+            ->values();
 
         return view(self::PATH_VIEW . __FUNCTION__, compact(
             'users',
             'user',
             'totalAmount',
             'tongGiaoDichHomNay',
+            'tongSoTienTheoNgay',
+            'thayDoi',
+            'startDate',
+            'endDate',
+            'ordersPerDay',
+            'revenuePerCategory',
         ));
     }
 
-
-    // Hàm phụ trợ
     private function getOrderCountByDate($date)
     {
         return Order::whereDate('created_at', $date)->count();
@@ -61,7 +102,7 @@ class DashboardController extends Controller
     {
         return DB::table('orders')
             ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-            ->whereBetween('orders.created_at', [$startDate, $endDate])
+            ->whereBetween('orders.created_at', [Carbon::parse($startDate)->startOfDay(), Carbon::parse($endDate)->endOfDay()])
             ->sum('order_details.total_amount');
     }
 
