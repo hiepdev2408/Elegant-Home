@@ -5,11 +5,10 @@
 @section('content')
     <section class="page-title">
         <div class="auto-container">
-            <h2>Shop Page</h2>
+            <h2>Sản phẩm</h2>
             <ul class="bread-crumb clearfix">
-                <li><a href="index.html">Home</a></li>
-                <li>Pages</li>
-                <li>Shops</li>
+                <li><a href="/">Trang chủ</a></li>
+                <li>Sản phẩm</li>
             </ul>
         </div>
     </section>
@@ -38,19 +37,19 @@
             }
         }
     </script>
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-     <script src="{{ asset('themes/client/assets/js/plugins/swiper-bundle.min.js') }}" defer="defer"></script>
-     <script src="{{ asset('themes/client/assets/js/plugins/glightbox.min.js') }}" defer="defer"></script>
- 
-     <!-- Customscript js -->
-     <script src="{{ asset('themes/client/assets/js/script.js') }}" defer="defer"></script>
-  
-     <script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ asset('themes/client/assets/js/plugins/swiper-bundle.min.js') }}" defer="defer"></script>
+    <script src="{{ asset('themes/client/assets/js/plugins/glightbox.min.js') }}" defer="defer"></script>
+
+    <!-- Customscript js -->
+    <script src="{{ asset('themes/client/assets/js/script.js') }}" defer="defer"></script>
+
+    <script>
         $(document).ready(function() {
             // Xử lý tìm kiếm
             $('#search-form').on('submit', function(e) {
                 e.preventDefault(); // Ngăn chặn hành động gửi form mặc định
-        
+
                 $.ajax({
                     url: $(this).attr('action'),
                     type: $(this).attr('method'),
@@ -64,7 +63,7 @@
                     }
                 });
             });
-        
+
             // Xử lý nhấp vào danh mục
             $('.category-link').on('click', function(e) {
                 e.preventDefault();
@@ -72,7 +71,8 @@
                 console.log('Category ID:', categoryId);
 
                 $.ajax({
-                    url: '{{ route("shop.categoryProduct", ":category_id") }}'.replace(':category_id', categoryId),
+                    url: '{{ route('shop.categoryProduct', ':category_id') }}'.replace(
+                        ':category_id', categoryId),
                     type: 'GET',
                     success: function(response) {
                         console.log("Products updated for category:", categoryId);
@@ -83,12 +83,12 @@
                     }
                 });
             });
-        
+
             // Xử lý lọc sản phẩm
             $('#filter-form').on('submit', function(e) {
-                e.preventDefault(); 
+                e.preventDefault();
                 console.log("Filter form submitted"); // Log khi form lọc được gửi
-        
+
                 $.ajax({
                     url: $(this).attr('action'),
                     type: $(this).attr('method'),
@@ -103,12 +103,9 @@
                 });
             });
         });
-        </script>
-   
- 
-    
-        {{-- lọc giá --}}
-    
-        
-    
+    </script>
+
+
+
+    {{-- lọc giá --}}
 @endsection

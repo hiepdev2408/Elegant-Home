@@ -138,7 +138,7 @@
                         <div class="order-box">
                             <ul class="list-group mb-3">
                                 <li class="list-group-item d-flex justify-content-between">
-                                    <span>Subtotal</span>
+                                    <span>Giá tiền</span>
                                     <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
@@ -146,7 +146,7 @@
                                     <span>30.000 VNĐ</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between fw-bold">
-                                    <span>Total</span>
+                                    <span>Tổng tiền</span>
                                     <span id="total-amount">
                                         {{ number_format(session('totalAmount', $totalAmount), 0, ',', '.') }} VNĐ
                                     </span>
