@@ -124,15 +124,9 @@
                                                     method="POST" style="display: none;">
                                                     @csrf
                                                 </form>
-<<<<<<< HEAD
-                                                <button class="btn btn-sm btn-outline-secondary"
-                                                    onclick="confirmReturn({{ $item->id }})">Trả
-                                                    hàng</button>
-=======
                                                 <a href="{{ route('profile.refund', $item->id) }}"
                                                     class="btn btn-sm btn-outline-secondary">Trả
                                                     hàng</a>
->>>>>>> ce521899e02c124821169925d232a0d2807a846d
                                             @endif
 
                                             @if ($item->status_order == 'return_request')
@@ -188,8 +182,6 @@
                 </div>
             </div>
         </div>
-<<<<<<< HEAD
-=======
         <div class="modal fade" id="admin_cancel" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-simple modal-edit-user">
                 <div class="modal-content p-3 p-md-5">
@@ -217,7 +209,6 @@
                 </div>
             </div>
         </div>
->>>>>>> ce521899e02c124821169925d232a0d2807a846d
     </div>
 @endsection
 
