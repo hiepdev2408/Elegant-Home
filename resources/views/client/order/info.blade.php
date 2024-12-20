@@ -135,8 +135,8 @@
                                     <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
-                                    <span>Shipping Fee</span>
-                                    <span>0 VNĐ</span>
+                                    <span>Phí vận chuyển</span>
+                                    <span>30.000 VNĐ</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between fw-bold">
                                     <span>Total</span>
@@ -147,7 +147,6 @@
                             </ul>
                             <form id="voucher-form" class="d-flex mb-3">
                                 @csrf
-                            
                                 <select name="voucher_code" class="form-control me-2" style="width: 225px; height: 35px;">
                                     <option value="">Chọn mã voucher</option>
                                     @foreach($vouchers as $item)
@@ -156,9 +155,9 @@
                                     </option>
                                     @endforeach
                                 </select>
-                            
                                 <input type="hidden" name="total_amount" value="{{ $totalAmount }}">
-                                <button type="submit" class="btn btn-success" style="height: 35px; padding: 0 10px;">Áp dụng</button>
+                                <button type="submit" class="btn btn-success" style="height: 35px; padding: 0 10px;">Áp
+                                    dụng</button>
                             </form>
 
                             
@@ -332,7 +331,6 @@
         });
     </script>
     <!-- Thêm jQuery -->
-
     <script>
         // Lấy các radio button
         const momoRadio = document.getElementById('paymentMomo');
@@ -380,28 +378,31 @@
 
         });
     </script>
-  <script>
-    $(document).ready(function() {
-        $('#voucher-form').on('submit', function(event) {
-            event.preventDefault(); // Ngăn chặn gửi form theo cách thông thường
+    <script>
+        $(document).ready(function() {
+            $('#voucher-form').on('submit', function(event) {
+                event.preventDefault(); // Ngăn chặn gửi form theo cách thông thường
 
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('order.applyVoucher') }}',
-                data: $(this).serialize(),
-                success: function(response) {
-                    $('#message').html('<div class="alert alert-success">' + response.message + '</div>');
-                    $('#total-amount').text(response.total);
-                    $('#discount-amount').text(response.discount);
-                    $('#discount-details').show(); // Hiển thị thông tin giảm giá
-                },
-                error: function(xhr) {
-                    $('#message').html('<div class="alert alert-danger">' + xhr.responseJSON.message + '</div>');
-                    $('#total-amount').text(xhr.responseJSON.total);
-                    $('#discount-details').hide(); // Ẩn thông tin giảm giá khi voucher không hợp lệ
-                }
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('order.applyVoucher') }}',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#message').html('<div class="alert alert-success">' + response
+                            .message + '</div>');
+                        $('#total-amount').text(response.total);
+                        $('#discount-amount').text(response.discount);
+                        $('#discount-details').show(); // Hiển thị thông tin giảm giá
+                    },
+                    error: function(xhr) {
+                        $('#message').html('<div class="alert alert-danger">' + xhr.responseJSON
+                            .message + '</div>');
+                        $('#total-amount').text(xhr.responseJSON.total);
+                        $('#discount-details')
+                            .hide(); // Ẩn thông tin giảm giá khi voucher không hợp lệ
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 @endsection

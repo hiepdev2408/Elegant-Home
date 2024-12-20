@@ -10,6 +10,7 @@ use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\PaymentController;
 use App\Http\Controllers\Client\ProductController;
+use App\Http\Controllers\Client\RefundController;
 use App\Http\Controllers\Client\ReviewController;
 use Illuminate\Support\Facades\Route;
 
@@ -60,12 +61,13 @@ Route::prefix('smember')
         Route::get('/order', 'order')->name('order');
         Route::get('/order/show/{id}', 'showDetailOrder')->name('order.showDetailOrder');
         Route::post('/order/cancel/{id}', 'cancel')->name('order.cancel');
+        Route::post('/order/admin_cancel/{id}', 'admin_cancel')->name('order.admin_cancel');
         Route::post('/order/completed/{id}', 'completed')->name('order.completed');
         Route::post('/order/return_request/{id}', 'return_request')->name('order.return_request');
 
         // Route cho thông tin người dùng
         Route::get('/info', 'info')->name('info');
-        Route::get('/info/show/{id}', 'showProfile')->name('info.showProfile');         
+        Route::get('/info/show/{id}', 'showProfile')->name('info.showProfile');
         Route::post('/info/update/{id}', 'update')->name('info.update');
 
         // Route cho các chức năng khác
@@ -74,6 +76,9 @@ Route::prefix('smember')
         // Route cho lấy quận/huyện và xã/phường
         Route::get('/districts/{provinceCode}', [OrderController::class, 'getDistrictsByProvince'])->name('districts');
         Route::get('/wards/{districtCode}', [OrderController::class, 'getWardsByDistrict'])->name('wards');
+
+        Route::get('/refund/{id}', [RefundController::class, 'refund'])->name('refund');
+        Route::post('/refund/refund_requests', [RefundController::class, 'refundRequests'])->name('refundRequests');
     });
 // POLICY
 Route::get('policy', [ProfileController::class, 'policy'])->name('policy');
@@ -97,13 +102,13 @@ Route::prefix('products')
     });
 
 Route::get('product/{slug}', [HomeController::class, 'detail'])->name('productDetail');
-Route::post('/comments', [HomeController::class, 'store'])->name('comments');
+Route::post('/comments', [HomeController::class, 'comments'])->name('comments');
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews');
 
-    Route::post('/reviews', [ReviewController::class, 'store'])->middleware('auth')->name('review.store');
-    // Route gửi đánh giá, cần xác thực
-    // Route::middleware(['auth'])->group(function () {
-    //     Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store'); // Route cho gửi đánh giá
-    // });
+// Route gửi đánh giá, cần xác thực
+// Route::middleware(['auth'])->group(function () {
+//     Route::post('/reviews', [ReviewController::class, 'store'])->name('review.store'); // Route cho gửi đánh giá
+// });
 Route::get('favourite/{id}', [HomeController::class, 'favourite'])->name('favourite');
 
 //CART
@@ -123,8 +128,8 @@ Route::prefix('order')
     ->controller(OrderController::class)
     ->group(function () {
         Route::get('/info', 'index')->name('order');
-       
-        Route::post('/apply-voucher', 'applyVoucher')->name('order.applyVoucher');  
+
+        Route::post('/apply-voucher', 'applyVoucher')->name('order.applyVoucher');
         Route::post('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
         Route::get('/thank', [PaymentController::class, 'thank'])->name('thank');
 

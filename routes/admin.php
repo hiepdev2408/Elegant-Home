@@ -28,7 +28,7 @@ Route::prefix('admin')
         //ĐỌC THÔNG BÁO
         Route::post('/mark-read', [DashboardController::class, 'markRead'])->name('mark-read');
         // Account
-
+    
         Route::prefix('account')
             ->as('account.')
             ->group(function () {
@@ -186,7 +186,7 @@ Route::prefix('admin')
         });
 
         // Chatrealtime
-
+    
         Route::get('/chat-rooms', [ChatController::class, 'listChatRooms'])->name('chat');
         Route::get('/{roomId}/{receiverId}', [ChatController::class, 'showChatAdmin'])
             ->name('chat.admin');
@@ -208,10 +208,14 @@ Route::prefix('admin')
             ->as('orders.')
             ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/detail/{id}', 'detail')->name('detail');
+            Route::post('cancel/{id}', 'cancel')->name('cancel');
             Route::post('confirmed/{id}', 'confirmed')->name('confirmed');
             Route::post('shipping/{id}', 'shipping')->name('shipping');
             Route::post('delivered/{id}', 'delivered')->name('delivered');
             Route::post('return_request/{id}', 'return_request')->name('return_request');
+            Route::post('refuse_return/{id}', 'refuse_return')->name('refuse_return');
+            Route::post('refunded/{id}', 'refunded')->name('refunded');
             Route::post('returned_item_received/{id}', 'returned_item_received')->name('returned_item_received');
             Route::post('refund_completed/{id}', 'refund_completed')->name('refund_completed');
         });
@@ -232,13 +236,13 @@ Route::prefix('admin')
 
 
     });
-    Route::prefix('flashsales')
-            ->as('flashsales.')
-            ->group(function () {
-                Route::get('/', [SaleController::class, 'index'])->name('index');
-                Route::get('create', [SaleController::class, 'create'])->name('create');
-                Route::post('store', [SaleController::class, 'store'])->name('store');
-                Route::get('edit/{sale}', [SaleController::class, 'edit'])->name('edit'); // Sử dụng Sale model
-                Route::put('update/{sale}', [SaleController::class, 'update'])->name('update'); // Sử dụng Sale model
-                Route::delete('destroy/{sale}', [SaleController::class, 'destroy'])->name('destroy'); // Sử dụng Sale model
-            });
+Route::prefix('flashsales')
+    ->as('flashsales.')
+    ->group(function () {
+        Route::get('/', [SaleController::class, 'index'])->name('index');
+        Route::get('create', [SaleController::class, 'create'])->name('create');
+        Route::post('store', [SaleController::class, 'store'])->name('store');
+        Route::get('edit/{sale}', [SaleController::class, 'edit'])->name('edit'); // Sử dụng Sale model
+        Route::put('update/{sale}', [SaleController::class, 'update'])->name('update'); // Sử dụng Sale model
+        Route::delete('destroy/{sale}', [SaleController::class, 'destroy'])->name('destroy'); // Sử dụng Sale model
+    });

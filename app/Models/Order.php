@@ -10,12 +10,12 @@ class Order extends Model
     use HasFactory;
 
     const STATUS_ORDER = [
-        'pending'   => 'Chờ xác nhận',
+        'pending' => 'Chờ xác nhận',
         'comfirmed' => 'Đã xác nhận',
-        'shipping'  => 'Chờ giao hàng',
+        'shipping' => 'Chờ giao hàng',
         'delivered' => 'Đang giao hàng',
         'completed' => 'Đã nhận hàng',
-        'canceled'  => 'Đơn hàng đã hủy',
+        'canceled' => 'Đơn hàng đã hủy',
         'return_request' => 'Yêu cầu trả hàng',
         'return_approved' => 'Xác nhận trả hàng',
         'returned_item_received' => 'Đã nhận được hàng trả lại',
@@ -24,7 +24,7 @@ class Order extends Model
 
     const STATUS_PAYMENT = [
         'unpaid' => 'Chưa thanh tóan',
-        'paid'   => 'Đã thanh toán'
+        'paid' => 'Đã thanh toán'
     ];
 
     const STATUS_ORDER_PENDING = 'pending';
@@ -70,7 +70,13 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function reviews(){
+    public function reviews()
+    {
         return $this->hasMany(Review::class);
+    }
+
+    public function shipping()
+    {
+        return $this->hasMany(Shipping::class, 'order_id', 'id');
     }
 }

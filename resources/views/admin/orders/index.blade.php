@@ -9,13 +9,8 @@
         <h4>
             <span class="text-muted fw-light">Đơn hàng /</span> Danh sách đơn hàng
         </h4>
-        @if (session()->has('success'))
-            <div class="alert alert-success fw-bold">
-                {{ session()->get('success') }}
-            </div>
-        @endif
         <div class="card-header d-flex justify-content-end align-items-center mb-3">
-            <form action="{{ route('orders.index') }}" method="GET" class="row g-3">
+            <form action="{{ route('orders.index') }}" method="GET" class="row g-3 mt-1">
                 <!-- Lọc theo ID đơn hàng -->
 
                 <div class="col-md-3">
@@ -55,7 +50,6 @@
                             <th>Trạng thái</th>
                             <th>Tổng tiền</th>
                             <th>Thao tác</th>
-                            <th>Hành Động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,7 +84,10 @@
                                                 @case('delivered') bg-success @break
                                                 @case('completed') bg-info @break
                                                 @case('canceled') bg-danger @break
+                                                @case('admin_canceled') bg-danger @break
                                                 @case('return_request') bg-danger @break
+                                                @case('refuse_return') bg-danger @break
+                                                @case('sent_information') bg-primary @break
                                                 @case('return_approved') bg-danger @break
                                                 @case('returned_item_received') bg-danger @break
                                                 @case('refund_completed') bg-danger @break
@@ -101,9 +98,12 @@
                                             'confirmed' => 'Xác nhận',
                                             'shipping' => 'Chờ giao hàng',
                                             'delivered' => 'Đang giao hàng',
-                                            'completed' => 'Đã nhận hàng',
-                                            'canceled' => 'Đã hủy',
+                                            'completed' => 'Giao hàng thành công',
+                                            'canceled' => 'Người mua đã hủy',
+                                            'admin_canceled' => 'Đã hủy bởi' . Auth::user()->name,
                                             'return_request' => 'Yêu cầu trả hàng',
+                                            'refuse_return' => 'Từ chối trả hàng',
+                                            'sent_information' => 'Thông tin hoàn tiền',
                                             'return_approved' => 'Chấp nhận trả hàng',
                                             'returned_item_received' => 'Đã nhận được hàng trả lại',
                                             'refund_completed' => 'Hoàn tiền thành công',
@@ -113,51 +113,9 @@
                                 <td>{{ number_format($order->total_amount, 0, ',', '.') }} VNĐ</td>
                                 <td>
                                     <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Xem Chi Tiết"
-                                        class="btn btn-info btn-sm me-1" href="{{ route('attributes.edit', $order->id) }}">
+                                        class="btn btn-info btn-sm me-1" href="{{ route('orders.detail', $order->id) }}">
                                         <i class="mdi mdi-eye"></i>
                                     </a>
-                                </td>
-                                <td>
-                                    @if ($order->status_order == 'pending')
-                                        <form action="{{ route('orders.confirmed', $order->id) }}" method="post">
-                                            @csrf
-                                            <button type="submit" class="btn btn-primary"
-                                                onclick="return confirm('Bạn có chắc chắn?')">Xác nhận</button>
-                                        </form>
-                                    @elseif ($order->status_order == 'confirmed')
-                                        <form action="{{ route('orders.shipping', $order->id) }}" method="post">
-                                            @csrf
-                                            <button type="submit" class="btn btn-warning"
-                                                onclick="return confirm('Bạn có chắc chắn?')">Chờ giao hàng</button>
-                                        </form>
-                                    @elseif ($order->status_order == 'shipping')
-                                        <form action="{{ route('orders.delivered', $order->id) }}" method="post">
-                                            @csrf
-                                            <button type="submit" class="btn btn-success"
-                                                onclick="return confirm('Bạn có chắc chắn?')">Đang giao hàng</button>
-                                        </form>
-                                    @elseif ($order->status_order == 'canceled')
-                                        <form action="" method="post">
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger">Xóa</button>
-                                        </form>
-                                    @elseif ($order->status_order == 'return_request')
-                                        <form action="{{ route('orders.return_request', $order->id) }}" method="post">
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger">Xác nhận</button>
-                                        </form>
-                                    @elseif ($order->status_order == 'return_approved')
-                                        <form action="{{ route('orders.returned_item_received', $order->id) }}"
-                                            method="post">
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger">Đã nhận được hàng</button>
-                                        </form>
-                                    @elseif ($order->status_order == 'returned_item_received')
-                                        <form action="{{ route('orders.refund_completed', $order->id) }}" method="post">
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger">Hoàn tiền</button>
-                                        </form>
-                                    @endif
                                 </td>
                             </tr>
                         @endforeach
