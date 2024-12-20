@@ -18,84 +18,8 @@
             <div class="row clearfix">
                 <!-- Content Side -->
                 <div class="content-side col-lg-9 col-md-12 col-sm-12">
-                    <div class="shops-outer">
-                        <div class="row clearfix">
-                            @foreach ($products as $product)
-                                <div class="shop-item col-lg-4 col-md-4 col-sm-12">
-                                    <div class="inner-box">
-                                        <div class="image">
-                                            <a href="{{ route('productDetail', ['slug' => $product->slug]) }}"><img
-                                                    src="{{ Storage::url($product->img_thumbnail) }}" alt="" /></a>
-                                            <div class="options-box">
-                                                <ul class="option-list">
-                                                    <li><a class="flaticon-resize" href="shop-detail.html"></a></li>
-                                                    <li><a class="flaticon-heart" href="shop-detail.html"></a></li>
-                                                    <li><a class="flaticon-shopping-cart-2"
-                                                            href="{{ route('productDetail', ['slug' => $product->slug]) }}"></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="lower-content">
-                                            <div class="rating">
-                                                <span class="fa fa-star"></span>
-                                                <span class="fa fa-star"></span>
-                                                <span class="fa fa-star"></span>
-                                                <span class="fa fa-star"></span>
-                                                <span class="light fa fa-star"></span>
-                                            </div>
-                                            <h6><a
-                                                    href="{{ route('productDetail', ['slug' => $product->slug]) }}">{{ Str::limit($product->name, 30) }}</a>
-                                            </h6>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="price">
-                                                    @if ($product->price_sale == '')
-                                                        <span
-                                                            class="new-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
-                                                    @else
-                                                        <span
-                                                            class="old-price">{{ number_format($product->base_price ?? 0, 0, ',', '.') }}VNĐ</span>
-                                                        <span
-                                                            class="new-price">{{ number_format($product->price_sale ?? 0, 0, ',', '.') }}VNĐ</span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            @endforeach
-                            <!-- Shop Item -->
-                        </div>
-
-
-                        <!-- Styled Pagination -->
-                        <div class="styled-pagination text-center">
-                            <ul>
-                                @if ($products->onFirstPage())
-                                    <li class="next disabled"><span class="fa fa-angle-double-left"></span></li>
-                                @else
-                                    <li class="next"><a href="{{ $products->previousPageUrl() }}"><span
-                                                class="fa fa-angle-double-left"></span></a></li>
-                                @endif
-
-                                @for ($i = 1; $i <= $products->lastPage(); $i++)
-                                    @if ($i == $products->currentPage())
-                                        <li><a href="#" class="active">{{ $i }}</a></li>
-                                    @else
-                                        <li><a href="{{ $products->url($i) }}">{{ $i }}</a></li>
-                                    @endif
-                                @endfor
-
-                                @if ($products->hasMorePages())
-                                    <li class="next"><a href="{{ $products->nextPageUrl() }}"><span
-                                                class="fa fa-angle-double-right"></span></a></li>
-                                @else
-                                    <li class="next disabled"><span class="fa fa-angle-double-right"></span></li>
-                                @endif
-                            </ul>
-                        </div>
-                        <!-- End Styled Pagination -->
+                    <div id="product-results" class="shops-outer">
+                        @include('client.shops.partials.productfilter')
                     </div>
                 </div>
                 @include('client.shops.partials.sideBarfilter', ['categories' => $categories])
@@ -114,9 +38,77 @@
             }
         }
     </script>
-    <script src="{{ asset('themes/client/assets/js/plugins/swiper-bundle.min.js') }}" defer="defer"></script>
-    <script src="{{ asset('themes/client/assets/js/plugins/glightbox.min.js') }}" defer="defer"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+     <script src="{{ asset('themes/client/assets/js/plugins/swiper-bundle.min.js') }}" defer="defer"></script>
+     <script src="{{ asset('themes/client/assets/js/plugins/glightbox.min.js') }}" defer="defer"></script>
+ 
+     <!-- Customscript js -->
+     <script src="{{ asset('themes/client/assets/js/script.js') }}" defer="defer"></script>
+  
+     <script>
+        $(document).ready(function() {
+            // Xử lý tìm kiếm
+            $('#search-form').on('submit', function(e) {
+                e.preventDefault(); // Ngăn chặn hành động gửi form mặc định
+        
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#product-results').html(response); // Cập nhật danh sách sản phẩm
+                        console.log("Search results updated."); // Log khi cập nhật
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error:", xhr.responseText);
+                    }
+                });
+            });
+        
+            // Xử lý nhấp vào danh mục
+            $('.category-link').on('click', function(e) {
+                e.preventDefault();
+                var categoryId = $(this).data('id');
+                console.log('Category ID:', categoryId);
 
-    <!-- Customscript js -->
-    <script src="{{ asset('themes/client/assets/js/script.js') }}" defer="defer"></script>
+                $.ajax({
+                    url: '{{ route("shop.categoryProduct", ":category_id") }}'.replace(':category_id', categoryId),
+                    type: 'GET',
+                    success: function(response) {
+                        console.log("Products updated for category:", categoryId);
+                        $('#product-results').html(response);
+                    },
+                    error: function(xhr) {
+                        console.error("AJAX Error:", xhr.responseText);
+                    }
+                });
+            });
+        
+            // Xử lý lọc sản phẩm
+            $('#filter-form').on('submit', function(e) {
+                e.preventDefault(); 
+                console.log("Filter form submitted"); // Log khi form lọc được gửi
+        
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#product-results').html(response); // Cập nhật danh sách sản phẩm
+                        console.log("Filter results updated."); // Log khi cập nhật
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error:", xhr.responseText);
+                    }
+                });
+            });
+        });
+        </script>
+   
+ 
+    
+        {{-- lọc giá --}}
+    
+        
+    
 @endsection

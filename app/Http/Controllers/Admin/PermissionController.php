@@ -17,7 +17,8 @@ class PermissionController extends Controller
 
     public function __construct(
         protected Permission $model
-    ) {}
+    ) {
+    }
 
     public function access(Role $role, string $id)
     {
@@ -40,6 +41,15 @@ class PermissionController extends Controller
             'permissions.index',
             'permissions.create',
             'permissions.edit',
+            'vouchers.index',
+            'vouchers.create',
+            'vouchers.edit',
+            'sales.index',
+            'sales.create',
+            'sales.edit',
+            'blogs.index',
+            'blogs.create',
+            'blogs.edit',
         ])->get()->groupBy(function ($permission) {
             if (str_contains($permission->slug, 'products')) {
                 return 'roleProduct';
@@ -51,6 +61,12 @@ class PermissionController extends Controller
                 return 'roleAttributeValue';
             } elseif (str_contains($permission->slug, 'permissions')) {
                 return 'rolePermission';
+            } elseif (str_contains($permission->slug, 'vouchers')) {
+                return 'roleVouchers';
+            } elseif (str_contains($permission->slug, 'sales')) {
+                return 'roleSales';
+            } elseif (str_contains($permission->slug, 'blogs')) {
+                return 'roleBlogs';
             }
         });
 
@@ -62,6 +78,9 @@ class PermissionController extends Controller
             'roleAttribute' => $permissions->get('roleAttribute') ?? collect(),
             'roleAttribute_value' => $permissions->get('roleAttributeValue') ?? collect(),
             'rolePermission' => $permissions->get('rolePermission') ?? collect(),
+            'roleVouchers' => $permissions->get('roleVouchers') ?? collect(),
+            'roleSales' => $permissions->get('roleSales') ?? collect(),
+            'roleBlogs' => $permissions->get('roleBlogs') ?? collect(),
         ]);
     }
 

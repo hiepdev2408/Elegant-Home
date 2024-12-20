@@ -13,7 +13,9 @@ class StockMovement extends Model
         'user_id',
         'variant_id',
         'quantity',
-        'type'
+        'type',
+        'Total_import_price',
+        'note'
     ];
 
     public function user()

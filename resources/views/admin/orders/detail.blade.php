@@ -38,7 +38,10 @@
                             @case('delivered') bg-label-success rounded-pill @break
                             @case('completed') bg-label-info rounded-pill @break
                             @case('canceled') bg-label-danger rounded-pill @break
+                            @case('admin_canceled') bg-label-danger rounded-pill @break
                             @case('return_request') bg-label-danger rounded-pill @break
+                            @case('refuse_return') bg-label-danger rounded-pill @break
+                            @case('sent_information') bg-label-primary rounded-pill @break
                             @case('return_approved') bg-label-danger rounded-pill @break
                             @case('returned_item_received') bg-label-danger rounded-pill @break
                             @case('refund_completed') bg-label-danger rounded-pill @break
@@ -49,9 +52,12 @@
                             'confirmed' => 'Xác nhận',
                             'shipping' => 'Chờ giao hàng',
                             'delivered' => 'Đang giao hàng',
-                            'completed' => 'Đã nhận hàng',
-                            'canceled' => 'Đã hủy',
+                            'completed' => 'Giao hàng thành công',
+                            'canceled' => 'Người mua đã hủy',
+                            'admin_canceled' => 'Đã hủy bởi' . Auth::user()->name,
                             'return_request' => 'Yêu cầu trả hàng',
+                            'refuse_return' => 'Từ chối trả hàng',
+                            'sent_information' => 'Thông tin hoàn tiền',
                             'return_approved' => 'Chấp nhận trả hàng',
                             'returned_item_received' => 'Đã nhận được hàng trả lại',
                             'refund_completed' => 'Hoàn tiền thành công',
@@ -65,8 +71,18 @@
             </div>
             <div class="d-flex align-content-center flex-wrap gap-2">
                 <a class="btn btn-info" href="{{ route('orders.index') }}">Quay Lại</a>
+                @if (isset($rufund) && $rufund->order_id === $order->id)
+                    <a class="btn btn-success" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#rufund">Lý
+                        do
+                        hoàn hàng</a>
+                @endif
 
                 @if ($order->status_order == 'pending')
+                    <form action="{{ route('orders.cancel', $order->id) }}" method="post">
+                        @csrf
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancel">Hủy
+                            đơn</button>
+                    </form>
                     <form action="{{ route('orders.confirmed', $order->id) }}" method="post">
                         @csrf
                         <button type="submit" class="btn btn-primary" onclick="return confirm('Bạn có chắc chắn?')">Xác
@@ -90,16 +106,14 @@
                         <button type="submit" class="btn btn-danger">Xóa</button>
                     </form>
                 @elseif ($order->status_order == 'return_request')
-                    <form action="{{ route('orders.return_request', $order->id) }}" method="post">
-                        @csrf
-                        <button type="submit" class="btn btn-danger">Xác nhận</button>
-                    </form>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#refuse">Từ
+                        chối</button>
                 @elseif ($order->status_order == 'return_approved')
                     <form action="{{ route('orders.returned_item_received', $order->id) }}" method="post">
                         @csrf
                         <button type="submit" class="btn btn-danger">Kiểm tra hàng hoàn</button>
                     </form>
-                @elseif ($order->status_order == 'returned_item_received')
+                @elseif ($order->status_order == 'returned_item_received' || $order->status_order == 'sent_information')
                     <form action="{{ route('orders.refund_completed', $order->id) }}" method="post">
                         @csrf
                         <button type="submit" class="btn btn-danger">Hoàn tiền</button>
@@ -148,7 +162,11 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>{{ number_format($item->product->price_sale, 0, ',', '.') }} VND</td>
+                                            @if ($item->product->price_sale == '')
+                                                <td>{{ number_format($item->product->base_price, 0, ',', '.') }} VND</td>
+                                            @else
+                                                <td>{{ number_format($item->product->price_sale, 0, ',', '.') }} VND</td>
+                                            @endif
                                             <td>{{ $item->quantity }}</td>
                                             <td>{{ number_format($item->total_amount, 0, ',', '.') }} VND</td>
                                         </tr>
@@ -213,13 +231,13 @@
                             @endphp
 
                             @foreach ($events as $item)
-                                @if ($item->name === 'Đã nhận hàng')
+                                @if ($item->name === 'Giao hàng thành công')
                                     @php $hasReceived = true; @endphp
                                 @endif
                             @endforeach
 
                             @foreach ($events as $item)
-                                @if ($item->name !== 'Đang giao hàng' && $item->name !== 'Đã nhận hàng')
+                                @if ($item->name !== 'Đang giao hàng' && $item->name !== 'Giao hàng thành công')
                                     <li
                                         class="timeline-item timeline-item-transparent {{ !$loop->last ? 'border-primary' : 'border-transparent' }}">
                                         <span class="timeline-point timeline-point-primary"></span>
@@ -230,18 +248,18 @@
                                                     |
                                                     {{ $item->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('h:i A') }}</span>
                                             </div>
+                                            <p class="mt-2">{{ $item->note }}</p>
                                         </div>
                                     </li>
                                 @elseif ($item->name === 'Đang giao hàng')
-                                    {{-- Hiển thị "Đã nhận hàng" nếu chưa có trong danh sách --}}
+                                    {{-- Hiển thị "Giao hàng thành công" nếu chưa có trong danh sách --}}
                                     @if (!$hasReceived)
                                         <li class="timeline-item timeline-item-transparent">
                                             <span class="timeline-point timeline-point-secondary"></span>
                                             <div class="timeline-event">
                                                 <div class="timeline-header">
-                                                    <h6 class="mb-0 mt-1">Đã nhận hàng</h6>
+                                                    <h6 class="mb-0 mt-1">Giao hàng thành công</h6>
                                                 </div>
-                                                {{-- <p class="mt-2">Package has left an Amazon facility, NY</p> --}}
                                             </div>
                                         </li>
                                     @endif
@@ -256,9 +274,10 @@
                                                     |
                                                     {{ $item->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('h:i A') }}</span>
                                             </div>
+                                            <p class="mt-2">{{ $item->note }}</p>
                                         </div>
                                     </li>
-                                @elseif ($item->name === 'Đã nhận hàng')
+                                @elseif ($item->name === 'Giao hàng thành công')
                                     <li
                                         class="timeline-item timeline-item-transparent {{ !$loop->last ? 'border-primary' : 'border-transparent' }}">
                                         <span class="timeline-point timeline-point-primary"></span>
@@ -269,6 +288,7 @@
                                                     |
                                                     {{ $item->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('h:i A') }}</span>
                                             </div>
+                                            <p class="mt-2">{{ $item->note }}</p>
                                         </div>
                                     </li>
                                 @endif
@@ -493,11 +513,214 @@
             </div>
         </div>
 
+        @if (isset($rufund) && $rufund->order_id === $order->id)
+            <!-- Refund Modal-->
+            <div class="modal fade" id="rufund" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+                    <div class="modal-content p-3 p-md-5">
+                        <div class="modal-body py-3 py-md-0">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                            <div class="text-center mb-4">
+                                <h3 class="mb-2">Yêu cầu trả hàng / hoàn tiền</h3>
+                                <p class="pt-1">Thông tin chi tiết Yêu cầu trả hàng / hoàn tiền</p>
+                            </div>
+                            <form action="{{ route('orders.return_request', $order->id) }}" class="row g-4"
+                                method="POST">
+                                @csrf
+                                <div class="col-12 col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        <input type="text" class="form-control" value="{{ $rufund->reason }}"
+                                            disabled />
+                                        <label for="reason">Lý do trả hàng / hoàn tiền</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                        <input type="text" class="form-control"
+                                            value="{{ number_format($rufund->total_amount, 0, ',', '.') }} VNĐ"
+                                            disabled />
+                                        <label for="total_amount">Số tiền hoàn lại</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        <input type="text" class="form-control" value="{{ $rufund->refund_on }}"
+                                            disabled />
+                                        <label for="refund_on">Hoàn tiền vào ( Ngân Hàng/STK/Chủ Tài Khoản )</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        <textarea class="form-control" cols="30" rows="10" disabled>{{ $rufund->note }}</textarea>
+                                        <label for="modalEditUserEmail">Mô tả</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12 mt-2">
+                                    <label for="modalEditUserEmail">Ảnh chứng minh</label>
+                                    <div class="form-floating form-floating-outline">
+                                        @foreach ($prove_refunds as $item)
+                                            @if ($item->image)
+                                                <img id="myImg" class="rounded-2"
+                                                    src="{{ Storage::url($item->image) }}" width="80px">
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-12 mt-2">
+                                    <label for="modalEditUserEmail">Video chứng minh</label>
+                                    <div class="form-floating form-floating-outline">
+                                        @foreach ($prove_refunds as $item)
+                                            @if ($item->video)
+                                                <video class="rounded-2" controls src="{{ Storage::url($item->video) }}"
+                                                    width="80px"></video>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        <input type="text" class="form-control" value="{{ $rufund->email }}"
+                                            disabled />
+                                        <label for="Email">Email</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-center">
+                                    @if ($order->status_order === 'return_request')
+                                        <button type="submit" class="btn btn-primary me-sm-3 me-1">Xác nhận</button>
+                                        <button type="button" data-bs-dismiss="modal" aria-label="Close"
+                                            class="btn btn-outline-secondary">
+                                            Quay lại
+                                        </button>
+                                    @endif
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/ Refund Modal -->
+        @endif
+        <div class="col-6">
+            <div id="myModal" class="modal col-6">
+                <span class="close" id="closeBtn">&times;</span>
+                <img class="modal-contents" id="imgModal">
+            </div>
+        </div>
+
+        <div class="modal fade" id="refuse" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+                <div class="modal-content p-3 p-md-5">
+                    <div class="modal-body py-3 py-md-0">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="text-center mb-4">
+                            <h3 class="mb-2">Lý do từ chối yêu cầu trả hàng / hoàn tiền</h3>
+                            <p class="pt-1">Thông tin sẽ được gửi đến người mua hàng</p>
+                        </div>
+                        <form action="{{ route('orders.refuse_return', $order->id) }}" class="row g-4" method="POST">
+                            @csrf
+                            <div class="col-12 col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    <textarea name="note"cols="30" rows="10" class="form-control"></textarea>
+                                    <label for="modalEditUserFirstName">Lý do từ chối</label>
+                                </div>
+                                @error('note')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-primary me-sm-3 me-1">Gửi</button>
+                                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                                    aria-label="Close">Hủy bỏ</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="cancel" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+                <div class="modal-content p-3 p-md-5">
+                    <div class="modal-body py-3 py-md-0">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="text-center mb-4">
+                            <h3 class="mb-2">Lý do hủy đơn hàng</h3>
+                            <p class="pt-1">Thông tin sẽ được gửi đến người mua hàng</p>
+                        </div>
+                        <form action="{{ route('orders.cancel', $order->id) }}" class="row g-4" method="POST">
+                            @csrf
+                            <div class="col-12 col-md-12">
+                                <div class="form-floating form-floating-outline">
+                                    <textarea name="note"cols="30" rows="10" class="form-control" placeholder="Lý do từ chối..."></textarea>
+                                    <label for="note">Lý do từ chối</label>
+                                </div>
+                                @error('note')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-primary me-sm-3 me-1">Gửi</button>
+                                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                                    aria-label="Close">Hủy bỏ</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- / Content -->
 @endsection
-
+@section('style-libs')
+    <style>
+        .modal-contents {
+            margin: 15% auto;
+            display: block;
+            width: 75%;
+            max-width: 600px;
+        }
+    </style>
+@endsection
 @section('script-libs')
+    <script>
+        document.getElementById('flexCheckChecked').addEventListener('change', function() {
+            const additionalInput = document.getElementById('additionalInput');
+            if (this.checked) {
+                additionalInput.style.display = 'block'; // Hiển thị ô input
+            } else {
+                additionalInput.style.display = 'none'; // Ẩn ô input
+            }
+        });
+    </script>
+    <script>
+        // Lấy phần tử hình ảnh và modal
+        var img = document.getElementById("myImg");
+        var modal = document.getElementById("myModal");
+        var modalImg = document.getElementById("imgModal");
+        var closeBtn = document.getElementById("closeBtn");
+
+        // Khi người dùng nhấp vào hình ảnh, mở modal và hiển thị hình ảnh lớn
+        img.onclick = function() {
+            modal.style.display = "block";
+            modalImg.src = this.src; // Đặt hình ảnh modal với hình ảnh đã nhấp
+        }
+
+        // Khi người dùng nhấp vào nút đóng, đóng modal
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Khi người dùng nhấp ngoài modal, đóng modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
     <script src="{{ asset('themes') }}/admin/vendor/libs/cleavejs/cleave.js"></script>
     <script src="{{ asset('themes') }}/admin/vendor/libs/cleavejs/cleave-phone.js"></script>
     <script src="{{ asset('themes') }}/admin/js/app-ecommerce-order-details.js"></script>

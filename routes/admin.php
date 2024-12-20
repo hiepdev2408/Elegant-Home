@@ -209,10 +209,13 @@ Route::prefix('admin')
             ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/detail/{id}', 'detail')->name('detail');
+            Route::post('cancel/{id}', 'cancel')->name('cancel');
             Route::post('confirmed/{id}', 'confirmed')->name('confirmed');
             Route::post('shipping/{id}', 'shipping')->name('shipping');
             Route::post('delivered/{id}', 'delivered')->name('delivered');
             Route::post('return_request/{id}', 'return_request')->name('return_request');
+            Route::post('refuse_return/{id}', 'refuse_return')->name('refuse_return');
+            Route::post('refunded/{id}', 'refunded')->name('refunded');
             Route::post('returned_item_received/{id}', 'returned_item_received')->name('returned_item_received');
             Route::post('refund_completed/{id}', 'refund_completed')->name('refund_completed');
         });
@@ -227,10 +230,6 @@ Route::prefix('admin')
             Route::put('update/{sale}', [SaleController::class, 'update'])->name('update'); // Sử dụng Sale model
             Route::delete('destroy/{sale}', [SaleController::class, 'destroy'])->name('destroy'); // Sử dụng Sale model
         });
-
-        //Top sell
-        Route::get('top_sell', [TopSellController::class, 'index'])->name('top_sell.index');
-
 
     });
 Route::prefix('flashsales')

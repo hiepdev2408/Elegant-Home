@@ -36,12 +36,10 @@
                             <div class="inner-column">
                                 <h3>{{ $product->name }}</h3>
                                 <div class="rating">
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="light fa fa-star"></span>
-                                    <i>(4 customer review)</i>
+
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <i class="  fa fa-star {{ $i <= $averageRating ? 'filled' : '' }}"></i>
+                                    @endfor
                                 </div>
                                 @if ($product->price_sale != '')
                                     <div class="price">
@@ -108,15 +106,21 @@
                                                         @foreach ($values as $value)
                                                             @php
                                                                 // Lấy variant có thuộc tính tương ứng
-                                                                $variant = $product->variants->firstWhere(function ($variant) use ($value) {
-                                                                    return $variant->attributes->firstWhere('attributeValue.id', $value['id']);
+                                                                $variant = $product->variants->firstWhere(function (
+                                                                    $variant,
+                                                                ) use ($value) {
+                                                                    return $variant->attributes->firstWhere(
+                                                                        'attributeValue.id',
+                                                                        $value['id'],
+                                                                    );
                                                                 });
 
                                                                 $stock = $variant ? $variant->stock : 0;
                                                             @endphp
 
                                                             {{-- Gắn giá trị stock chính xác vào data-stock --}}
-                                                            <option value="{{ $value['id'] }}" data-stock="{{ $stock }}">
+                                                            <option value="{{ $value['id'] }}"
+                                                                data-stock="{{ $stock }}">
                                                                 {{ Str::limit($value['name'], 30) }}
                                                             </option>
                                                         @endforeach
@@ -130,7 +134,7 @@
                                 <div class="quantity mt-3">
                                     <h6>
                                         <span>Số lượng: </span>
-                                    <span id="variant-stock">{{ $product->variants->first()->stock }}</span>
+                                        <span id="variant-stock">{{ $product->variants->first()->stock }}</span>
                                     </h6>
                                 </div>
                                 <div class="categories"><span>Danh mục :</span>
@@ -179,7 +183,8 @@
                             <ul class="tab-btns tab-buttons clearfix">
                                 <li data-tab="#prod-details" class="tab-btn active-btn">Chi tiết sản phẩm</li>
                                 <li data-tab="#prod-info" class="tab-btn">Thông tin bổ sung</li>
-                                <li data-tab="#prod-review" class="tab-btn">Bình luận</li>
+                                <li data-tab="#prod-comment" class="tab-btn">Bình luận</li>
+                                <li data-tab="#prod-review" class="tab-btn">Đánh giá</li>
                             </ul>
                             <div class="tabs-content">
 
@@ -188,7 +193,7 @@
                                         {!! $product->content !!}
                                     </div>
                                 </div>
-                                <div class="tab p-2" id="prod-review">
+                                <div class="tab p-2" id="prod-comment">
                                     <h1 class="">Bình luận</h1>
                                     <div class="comments-area p-3">
                                         @if ($product->comments->count() == 0)
@@ -319,6 +324,79 @@
                                             bibendum dui. Aenean consequat pulvinar luctus. Suspendisse consectetur
                                             tristique tortor</p>
                                     </div>
+                                </div>
+                                <div class="tab p-2" id="prod-review">
+                                    <h1 class="">Đánh giá</h1>
+                                    <div class="comments-area p-3">
+                                        {{-- @dd($canReview) --}}
+                                        @if ($product->reviews->count() == 0)
+                                            <p>Không có đánh giá nào</p>
+                                        @else
+                                            @foreach ($product->reviews as $review)
+                                                <div class=" p-4">
+                                                    <div class="card-body">
+                                                        <div class="d-flex">
+                                                            <div>
+                                                                <h4 class="mb-1">
+                                                                    @if ($review->user->img_thumbnail)
+                                                                        <img src="{{ Storage::url($review->user->img_thumbnail) }}"
+                                                                            class="rounded-circle me-3" alt="User Avatar"
+                                                                            width="50">
+                                                                    @else
+                                                                        <img src="{{ asset('themes/image/logo.jpg') }}"
+                                                                            class="rounded-circle me-3" alt="User Avatar"
+                                                                            width="50">
+                                                                    @endif
+                                                                    {{ $review->user->name }}
+                                                                </h4>
+                                                                <small
+                                                                    class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
+                                                                <div class="rating">
+                                                                    @for ($i = 1; $i <= 5; $i++)
+                                                                        <i
+                                                                            class="fa fa-star {{ $i <= $review->rating ? 'filled' : '' }}"></i>
+                                                                    @endfor
+
+                                                                </div>
+                                                                <p class="mt-2">{{ $review->comment }}</p>
+
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+
+
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                        @if ($canReview)
+                                            <form action="{{ route('reviews') }}" method="POST">
+                                                @csrf
+                                                <div class="mb-3">
+                                                    <label for="rating" class="form-label">Đánh giá</label>
+                                                    <select name="rating" id="rating" class="form-select" required>
+                                                        <option value="5">5 Sao</option>
+                                                        <option value="4">4 Sao</option>
+                                                        <option value="3">3 Sao</option>
+                                                        <option value="2">2 Sao</option>
+                                                        <option value="1">1 Sao</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                    <label for="comment" class="form-label">Nhận xét</label>
+                                                    <textarea name="comment" id="comment" class="form-control" rows="3"></textarea>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                                            </form>
+                                        @endif
+
+                                    </div>
+
+
                                 </div>
 
                             </div>

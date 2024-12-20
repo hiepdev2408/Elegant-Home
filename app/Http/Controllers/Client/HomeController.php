@@ -16,9 +16,10 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Favourite;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Product;
-
-
+use App\Models\Review;
+use App\Models\Variant;
 
 class HomeController extends Controller
 {
@@ -111,6 +112,12 @@ class HomeController extends Controller
 
         $categoryIds = $product->categories->pluck('id');
 
+        // Tính số sao trung bình của sản phẩm
+        $averageRating = $product->reviews()->avg('rating'); // Tính giá trị trung bình của trường 'rating'
+
+        // Làm tròn số sao trung bình (nếu cần)
+        $averageRating = round($averageRating, 1);
+
         // Lấy các sản phẩm liên quan (cùng danh mục)
         $relatedProducts = Product::whereHas('categories', function ($query) use ($categoryIds) {
             $query->whereIn('id', $categoryIds);
@@ -141,8 +148,30 @@ class HomeController extends Controller
                 break;
             }
         }
+        $user = auth()->user();
 
-        return view('client.product.productDetails', compact('product', 'relatedProducts', 'otherCategoryProducts', 'attributes', 'finalPrice'));
+        // Kiểm tra xem khách hàng đã mua sản phẩm này chưa
+        $variants = $product->variants;
+        $canReview = OrderDetail::whereHas('order', function ($query) use ($user) {
+            $query->where('user_id', $user->id)
+                ->where('status_order', 'completed');
+        })
+            ->where(function ($query) use ($product) {
+                $query->where('product_id', $product->id)
+                    ->orWhereIn('variant_id', $product->variants->pluck('id'));
+            })
+            ->exists();
+
+        // Kiểm tra xem khách hàng đã đánh giá sản phẩm chưa
+        if ($canReview) {
+            $hasReviewed = Review::where('user_id', $user->id)
+                ->where('product_id', $product->id)
+                ->exists();
+
+            $canReview = !$hasReviewed; // Nếu đã đánh giá thì không được đánh giá nữa
+        }
+
+        return view('client.product.productDetails', compact('product', 'relatedProducts', 'otherCategoryProducts', 'attributes', 'finalPrice', 'canReview','averageRating'));
     }
 
     public function shop()
@@ -170,7 +199,7 @@ class HomeController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function comments(Request $request)
     {
         Comment::create([
             'comment' => $request->comment,
