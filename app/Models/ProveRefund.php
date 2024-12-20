@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Shipping extends Model
+class ProveRefund extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'order_id',
-        'name',
-        'note'
+        'return_order_id',
+        'image',
+        'video',
     ];
-    public function order()
+
+    public function return_order()
     {
-        return $this->belongsTo(Order::class, 'order_id', 'id');
+        $this->belongsToMany(ReturnOrder::class);
     }
 }
