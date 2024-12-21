@@ -19,6 +19,13 @@
                                 <th>Trạng thái</th>
                                 <th>Tổng tiền</th>
                                 <th>Hành động</th>
+                                <th>
+                                        <form action="{{ route('chat.create', Auth::user()->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-outline-warning mx-2">Liên
+                                                Hệ
+                                                Admin</button>
+                                        </form></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -66,22 +73,6 @@
                                     <td> {{ number_format($item->total_amount, 0, ',', '.') }} VND</td>
                                     <td>
                                         <div class="d-flex align-content-center">
-                                            <!-- Liên hệ admin -->
-                                            @if (!in_array($item->status_order, ['canceled', 'return_request', 'return_approved', 'returned_item_received']))
-                                                <form action="{{ route('chat.create', Auth::user()->id) }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-outline-warning mx-2">Liên
-                                                        Hệ
-                                                        Admin</button>
-                                                </form>
-                                            @else
-                                                <form action="{{ route('chat.create', Auth::user()->id) }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-outline-warning mx-2">Liên
-                                                        Hệ
-                                                        Admin</button>
-                                                </form>
-                                            @endif
 
                                             <a href="#" class="btn btn-sm btn-outline-primary me-2"
                                                 data-bs-toggle="modal" data-bs-target="#orderDetailModal"
@@ -156,6 +147,7 @@
                                             @endif
                                         </div>
                                     </td>
+                                    <td>#</td>
                                 </tr>
                             @endforeach
                         </tbody>
