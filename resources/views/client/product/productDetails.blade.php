@@ -389,27 +389,32 @@
                                                 </div>
                                             @endforeach
                                         @endif
-                                        @if ($canReview)
-                                            <form action="{{ route('reviews') }}" method="POST">
-                                                @csrf
-                                                <div class="mb-3">
-                                                    <label for="rating" class="form-label">Đánh giá</label>
-                                                    <select name="rating" id="rating" class="form-select" required>
-                                                        <option value="5">5 Sao</option>
-                                                        <option value="4">4 Sao</option>
-                                                        <option value="3">3 Sao</option>
-                                                        <option value="2">2 Sao</option>
-                                                        <option value="1">1 Sao</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                    <label for="comment" class="form-label">Nhận xét</label>
-                                                    <textarea name="comment" id="comment" class="form-control" rows="3"></textarea>
-                                                </div>
-                                                <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
-                                            </form>
+                                        @if (Auth::check())
+                                            @if ($canReview)
+                                                <form action="{{ route('reviews') }}" method="POST">
+                                                    @csrf
+                                                    <div class="mb-3">
+                                                        <label for="rating" class="form-label">Đánh giá</label>
+                                                        <select name="rating" id="rating" class="form-select"
+                                                            required>
+                                                            <option value="5">5 Sao</option>
+                                                            <option value="4">4 Sao</option>
+                                                            <option value="3">3 Sao</option>
+                                                            <option value="2">2 Sao</option>
+                                                            <option value="1">1 Sao</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <input type="hidden" name="product_id"
+                                                            value="{{ $product->id }}">
+                                                        <label for="comment" class="form-label">Nhận xét</label>
+                                                        <textarea name="comment" id="comment" class="form-control" rows="3"></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                                                </form>
+                                            @endif
                                         @endif
+
 
                                     </div>
 
