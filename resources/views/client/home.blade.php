@@ -263,11 +263,10 @@
 
                                 <div class="lower-content p-3">
                                     <div class="rating">
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="light fa fa-star"></span>
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <i
+                                                class="  fa fa-star {{ $i <= round($product->reviews()->avg('rating'), 1) ? 'filled' : '' }}"></i>
+                                        @endfor
                                     </div>
                                     <h6><a
                                             href="{{ route('productDetail', ['slug' => $product->slug]) }}">{{ Str::limit($product->name, 30) }}</a>
@@ -303,7 +302,11 @@
                     @foreach ($sales as $sale)
                         <h4><span>Khuyến mãi:</span> {{ number_format($sale->discount_percentage, 0, ',', '.') }}%</h4>
                         <div class="sale-timer" id="sale-timer-{{ $sale->id }}">
-                            <p><strong>Thời Gian:</strong> Từ {{ \Carbon\Carbon::parse($sale->start_date)->setTimezone('Asia/Ho_Chi_Minh')->format('d-m-Y H:i') }} đến {{ \Carbon\Carbon::parse($sale->end_date)->setTimezone('Asia/Ho_Chi_Minh')->format('d-m-Y H:i') }}</p>
+                            <p><strong>Thời Gian:</strong> Từ
+                                {{ \Carbon\Carbon::parse($sale->start_date)->setTimezone('Asia/Ho_Chi_Minh')->format('d-m-Y H:i') }}
+                                đến
+                                {{ \Carbon\Carbon::parse($sale->end_date)->setTimezone('Asia/Ho_Chi_Minh')->format('d-m-Y H:i') }}
+                            </p>
                             <p>Thời gian còn lại: <span id="countdown-{{ $sale->id }}"></span></p>
                         </div>
                     @endforeach
@@ -1006,11 +1009,10 @@
                                 </div>
                                 <div class="lower-content p-3">
                                     <div class="rating">
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="light fa fa-star"></span>
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <i
+                                                class="  fa fa-star {{ $i <= round($product->reviews()->avg('rating'), 1) ? 'filled' : '' }}"></i>
+                                        @endfor
                                     </div>
                                     <h6><a
                                             href="{{ route('productDetail', ['slug' => $product->slug]) }}">{{ Str::limit($product->name, 30) }}</a>

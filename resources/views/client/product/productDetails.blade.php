@@ -2,6 +2,24 @@
 @section('title')
     {{ $product->name }}
 @endsection
+@section('style')
+    <style>
+        .stars {
+            display: inline-block;
+        }
+
+        .stars i {
+            color: #dcdcdc;
+            /* Màu sao chưa được đánh giá (màu xám) */
+            font-size: 20px;
+        }
+
+        .stars i.filled {
+            color: #ffcc00;
+            /* Màu vàng cho các sao đã được đánh giá */
+        }
+    </style>
+@endsection
 @section('content')
     <div class="page-wrapper">
         <section class="shop-detail-section">
@@ -35,8 +53,7 @@
                         <div class="content-column col-lg-6 col-md-12 col-sm-12">
                             <div class="inner-column">
                                 <h3>{{ $product->name }}</h3>
-                                <div class="rating">
-
+                                <div class="stars">
                                     @for ($i = 1; $i <= 5; $i++)
                                         <i class="  fa fa-star {{ $i <= $averageRating ? 'filled' : '' }}"></i>
                                     @endfor
@@ -351,7 +368,7 @@
                                                                 </h4>
                                                                 <small
                                                                     class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
-                                                                <div class="rating">
+                                                                <div class="stars">
                                                                     @for ($i = 1; $i <= 5; $i++)
                                                                         <i
                                                                             class="fa fa-star {{ $i <= $review->rating ? 'filled' : '' }}"></i>
@@ -372,27 +389,32 @@
                                                 </div>
                                             @endforeach
                                         @endif
-                                        @if ($canReview)
-                                            <form action="{{ route('reviews') }}" method="POST">
-                                                @csrf
-                                                <div class="mb-3">
-                                                    <label for="rating" class="form-label">Đánh giá</label>
-                                                    <select name="rating" id="rating" class="form-select" required>
-                                                        <option value="5">5 Sao</option>
-                                                        <option value="4">4 Sao</option>
-                                                        <option value="3">3 Sao</option>
-                                                        <option value="2">2 Sao</option>
-                                                        <option value="1">1 Sao</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                    <label for="comment" class="form-label">Nhận xét</label>
-                                                    <textarea name="comment" id="comment" class="form-control" rows="3"></textarea>
-                                                </div>
-                                                <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
-                                            </form>
+                                        @if (Auth::check())
+                                            @if ($canReview)
+                                                <form action="{{ route('reviews') }}" method="POST">
+                                                    @csrf
+                                                    <div class="mb-3">
+                                                        <label for="rating" class="form-label">Đánh giá</label>
+                                                        <select name="rating" id="rating" class="form-select"
+                                                            required>
+                                                            <option value="5">5 Sao</option>
+                                                            <option value="4">4 Sao</option>
+                                                            <option value="3">3 Sao</option>
+                                                            <option value="2">2 Sao</option>
+                                                            <option value="1">1 Sao</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <input type="hidden" name="product_id"
+                                                            value="{{ $product->id }}">
+                                                        <label for="comment" class="form-label">Nhận xét</label>
+                                                        <textarea name="comment" id="comment" class="form-control" rows="3"></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                                                </form>
+                                            @endif
                                         @endif
+
 
                                     </div>
 

@@ -151,27 +151,33 @@ class HomeController extends Controller
         $user = auth()->user();
 
         // Kiểm tra xem khách hàng đã mua sản phẩm này chưa
-        $variants = $product->variants;
-        $canReview = OrderDetail::whereHas('order', function ($query) use ($user) {
-            $query->where('user_id', $user->id)
-                ->where('status_order', 'completed');
-        })
-            ->where(function ($query) use ($product) {
-                $query->where('product_id', $product->id)
-                    ->orWhereIn('variant_id', $product->variants->pluck('id'));
+        if ($user) {
+            $canReview = OrderDetail::whereHas('order', function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->where('status_order', 'completed');
             })
-            ->exists();
-
-        // Kiểm tra xem khách hàng đã đánh giá sản phẩm chưa
-        if ($canReview) {
-            $hasReviewed = Review::where('user_id', $user->id)
-                ->where('product_id', $product->id)
+                ->where(function ($query) use ($product) {
+                    $query->where('product_id', $product->id)
+                        ->orWhereIn('variant_id', $product->variants->pluck('id'));
+                })
                 ->exists();
 
-            $canReview = !$hasReviewed; // Nếu đã đánh giá thì không được đánh giá nữa
+            // Kiểm tra xem khách hàng đã đánh giá sản phẩm chưa
+            if ($canReview) {
+                $hasReviewed = Review::where('user_id', $user->id)
+                    ->where('product_id', $product->id)
+                    ->exists();
+
+                $canReview = !$hasReviewed; // Nếu đã đánh giá thì không được đánh giá nữa
+            }
+            return view('client.product.productDetails', compact('product', 'relatedProducts', 'otherCategoryProducts', 'attributes', 'finalPrice', 'canReview', 'averageRating'));
+        }
+        else{
+            return view('client.product.productDetails', compact('product', 'relatedProducts', 'otherCategoryProducts', 'attributes', 'finalPrice', 'averageRating'));
         }
 
-        return view('client.product.productDetails', compact('product', 'relatedProducts', 'otherCategoryProducts', 'attributes', 'finalPrice', 'canReview','averageRating'));
+
+
     }
 
     public function shop()
