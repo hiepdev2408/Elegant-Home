@@ -159,7 +159,7 @@
                                             <div class="form-floating form-floating-outline mb-4">
                                                 <input type="number" id="variant_price_modifier_0"
                                                     name="variants[0][price_modifier]" class="form-control"
-                                                    step="0.01" placeholder="Giá điều chỉnh"
+                                                    step="0.01" placeholder="Giá điều chỉnh" max="99999999"
                                                     value="{{ old('variants[0][price_modifier]') }}">
                                                 <label for="variant_price_modifier_0">Giá điều chỉnh</label>
                                             </div>
@@ -396,7 +396,7 @@
             </div>
 
             <div class="form-floating form-floating-outline mb-4">
-            <input type="number" id="variant_price_modifier_${variantIndex}" name="variants[${variantIndex}][price_modifier]" class="form-control" step="0.01" placeholder="Giá điều chỉnh">
+            <input type="number" id="variant_price_modifier_${variantIndex}" name="variants[${variantIndex}][price_modifier]" max="99999999" class="form-control" step="0.01" placeholder="Giá điều chỉnh">
             <label for="variant_price_modifier_${variantIndex}">Giá điều chỉnh</label>
             </div>
 

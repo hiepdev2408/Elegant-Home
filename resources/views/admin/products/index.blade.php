@@ -104,13 +104,6 @@
                                         thiết</a>
                                     <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Chỉnh
                                         sửa</a>
-                                    <form action="{{ route('products.destroy', $product->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
-                                    </form>
                                 </td>
                             </tr>
                         @endforeach

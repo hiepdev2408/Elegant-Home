@@ -55,24 +55,6 @@ class DashboardController extends Controller
             ->orderByRaw("FIELD(day, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')")
             ->get();
 
-        // Lấy doanh thu theo danh mục
-
-        $revenuePerCategory = Order::with(['orderDetails.product.category'])
-            ->get()
-            ->groupBy(function ($order) {
-                return $order->orderDetails->first()->product->category->name ?? 'Unknown';
-            })
-            ->map(function ($group) {
-                return [
-                    'category' => $group->first()->orderDetails->first()->product->category->name ?? 'Unknown',
-                    'total' => $group->sum(function ($order) {
-                        return $order->orderDetails->sum(function ($detail) {
-                            return $detail->total_amount * $detail->quantity;
-                        });
-                    }),
-                ];
-            })
-            ->values();
 
         return view(self::PATH_VIEW . __FUNCTION__, compact(
             'users',
@@ -84,7 +66,6 @@ class DashboardController extends Controller
             'startDate',
             'endDate',
             'ordersPerDay',
-            'revenuePerCategory',
         ));
     }
 

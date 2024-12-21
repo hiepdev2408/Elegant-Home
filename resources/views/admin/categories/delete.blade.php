@@ -4,7 +4,6 @@
 @endsection
 @section('menu-item-categories')
     open
-    >>>>>>> 74112967acda104f9f93ea329d3fa8aa7ec4aed3
 @endsection
 
 @section('menu-sub-delete-categories')
