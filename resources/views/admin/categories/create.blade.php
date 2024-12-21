@@ -42,15 +42,7 @@
                                 <h5 class="card-tile mb-0">Thông tin danh mục</h5>
                             </div>
                             <div class="card-body">
-                                <div class="form-floating form-floating-outline mb-4">
-                                    <select name="parent_id" id="parent_id" class="form-select">
-                                        <option value="">Chọn danh mục cha (nếu có)</option>
-                                        @foreach ($data as $parent)
-                                            <option value="{{ $parent->id }}">{{ $parent->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <label for="ecommerce-product-name">Danh mục cha</label>
-                                </div>
+                                
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" class="form-control" placeholder="Tên danh mục" name="name"
                                         id="name" value="{{ old('name') }}" />

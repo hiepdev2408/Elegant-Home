@@ -82,18 +82,6 @@
                                                 {{ $child->is_active ? 'Kích hoạt' : 'Không kích hoạt' }}
                                             </span>
                                         </td>
-                                        <td>
-                                            <a href="{{ route('categories.edit', $child->id) }}"
-                                                class="btn btn-primary btn-sm">Sửa</a>
-
-                                            <form action="{{ route('categories.destroy', $child->id) }}" method="POST"
-                                                class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục con này không?')">Xóa</button>
-                                            </form>
-                                        </td>
                                     </tr>
                                 @endforeach
                             @endif
